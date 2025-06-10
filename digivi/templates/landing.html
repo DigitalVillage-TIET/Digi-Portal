@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIGI-VI | Digital Village Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            color: #ffffff;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Subtle Background Elements */
+        .bg-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: 
+                radial-gradient(circle at 15% 25%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 85% 75%, rgba(16, 185, 129, 0.06) 0%, transparent 50%);
+        }
+
+        .grid-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 50px 50px;
+            opacity: 0.3;
+        }
+
+        /* Professional Top Navigation */
+        .top-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 4rem;
+            z-index: 1000;
+        }
+
+        .logo-left, .logo-right {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+            filter: brightness(1.1);
+            transition: all 0.3s ease;
+        }
+
+        .logo-left:hover, .logo-right:hover {
+            transform: scale(1.05);
+            filter: brightness(1.3);
+        }
+
+        .center-logo {
+            font-size: 2.2rem;
+            font-weight: 700;
+            font-family: 'Playfair Display', serif;
+            background: linear-gradient(135deg, #3b82f6, #10b981);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 3px;
+            position: relative;
+        }
+
+        .center-logo::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(135deg, #3b82f6, #10b981);
+            border-radius: 1px;
+        }
+
+        /* Main Content Sections */
+        .main-content {
+            margin-top: 80px;
+        }
+
+        /* Elegant Hero Section */
+        .hero-section {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.7) 0%, rgba(26, 26, 26, 0.5) 100%);
+        }
+
+        .hero-title {
+            font-size: 7rem;
+            font-weight: 800;
+            font-family: 'Playfair Display', serif;
+            background: linear-gradient(135deg, #ffffff, #e5e7eb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1.5rem;
+            letter-spacing: -2px;
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: #3b82f6;
+            margin-bottom: 2rem;
+            max-width: 700px;
+        }
+
+        .hero-tagline {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 800px;
+            line-height: 1.7;
+            font-weight: 400;
+        }
+
+        /* Professional Section Styling */
+        .section {
+            padding: 8rem 4rem;
+        }
+
+        .section-title {
+            font-size: 2.8rem;
+            font-family: 'Playfair Display', serif;
+            text-align: center;
+            margin-bottom: 4rem;
+            color: #ffffff;
+            font-weight: 600;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(135deg, #3b82f6, #10b981);
+            border-radius: 2px;
+        }
+
+        /* Project Description */
+        .project-section {
+            background: rgba(15, 15, 15, 0.8);
+        }
+
+        .project-description {
+            max-width: 1100px;
+            margin: 0 auto;
+            font-size: 1.2rem;
+            line-height: 1.8;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.85);
+            background: rgba(255, 255, 255, 0.03);
+            padding: 4rem;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Professional Team Cards */
+        .team-section {
+            background: rgba(10, 10, 10, 0.9);
+        }
+
+        .leaders-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 4rem;
+            max-width: 1000px;
+            margin: 0 auto 6rem;
+        }
+
+        .team-card {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 3rem;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            transition: all 0.4s ease;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .team-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 60px rgba(59, 130, 246, 0.15);
+            border-color: rgba(59, 130, 246, 0.3);
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .team-photo {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 2rem;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .team-card:hover .team-photo {
+            border-color: rgba(59, 130, 246, 0.5);
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
+        }
+
+        .team-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #ffffff;
+        }
+
+        .team-role {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.5;
+        }
+
+        /* Team Members Grid */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .small-team-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .small-team-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateY(-5px);
+            border-color: rgba(255, 255, 255, 0.12);
+        }
+
+        .small-team-photo {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 1.5rem;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .small-team-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            color: #ffffff;
+        }
+
+        .small-team-role {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Developers Section */
+        .developers-section {
+            background: rgba(15, 15, 15, 0.8);
+        }
+
+        .developers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 3rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .dev-card {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 3rem;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dev-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.05), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .dev-card:hover::before {
+            left: 100%;
+        }
+
+        .dev-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(59, 130, 246, 0.1);
+            border-color: rgba(59, 130, 246, 0.2);
+        }
+
+        .linkedin-link {
+            display: inline-block;
+            margin-top: 1.5rem;
+            color: #3b82f6;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+
+        .linkedin-link:hover {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: rgba(59, 130, 246, 0.5);
+            transform: translateY(-2px);
+        }
+
+        /* Professional Login Section */
+        .login-section {
+            padding: 6rem 4rem;
+            text-align: center;
+            background: rgba(10, 10, 10, 0.9);
+        }
+
+        .login-btn {
+            background: linear-gradient(135deg, #3b82f6, #10b981);
+            border: none;
+            color: #ffffff;
+            font-size: 1.1rem;
+            font-weight: 600;
+            padding: 1.2rem 3rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.2);
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(59, 130, 246, 0.3);
+        }
+
+        /* Professional Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        .modal-content {
+            background: rgba(15, 15, 15, 0.95);
+            margin: 8% auto;
+            padding: 3rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            width: 400px;
+            text-align: center;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 24px;
+            font-weight: 300;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close:hover {
+            color: #3b82f6;
+        }
+
+        .form-group {
+            margin: 2rem 0;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.8rem;
+            color: #ffffff;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        /* Professional Navigation */
+        .nav-menu {
+            position: fixed;
+            bottom: 2rem;
+            left: 2rem;
+            z-index: 1500;
+        }
+
+        .hamburger {
+            width: 56px;
+            height: 56px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger:hover {
+            background: rgba(59, 130, 246, 0.2);
+            border-color: rgba(59, 130, 246, 0.3);
+        }
+
+        .hamburger-icon {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .hamburger-icon span {
+            width: 18px;
+            height: 2px;
+            background: #ffffff;
+            border-radius: 1px;
+            transition: 0.3s;
+        }
+
+        .menu-items {
+            position: absolute;
+            bottom: 70px;
+            left: 0;
+            background: rgba(15, 15, 15, 0.95);
+            border-radius: 12px;
+            padding: 1rem;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transform: translateY(10px);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            min-width: 180px;
+        }
+
+        .menu-items.active {
+            transform: translateY(0);
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .menu-item {
+            display: block;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 0.8rem 1rem;
+            border-radius: 6px;
+            margin: 0.2rem 0;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .menu-item:hover {
+            background: rgba(59, 130, 246, 0.15);
+            color: #3b82f6;
+        }
+
+        /* Error Message */
+        .error-message {
+            color: #ef4444;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .top-nav {
+                padding: 0 2rem;
+            }
+            
+            .center-logo {
+                font-size: 1.8rem;
+                letter-spacing: 2px;
+            }
+            
+            .hero-title {
+                font-size: 4rem;
+            }
+            
+            .leaders-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .modal-content {
+                width: 90%;
+                margin: 15% auto;
+                padding: 2rem;
+            }
+
+            .section {
+                padding: 6rem 2rem;
+            }
+        }
+    </style>
+
+</head>
+<body>
+    <!-- Professional Background -->
+    <div class="bg-container"></div>
+    <div class="grid-overlay"></div>
+
+    <!-- Top Navigation -->
+    <nav class="top-nav">
+        <img src="https://i.ibb.co/BVtQs0rd/logotiet.png></a>" alt="TIET Logo" class="logo-left">
+        <div class="center-logo">T2CEFS</div>
+        <img src="https://i.ibb.co/Tq4YXfzn/tel-aviv-university-tau4054.jpg"" alt="Tel Aviv University Logo" class="logo-right">
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Hero Section -->
+        <section class="hero-section" id="home">
+            <h1 class="hero-title">DIGI-VI</h1>
+            <h2 class="hero-subtitle">Digital Village: Advanced Agricultural Intelligence</h2>
+            <p class="hero-tagline">A sophisticated data-driven approach for sustainable farming and environmental stewardship through precision technology and scientific innovation</p>
+        </section>
+
+        <!-- Project Description -->
+        <section class="section project-section" id="project">
+            <h2 class="section-title">Project Overview</h2>
+            <div class="project-description">
+                This is an innovative data-driven approach for better farming under TIET-TAU Center of Excellence for Food Security (T2CEFS) addressing food security issues and climate change in line with the UN Sustainable Development Goals-2030.
+            </div>
+        </section>
+
+        <!-- Team Leaders -->
+        <section class="section team-section" id="leaders">
+            <h2 class="section-title">Leadership Team</h2>
+            <div class="leaders-grid">
+                <div class="team-card">
+                    <img src="https://i.ibb.co/W4YV6FWv/Dr-Karun-Verma.jpg" alt="Prof. Karun Verma" class="team-photo">
+                    <h3 class="team-name">Prof. Karun Verma</h3>
+                    <p class="team-role">Associate Professor at Thapar Institute of Engineering & Technology</p>
+                </div>
+                <div class="team-card">
+                    <img src="https://i.ibb.co/gLYx5JVq/Dr-Ram.jpg" alt="Prof. Ram Fishmen" class="team-photo">
+                    <h3 class="team-name">Prof. Ram Fishmen</h3>
+                    <p class="team-role">Associate Professor of Public Policy, Tel Aviv University, and Director, Nitsan Lab for Sustainable Development</p>
+                </div>
+            </div>
+
+            <!-- Research Team -->
+            <div class="team-grid">
+                <div class="small-team-card">
+                    <img src="https://i.ibb.co/TM8MQ73F/Dan-sir.jpg" alt="Mr. Dan Etgar" class="small-team-photo">
+                    <h4 class="small-team-name">Mr. Dan Etgar</h4>
+                    <p class="small-team-role">PhD Candidate at Tel Aviv University</p>
+                </div>
+                <div class="small-team-card">
+                    <img src="https://i.ibb.co/VWLCv2kW/Marcello.jpg" alt="Mr. Marcello Liberman" class="small-team-photo">
+                    <h4 class="small-team-name">Mr. Marcello Liberman</h4>
+                    <p class="small-team-role">Research Project Manager at Nitsan Lab for Sustainable Development @ TAU</p>
+                </div>
+                <div class="small-team-card">
+                    <img src="https://via.placeholder.com/100x100/374151/ffffff?text=T3" alt="Team Member 3" class="small-team-photo">
+                    <h4 class="small-team-name">Team Member 3</h4>
+                    <p class="small-team-role">Research Associate</p>
+                </div>
+
+                
+            </div>
+        </section>
+
+        <!-- Developers -->
+        <section class="section developers-section" id="developers">
+            <h2 class="section-title">Portal Development Team</h2>
+            <div class="developers-grid">
+                <div class="dev-card">
+                    <img src="https://i.ibb.co/bMgn5Zz5/Danish.jpg" alt="Danish Sharma" class="team-photo">
+                    <h3 class="team-name">Danish Sharma</h3>
+                    <p class="team-role">Final Year B.E. Student at TIET</p>
+                    <a href="https://www.linkedin.com/in/danish-workmain/" class="linkedin-link" target="_blank">LinkedIn Profile</a>
+                </div>
+                <div class="dev-card">
+                    <img src="https://via.placeholder.com/140x140/374151/ffffff?text=SS" alt="Samrath Singh Kharbanda" class="team-photo">
+                    <h3 class="team-name">Samrath Singh Kharbanda</h3>
+                    <p class="team-role">Final Year B.E. Student at TIET</p>
+                    <a href="#" class="linkedin-link">LinkedIn Profile</a>
+                </div>
+                <div class="dev-card">
+                    <img src="https://i.ibb.co/8DGfD0TD/Ashmit.jpg" alt="Ashmit Cajla" class="team-photo">
+                    <h3 class="team-name">Ashmit Cajla</h3>
+                    <p class="team-role">Pre-Final year B.E. Student at TIET</p>
+                    <a href="https://www.linkedin.com/in/ashmitcajla/" class="linkedin-link" target="_blank">LinkedIn Profile</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Login Section -->
+        <section class="section login-section" id="login">
+            <button class="login-btn" onclick="openModal()">Member Access</button>
+        </section>
+    </main>
+
+    <!-- Navigation Menu -->
+    <div class="nav-menu">
+        <div class="hamburger" onclick="toggleMenu()">
+            <div class="hamburger-icon">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        <div class="menu-items" id="menuItems">
+            <a href="#home" class="menu-item" onclick="scrollToSection('home')">Home</a>
+            <a href="#project" class="menu-item" onclick="scrollToSection('project')">Project</a>
+            <a href="#leaders" class="menu-item" onclick="scrollToSection('leaders')">Leadership</a>
+            <a href="#developers" class="menu-item" onclick="scrollToSection('developers')">Developers</a>
+            <a href="#login" class="menu-item" onclick="scrollToSection('login')">Access</a>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 style="color: #ffffff; margin-bottom: 2rem; font-weight: 600;">Member Access</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <button type="submit" class="login-btn" style="width: 100%; margin-top: 1rem;">Sign In</button>
+                <div id="errorMessage" class="error-message" style="display: none;"></div>
+            </form>
+        </div>
+    </div>
+
+<script>
+    // Navigation functions
+    function toggleMenu() {
+        const menuItems = document.getElementById('menuItems');
+        menuItems.classList.toggle('active');
+    }
+
+    function scrollToSection(sectionId) {
+        const section = document.getElementById(sectionId);
+        const navHeight = 80;
+        const targetPosition = section.offsetTop - navHeight;
+
+        window.scrollTo({
+            top: targetPosition,
+            behavior: 'smooth'
+        });
+
+        // Close menu after clicking
+        const menuItems = document.getElementById('menuItems');
+        menuItems.classList.remove('active');
+    }
+
+    // Modal functions
+    function openModal() {
+        document.getElementById('loginModal').style.display = 'block';
+    }
+
+    function closeModal() {
+        document.getElementById('loginModal').style.display = 'none';
+        document.getElementById('errorMessage').style.display = 'none';
+        document.getElementById('loginForm').reset();
+    }
+
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+        const modal = document.getElementById('loginModal');
+        if (event.target === modal) {
+            closeModal();
+        }
+    }
+
+    // Login form handling
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        const errorMessage = document.getElementById('errorMessage');
+
+        if (username === 'digivi-analyst' && password === 'analyst123') {
+            window.location.href = 'index/';
+        } else {
+            errorMessage.textContent = 'Invalid credentials. Please try again.';
+            errorMessage.style.display = 'block';
+
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+        }
+    });
+
+    // Smooth scroll for all internal links
+    document.addEventListener('DOMContentLoaded', function() {
+        const links = document.querySelectorAll('a[href^="#"]');
+
+        links.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                scrollToSection(targetId);
+            });
+        });
+    });
+
+    // Fix: only close nav menu if click is outside BOTH menu and hamburger
+    document.addEventListener('click', function(event) {
+        const menuItems = document.getElementById('menuItems');
+        const navMenu = document.querySelector('.nav-menu');
+        const hamburger = document.querySelector('.hamburger');
+
+        if (
+            !navMenu.contains(event.target) &&
+            !hamburger.contains(event.target)
+        ) {
+            menuItems.classList.remove('active');
+        }
+    });
+</script>
+    <footer class="footer">
+        <p>&copy; 2025 DIGI-VI | Digital Village Portal. All rights reserved.</p>
+    </footer>

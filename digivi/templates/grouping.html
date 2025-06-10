@@ -1,0 +1,194 @@
+<!-- digivi/templates/grouping.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Meter Reading 2025</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Orbitron', sans-serif;
+      background: linear-gradient(135deg, #0d0d0d, #1a1a1a);
+      color: #e0e0e0;
+      line-height: 1.6;
+      padding: 1rem;
+    }
+    h1 {
+      text-align: center;
+      margin: 2rem 0 1rem;
+      font-size: 2.5rem;
+      background: linear-gradient(90deg, #00e5ff, #d500f9);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: neon-flicker 1.5s infinite alternate;
+    }
+    @keyframes neon-flicker { from { opacity: 1; } to { opacity: 0.9; } }
+
+    .toggle-switch {
+      display: flex; justify-content: center; margin-bottom: 2rem;
+    }
+    .toggle-wrapper {
+      display: flex;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 30px;
+      background: rgba(255,255,255,0.05);
+      overflow: hidden;
+    }
+    .toggle-option {
+      padding: 0.6rem 1.5rem;
+      cursor: pointer;
+      color: #aaa;
+      background: none;
+      border: none;
+      transition: background 0.3s, color 0.3s;
+    }
+    .toggle-option.active {
+      background: linear-gradient(45deg, #00e5ff, #d500f9);
+      color: #111;
+      font-weight: bold;
+    }
+    .toggle-option:hover { opacity: 0.85; }
+
+    .panel {
+      max-width: 700px;
+      margin: 1.5rem auto;
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 12px;
+      padding: 2rem;
+    }
+    .panel h2 {
+      margin-bottom: 1rem;
+      font-size: 1.5rem;
+      color: #00e5ff;
+      text-transform: uppercase;
+    }
+    .panel form { display: flex; flex-direction: column; }
+    .panel label {
+      margin-top: 1rem;
+      color: #ccc;
+    }
+    .panel input[type="file"],
+    .panel select {
+      margin-top: 0.5rem;
+      padding: 0.6rem;
+      background: #222;
+      border: 1px solid #444;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 0.95rem;
+    }
+    .panel button {
+      margin-top: 1.5rem;
+      padding: 0.8rem;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(45deg, #00e5ff, #d500f9);
+      color: #111;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+    .panel button:hover { transform: scale(1.03); }
+
+    .error {
+      color: #ff4d4d;
+      text-align: center;
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+
+    .results {
+      margin-top: 2rem;
+    }
+    .meter-block {
+      margin-bottom: 2rem;
+    }
+    .meter-block h3 {
+      margin-bottom: 1rem;
+      color: #d500f9;
+    }
+    .meter-block img {
+      display: block;
+      max-width: 100%;
+      margin-bottom: 1rem;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+    }
+
+    .footer {
+      text-align: center;
+      margin: 3rem 0;
+      color: #888;
+      font-size: 0.85rem;
+    }
+
+    @media (max-width: 600px) {
+      .panel { padding: 1.2rem; }
+      h1 { font-size: 2rem; }
+      .toggle-option { padding: 0.5rem 1rem; }
+    }
+  </style>
+</head>
+<body>
+<form method="post">
+  {% csrf_token %}
+  <!-- 1. Group Type Selection -->
+  <label><input type="radio" name="group_type" value="Remote" onchange="onGroupChange(this.value)" required> Remote</label>
+  <label><input type="radio" name="group_type" value="AWD" onchange="onGroupChange(this.value)"> AWD</label>
+  <label><input type="radio" name="group_type" value="TPR/DSR" onchange="onGroupChange(this.value)"> TPR / DSR</label>
+
+  <!-- 2. Remote Checkboxes -->
+  <div id="remote-options" class="group-options" style="display:none; margin-top: 1rem;">
+    <label><input type="checkbox" name="group_category" value="Group-A Complied"> Group-A Complied</label><br>
+    <label><input type="checkbox" name="group_category" value="Group-A Non-Complied"> Group-A Non-Complied</label><br>
+    <label><input type="checkbox" name="group_category" value="Group-B Complied"> Group-B Complied</label><br>
+    <label><input type="checkbox" name="group_category" value="Group-B Non-Complied"> Group-B Non-Complied</label><br>
+  </div>
+
+  <!-- 3. AWD Checkboxes -->
+  <div id="awd-options" class="group-options" style="display:none; margin-top: 1rem;">
+    <label><input type="checkbox" name="group_category" value="Group-A Complied"> Group-A Complied</label><br>
+    <label><input type="checkbox" name="group_category" value="Group-A Non-Complied"> Group-A Non-Complied</label><br>
+    <label><input type="checkbox" name="group_category" value="Group-B Complied"> Group-B Complied</label><br>
+    <label><input type="checkbox" name="group_category" value="Group-B Non-Complied"> Group-B Non-Complied</label><br>
+    <label><input type="checkbox" name="group_category" value="Group-C Complied"> Group-C Complied</label><br>
+    <label><input type="checkbox" name="group_category" value="Group-C Non-Complied"> Group-C Non-Complied</label><br>
+  </div>
+
+  <!-- 4. TPR/DSR Checkboxes -->
+  <div id="tprdsr-options" class="group-options" style="display:none; margin-top: 1rem;">
+    <label><input type="checkbox" name="group_category" value="TPR"> TPR</label><br>
+    <label><input type="checkbox" name="group_category" value="DSR"> DSR</label><br>
+  </div>
+
+  <!-- 5. Submit -->
+  <button type="submit" name="proceed_group">Process</button>
+</form>
+{% if output %}
+ <img src="data:image/png;base64,{{ group_plot }}">
+{% endif %}
+</body>
+<script>
+  function onGroupChange(value) {
+    // Hide all group sections
+    document.querySelectorAll('.group-options').forEach(div => div.style.display = 'none');
+
+    // Uncheck all checkboxes to avoid accidental selection
+    document.querySelectorAll('.group-options input[type="checkbox"]').forEach(cb => cb.checked = false);
+
+    // Show selected group section
+    if (value === 'Remote') {
+      document.getElementById('remote-options').style.display = 'block';
+    } else if (value === 'AWD') {
+      document.getElementById('awd-options').style.display = 'block';
+    } else if (value === 'TPR/DSR') {
+      document.getElementById('tprdsr-options').style.display = 'block';
+    }
+  }
+</script>
+

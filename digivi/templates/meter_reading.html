@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Digital Village Meter Analytics</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+
+    body {
+      margin: 0;
+      background: linear-gradient(135deg, #0d0d0d, #1a1a1a);
+      color: #e0e0e0;
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    .bg-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: radial-gradient(circle at 30% 20%, rgba(0,229,255,0.07), transparent),
+                  radial-gradient(circle at 70% 80%, rgba(213,0,249,0.07), transparent);
+      z-index: -1;
+    }
+
+    h1 {
+      text-align: center;
+      padding: 1.5rem;
+      font-size: 2.5rem;
+      background: linear-gradient(90deg, #00e5ff, #d500f9);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: neon-flicker 1.5s infinite alternate;
+    }
+    @keyframes neon-flicker {
+      from { opacity: 1; } to { opacity: 0.9; }
+    }
+
+    /* Toggle Switch */
+    .toggle-switch {
+      display: flex;
+      justify-content: center;
+      margin: 1.5rem 0;
+    }
+
+    .toggle-wrapper {
+      display: flex;
+      align-items: center;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 30px;
+      overflow: hidden;
+    }
+
+    .toggle-option {
+      padding: 0.6rem 1.5rem;
+      font-size: 1rem;
+      cursor: pointer;
+      color: #aaa;
+      background: none;
+      border: none;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .toggle-option.active {
+      background: linear-gradient(45deg, #00e5ff, #d500f9);
+      color: #111;
+      font-weight: bold;
+    }
+
+    .toggle-option:hover {
+      opacity: 0.85;
+    }
+
+    .upload-panel {
+      max-width: 700px;
+      margin: 2rem auto;
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      padding: 2rem;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .upload-panel input, .upload-panel button {
+      font-family: inherit;
+      font-size: 1rem;
+    }
+    .upload-panel button {
+      margin-top: 1rem;
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 8px;
+      background: linear-gradient(45deg, #00e5ff, #d500f9);
+      color: #111;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+    .upload-panel button:hover {
+      transform: scale(1.05);
+    }
+
+    .farm-select {
+      text-align: center;
+      margin: 2rem auto;
+    }
+    .farm-select select, .farm-select button {
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      border: 1px solid rgba(255,255,255,0.3);
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(8px);
+      color: #e0e0e0;
+      font-family: inherit;
+    }
+
+    .meter-card {
+      max-width: 900px;
+      margin: 2rem auto;
+      background: rgba(255,255,255,0.07);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 20px;
+      padding: 1.5rem;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.8);
+    }
+
+    .meter-card h3 {
+      margin-top: 0;
+      font-size: 1.75rem;
+      background: linear-gradient(120deg, #d500f9, #00e5ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .meter-card ul {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+    .meter-card ul li {
+      flex: 1;
+      min-width: 120px;
+    }
+
+    .plot-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+    }
+
+    .plot-container img {
+      min-width: 300px;
+      max-width: 48%;
+      border-radius: 12px;
+      border: 2px solid rgba(255,255,255,0.3);
+      background: #111;
+    }
+
+    .footer {
+      margin: 3rem auto;
+      text-align: center;
+      color: #888;
+      font-size: 0.9rem;
+    }
+
+    @media(max-width: 768px) {
+      .plot-container img { max-width: 100%; }
+      .meter-card ul { flex-direction: column; gap: 0.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-overlay"></div>
+
+  <h1>Meter Reading Analytics</h1>
+
+  <!-- TOGGLE BUTTON HERE -->
+  <div class="toggle-switch">
+    <div class="toggle-wrapper">
+      <button class="toggle-option active" onclick="window.location.href='{% url 'meter_reading' %}'">2024 Format</button>
+      <button class="toggle-option" onclick="window.location.href='{% url 'meter_reading_25' %}'">2025 Format</button>
+    </div>
+  </div>
+
+  <div class="upload-panel">
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <label>Meter Reading File:<br><input type="file" name="meter_file" required></label><br><br>
+      <label>Master File:<br><input type="file" name="master_file" required></label><br>
+      <button type="submit">Upload & Analyze</button>
+    </form>
+  </div>
+
+  {% if error_message %}
+    <div style="text-align:center; color:#ff3860;"><strong>{{ error_message }}</strong></div>
+  {% endif %}
+
+  {% if farm_ids %}
+    <div class="farm-select">
+      <form method="post">{% csrf_token %}
+        <select name="selected_farm">
+          {% for f in farm_ids %}
+            <option value="{{ f }}" {% if f == selected_farm %}selected{% endif %}>{{ f }}</option>
+          {% endfor %}
+        </select>
+        <button type="submit">Analyze Farm</button>
+      </form>
+    </div>
+  {% endif %}
+
+  {% if meter_results %}
+    {% for result in meter_results %}
+      <div class="meter-card">
+        <h3>Meter: {{ result.meter }}</h3>
+        <ul>
+          <li><strong>Village:</strong> {{ result.info.village }}</li>
+          <li><strong>Size:</strong> {{ result.info.size }} Acres</li>
+          <li><strong>Type:</strong> {{ result.info.farm_type }}</li>
+        </ul>
+        <div class="plot-container">
+          {% for plot in result.plots %}
+            <img src="data:image/png;base64,{{ plot }}" alt="Plot for {{ result.meter }}"/>
+          {% endfor %}
+        </div>
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <div class="footer">
+    Need help? Upload correct files or contact Digi-Village Tech Team for assistance.
+  </div>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Digi-Village Interface</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+
+    body {
+      margin: 0;
+      font-family: 'Orbitron', sans-serif;
+      background: linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 100%);
+      overflow: hidden;
+      color: #fff;
+    }
+
+    .bg-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: radial-gradient(circle at top left, rgba(0,229,255,0.1), transparent),
+                  radial-gradient(circle at bottom right, rgba(213,0,249,0.1), transparent);
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 8vh auto;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 20px;
+      padding: 3rem 2rem;
+      box-shadow: 0 0 25px rgba(0,255,255,0.05);
+      text-align: center;
+      backdrop-filter: blur(12px);
+    }
+
+    h2 {
+      font-size: 2rem;
+      background: linear-gradient(90deg, #00e5ff, #d500f9);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 2rem;
+    }
+
+    .button {
+      display: block;
+      width: 80%;
+      margin: 1rem auto;
+      padding: 1rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #111;
+      background: linear-gradient(45deg, #00e5ff, #d500f9);
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform 0.2s ease, box-shadow 0.3s;
+      box-shadow: 0 0 15px rgba(0,255,255,0.2);
+    }
+
+    .button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 25px rgba(0,255,255,0.4);
+    }
+
+    .footer {
+      margin-top: 2rem;
+      font-size: 0.9rem;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-overlay"></div>
+  <div class="container">
+    <h2>Choose Template You Want to Work On</h2>
+    <a href="{% url 'meter_reading' %}" class="button">Meter Reading</a>
+    <a href="https://ashmitcajla-dashboard-app-fzoza3.streamlit.app/" class="button" target="_blank">Water Level</a>
+    <a href="{% url 'farmer_survey' %}" class="button">Farmer Survey</a>
+    <a href="{% url 'evapotranspiration' %}" class="button">Evapotranspiration</a>
+    <a href="{% url 'mapping' %}" class="button">Mapping</a>
+    <div class="footer">
+      Need help? Upload correct files or contact Digi-Village Tech Team for assistance.
+    </div>
+  </div>
+</body>
+</html>

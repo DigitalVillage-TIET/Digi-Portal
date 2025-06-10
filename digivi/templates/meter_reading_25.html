@@ -1,0 +1,229 @@
+<!-- digivi/templates/meter_reading_25.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Meter Reading 2025</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Orbitron', sans-serif;
+      background: linear-gradient(135deg, #0d0d0d, #1a1a1a);
+      color: #e0e0e0;
+      line-height: 1.6;
+      padding: 1rem;
+    }
+    h1 {
+      text-align: center;
+      margin: 2rem 0 1rem;
+      font-size: 2.5rem;
+      background: linear-gradient(90deg, #00e5ff, #d500f9);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: neon-flicker 1.5s infinite alternate;
+    }
+    @keyframes neon-flicker { from { opacity: 1; } to { opacity: 0.9; } }
+
+    .toggle-switch {
+      display: flex; justify-content: center; margin-bottom: 2rem;
+    }
+    .toggle-wrapper {
+      display: flex;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 30px;
+      background: rgba(255,255,255,0.05);
+      overflow: hidden;
+    }
+    .toggle-option {
+      padding: 0.6rem 1.5rem;
+      cursor: pointer;
+      color: #aaa;
+      background: none;
+      border: none;
+      transition: background 0.3s, color 0.3s;
+    }
+    .toggle-option.active {
+      background: linear-gradient(45deg, #00e5ff, #d500f9);
+      color: #111;
+      font-weight: bold;
+    }
+    .toggle-option:hover { opacity: 0.85; }
+
+    .panel {
+      max-width: 700px;
+      margin: 1.5rem auto;
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 12px;
+      padding: 2rem;
+    }
+    .panel h2 {
+      margin-bottom: 1rem;
+      font-size: 1.5rem;
+      color: #00e5ff;
+      text-transform: uppercase;
+    }
+    .panel form { display: flex; flex-direction: column; }
+    .panel label {
+      margin-top: 1rem;
+      color: #ccc;
+    }
+    .panel input[type="file"],
+    .panel select {
+      margin-top: 0.5rem;
+      padding: 0.6rem;
+      background: #222;
+      border: 1px solid #444;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 0.95rem;
+    }
+    .panel button {
+      margin-top: 1.5rem;
+      padding: 0.8rem;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(45deg, #00e5ff, #d500f9);
+      color: #111;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+    .panel button:hover { transform: scale(1.03); }
+
+    .error {
+      color: #ff4d4d;
+      text-align: center;
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+
+    .results {
+      margin-top: 2rem;
+    }
+    .meter-block {
+      margin-bottom: 2rem;
+    }
+    .meter-block h3 {
+      margin-bottom: 1rem;
+      color: #d500f9;
+    }
+    .meter-block img {
+      display: block;
+      max-width: 100%;
+      margin-bottom: 1rem;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+    }
+
+    .footer {
+      text-align: center;
+      margin: 3rem 0;
+      color: #888;
+      font-size: 0.85rem;
+    }
+
+    @media (max-width: 600px) {
+      .panel { padding: 1.2rem; }
+      h1 { font-size: 2rem; }
+      .toggle-option { padding: 0.5rem 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Meter Reading Kharif 2025</h1>
+
+  <!-- Toggle 2024 / 2025 -->
+  <div class="toggle-switch">
+    <div class="toggle-wrapper">
+      <button class="toggle-option" onclick="location.href='{% url 'meter_reading' %}'">
+        2024 Format
+      </button>
+      <button class="toggle-option active" onclick="location.href='{% url 'meter_reading_25' %}'">
+        2025 Format
+      </button>
+    </div>
+  </div>
+
+  <!-- 1. Upload Files -->
+  <section class="panel">
+    <h2>1. Upload Files</h2>
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <label for="raw_file">Raw Data File (Excel):</label>
+      <input type="file" name="raw_file" id="raw_file" accept=".xlsx,.xls" required>
+
+      <label for="meters_file">Master Workbook (Excel):</label>
+      <input type="file" name="meters_file" id="meters_file" accept=".xlsx,.xls" required>
+
+      <button type="submit">Upload & Continue</button>
+    </form>
+    {% if error %}
+      <p class="error">{{ error }}</p>
+    {% endif %}
+  </section>
+
+  {% if farm_ids %}
+  <a href="{% url 'grouping-25' %}" class="button">Grouping Table</a>
+  <section class="panel">
+    <h2>2A. Download Combined Tables</h2>
+    <form method="post">
+      {% csrf_token %}
+      <input type="hidden" name="download_table" value="avg">
+      <button type="submit">Download Avg m³ per Acre per Day</button>
+    </form>
+    <form method="post">
+      {% csrf_token %}
+      <input type="hidden" name="download_table" value="delta">
+      <button type="submit">Download Delta m³ per Acre</button>
+    </form>
+  </section>
+  {% endif %}
+
+
+  <!-- 2. Select Farm -->
+  {% if farm_ids %}
+  <section class="panel">
+    <h2>2. Select Farm</h2>
+    <form method="post">
+      {% csrf_token %}
+      <label for="selected_farm">Choose Farm ID:</label>
+      <select name="selected_farm" id="selected_farm" required>
+        <option value="">-- Select --</option>
+        {% for fid in farm_ids %}
+          <option value="{{ fid }}" {% if fid == selected %}selected{% endif %}>
+            {{ fid }}
+          </option>
+        {% endfor %}
+      </select>
+      <button type="submit">Generate Graphs</button>
+    </form>
+  </section>
+  {% endif %}
+
+  <!-- 3. Results -->
+  {% if results %}
+  <section class="panel results">
+    <h2>3. Meter Graphs</h2>
+    {% for block in results %}
+      <div class="meter-block">
+        <h3>Meter {{ block.meter }}</h3>
+        {% for img in block.plots %}
+          <img src="data:image/png;base64,{{ img }}" alt="Meter {{ block.meter }} graph">
+        {% endfor %}
+      </div>
+    {% endfor %}
+  </section>
+  {% endif %}
+
+  <div class="footer">
+    Need help? Verify file formats or contact Digi-Village Support.
+  </div>
+
+</body>
+</html>
