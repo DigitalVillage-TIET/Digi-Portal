@@ -303,7 +303,7 @@ def get_2025plots(raw_df, master_df, selected_farm, meter_list):
         # --- Graph 1: m3 per acre per avg day ---
         fig1, ax1 = plt.subplots(figsize=(10, 5))
         ax1.plot(filled_df['Day'], filled_df['m³ per Acre per Avg Day'], label='Daily m³ per Acre per day', color='blue')
-        ax1.set(title=f'Daily Avg per Acre per day | Meter {meter}', xlabel='Days from transplanting', ylabel='m³ per Acre per day')
+        ax1.set(title=f'Daily Avg per Acre | Meter {meter}', xlabel='Days from transplanting', ylabel='Daily Avg m³ per Acre')
         ax1.legend()
         fig1.tight_layout()
         meter_plots.append(encode_plot_to_base64(fig1))
@@ -313,7 +313,7 @@ def get_2025plots(raw_df, master_df, selected_farm, meter_list):
         fig2, ax2 = plt.subplots(figsize=(10, 5))
         ax2.plot(filled_df['Day'], filled_df['7-day SMA'], label='7-day SMA', linestyle='--', color='green')
         # ax2.plot(filled_df['Day'], filled_df['Weekly Avg'], label='Weekly Avg', linestyle=':', color='orange')
-        ax2.set(title=f'Moving Averages | Meter {meter}', xlabel='Days from transplanting', ylabel='m³ reading')
+        ax2.set(title=f'Moving Average | Meter {meter}', xlabel='Days from transplanting', ylabel='7-days SMA m³ per Acre')
         ax2.legend()
         fig2.tight_layout()
         meter_plots.append(encode_plot_to_base64(fig2))
@@ -322,7 +322,7 @@ def get_2025plots(raw_df, master_df, selected_farm, meter_list):
         # --- Graph 3: Delta Analysis ---
         fig3, ax3 = plt.subplots(figsize=(10, 5))
         ax3.plot(filled_df['Day'], filled_df['Delta m³'], marker='o', linestyle='-', color='purple', label='Delta m³')
-        ax3.set(title=f'Delta m³ | Meter {meter}', xlabel='Days from transplanting', ylabel='Delta m³')
+        ax3.set(title=f'Meter Actual readings of meter | Meter {meter}', xlabel='Days from transplanting', ylabel='Delta of readings (m³)')
         ax3.legend()
         fig3.tight_layout()
         meter_plots.append(encode_plot_to_base64(fig3))
@@ -331,7 +331,7 @@ def get_2025plots(raw_df, master_df, selected_farm, meter_list):
         # --- Graph 4: Delta per Acre ---
         fig4, ax4 = plt.subplots(figsize=(10, 5))
         ax4.plot(filled_df['Day'], filled_df['m³ per Acre'], marker='x', linestyle='-', color='red', label='Delta m³/Acre')
-        ax4.set(title=f'Delta per Acre | Meter {meter}', xlabel='Days from transplanting', ylabel='delta m³ per Acre')
+        ax4.set(title=f'Meter readings per Acre | Meter {meter}', xlabel='Days from transplanting', ylabel='Delta of reading per Acre (m³) ')
         ax4.legend()
         fig4.tight_layout()
         meter_plots.append(encode_plot_to_base64(fig4))
@@ -643,8 +643,8 @@ def generate_group_analysis_plot(df):
     for col in df.columns[1:]:
         plt.plot(df['Day'], df[col], label=col, linewidth=2)
     
-    plt.xlabel("Day")
-    plt.ylabel("Average m³ per Acre per Day")
+    plt.xlabel("Days from transplanting")
+    plt.ylabel("Daily Average m3/acre")
     plt.title("Group-wise Water Usage Comparison")
     plt.grid(True)
     plt.legend()
