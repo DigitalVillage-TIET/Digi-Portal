@@ -661,6 +661,13 @@ def generate_group_analysis_plot(df):
         
 
         
-
+def get_meters_by_village(raw_df, village_name):
+    """
+    Get all unique meter serial numbers for a specific village.
+    Village name is in column D (index 3) of the raw data.
+    """
+    # Filter rows where village matches
+    village_meters = raw_df[raw_df.iloc[:, 3] == village_name]['Meter Serial Number - as shown on meter'].unique()
+    return [str(m).strip() for m in village_meters if pd.notna(m)]
 
 

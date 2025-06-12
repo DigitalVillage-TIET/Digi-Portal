@@ -141,13 +141,14 @@ def mapping(request):
 from django.shortcuts import render
 import pandas as pd
 
-from .utils import kharif2025_farms, get_2025plots
-
+from .utils import kharif2025_farms, get_2025plots, get_meters_by_village
 
 def meter_reading_25_view(request):
     error = None
     farm_ids = []
+    village_names = []  # Add this
     selected = request.POST.get('selected_farm', '')
+    selected_village = request.POST.get('selected_village', '')  # Add this
     results = []
 
     # 1) Upload & cache raw readings
@@ -175,10 +176,16 @@ def meter_reading_25_view(request):
         for name, json_str in request.session.get('master25', {}).items()
     } if 'master25' in request.session else None
 
-    # 4) Build farm dropdown
+    # 4) Build farm dropdown and village dropdown
     if master25:
         farm_dict = kharif2025_farms(master25)
         farm_ids = list(kharif2025_farms(master25).keys())
+        
+        # Add village extraction
+        if raw_df is not None:
+            # Column D is index 3 (0-based)
+            village_names = sorted(raw_df.iloc[:, 3].dropna().unique().tolist())
+        
         download_request = request.POST.get("download_table")
         if download_request and raw_df is not None:
             col_to_get = "m³ per Acre per Avg Day" if download_request == "avg" else "m³ per Acre"
@@ -194,7 +201,6 @@ def meter_reading_25_view(request):
                 response['Content-Disposition'] = f'attachment; filename="{filename}"'
                 return response
 
-
     # 5) When a farm is selected, generate graphs
     if selected and raw_df is not None and master25:
         mapping = kharif2025_farms(master25)
@@ -208,11 +214,43 @@ def meter_reading_25_view(request):
                 'plots': encoded_imgs[4*idx : 4*idx + 4]
             }
             results.append(block)
+    
+    # 6) When a village is selected, generate graphs for all meters in that village
+    elif selected_village and raw_df is not None and master25:
+        from .utils import get_meters_by_village
+        
+        # Get all meters for this village
+        village_meters = get_meters_by_village(raw_df, selected_village)
+        
+        # For each meter, find which farm it belongs to and generate graphs
+        all_encoded_imgs = []
+        meter_to_farm = {}
+        
+        # Create reverse mapping of meter to farm
+        farm_dict = kharif2025_farms(master25)
+        for farm_id, meter_list in farm_dict.items():
+            for meter in meter_list:
+                meter_to_farm[meter] = farm_id
+        
+        # Generate plots for each meter in the village
+        for meter in village_meters:
+            if meter in meter_to_farm:
+                farm_id = meter_to_farm[meter]
+                meter_imgs = get_2025plots(raw_df, master25, farm_id, [meter])
+                for idx in range(0, len(meter_imgs), 4):
+                    block = {
+                        'meter': meter,
+                        'farm': farm_id,
+                        'plots': meter_imgs[idx:idx+4]
+                    }
+                    results.append(block)
 
     return render(request, 'meter_reading_25.html', {
         'error': error,
         'farm_ids': farm_ids,
+        'village_names': village_names,  # Add this
         'selected': selected,
+        'selected_village': selected_village,  # Add this
         'results': results,
     })
 
