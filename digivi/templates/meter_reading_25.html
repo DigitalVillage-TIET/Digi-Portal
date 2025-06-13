@@ -742,6 +742,65 @@
       border-radius: 4px;
       font-size: 0.875rem;
     }
+    /* Date Filter Styles */
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+}
+
+.checkbox-container input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  margin-right: 0.75rem;
+  cursor: pointer;
+  accent-color: var(--accent-primary);
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.date-info {
+  background: var(--bg-tertiary);
+  padding: 1rem;
+  border-radius: 8px;
+  margin: 1rem 0;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.date-info .code {
+  font-family: 'JetBrains Mono', monospace;
+  background: var(--code-bg);
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  color: var(--accent-primary);
+}
+
+.date-info .active-filter {
+  color: var(--accent-success);
+  font-weight: 500;
+  margin-top: 0.5rem;
+}
+
+.date-inputs-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+@media (max-width: 768px) {
+  .date-inputs-grid {
+    grid-template-columns: 1fr;
+  }
+}
   </style>
 </head>
 <body>
@@ -809,8 +868,71 @@
         {% endif %}
       </div>
     </div>
-
-    {% if farm_ids %}
+  <!-- Date Filter Section - Add this after the upload section -->
+  {% if farm_ids %}
+  <div class="glass-card">
+    <div class="card-header">
+      <h2><i class="fas fa-calendar-alt icon"></i> Date Range Filter</h2>
+    </div>
+    <div class="card-body">
+      <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="update_date_filter" value="true">
+        
+        <div class="form-group">
+          <label class="checkbox-container">
+            <input type="checkbox" name="use_date_filter" id="use_date_filter" 
+                  {% if use_date_filter %}checked{% endif %}
+                  onchange="toggleDateInputs()">
+            <span class="checkbox-label">
+              <i class="fas fa-filter"></i> Enable Date Range Filter
+            </span>
+          </label>
+        </div>
+        
+        {% if date_range_info %}
+        <div class="date-info">
+          <p>Available data range: <span class="code">{{ date_range_info.min }}</span> to <span class="code">{{ date_range_info.max }}</span></p>
+          {% if use_date_filter and filter_start_date and filter_end_date %}
+          <p class="active-filter">Active filter: <span class="code">{{ filter_start_date }}</span> to <span class="code">{{ filter_end_date }}</span></p>
+          {% endif %}
+        </div>
+        {% endif %}
+        
+        <div id="date-inputs" style="display: {% if use_date_filter %}block{% else %}none{% endif %};">
+          <div class="date-inputs-grid">
+            <div class="form-group">
+              <label class="form-label" for="filter_start_date">
+                <i class="fas fa-calendar-check"></i> Start Date
+              </label>
+              <input type="date" name="filter_start_date" id="filter_start_date" 
+                    class="form-control" 
+                    value="{{ filter_start_date|default:date_range_info.min }}"
+                    min="{{ date_range_info.min }}" 
+                    max="{{ date_range_info.max }}">
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label" for="filter_end_date">
+                <i class="fas fa-calendar-times"></i> End Date
+              </label>
+              <input type="date" name="filter_end_date" id="filter_end_date" 
+                    class="form-control" 
+                    value="{{ filter_end_date|default:date_range_info.max }}"
+                    min="{{ date_range_info.min }}" 
+                    max="{{ date_range_info.max }}">
+            </div>
+          </div>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">
+          <i class="fas fa-sync-alt"></i> Apply Date Filter
+        </button>
+      </form>
+    </div>
+  </div>
+  {% endif %}
+      {% if farm_ids %}
     <!-- Analysis Control Panel -->
     <div class="glass-card">
       <div class="card-header">
@@ -964,6 +1086,33 @@
       {% endfor %}
     </div>
     {% endif %}
+    <!-- Download Report Section -->
+    {% if results %}
+    <div class="glass-card" style="margin-top: 2rem;">
+      <div class="card-header">
+        <h2><i class="fas fa-file-word icon"></i> Export Analysis Report</h2>
+      </div>
+      <div class="card-body">
+        <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
+          Download a comprehensive Word document containing all graphs and analysis details
+        </p>
+        <form method="post">
+          {% csrf_token %}
+          <input type="hidden" name="download_report" value="true">
+          {% if selected %}
+            <input type="hidden" name="report_filter_type" value="farm">
+            <input type="hidden" name="report_filter_value" value="{{ selected }}">
+          {% elif selected_village %}
+            <input type="hidden" name="report_filter_type" value="village">
+            <input type="hidden" name="report_filter_value" value="{{ selected_village }}">
+          {% endif %}
+          <button type="submit" class="btn btn-primary btn-block">
+            <i class="fas fa-download"></i> Download Word Report (.docx)
+          </button>
+        </form>
+      </div>
+    </div>
+    {% endif %}
   </div>
 
   <footer class="footer">
@@ -1033,6 +1182,38 @@
         setTimeout(() => ripple.remove(), 600);
       });
     });
+  function toggleDateInputs() {
+  const checkbox = document.getElementById('use_date_filter');
+  const dateInputs = document.getElementById('date-inputs');
+  
+  if (checkbox.checked) {
+    dateInputs.style.display = 'block';
+  } else {
+    dateInputs.style.display = 'none';
+  }
+}
+
+// Add date validation
+document.addEventListener('DOMContentLoaded', function() {
+  const startDate = document.getElementById('filter_start_date');
+  const endDate = document.getElementById('filter_end_date');
+  
+  if (startDate && endDate) {
+    startDate.addEventListener('change', function() {
+      endDate.min = this.value;
+      if (endDate.value < this.value) {
+        endDate.value = this.value;
+      }
+    });
+    
+    endDate.addEventListener('change', function() {
+      startDate.max = this.value;
+      if (startDate.value > this.value) {
+        startDate.value = this.value;
+      }
+    });
+  }
+});
   </script>
 </body>
 </html>

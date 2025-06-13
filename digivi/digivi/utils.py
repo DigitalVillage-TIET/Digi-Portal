@@ -7,6 +7,24 @@ import matplotlib.pyplot as plt
 
 
 # --- 2024 Helpers ---
+def filter_data_by_date_range(raw_df, start_date, end_date):
+    """
+    Filter raw data by date range
+    """
+    # Ensure Date column is datetime
+    date_col = 'Date'
+    raw_df[date_col] = pd.to_datetime(raw_df[date_col], dayfirst=False)
+    
+    # Convert string dates to datetime if needed
+    if isinstance(start_date, str):
+        start_date = pd.to_datetime(start_date)
+    if isinstance(end_date, str):
+        end_date = pd.to_datetime(end_date)
+    
+    # Filter the dataframe
+    filtered_df = raw_df[(raw_df[date_col] >= start_date) & (raw_df[date_col] <= end_date)].copy()
+    
+    return filtered_df
 
 def kharif2024_farms(master_df):
     meters_df = master_df['Meters'][['Kharif 24 Meter Serial No', 'Kharif 24 FARMID']].copy()
@@ -671,3 +689,277 @@ def get_meters_by_village(raw_df, village_name):
     return [str(m).strip() for m in village_meters if pd.notna(m)]
 
 
+def generate_word_report(results, filter_type, filter_value, raw_df, master_df):
+    """
+    Generate a Word document report with graphs and details
+    """
+    from docx import Document
+    from docx.shared import Inches, Pt, RGBColor
+    from docx.enum.text import WD_ALIGN_PARAGRAPH
+    from docx.enum.style import WD_STYLE_TYPE
+    import base64
+    from datetime import datetime
+    
+    # Create document
+    doc = Document()
+    
+    # Set up styles
+    # Title style
+    title_style = doc.styles.add_style('CustomTitle', WD_STYLE_TYPE.PARAGRAPH)
+    title_style.font.name = 'Arial'
+    title_style.font.size = Pt(24)
+    title_style.font.bold = True
+    title_style.font.color.rgb = RGBColor(0, 0, 139)  # Dark blue
+    
+    # Heading style
+    heading_style = doc.styles.add_style('CustomHeading', WD_STYLE_TYPE.PARAGRAPH)
+    heading_style.font.name = 'Arial'
+    heading_style.font.size = Pt(16)
+    heading_style.font.bold = True
+    heading_style.font.color.rgb = RGBColor(0, 0, 139)
+    
+    # Add title
+    title = doc.add_paragraph('DIGI-VI Water Meter Analysis Report', style='CustomTitle')
+    title.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    
+    # Add date
+    date_para = doc.add_paragraph(f'Generated on: {datetime.now().strftime("%B %d, %Y at %I:%M %p")}')
+    date_para.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    
+    doc.add_paragraph()  # Empty line
+    
+    # Add filter information
+    filter_heading = doc.add_paragraph('Analysis Filter Information', style='CustomHeading')
+    
+    filter_info = doc.add_paragraph()
+    filter_info.add_run('Filter Type: ').bold = True
+    filter_info.add_run(f'{filter_type}\n')
+    filter_info.add_run('Filter Value: ').bold = True
+    filter_info.add_run(f'{filter_value}\n')
+    
+    if filter_type == "Village Filter":
+        # Count total meters in village
+        village_meters = raw_df[raw_df.iloc[:, 3] == filter_value]['Meter Serial Number - as shown on meter'].nunique()
+        filter_info.add_run('Total Meters in Village: ').bold = True
+        filter_info.add_run(f'{village_meters}\n')
+    
+    doc.add_page_break()
+    
+    # Process each meter's results
+    for idx, block in enumerate(results):
+        # Add meter heading
+        meter_heading = doc.add_paragraph(f'Meter Unit: {block["meter"]}', style='CustomHeading')
+        
+        # Add meter details
+        details = doc.add_paragraph()
+        if 'farm' in block and block['farm']:
+            details.add_run('Associated Farm ID: ').bold = True
+            details.add_run(f'{block["farm"]}\n')
+            
+            # Get additional farm details from master data
+            farm_details = master_df['Farm details']
+            farm_row = farm_details[farm_details['Kharif 25 Farm ID'] == block['farm']]
+            if not farm_row.empty:
+                farm_row = farm_row.iloc[0]
+                
+                # Add village name
+                village_col = 'Kharif 25 Village'
+                if village_col in farm_row and pd.notna(farm_row[village_col]):
+                    details.add_run('Village: ').bold = True
+                    details.add_run(f'{farm_row[village_col]}\n')
+                
+                # Add acreage
+                acre_col = 'Kharif 25 Acres farm - farmer reporting'
+                if acre_col in farm_row and pd.notna(farm_row[acre_col]):
+                    details.add_run('Farm Size: ').bold = True
+                    details.add_run(f'{farm_row[acre_col]} acres\n')
+                
+                # Add transplanting date
+                tpr_col = 'Kharif 25 Paddy transplanting date (TPR)'
+                if tpr_col in farm_row and pd.notna(farm_row[tpr_col]):
+                    details.add_run('Transplanting Date: ').bold = True
+                    details.add_run(f'{farm_row[tpr_col]}\n')
+        
+        doc.add_paragraph()  # Empty line
+        
+        # Add graphs
+        graph_titles = [
+            "Daily Average Water Usage per Acre",
+            "7-Day Moving Average Pattern",
+            "Meter Actual Readings (Delta)",
+            "Water Usage per Acre (Delta)"
+        ]
+        
+        graph_descriptions = [
+            "This graph shows the daily average water consumption in cubic meters per acre per day. It helps identify daily irrigation patterns and water usage efficiency.",
+            "This graph displays the 7-day simple moving average, smoothing out daily fluctuations to reveal longer-term trends in water usage.",
+            "This graph presents the actual meter reading differences (delta) between consecutive readings, showing the total water consumed between measurements.",
+            "This graph normalizes the water consumption per acre, making it easier to compare water usage across farms of different sizes."
+        ]
+        
+        for graph_idx, img_base64 in enumerate(block['plots']):
+            # Add graph title
+            graph_title = doc.add_paragraph()
+            graph_title.add_run(f'Graph {graph_idx + 1}: {graph_titles[graph_idx]}').bold = True
+            
+            # Add graph description
+            doc.add_paragraph(graph_descriptions[graph_idx])
+            
+            # Decode and add image
+            try:
+                img_data = base64.b64decode(img_base64)
+                img_stream = BytesIO(img_data)
+                doc.add_picture(img_stream, width=Inches(6))
+                doc.add_paragraph()  # Empty line after image
+            except Exception as e:
+                doc.add_paragraph(f"[Error loading graph: {str(e)}]")
+        
+        # Add page break after each meter (except last)
+        if idx < len(results) - 1:
+            doc.add_page_break()
+    
+    # Add footer
+    doc.add_paragraph()
+    footer = doc.add_paragraph()
+    footer.add_run('--- End of Report ---').italic = True
+    footer.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    
+    # Save to BytesIO
+    docx_buffer = BytesIO()
+    doc.save(docx_buffer)
+    docx_buffer.seek(0)
+    
+    return docx_buffer
+
+
+
+def generate_group_analysis_report(group_type, selected_groups, group_plot_base64, group_data):
+    """
+    Generate a Word document report for group analysis
+    """
+    from docx import Document
+    from docx.shared import Inches, Pt, RGBColor
+    from docx.enum.text import WD_ALIGN_PARAGRAPH
+    from docx.enum.style import WD_STYLE_TYPE
+    import base64
+    from datetime import datetime
+    
+    # Create document
+    doc = Document()
+    
+    # Set up styles
+    title_style = doc.styles.add_style('CustomTitle', WD_STYLE_TYPE.PARAGRAPH)
+    title_style.font.name = 'Arial'
+    title_style.font.size = Pt(24)
+    title_style.font.bold = True
+    title_style.font.color.rgb = RGBColor(0, 0, 139)
+    
+    heading_style = doc.styles.add_style('CustomHeading', WD_STYLE_TYPE.PARAGRAPH)
+    heading_style.font.name = 'Arial'
+    heading_style.font.size = Pt(16)
+    heading_style.font.bold = True
+    heading_style.font.color.rgb = RGBColor(0, 0, 139)
+    
+    # Add title
+    title = doc.add_paragraph('DIGI-VI Group Analysis Report', style='CustomTitle')
+    title.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    
+    # Add date
+    date_para = doc.add_paragraph(f'Generated on: {datetime.now().strftime("%B %d, %Y at %I:%M %p")}')
+    date_para.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    
+    doc.add_paragraph()
+    
+    # Add analysis information
+    analysis_heading = doc.add_paragraph('Group Analysis Configuration', style='CustomHeading')
+    
+    # Group type information
+    group_info = doc.add_paragraph()
+    group_info.add_run('Study Type: ').bold = True
+    group_info.add_run(f'{group_type}\n')
+    
+    # Selected groups
+    group_info.add_run('Selected Groups: ').bold = True
+    group_info.add_run(f'{", ".join(selected_groups)}\n')
+    
+    # Add group descriptions based on type
+    doc.add_paragraph()
+    desc_heading = doc.add_paragraph('Group Descriptions', style='CustomHeading')
+    
+    if group_type == "Remote":
+        descriptions = {
+            "Group-A Complied": "Treatment group with remote controllers who complied with irrigation scheduling",
+            "Group-A Non-Complied": "Treatment group with remote controllers who did not comply with scheduling",
+            "Group-B Complied": "Control group who complied with traditional irrigation practices",
+            "Group-B Non-Complied": "Control group who did not comply with traditional practices"
+        }
+    elif group_type == "AWD":
+        descriptions = {
+            "Group-A Complied": "Treatment group practicing Alternate Wetting and Drying (AWD) with compliance",
+            "Group-A Non-Complied": "Treatment group assigned AWD but with non-compliance",
+            "Group-B Complied": "Control group B with compliance to assigned practices",
+            "Group-B Non-Complied": "Control group B with non-compliance",
+            "Group-C Complied": "Control group C with compliance to assigned practices",
+            "Group-C Non-Complied": "Control group C with non-compliance"
+        }
+    else:  # TPR/DSR
+        descriptions = {
+            "TPR": "Transplanted Rice (TPR) - Traditional method of rice cultivation",
+            "DSR": "Direct Seeded Rice (DSR) - Water-efficient method of rice cultivation"
+        }
+    
+    for group in selected_groups:
+        full_group_name = f"{group_type} {group}" if group_type != "TPR/DSR" else group
+        if group in descriptions:
+            para = doc.add_paragraph()
+            para.add_run(f'{full_group_name}: ').bold = True
+            para.add_run(descriptions[group])
+    
+    doc.add_page_break()
+    
+    # Add analysis results
+    results_heading = doc.add_paragraph('Comparative Analysis Results', style='CustomHeading')
+    
+    # Add explanation
+    doc.add_paragraph(
+        "The following graph shows the daily average water usage (m³/acre) comparison between "
+        "the selected groups over the cultivation period. This visualization helps identify "
+        "water usage patterns and efficiency differences between different farming practices."
+    )
+    
+    doc.add_paragraph()
+    
+    # Add the comparative graph
+    try:
+        img_data = base64.b64decode(group_plot_base64)
+        img_stream = BytesIO(img_data)
+        doc.add_picture(img_stream, width=Inches(6.5))
+    except Exception as e:
+        doc.add_paragraph(f"[Error loading graph: {str(e)}]")
+    
+    # Add data summary if available
+    if group_data:
+        doc.add_page_break()
+        summary_heading = doc.add_paragraph('Statistical Summary', style='CustomHeading')
+        
+        # Add summary statistics for each group
+        for group_label, farms in group_data.items():
+            if farms:  # Only if there are farms in this group
+                para = doc.add_paragraph()
+                para.add_run(f'{group_label}:').bold = True
+                para.add_run(f'\n  • Number of farms: {len(farms)}')
+                para.add_run(f'\n  • Farm IDs: {", ".join(farms[:5])}{"..." if len(farms) > 5 else ""}')
+    
+    # Add footer
+    doc.add_paragraph()
+    doc.add_paragraph()
+    footer = doc.add_paragraph()
+    footer.add_run('--- End of Group Analysis Report ---').italic = True
+    footer.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    
+    # Save to BytesIO
+    docx_buffer = BytesIO()
+    doc.save(docx_buffer)
+    docx_buffer.seek(0)
+    
+    return docx_buffer
