@@ -236,7 +236,10 @@ def meter_reading_25_view(request):
         download_request = request.POST.get("download_table")
         if download_request and raw_df is not None:
             col_to_get = "m³ per Acre per Avg Day" if download_request == "avg" else "m³ per Acre"
-            combined_df = get_tables(raw_df, master25, farm_dict, col_to_get)
+            if use_date_filter and filter_start_date and filter_end_date:
+                combined_df = get_tables(raw_df, master25, farm_dict, col_to_get, start_date_enter=filter_start_date, end_date_enter=filter_end_date)
+            else:
+                combined_df = get_tables(raw_df, master25, farm_dict, col_to_get)
 
             # Convert DataFrame to Excel file in memory
             with BytesIO() as buffer:
@@ -260,7 +263,10 @@ def meter_reading_25_view(request):
             filter_value = selected
             mapping = kharif2025_farms(master25)
             meters = mapping.get(selected, [])
-            encoded_imgs = get_2025plots(raw_df, master25, selected, meters)
+            if use_date_filter and filter_start_date and filter_end_date:
+                encoded_imgs = get_2025plots(raw_df, master25, selected, meters, start_date_enter=filter_start_date, end_date_enter=filter_end_date)
+            else:
+                encoded_imgs = get_2025plots(raw_df, master25, selected, meters)
             
             for idx, meter in enumerate(meters):
                 block = {
@@ -287,7 +293,11 @@ def meter_reading_25_view(request):
             for meter in village_meters:
                 if meter in meter_to_farm:
                     farm_id = meter_to_farm[meter]
-                    meter_imgs = get_2025plots(raw_df, master25, farm_id, [meter])
+
+                    if use_date_filter and filter_start_date and filter_end_date:
+                        meter_imgs = get_2025plots(raw_df, master25, farm_id, [meter], start_date_enter=filter_start_date, end_date_enter=filter_end_date)
+                    else:
+                        meter_imgs = get_2025plots(raw_df, master25, farm_id, [meter])
                     for idx in range(0, len(meter_imgs), 4):
                         block = {
                             'meter': meter,
@@ -312,7 +322,10 @@ def meter_reading_25_view(request):
     if selected and raw_df is not None and master25:
         mapping = kharif2025_farms(master25)
         meters = mapping.get(selected, [])
-        encoded_imgs = get_2025plots(raw_df, master25, selected, meters)
+        if use_date_filter and filter_start_date and filter_end_date:
+            encoded_imgs = get_2025plots(raw_df, master25, selected, meters, start_date_enter=filter_start_date, end_date_enter=filter_end_date)
+        else:
+            encoded_imgs = get_2025plots(raw_df, master25, selected, meters)
 
         # group 4 graphs per meter
         for idx, meter in enumerate(meters):
@@ -343,7 +356,10 @@ def meter_reading_25_view(request):
         for meter in village_meters:
             if meter in meter_to_farm:
                 farm_id = meter_to_farm[meter]
-                meter_imgs = get_2025plots(raw_df, master25, farm_id, [meter])
+                if use_date_filter and filter_start_date and filter_end_date:
+                    meter_imgs = get_2025plots(raw_df, master25, farm_id, [meter], start_date_enter=filter_start_date, end_date_enter=filter_end_date)
+                else:
+                    meter_imgs = get_2025plots(raw_df, master25, farm_id, [meter])
                 for idx in range(0, len(meter_imgs), 4):
                     block = {
                         'meter': meter,
@@ -454,7 +470,10 @@ def grouping_25(request):
             # Calculate and merge averages
             group_dfs = []
             for label, farms in group_farms_dict.items():
-                df = calculate_avg_m3_per_acre(selected_label, label, farms, raw_df, master25)
+                if raw_df is not None and request.session.get('use_date_filter', False):
+                    df = calculate_avg_m3_per_acre(selected_label, label, farms, raw_df, master25, start_date_enter=start_date, end_date_enter=end_date)
+                else:
+                    df = calculate_avg_m3_per_acre(selected_label, label, farms, raw_df, master25)
                 group_dfs.append(df)
 
             # Merge all into one plot

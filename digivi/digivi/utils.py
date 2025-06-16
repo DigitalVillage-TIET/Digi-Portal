@@ -4,6 +4,7 @@ import pandas as pd
 import io
 import base64
 import matplotlib.pyplot as plt
+from datetime import datetime
 
 
 # --- 2024 Helpers ---
@@ -193,7 +194,7 @@ def kharif2025_farms(master_df):
     return mapping
 
 
-def get_2025plots(raw_df, master_df, selected_farm, meter_list):
+def get_2025plots(raw_df, master_df, selected_farm, meter_list, start_date_enter = None, end_date_enter = None):
     import pandas as pd
     import matplotlib.pyplot as plt
     import base64
@@ -297,7 +298,10 @@ def get_2025plots(raw_df, master_df, selected_farm, meter_list):
     if pd.notna(farm_row.get('Kharif 25 Paddy transplanting date (TPR)')):
         start_date = pd.to_datetime(farm_row['Kharif 25 Paddy transplanting date (TPR)'], dayfirst=True)
     else:
-        start_date = pd.to_datetime('15/05/2025', dayfirst=True)
+        start_date = pd.to_datetime('20/06/2025', dayfirst=True)
+
+    if start_date_enter is not None:
+        start_date = start_date_enter
 
     # Clean meter data
     date_col = 'Date'
@@ -307,7 +311,10 @@ def get_2025plots(raw_df, master_df, selected_farm, meter_list):
     plots_base64 = []
 
     for meter in meter_list:
-        end_date = pd.to_datetime('31/05/2025', dayfirst=True)
+        end_date = pd.to_datetime(datetime.today().date())
+        if end_date_enter is not None:
+            end_date = end_date_enter
+        
         filled_df = get_filled(meter, raw_df, date_col, start_date, end_date, acreage)
         if filled_df.empty:
             continue
@@ -360,7 +367,7 @@ def get_2025plots(raw_df, master_df, selected_farm, meter_list):
     return plots_base64
 
 
-def get_tables(raw_df, master_df, farm_list, col_to_get):
+def get_tables(raw_df, master_df, farm_list, col_to_get, start_date_enter = None, end_date_enter = None):
 
     def create_adjusted_filled_dataframe(meter_data, start_date, end_date, date_column, avg_day_column):
         # shift first reading to align with start_date
@@ -382,7 +389,6 @@ def get_tables(raw_df, master_df, farm_list, col_to_get):
             meter_data.loc[first_index, col_avg_day] = meter_data.loc[first_index, col_avg_day] / days_diff
 
         
-        end_date = filtered[date_column].iloc[-1]
         all_dates = pd.date_range(start=start_date, end=end_date, freq='D')
         base = pd.DataFrame({date_column: all_dates})
         merged = pd.merge(base, meter_data, on=date_column, how='left')
@@ -467,12 +473,17 @@ def get_tables(raw_df, master_df, farm_list, col_to_get):
         if pd.notna(farm_row.get('Kharif 25 Paddy transplanting date (TPR)')):
             start_date = pd.to_datetime(farm_row['Kharif 25 Paddy transplanting date (TPR)'], dayfirst=True)
         else:
-            start_date = pd.to_datetime('15/05/2025', dayfirst=True)
+            start_date = pd.to_datetime('20/06/2025', dayfirst=True)
+        
+        if start_date_enter is not None:
+            start_date = start_date_enter
 
         
         
         for meter in farm_list[farm]:
-            end_date = pd.to_datetime('31/05/2025', dayfirst=True)
+            end_date = pd.to_datetime(datetime.today().date())
+            if end_date_enter is not None:
+                end_date = end_date_enter
             filled_df = get_filled(meter, raw_df, date_col, start_date, end_date, acreage)
             if filled_df.empty:
                 filled_df = pd.DataFrame(columns=['Day', meter])
@@ -490,7 +501,7 @@ def get_tables(raw_df, master_df, farm_list, col_to_get):
     return combined_df
 
 
-def calculate_avg_m3_per_acre(group_type, group_label, farm_ids, raw_df, master25):
+def calculate_avg_m3_per_acre(group_type, group_label, farm_ids, raw_df, master25, start_date_enter = None, end_date_enter = None):
     """
     Given a group label (like 'Group-A Complied') and its farm IDs, 
     returns a dataframe with Days column and average m³ per acre per day.
@@ -523,7 +534,6 @@ def calculate_avg_m3_per_acre(group_type, group_label, farm_ids, raw_df, master2
             meter_data.loc[first_index, col_avg_day] = meter_data.loc[first_index, col_avg_day] / days_diff
 
         
-        end_date = filtered[date_column].iloc[-1]
         all_dates = pd.date_range(start=start_date, end=end_date, freq='D')
         base = pd.DataFrame({date_column: all_dates})
         merged = pd.merge(base, meter_data, on=date_column, how='left')
@@ -598,9 +608,12 @@ def calculate_avg_m3_per_acre(group_type, group_label, farm_ids, raw_df, master2
         tpr_col = "Kharif 25 Paddy transplanting date (TPR)"
         tpr_date = acreage_row[tpr_col].values[0]
         if pd.isna(tpr_date) or tpr_date == "":
-            tpr_date = pd.to_datetime("2025-05-15")
+            tpr_date = pd.to_datetime("2025-06-20")
         else:
             tpr_date = pd.to_datetime(tpr_date)
+        
+        if start_date_enter is not None:
+            tpr_date = start_date_enter
 
         # Get meter serial numbers
         meters = []
@@ -617,7 +630,9 @@ def calculate_avg_m3_per_acre(group_type, group_label, farm_ids, raw_df, master2
 
         # Process each meter
         for meter in meters:
-            end_date = pd.to_datetime('31/05/2025', dayfirst=True)
+            end_date = pd.to_datetime(datetime.today().date())
+            if end_date_enter is not None:
+                end_date = end_date_enter
             filled_df = get_filled(meter, raw_df, date_col, tpr_date, end_date, acreage)
             if filled_df.empty:
                 continue
