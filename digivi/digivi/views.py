@@ -471,6 +471,7 @@ def grouping_25(request):
                 stored_data.get('group_type', ''),
                 stored_data.get('selected_groups', []),
                 request.session.get('group_plot', ''),
+                request.session.get('group_plot2', ''),
                 stored_data.get('group_farms', {})
             )
             
@@ -527,21 +528,25 @@ def grouping_25(request):
 
             # Calculate and merge averages
             group_dfs = []
+            group_dfs2 = []
             for label, farms in group_farms_dict.items():
                 if raw_df is not None and request.session.get('use_date_filter', False):
                     filter_start = pd.to_datetime(start_date)
                     filter_end = pd.to_datetime(end_date)
-                    df = calculate_avg_m3_per_acre(selected_label, label, farms, raw_df, master25, start_date_enter=filter_start, end_date_enter=filter_end)
+                    df = calculate_avg_m3_per_acre(selected_label, label, farms, raw_df, master25, 'm³ per Acre per Avg Day' ,start_date_enter=filter_start, end_date_enter=filter_end)
+                    df2 = calculate_avg_m3_per_acre(selected_label, label, farms, raw_df, master25, "Delta m³" ,start_date_enter=filter_start, end_date_enter=filter_end)
                 else:
-                    df = calculate_avg_m3_per_acre(selected_label, label, farms, raw_df, master25)
+                    df = calculate_avg_m3_per_acre(selected_label, label, farms, raw_df, master25, 'm³ per Acre per Avg Day')
+                    df2 = calculate_avg_m3_per_acre(selected_label, label, farms, raw_df, master25, "Delta m³")
                 group_dfs.append(df)
+                group_dfs2.append(df2)
 
             # Merge all into one plot
             if group_dfs:
                 final_df = group_dfs[0]
                 for df in group_dfs[1:]:
                     final_df = pd.merge(final_df, df, on="Day", how="outer")
-                group_plot = generate_group_analysis_plot(final_df)
+                group_plot = generate_group_analysis_plot(final_df, "Daily Average m3/acre")
                 
                 # Store in session for download
                 request.session['group_plot'] = group_plot
@@ -551,8 +556,19 @@ def grouping_25(request):
                     'group_farms': group_farms_dict
                 }
             
+            group_plot2 = None
+            if group_dfs2:
+                final_df2 = group_dfs2[0]
+                for df in group_dfs2[1:]:
+                    final_df2 = pd.merge(final_df2, df, on="Day", how="outer")
+                group_plot2 = generate_group_analysis_plot(final_df2, "Delta m3/acre")
+                
+                # Store in session for download
+                request.session['group_plot2'] = group_plot2
+               
             return render(request, 'grouping.html', {
                 'group_plot': group_plot,
+                'group_plot2': group_plot2,
                 'output': True,
                 'group_type': selected_label,
                 'selected_groups': selected_checkboxes,

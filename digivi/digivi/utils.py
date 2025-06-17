@@ -645,7 +645,7 @@ def get_tables(raw_df, master_df, farm_list, col_to_get, start_date_enter = None
     return combined_df
 
 
-def calculate_avg_m3_per_acre(group_type, group_label, farm_ids, raw_df, master25, start_date_enter = None, end_date_enter = None):
+def calculate_avg_m3_per_acre(group_type, group_label, farm_ids, raw_df, master25, column_to_see, start_date_enter = None, end_date_enter = None):
     """
     Given a group label (like 'Group-A Complied') and its farm IDs, 
     returns a dataframe with Days column and average m³ per acre per day.
@@ -782,7 +782,7 @@ def calculate_avg_m3_per_acre(group_type, group_label, farm_ids, raw_df, master2
             if filled_df.empty:
                 continue
             filled_df['Day'] = (pd.to_datetime(filled_df[date_col]) - tpr_date).dt.days
-            meter_df = filled_df[["Day", "m³ per Acre per Avg Day"]].reset_index(drop=True).rename(columns={"m³ per Acre per Avg Day": meter})
+            meter_df = filled_df[["Day", column_to_see]].reset_index(drop=True).rename(columns={column_to_see: meter})
             all_meter_dfs.append(meter_df)
 
     if not all_meter_dfs:
@@ -810,7 +810,7 @@ import matplotlib.pyplot as plt
 import base64
 from io import BytesIO
 
-def generate_group_analysis_plot(df):
+def generate_group_analysis_plot(df, col_name):
     """
     Takes a DataFrame where:
     - The first column is 'Day'
@@ -822,7 +822,7 @@ def generate_group_analysis_plot(df):
         plt.plot(df['Day'], df[col], label=col, linewidth=2)
     
     plt.xlabel("Days from transplanting")
-    plt.ylabel("Daily Average m3/acre")
+    plt.ylabel(col_name)
     plt.title("Group-wise Water Usage Comparison")
     plt.grid(True)
     plt.legend()
@@ -993,7 +993,7 @@ def generate_word_report(results, filter_type, filter_value, raw_df, master_df):
 
 
 
-def generate_group_analysis_report(group_type, selected_groups, group_plot_base64, group_data):
+def generate_group_analysis_report(group_type, selected_groups, group_plot_base64, group_plot2, group_data):
     """
     Generate a Word document report for group analysis
     """
@@ -1092,6 +1092,10 @@ def generate_group_analysis_report(group_type, selected_groups, group_plot_base6
     # Add the comparative graph
     try:
         img_data = base64.b64decode(group_plot_base64)
+        img_stream = BytesIO(img_data)
+        doc.add_picture(img_stream, width=Inches(6.5))
+
+        img_data = base64.b64decode(group_plot2)
         img_stream = BytesIO(img_data)
         doc.add_picture(img_stream, width=Inches(6.5))
     except Exception as e:
