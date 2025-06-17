@@ -237,7 +237,9 @@ def meter_reading_25_view(request):
         if download_request and raw_df is not None:
             col_to_get = "m³ per Acre per Avg Day" if download_request == "avg" else "m³ per Acre"
             if use_date_filter and filter_start_date and filter_end_date:
-                combined_df = get_tables(raw_df, master25, farm_dict, col_to_get, start_date_enter=filter_start_date, end_date_enter=filter_end_date)
+                filter_start = pd.to_datetime(filter_start_date)
+                filter_end = pd.to_datetime(filter_end_date)
+                combined_df = get_tables(raw_df, master25, farm_dict, col_to_get, start_date_enter=filter_start, end_date_enter=filter_end)
             else:
                 combined_df = get_tables(raw_df, master25, farm_dict, col_to_get)
 
@@ -264,7 +266,9 @@ def meter_reading_25_view(request):
             mapping = kharif2025_farms(master25)
             meters = mapping.get(selected, [])
             if use_date_filter and filter_start_date and filter_end_date:
-                encoded_imgs = get_2025plots(raw_df, master25, selected, meters, start_date_enter=filter_start_date, end_date_enter=filter_end_date)
+                filter_start = pd.to_datetime(filter_start_date)
+                filter_end = pd.to_datetime(filter_end_date)
+                encoded_imgs = get_2025plots(raw_df, master25, selected, meters, start_date_enter=filter_start, end_date_enter=filter_end)
             else:
                 encoded_imgs = get_2025plots(raw_df, master25, selected, meters)
             
@@ -295,7 +299,9 @@ def meter_reading_25_view(request):
                     farm_id = meter_to_farm[meter]
 
                     if use_date_filter and filter_start_date and filter_end_date:
-                        meter_imgs = get_2025plots(raw_df, master25, farm_id, [meter], start_date_enter=filter_start_date, end_date_enter=filter_end_date)
+                        filter_start = pd.to_datetime(filter_start_date)
+                        filter_end = pd.to_datetime(filter_end_date)
+                        meter_imgs = get_2025plots(raw_df, master25, farm_id, [meter], start_date_enter=filter_start, end_date_enter=filter_end)
                     else:
                         meter_imgs = get_2025plots(raw_df, master25, farm_id, [meter])
                     for idx in range(0, len(meter_imgs), 4):
@@ -325,7 +331,9 @@ def meter_reading_25_view(request):
         
         # Generate individual meter plots
         if use_date_filter and filter_start_date and filter_end_date:
-            encoded_imgs = get_2025plots(raw_df, master25, selected, meters, start_date_enter=filter_start_date, end_date_enter=filter_end_date)
+            filter_start = pd.to_datetime(filter_start_date)
+            filter_end = pd.to_datetime(filter_end_date)
+            encoded_imgs = get_2025plots(raw_df, master25, selected, meters, start_date_enter=filter_start, end_date_enter=filter_end)
         else:
             encoded_imgs = get_2025plots(raw_df, master25, selected, meters)
 
@@ -342,7 +350,9 @@ def meter_reading_25_view(request):
         if len(meters) > 1:
             from .utils import get_2025plots_combined
             if use_date_filter and filter_start_date and filter_end_date:
-                combined_imgs = get_2025plots_combined(raw_df, master25, selected, meters, start_date_enter=filter_start_date, end_date_enter=filter_end_date)
+                filter_start = pd.to_datetime(filter_start_date)
+                filter_end = pd.to_datetime(filter_end_date)
+                combined_imgs = get_2025plots_combined(raw_df, master25, selected, meters, start_date_enter=filter_start, end_date_enter=filter_end)
             else:
                 combined_imgs = get_2025plots_combined(raw_df, master25, selected, meters)
             
@@ -383,7 +393,9 @@ def meter_reading_25_view(request):
             # Individual meter plots
             for meter in farm_meters:
                 if use_date_filter and filter_start_date and filter_end_date:
-                    meter_imgs = get_2025plots(raw_df, master25, farm_id, [meter], start_date_enter=filter_start_date, end_date_enter=filter_end_date)
+                    filter_start = pd.to_datetime(filter_start_date)
+                    filter_end = pd.to_datetime(filter_end_date)
+                    meter_imgs = get_2025plots(raw_df, master25, farm_id, [meter], start_date_enter=filter_start, end_date_enter=filter_end)
                 else:
                     meter_imgs = get_2025plots(raw_df, master25, farm_id, [meter])
                 
@@ -399,7 +411,9 @@ def meter_reading_25_view(request):
             # Combined plots if multiple meters for this farm
             if len(farm_meters) > 1:
                 if use_date_filter and filter_start_date and filter_end_date:
-                    combined_imgs = get_2025plots_combined(raw_df, master25, farm_id, farm_meters, start_date_enter=filter_start_date, end_date_enter=filter_end_date)
+                    filter_start = pd.to_datetime(filter_start_date)
+                    filter_end = pd.to_datetime(filter_end_date)
+                    combined_imgs = get_2025plots_combined(raw_df, master25, farm_id, farm_meters, start_date_enter=filter_start, end_date_enter=filter_end)
                 else:
                     combined_imgs = get_2025plots_combined(raw_df, master25, farm_id, farm_meters)
                 
@@ -515,7 +529,9 @@ def grouping_25(request):
             group_dfs = []
             for label, farms in group_farms_dict.items():
                 if raw_df is not None and request.session.get('use_date_filter', False):
-                    df = calculate_avg_m3_per_acre(selected_label, label, farms, raw_df, master25, start_date_enter=start_date, end_date_enter=end_date)
+                    filter_start = pd.to_datetime(start_date)
+                    filter_end = pd.to_datetime(end_date)
+                    df = calculate_avg_m3_per_acre(selected_label, label, farms, raw_df, master25, start_date_enter=filter_start, end_date_enter=filter_end)
                 else:
                     df = calculate_avg_m3_per_acre(selected_label, label, farms, raw_df, master25)
                 group_dfs.append(df)
