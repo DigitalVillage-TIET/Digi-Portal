@@ -775,6 +775,7 @@ def calculate_avg_m3_per_acre(group_type, group_label, farm_ids, raw_df, master2
         # Process each meter
         for meter in meters:
             end_date = pd.to_datetime(datetime.now().date())
+          
             if end_date_enter is not None:
                 end_date = end_date_enter
             filled_df = get_filled(meter, raw_df, date_col, tpr_date, end_date, acreage)
