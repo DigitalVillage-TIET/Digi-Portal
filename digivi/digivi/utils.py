@@ -6,6 +6,39 @@ import base64
 import matplotlib.pyplot as plt
 from datetime import datetime
 
+def error_fix(df):
+    df = df.copy()
+    to_drop = set()
+    col = df.columns[1]
+
+    i = 0
+    while i <= len(df) - 3:
+        idx_i = df.index[i]
+        idx_ip1 = df.index[i+1]
+        idx_ip2 = df.index[i+2]
+
+        if idx_i in to_drop or idx_ip1 in to_drop or idx_ip2 in to_drop:
+            i += 1
+            continue
+
+        v_i = df.loc[idx_i, col]
+        v_ip1 = df.loc[idx_ip1, col]
+        v_ip2 = df.loc[idx_ip2, col]
+
+        if v_i > v_ip1 and v_i > v_ip2:
+            to_drop.add(idx_i)
+        elif v_i > v_ip1 and v_i < v_ip2:
+            to_drop.add(idx_ip1)
+        i += 1
+
+    # Additional rule: second last > last
+    if len(df) >= 2:
+        second_last_idx = df.index[-2]
+        last_idx = df.index[-1]
+        if df.loc[second_last_idx, col] > df.loc[last_idx, col]:
+            to_drop.add(second_last_idx)
+
+    return df.drop(index=to_drop).reset_index(drop=True)
 
 # --- 2024 Helpers ---
 def filter_data_by_date_range(raw_df, start_date, end_date):
@@ -259,6 +292,8 @@ def get_2025plots(raw_df, master_df, selected_farm, meter_list, start_date_enter
 
         # Deduplicate: keep the latest reading if multiple on same date
         df = df.drop_duplicates(subset=[date_column], keep='last')
+
+        df = error_fix(df)
 
         # Calculate time difference and deltas
         df['Days Since Previous Reading'] = df[date_column].diff().dt.days.fillna(method='bfill').fillna(1).astype(int)
@@ -570,6 +605,8 @@ def get_tables(raw_df, master_df, farm_list, col_to_get, start_date_enter = None
         # Deduplicate: keep the latest reading if multiple on same date
         df = df.drop_duplicates(subset=[date_column], keep='last')
 
+        df = error_fix(df)
+
         # Calculate time difference and deltas
         df['Days Since Previous Reading'] = df[date_column].diff().dt.days.fillna(method='bfill').fillna(1).astype(int)
         df['Delta m³'] = df['Reading in the meter - in m3'].diff().fillna(method='bfill').fillna(0)
@@ -714,6 +751,8 @@ def calculate_avg_m3_per_acre(group_type, group_label, farm_ids, raw_df, master2
 
         # Deduplicate: keep the latest reading if multiple on same date
         df = df.drop_duplicates(subset=[date_column], keep='last')
+
+        df = error_fix(df)
 
         # Calculate time difference and deltas
         df['Days Since Previous Reading'] = df[date_column].diff().dt.days.fillna(method='bfill').fillna(0).astype(int)
