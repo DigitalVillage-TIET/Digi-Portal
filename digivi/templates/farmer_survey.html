@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIGI-VI | Farmer Survey Analysis</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Light Theme */
+        :root[data-theme="light"] {
+            --bg-primary: #f8fafc;
+            --bg-secondary: #ffffff;
+            --bg-tertiary: #f1f5f9;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-tertiary: #64748b;
+            --border-color: #e2e8f0;
+            
+            --accent-primary: #3b82f6;
+            --accent-secondary: #8b5cf6;
+            --accent-tertiary: #06b6d4;
+            --accent-success: #10b981;
+            --accent-warning: #f59e0b;
+            --accent-danger: #ef4444;
+            
+            --gradient-primary: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            --gradient-secondary: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+            --gradient-accent: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+            --gradient-hero: linear-gradient(135deg, #dbeafe 0%, #e9d5ff 100%);
+            
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+            --shadow-glow: 0 0 20px rgba(59, 130, 246, 0.15);
+            
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Dark Theme */
+        :root[data-theme="dark"] {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #111111;
+            --bg-tertiary: #1a1a1a;
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-tertiary: #94a3b8;
+            --border-color: #27272a;
+            
+            --accent-primary: #60a5fa;
+            --accent-secondary: #a78bfa;
+            --accent-tertiary: #22d3ee;
+            --accent-success: #34d399;
+            --accent-warning: #fbbf24;
+            --accent-danger: #f87171;
+            
+            --gradient-primary: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+            --gradient-secondary: linear-gradient(135deg, #22d3ee 0%, #60a5fa 100%);
+            --gradient-accent: linear-gradient(135deg, #a78bfa 0%, #f472b6 100%);
+            --gradient-hero: linear-gradient(135deg, #1e293b 0%, #312e81 100%);
+            
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.4);
+            --shadow-glow: 0 0 30px rgba(96, 165, 250, 0.3);
+            
+            --glass-bg: rgba(30, 30, 30, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            font-size: 16px;
+            transition: var(--transition);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 0;
+            opacity: 0.03;
+            pointer-events: none;
+        }
+
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 20% 80%, var(--accent-primary) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, var(--accent-secondary) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 40%, var(--accent-tertiary) 0%, transparent 50%);
+            animation: rotate 30s linear infinite;
+        }
+
+        @keyframes rotate {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Navigation */
+        .nav-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            z-index: 1000;
+            transition: var(--transition);
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .nav-brand {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 1px;
+        }
+
+        .nav-subtitle {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 50px;
+            padding: 4px;
+            cursor: pointer;
+            width: 72px;
+            height: 36px;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--accent-primary);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .theme-toggle-slider {
+            position: absolute;
+            width: 28px;
+            height: 28px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            top: 3px;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+            box-shadow: var(--shadow-md);
+        }
+
+        :root[data-theme="light"] .theme-toggle-slider {
+            left: 3px;
+        }
+
+        :root[data-theme="dark"] .theme-toggle-slider {
+            left: 39px;
+        }
+
+        /* Back Button */
+        .btn-back {
+            background: var(--glass-bg);
+            color: var(--accent-primary);
+            border: 2px solid var(--accent-primary);
+            backdrop-filter: blur(10px);
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-back:hover {
+            background: var(--accent-primary);
+            color: white;
+            border-color: var(--accent-primary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Main Container */
+        .main-container {
+            min-height: 100vh;
+            padding: 120px 2rem 80px;
+            position: relative;
+            z-index: 2;
+            background: var(--gradient-hero);
+        }
+
+        .content-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            text-align: center;
+            margin-bottom: 4rem;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-icon {
+            font-size: 4rem;
+            background: var(--gradient-accent);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+            animation: float 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes float {
+            from { transform: translateY(0px); }
+            to { transform: translateY(-10px); }
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 800;
+            background: var(--gradient-accent);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            line-height: 1.7;
+        }
+
+        /* Development Status */
+        .dev-status {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 3rem 2rem;
+            margin-bottom: 3rem;
+            text-align: center;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+        }
+
+        .dev-status:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg), var(--shadow-glow);
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--gradient-secondary);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        .dev-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .dev-description {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            line-height: 1.7;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Quiz Game Section */
+        .quiz-section {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 2rem;
+        }
+
+        .quiz-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .quiz-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .quiz-subtitle {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .quiz-stats {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .quiz-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .question-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            transition: var(--transition);
+        }
+
+        .question-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+
+        .question-number {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .question-difficulty {
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .difficulty-easy {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--accent-success);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .difficulty-medium {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--accent-warning);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        .difficulty-hard {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--accent-danger);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .question-text {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .answers-grid {
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .answer-option {
+            background: var(--bg-tertiary);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .answer-option:hover {
+            border-color: var(--accent-primary);
+            background: var(--bg-secondary);
+            transform: translateX(5px);
+        }
+
+        .answer-option.selected {
+            border-color: var(--accent-primary);
+            background: var(--accent-primary);
+            color: white;
+        }
+
+        .answer-option.correct {
+            border-color: var(--accent-success);
+            background: var(--accent-success);
+            color: white;
+        }
+
+        .answer-option.incorrect {
+            border-color: var(--accent-danger);
+            background: var(--accent-danger);
+            color: white;
+        }
+
+        .answer-letter {
+            width: 32px;
+            height: 32px;
+            background: var(--bg-secondary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: var(--text-primary);
+            flex-shrink: 0;
+        }
+
+        .answer-option.selected .answer-letter,
+        .answer-option.correct .answer-letter,
+        .answer-option.incorrect .answer-letter {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .quiz-controls {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .btn-quiz {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            margin: 0 0.5rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-quiz:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-quiz:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .quiz-results {
+            text-align: center;
+            padding: 2rem;
+            border-radius: 16px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+        }
+
+        .results-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .results-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .results-score {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 2rem 0;
+            color: var(--text-tertiary);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-content {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem 2rem;
+                height: auto;
+            }
+
+            .main-container {
+                padding: 140px 1rem 60px;
+            }
+
+            .quiz-stats {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .question-header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Effects -->
+    <div class="bg-animation"></div>
+
+    <!-- Navigation -->
+    <nav class="nav-header">
+        <div class="nav-content">
+            <div class="nav-left">
+                <div class="nav-brand">DIGI-VI</div>
+                <div class="nav-subtitle">Farmer Survey Analysis</div>
+            </div>
+            <div class="nav-right">
+                <a href="../index/" class="btn-back">
+                    <i class="fas fa-arrow-left"></i> Back to Templates
+                </a>
+                <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
+                    <div class="theme-toggle-slider">
+                        <i class="fas fa-sun" id="theme-icon"></i>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-container">
+        <div class="content-wrapper">
+            <!-- Hero Section -->
+            <div class="hero-section">
+                <div class="hero-icon">
+                    <i class="fas fa-clipboard-list"></i>
+                </div>
+                <h1 class="hero-title">Farmer Survey Analysis</h1>
+                <p class="hero-subtitle">
+                    Comprehensive survey analysis tools for gathering and processing farmer feedback, crop performance, 
+                    and field conditions with advanced statistical modeling.
+                </p>
+            </div>
+
+            <!-- Development Status -->
+            <div class="dev-status">
+                <div class="status-badge">
+                    <i class="fas fa-tools"></i>
+                    Under Development
+                </div>
+                <h2 class="dev-title">Coming Soon: Smart Survey Analytics</h2>
+                <p class="dev-description">
+                    Our development team is building an intelligent survey platform with automated data collection, 
+                    sentiment analysis, predictive modeling, and interactive dashboards. Features will include mobile-first 
+                    survey forms, multilingual support, and real-time analytics with machine learning insights.
+                </p>
+            </div>
+
+            <!-- Quiz Game -->
+            <div class="quiz-section">
+                <div class="quiz-header">
+                    <h3 class="quiz-title">Agriculture Knowledge Quiz</h3>
+                    <p class="quiz-subtitle">Test your farming knowledge while we develop the survey tool!</p>
+                </div>
+
+                <div class="quiz-stats">
+                    <div class="stat-item">
+                        <div class="stat-value" id="currentQuestion">1</div>
+                        <div class="stat-label">Question</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="score">0</div>
+                        <div class="stat-label">Score</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="accuracy">0%</div>
+                        <div class="stat-label">Accuracy</div>
+                    </div>
+                </div>
+
+                <div class="quiz-container">
+                    <div id="quizContent">
+                        <!-- Quiz content will be generated by JavaScript -->
+                    </div>
+
+                    <div class="quiz-controls">
+                        <button class="btn-quiz" id="nextBtn" onclick="nextQuestion()" style="display: none;">
+                            <i class="fas fa-arrow-right"></i> Next Question
+                        </button>
+                        <button class="btn-quiz" onclick="startNewQuiz()">
+                            <i class="fas fa-redo"></i> New Quiz
+                        </button>
+                        <button class="btn-quiz" onclick="resetQuiz()">
+                            <i class="fas fa-refresh"></i> Reset
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2025 DIGI-VI Farmer Survey Analysis • Development Preview</p>
+    </footer>
+
+    <script>
+        // Theme Management
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            updateThemeIcon(savedTheme);
+        }
+
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+        }
+
+        function updateThemeIcon(theme) {
+            const icon = document.getElementById('theme-icon');
+            icon.className = theme === 'light' ? 'fas fa-sun' : 'fas fa-moon';
+        }
+
+        // Quiz Questions
+        const quizQuestions = [
+            {
+                question: "What is the primary benefit of crop rotation?",
+                answers: [
+                    "Increases soil fertility and breaks pest cycles",
+                    "Reduces water consumption",
+                    "Increases farm size",
+                    "Improves weather conditions"
+                ],
+                correct: 0,
+                difficulty: "easy"
+            },
+            {
+                question: "Which nutrient deficiency causes yellowing of leaves (chlorosis)?",
+                answers: [
+                    "Phosphorus",
+                    "Potassium", 
+                    "Nitrogen",
+                    "Calcium"
+                ],
+                correct: 2,
+                difficulty: "medium"
+            },
+            {
+                question: "What does pH measure in soil?",
+                answers: [
+                    "Nutrient content",
+                    "Water retention",
+                    "Acidity or alkalinity",
+                    "Organic matter"
+                ],
+                correct: 2,
+                difficulty: "easy"
+            },
+            {
+                question: "Which irrigation method is most water-efficient?",
+                answers: [
+                    "Flood irrigation",
+                    "Sprinkler irrigation",
+                    "Drip irrigation",
+                    "Furrow irrigation"
+                ],
+                correct: 2,
+                difficulty: "medium"
+            },
+            {
+                question: "What is the ideal soil pH range for most crops?",
+                answers: [
+                    "4.0 - 5.5",
+                    "6.0 - 7.0",
+                    "7.5 - 8.5",
+                    "8.5 - 9.0"
+                ],
+                correct: 1,
+                difficulty: "hard"
+            },
+            {
+                question: "Which farming practice helps prevent soil erosion?",
+                answers: [
+                    "Deep tillage",
+                    "Contour farming",
+                    "Monoculture",
+                    "Excessive grazing"
+                ],
+                correct: 1,
+                difficulty: "easy"
+            },
+            {
+                question: "What is the main purpose of adding organic matter to soil?",
+                answers: [
+                    "Increase soil temperature",
+                    "Improve soil structure and fertility",
+                    "Reduce soil pH",
+                    "Prevent plant growth"
+                ],
+                correct: 1,
+                difficulty: "medium"
+            },
+            {
+                question: "Which pest management approach is most sustainable?",
+                answers: [
+                    "Heavy pesticide use",
+                    "Integrated Pest Management (IPM)",
+                    "Ignoring pests completely",
+                    "Using only chemical controls"
+                ],
+                correct: 1,
+                difficulty: "hard"
+            }
+        ];
+
+        let quizState = {
+            currentQuestion: 0,
+            score: 0,
+            selectedAnswer: null,
+            answered: false,
+            questions: []
+        };
+
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        function initializeQuiz() {
+            quizState.questions = shuffleArray(quizQuestions).slice(0, 5); // Take 5 random questions
+            quizState.currentQuestion = 0;
+            quizState.score = 0;
+            quizState.selectedAnswer = null;
+            quizState.answered = false;
+            
+            updateStats();
+            renderQuestion();
+        }
+
+        function renderQuestion() {
+            const container = document.getElementById('quizContent');
+            const question = quizState.questions[quizState.currentQuestion];
+            
+            if (!question) {
+                showResults();
+                return;
+            }
+
+            const difficultyClass = `difficulty-${question.difficulty}`;
+            
+            container.innerHTML = `
+                <div class="question-card">
+                    <div class="question-header">
+                        <span class="question-number">Question ${quizState.currentQuestion + 1} of ${quizState.questions.length}</span>
+                        <span class="question-difficulty ${difficultyClass}">${question.difficulty.toUpperCase()}</span>
+                    </div>
+                    <div class="question-text">${question.question}</div>
+                    <div class="answers-grid">
+                        ${question.answers.map((answer, index) => `
+                            <div class="answer-option" onclick="selectAnswer(${index})">
+                                <span class="answer-letter">${String.fromCharCode(65 + index)}</span>
+                                <span>${answer}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('nextBtn').style.display = 'none';
+        }
+
+        function selectAnswer(answerIndex) {
+            if (quizState.answered) return;
+
+            quizState.selectedAnswer = answerIndex;
+            quizState.answered = true;
+
+            const question = quizState.questions[quizState.currentQuestion];
+            const answerOptions = document.querySelectorAll('.answer-option');
+
+            answerOptions.forEach((option, index) => {
+                if (index === question.correct) {
+                    option.classList.add('correct');
+                } else if (index === answerIndex && index !== question.correct) {
+                    option.classList.add('incorrect');
+                } else if (index === answerIndex) {
+                    option.classList.add('selected');
+                }
+                option.style.pointerEvents = 'none';
+            });
+
+            if (answerIndex === question.correct) {
+                quizState.score++;
+            }
+
+            updateStats();
+            document.getElementById('nextBtn').style.display = 'inline-flex';
+        }
+
+        function nextQuestion() {
+            quizState.currentQuestion++;
+            quizState.selectedAnswer = null;
+            quizState.answered = false;
+            
+            if (quizState.currentQuestion < quizState.questions.length) {
+                renderQuestion();
+                updateStats();
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            const container = document.getElementById('quizContent');
+            const percentage = Math.round((quizState.score / quizState.questions.length) * 100);
+            
+            let resultIcon, resultTitle, resultColor;
+            
+            if (percentage >= 80) {
+                resultIcon = 'fas fa-trophy';
+                resultTitle = 'Excellent!';
+                resultColor = 'var(--accent-warning)';
+            } else if (percentage >= 60) {
+                resultIcon = 'fas fa-medal';
+                resultTitle = 'Great Job!';
+                resultColor = 'var(--accent-success)';
+            } else {
+                resultIcon = 'fas fa-seedling';
+                resultTitle = 'Keep Learning!';
+                resultColor = 'var(--accent-primary)';
+            }
+
+            container.innerHTML = `
+                <div class="quiz-results">
+                    <div class="results-icon" style="color: ${resultColor};">
+                        <i class="${resultIcon}"></i>
+                    </div>
+                    <div class="results-title" style="color: ${resultColor};">${resultTitle}</div>
+                    <div class="results-score" style="color: ${resultColor};">${percentage}%</div>
+                    <p>You scored ${quizState.score} out of ${quizState.questions.length} questions correctly!</p>
+                    <p style="margin-top: 1rem; color: var(--text-secondary);">
+                        ${percentage >= 80 ? 'Outstanding knowledge of agriculture! 🌾' : 
+                          percentage >= 60 ? 'Good understanding of farming concepts! 🌱' : 
+                          'Keep studying agriculture - practice makes perfect! 📚'}
+                    </p>
+                </div>
+            `;
+
+            document.getElementById('nextBtn').style.display = 'none';
+        }
+
+        function updateStats() {
+            document.getElementById('currentQuestion').textContent = Math.min(quizState.currentQuestion + 1, quizState.questions.length);
+            document.getElementById('score').textContent = quizState.score;
+            
+            const accuracy = quizState.currentQuestion > 0 ? 
+                Math.round((quizState.score / quizState.currentQuestion) * 100) : 0;
+            document.getElementById('accuracy').textContent = accuracy + '%';
+        }
+
+        function startNewQuiz() {
+            initializeQuiz();
+        }
+
+        function resetQuiz() {
+            quizState.currentQuestion = 0;
+            quizState.score = 0;
+            quizState.selectedAnswer = null;
+            quizState.answered = false;
+            
+            updateStats();
+            renderQuestion();
+        }
+
+        // Initialize
+        window.addEventListener('load', () => {
+            initTheme();
+            initializeQuiz();
+        });
+    </script>
+</body>
+</html>

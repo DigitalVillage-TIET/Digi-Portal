@@ -1,90 +1,836 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Digi-Village Interface</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIGI-VI | Template Selection</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    body {
-      margin: 0;
-      font-family: 'Orbitron', sans-serif;
-      background: linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 100%);
-      overflow: hidden;
-      color: #fff;
-    }
+        :root {
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
 
-    .bg-overlay {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: radial-gradient(circle at top left, rgba(0,229,255,0.1), transparent),
-                  radial-gradient(circle at bottom right, rgba(213,0,249,0.1), transparent);
-      z-index: -1;
-      pointer-events: none;
-    }
+        /* Light Theme */
+        :root[data-theme="light"] {
+            --bg-primary: #f8fafc;
+            --bg-secondary: #ffffff;
+            --bg-tertiary: #f1f5f9;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-tertiary: #64748b;
+            --border-color: #e2e8f0;
+            
+            --accent-primary: #3b82f6;
+            --accent-secondary: #8b5cf6;
+            --accent-tertiary: #06b6d4;
+            --accent-success: #10b981;
+            --accent-warning: #f59e0b;
+            --accent-danger: #ef4444;
+            
+            --gradient-primary: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            --gradient-secondary: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+            --gradient-accent: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+            --gradient-hero: linear-gradient(135deg, #dbeafe 0%, #e9d5ff 100%);
+            
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+            --shadow-glow: 0 0 20px rgba(59, 130, 246, 0.15);
+            
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.2);
+        }
 
-    .container {
-      max-width: 600px;
-      margin: 8vh auto;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 20px;
-      padding: 3rem 2rem;
-      box-shadow: 0 0 25px rgba(0,255,255,0.05);
-      text-align: center;
-      backdrop-filter: blur(12px);
-    }
+        /* Dark Theme */
+        :root[data-theme="dark"] {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #111111;
+            --bg-tertiary: #1a1a1a;
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-tertiary: #94a3b8;
+            --border-color: #27272a;
+            
+            --accent-primary: #60a5fa;
+            --accent-secondary: #a78bfa;
+            --accent-tertiary: #22d3ee;
+            --accent-success: #34d399;
+            --accent-warning: #fbbf24;
+            --accent-danger: #f87171;
+            
+            --gradient-primary: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+            --gradient-secondary: linear-gradient(135deg, #22d3ee 0%, #60a5fa 100%);
+            --gradient-accent: linear-gradient(135deg, #a78bfa 0%, #f472b6 100%);
+            --gradient-hero: linear-gradient(135deg, #1e293b 0%, #312e81 100%);
+            
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.4);
+            --shadow-glow: 0 0 30px rgba(96, 165, 250, 0.3);
+            
+            --glass-bg: rgba(30, 30, 30, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
 
-    h2 {
-      font-size: 2rem;
-      background: linear-gradient(90deg, #00e5ff, #d500f9);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 2rem;
-    }
+        body {
+            font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            font-size: 16px;
+            transition: var(--transition);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
 
-    .button {
-      display: block;
-      width: 80%;
-      margin: 1rem auto;
-      padding: 1rem;
-      font-size: 1.1rem;
-      font-weight: 600;
-      color: #111;
-      background: linear-gradient(45deg, #00e5ff, #d500f9);
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      text-decoration: none;
-      transition: transform 0.2s ease, box-shadow 0.3s;
-      box-shadow: 0 0 15px rgba(0,255,255,0.2);
-    }
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 0;
+            opacity: 0.03;
+            pointer-events: none;
+        }
 
-    .button:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 25px rgba(0,255,255,0.4);
-    }
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 20% 80%, var(--accent-primary) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, var(--accent-secondary) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 40%, var(--accent-tertiary) 0%, transparent 50%);
+            animation: rotate 30s linear infinite;
+        }
 
-    .footer {
-      margin-top: 2rem;
-      font-size: 0.9rem;
-      color: #aaa;
-    }
-  </style>
+        @keyframes rotate {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--accent-primary);
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: float 20s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(100vh) translateX(0);
+                opacity: 0;
+            }
+            10%, 90% {
+                opacity: 0.3;
+            }
+            50% {
+                transform: translateY(-50vh) translateX(100px);
+            }
+        }
+
+        /* Navigation */
+        .nav-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            z-index: 1000;
+            transition: var(--transition);
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+        }
+
+        .nav-logo-group {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .nav-logo {
+            height: 45px;
+            width: auto;
+            filter: brightness(1.1);
+            transition: var(--transition);
+        }
+
+        .nav-logo:hover {
+            transform: scale(1.05);
+            filter: brightness(1.3);
+        }
+
+        .nav-brand {
+            font-size: 1.75rem;
+            font-weight: 700;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 1px;
+        }
+
+        .nav-subtitle {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 50px;
+            padding: 4px;
+            cursor: pointer;
+            width: 72px;
+            height: 36px;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--accent-primary);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .theme-toggle-slider {
+            position: absolute;
+            width: 28px;
+            height: 28px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            top: 3px;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+            box-shadow: var(--shadow-md);
+        }
+
+        :root[data-theme="light"] .theme-toggle-slider {
+            left: 3px;
+        }
+
+        :root[data-theme="dark"] .theme-toggle-slider {
+            left: 39px;
+        }
+
+        /* Back Button */
+        .btn-back {
+            background: var(--glass-bg);
+            color: var(--accent-primary);
+            border: 2px solid var(--accent-primary);
+            backdrop-filter: blur(10px);
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-back:hover {
+            background: var(--accent-primary);
+            color: white;
+            border-color: var(--accent-primary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Main Container */
+        .main-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 120px 2rem 80px;
+            position: relative;
+            z-index: 2;
+            background: var(--gradient-hero);
+        }
+
+        .content-wrapper {
+            max-width: 900px;
+            width: 100%;
+            text-align: center;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Header Section */
+        .header-section {
+            margin-bottom: 4rem;
+        }
+
+        .main-title {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 800;
+            background: var(--gradient-accent);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+            animation: glow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 20px rgba(139, 92, 246, 0.3)); }
+            to { filter: drop-shadow(0 0 30px rgba(139, 92, 246, 0.5)); }
+        }
+
+        .main-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            line-height: 1.7;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 0.5s forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        /* Template Grid */
+        .template-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 0.7s forwards;
+        }
+
+        /* Template Cards */
+        .template-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2.5rem 2rem;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            min-height: 200px;
+        }
+
+        .template-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .template-card:hover::before {
+            opacity: 1;
+        }
+
+        .template-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: var(--shadow-lg), var(--shadow-glow);
+            border-color: var(--accent-primary);
+        }
+
+        .template-icon {
+            font-size: 3rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1.5rem;
+            transition: var(--transition);
+        }
+
+        .template-card:hover .template-icon {
+            transform: scale(1.1);
+            filter: drop-shadow(0 0 20px rgba(139, 92, 246, 0.4));
+        }
+
+        .template-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .template-description {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+
+        .template-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .status-active {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--accent-success);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .status-external {
+            background: rgba(34, 211, 238, 0.1);
+            color: var(--accent-tertiary);
+            border: 1px solid rgba(34, 211, 238, 0.3);
+        }
+
+        .status-development {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--accent-warning);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        /* Footer Section */
+        .footer-section {
+            opacity: 0;
+            animation: fadeIn 1s ease-out 1s forwards;
+        }
+
+        .help-text {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .contact-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-tertiary);
+            font-size: 0.9rem;
+        }
+
+        .contact-icon {
+            color: var(--accent-primary);
+        }
+
+        /* Loading Animation */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+            transition: opacity 0.5s, visibility 0.5s;
+        }
+
+        .loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid var(--border-color);
+            border-top-color: var(--accent-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-logo-group {
+                gap: 1rem;
+            }
+
+            .nav-brand {
+                font-size: 1.25rem;
+            }
+
+            .nav-subtitle {
+                display: none;
+            }
+
+            .template-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .contact-info {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .main-title {
+                font-size: clamp(2rem, 8vw, 3rem);
+            }
+
+            .template-card {
+                padding: 2rem 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-container {
+                padding: 100px 1rem 60px;
+            }
+
+            .template-card {
+                min-height: 180px;
+                padding: 1.5rem 1rem;
+            }
+
+            .template-icon {
+                font-size: 2.5rem;
+            }
+
+            .template-title {
+                font-size: 1.25rem;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="bg-overlay"></div>
-  <div class="container">
-    <h2>Choose Template You Want to Work On</h2>
-    <a href="{% url 'meter_reading' %}" class="button">Meter Reading</a>
-    <a href="https://ashmitcajla-dashboard-app-fzoza3.streamlit.app/" class="button" target="_blank">Water Level</a>
-    <a href="{% url 'farmer_survey' %}" class="button">Farmer Survey</a>
-    <a href="{% url 'evapotranspiration' %}" class="button">Evapotranspiration</a>
-    <a href="{% url 'mapping' %}" class="button">Mapping</a>
-    <div class="footer">
-      Need help? Upload correct files or contact Digi-Village Tech Team for assistance.
+    <!-- Loading Screen -->
+    <div class="loader" id="loader">
+        <div class="loader-spinner"></div>
     </div>
-  </div>
+
+    <!-- Background Effects -->
+    <div class="bg-animation"></div>
+    <div class="particles" id="particles"></div>
+
+    <!-- Navigation -->
+    <nav class="nav-header">
+        <div class="nav-content">
+            <div class="nav-left">
+                <div class="nav-logo-group">
+                    <img src="https://i.ibb.co/BVtQs0rd/logotiet.png" alt="TIET" class="nav-logo">
+                    <div>
+                        <div class="nav-brand">DIGI-VI</div>
+                        <div class="nav-subtitle">Template Selection</div>
+                    </div>
+                    <img src="https://i.ibb.co/Tq4YXfzn/tel-aviv-university-tau4054.jpg" alt="TAU" class="nav-logo">
+                </div>
+            </div>
+            <div class="nav-right">
+                <a href="../" class="btn-back">
+                    <i class="fas fa-arrow-left"></i> Back to Home
+                </a>
+                <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
+                    <div class="theme-toggle-slider">
+                        <i class="fas fa-sun" id="theme-icon"></i>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-container">
+        <div class="content-wrapper">
+            <!-- Header Section -->
+            <div class="header-section">
+                <h1 class="main-title">Choose Your Template</h1>
+                <p class="main-subtitle">
+                    Select from our advanced agricultural analysis tools and start optimizing your farming operations with data-driven insights
+                </p>
+            </div>
+
+            <!-- Template Grid -->
+            <div class="template-grid">
+                <!-- Meter Reading Template -->
+                <a href="{% url 'meter_reading' %}" class="template-card">
+                    <div class="template-icon">
+                        <i class="fas fa-tachometer-alt"></i>
+                    </div>
+                    <h3 class="template-title">Meter Reading</h3>
+                    <p class="template-description">
+                        Advanced sensor data analysis for monitoring water consumption and irrigation efficiency across your agricultural operations.
+                    </p>
+                    <div class="template-status status-active">
+                        <i class="fas fa-check-circle"></i>
+                        Active
+                    </div>
+                </a>
+
+                <!-- Water Level Template -->
+                <a href="https://ashmitcajla-dashboard-app-fzoza3.streamlit.app/" target="_blank" class="template-card">
+                    <div class="template-icon">
+                        <i class="fas fa-water"></i>
+                    </div>
+                    <h3 class="template-title">Water Level Dashboard</h3>
+                    <p class="template-description">
+                        Real-time water level monitoring and predictive analytics for optimal irrigation management and water conservation.
+                    </p>
+                    <div class="template-status status-external">
+                        <i class="fas fa-external-link-alt"></i>
+                        External App
+                    </div>
+                </a>
+
+                <!-- Farmer Survey Template -->
+                <a href="{% url 'farmer_survey' %}" class="template-card">
+                    <div class="template-icon">
+                        <i class="fas fa-clipboard-list"></i>
+                    </div>
+                    <h3 class="template-title">Farmer Survey</h3>
+                    <p class="template-description">
+                        Comprehensive survey analysis tools for gathering and processing farmer feedback, crop performance, and field conditions.
+                    </p>
+                    <div class="template-status status-development">
+                        <i class="fas fa-tools"></i>
+                        Under Development
+                    </div>
+                </a>
+
+                <!-- Evapotranspiration Template -->
+                <a href="{% url 'evapotranspiration' %}" class="template-card">
+                    <div class="template-icon">
+                        <i class="fas fa-cloud-sun"></i>
+                    </div>
+                    <h3 class="template-title">Evapotranspiration</h3>
+                    <p class="template-description">
+                        Calculate crop water requirements using advanced ET models, weather data, and soil moisture analytics for precision irrigation.
+                    </p>
+                    <div class="template-status status-development">
+                        <i class="fas fa-tools"></i>
+                        Under Development
+                    </div>
+                </a>
+
+                <!-- Mapping Template -->
+                <a href="{% url 'mapping' %}" class="template-card">
+                    <div class="template-icon">
+                        <i class="fas fa-map-marked-alt"></i>
+                    </div>
+                    <h3 class="template-title">Field Mapping</h3>
+                    <p class="template-description">
+                        Advanced GIS tools for field boundary mapping, crop monitoring, and spatial analysis of agricultural data and satellite imagery.
+                    </p>
+                    <div class="template-status status-development">
+                        <i class="fas fa-tools"></i>
+                        Under Development
+                    </div>
+                </a>
+            </div>
+
+            <!-- Footer Section -->
+            <div class="footer-section">
+                <p class="help-text">
+                    Need help getting started? Our technical team is here to assist you.
+                </p>
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fas fa-file-upload contact-icon"></i>
+                        Upload correct file formats
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-users contact-icon"></i>
+                        Contact Digi-Village Tech Team
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-question-circle contact-icon"></i>
+                        Technical support available
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Theme Management
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            updateThemeIcon(savedTheme);
+        }
+
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+        }
+
+        function updateThemeIcon(theme) {
+            const icon = document.getElementById('theme-icon');
+            icon.className = theme === 'light' ? 'fas fa-sun' : 'fas fa-moon';
+        }
+
+        // Create Particles
+        function createParticles() {
+            const container = document.getElementById('particles');
+            const particleCount = 30;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 20 + 's';
+                particle.style.animationDuration = (Math.random() * 20 + 20) + 's';
+                container.appendChild(particle);
+            }
+        }
+
+        // Scroll Effects
+        let lastScroll = 0;
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('.nav-header');
+            const currentScroll = window.pageYOffset;
+            
+            if (currentScroll > 100) {
+                nav.style.background = 'var(--bg-secondary)';
+                nav.style.boxShadow = 'var(--shadow-lg)';
+            } else {
+                nav.style.background = 'var(--glass-bg)';
+                nav.style.boxShadow = 'none';
+            }
+        });
+
+        // Card Animation Observer
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Initialize
+        window.addEventListener('load', () => {
+            initTheme();
+            createParticles();
+            
+            // Hide loader
+            setTimeout(() => {
+                document.getElementById('loader').classList.add('hidden');
+            }, 500);
+
+            // Observe template cards for scroll animations
+            const cards = document.querySelectorAll('.template-card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
+                observer.observe(card);
+            });
+        });
+
+        // Add click effects to template cards
+        document.querySelectorAll('.template-card').forEach(card => {
+            card.addEventListener('mousedown', function() {
+                this.style.transform = 'translateY(-8px) scale(0.98)';
+            });
+            
+            card.addEventListener('mouseup', function() {
+                this.style.transform = 'translateY(-10px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+    </script>
 </body>
 </html>

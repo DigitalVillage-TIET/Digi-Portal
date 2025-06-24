@@ -2,236 +2,955 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Digital Village Meter Analytics</title>
+  <title>Meter Reading Analysis - Kharif 2024</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Light Theme */
+    :root[data-theme="light"] {
+      --bg-primary: #f8fafc;
+      --bg-secondary: #ffffff;
+      --bg-tertiary: #f1f5f9;
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-tertiary: #64748b;
+      --border-color: #e2e8f0;
+      --border-hover: #cbd5e1;
+      
+      --accent-primary: #3b82f6;
+      --accent-secondary: #8b5cf6;
+      --accent-tertiary: #06b6d4;
+      --accent-success: #10b981;
+      --accent-warning: #f59e0b;
+      --accent-danger: #ef4444;
+      
+      --gradient-primary: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+      --gradient-secondary: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+      --gradient-accent: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+      
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      --shadow-glow: 0 0 20px rgba(59, 130, 246, 0.15);
+      
+      --glass-bg: rgba(255, 255, 255, 0.7);
+      --glass-border: rgba(255, 255, 255, 0.2);
+      --code-bg: #f3f4f6;
+    }
+
+    /* Dark Theme */
+    :root[data-theme="dark"] {
+      --bg-primary: #0a0a0a;
+      --bg-secondary: #111111;
+      --bg-tertiary: #1a1a1a;
+      --text-primary: #f1f5f9;
+      --text-secondary: #cbd5e1;
+      --text-tertiary: #94a3b8;
+      --border-color: #27272a;
+      --border-hover: #3f3f46;
+      
+      --accent-primary: #60a5fa;
+      --accent-secondary: #a78bfa;
+      --accent-tertiary: #22d3ee;
+      --accent-success: #34d399;
+      --accent-warning: #fbbf24;
+      --accent-danger: #f87171;
+      
+      --gradient-primary: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+      --gradient-secondary: linear-gradient(135deg, #22d3ee 0%, #60a5fa 100%);
+      --gradient-accent: linear-gradient(135deg, #a78bfa 0%, #f472b6 100%);
+      
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+      --shadow-glow: 0 0 30px rgba(96, 165, 250, 0.3);
+      
+      --glass-bg: rgba(30, 30, 30, 0.6);
+      --glass-border: rgba(255, 255, 255, 0.1);
+      --code-bg: #1e1e1e;
+    }
 
     body {
-      margin: 0;
-      background: linear-gradient(135deg, #0d0d0d, #1a1a1a);
-      color: #e0e0e0;
-      font-family: 'Orbitron', sans-serif;
+      font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      font-size: 15px;
+      transition: var(--transition);
+      position: relative;
+      min-height: 100vh;
     }
 
-    .bg-overlay {
+    /* Background Pattern */
+    body::before {
+      content: '';
       position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: radial-gradient(circle at 30% 20%, rgba(0,229,255,0.07), transparent),
-                  radial-gradient(circle at 70% 80%, rgba(213,0,249,0.07), transparent);
-      z-index: -1;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: 
+        radial-gradient(circle at 20% 80%, var(--accent-primary) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, var(--accent-secondary) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, var(--accent-tertiary) 0%, transparent 50%);
+      opacity: 0.05;
+      pointer-events: none;
+      z-index: 0;
     }
 
-    h1 {
-      text-align: center;
-      padding: 1.5rem;
-      font-size: 2.5rem;
-      background: linear-gradient(90deg, #00e5ff, #d500f9);
+    /* Header */
+    .header {
+      background: var(--bg-secondary);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: var(--shadow-md);
+    }
+
+    .header-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 1.5rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header-left h1 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      background: var(--gradient-primary);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      animation: neon-flicker 1.5s infinite alternate;
-    }
-    @keyframes neon-flicker {
-      from { opacity: 1; } to { opacity: 0.9; }
+      letter-spacing: -0.025em;
+      margin-bottom: 0.25rem;
     }
 
-    /* Toggle Switch */
-    .toggle-switch {
-      display: flex;
-      justify-content: center;
-      margin: 1.5rem 0;
+    .header-left p {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      font-weight: 400;
     }
 
-    .toggle-wrapper {
+    /* Theme Toggle */
+    .theme-toggle {
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-color);
+      border-radius: 50px;
+      padding: 4px;
+      cursor: pointer;
+      width: 72px;
+      height: 36px;
+      position: relative;
+      transition: var(--transition);
+    }
+
+    .theme-toggle:hover {
+      border-color: var(--accent-primary);
+      box-shadow: var(--shadow-glow);
+    }
+
+    .theme-toggle-slider {
+      position: absolute;
+      width: 28px;
+      height: 28px;
+      background: var(--gradient-primary);
+      border-radius: 50%;
+      top: 3px;
+      transition: var(--transition);
       display: flex;
       align-items: center;
-      background: rgba(255,255,255,0.1);
-      border: 1px solid rgba(255,255,255,0.2);
-      border-radius: 30px;
+      justify-content: center;
+      color: white;
+      font-size: 14px;
+      box-shadow: var(--shadow-md);
+    }
+
+    :root[data-theme="light"] .theme-toggle-slider {
+      left: 3px;
+    }
+
+    :root[data-theme="dark"] .theme-toggle-slider {
+      left: 39px;
+    }
+
+    /* Container */
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Glass Card */
+    .glass-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 2rem;
+      transition: var(--transition);
+      box-shadow: var(--shadow-md);
+    }
+
+    .glass-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--accent-primary);
+    }
+
+    .card-header {
+      padding: 1.5rem 2rem;
+      background: var(--gradient-primary);
+      position: relative;
       overflow: hidden;
     }
 
-    .toggle-option {
-      padding: 0.6rem 1.5rem;
-      font-size: 1rem;
-      cursor: pointer;
-      color: #aaa;
-      background: none;
-      border: none;
-      transition: background 0.3s, color 0.3s;
+    .card-header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+      animation: pulse 4s ease-in-out infinite;
     }
 
-    .toggle-option.active {
-      background: linear-gradient(45deg, #00e5ff, #d500f9);
-      color: #111;
-      font-weight: bold;
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 0.5; }
+      50% { transform: scale(1.1); opacity: 0.8; }
     }
 
-    .toggle-option:hover {
-      opacity: 0.85;
+    .card-header h2 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: white;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      position: relative;
+      z-index: 1;
     }
 
-    .upload-panel {
-      max-width: 700px;
-      margin: 2rem auto;
-      background: rgba(255,255,255,0.05);
-      backdrop-filter: blur(10px);
-      border-radius: 16px;
+    .card-header .icon {
+      font-size: 1.125rem;
+      opacity: 0.9;
+    }
+
+    .card-body {
       padding: 2rem;
-      border: 1px solid rgba(255,255,255,0.2);
+      background: var(--bg-secondary);
     }
 
-    .upload-panel input, .upload-panel button {
-      font-family: inherit;
-      font-size: 1rem;
+    /* Year Toggle */
+    .year-toggle-container {
+      display: flex;
+      justify-content: center;
+      margin: 2rem 0;
     }
-    .upload-panel button {
-      margin-top: 1rem;
-      padding: 0.75rem 1.5rem;
+
+    .year-toggle {
+      display: inline-flex;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 4px;
+      gap: 4px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .year-option {
+      padding: 0.75rem 2rem;
       border: none;
-      border-radius: 8px;
-      background: linear-gradient(45deg, #00e5ff, #d500f9);
-      color: #111;
+      background: transparent;
+      color: var(--text-secondary);
+      font-weight: 500;
       cursor: pointer;
-      transition: transform 0.2s ease;
-    }
-    .upload-panel button:hover {
-      transform: scale(1.05);
-    }
-
-    .farm-select {
-      text-align: center;
-      margin: 2rem auto;
-    }
-    .farm-select select, .farm-select button {
-      padding: 0.5rem 1rem;
-      border-radius: 6px;
-      border: 1px solid rgba(255,255,255,0.3);
-      background: rgba(255,255,255,0.05);
-      backdrop-filter: blur(8px);
-      color: #e0e0e0;
-      font-family: inherit;
-    }
-
-    .meter-card {
-      max-width: 900px;
-      margin: 2rem auto;
-      background: rgba(255,255,255,0.07);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255,255,255,0.25);
-      border-radius: 20px;
-      padding: 1.5rem;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.8);
-    }
-
-    .meter-card h3 {
-      margin-top: 0;
-      font-size: 1.75rem;
-      background: linear-gradient(120deg, #d500f9, #00e5ff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .meter-card ul {
-      list-style: none;
-      padding: 0;
+      transition: var(--transition);
+      font-size: 0.95rem;
+      border-radius: 8px;
       display: flex;
-      gap: 2rem;
-      flex-wrap: wrap;
-      margin-bottom: 1rem;
-    }
-    .meter-card ul li {
-      flex: 1;
-      min-width: 120px;
+      align-items: center;
+      gap: 0.5rem;
     }
 
-    .plot-container {
+    .year-option:hover {
+      color: var(--text-primary);
+    }
+
+    .year-option.active {
+      background: var(--gradient-primary);
+      color: white;
+      box-shadow: var(--shadow-md);
+    }
+
+    /* Forms */
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+      display: block;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+      font-size: 0.95rem;
       display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 0.875rem 1.25rem;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      font-size: 0.95rem;
+      color: var(--text-primary);
+      transition: var(--transition);
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--accent-primary);
+      background: var(--bg-secondary);
+      box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1), var(--shadow-glow);
+    }
+
+    /* Buttons */
+    .btn {
+      padding: 0.875rem 1.75rem;
+      border: none;
+      border-radius: 10px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.95rem;
+      text-decoration: none;
+      position: relative;
+      overflow: hidden;
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+
+    .btn:hover::before {
+      width: 300px;
+      height: 300px;
+    }
+
+    .btn-primary {
+      background: var(--gradient-primary);
+      color: white;
+      box-shadow: var(--shadow-md);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg), var(--shadow-glow);
+    }
+
+    .btn-secondary {
+      background: var(--bg-tertiary);
+      color: var(--accent-primary);
+      border: 1px solid var(--accent-primary);
+    }
+
+    .btn-secondary:hover {
+      background: var(--accent-primary);
+      color: white;
+      border-color: var(--accent-primary);
+      box-shadow: var(--shadow-glow);
+    }
+
+    .btn-block {
+      width: 100%;
       justify-content: center;
     }
 
-    .plot-container img {
-      min-width: 300px;
-      max-width: 48%;
+    /* Alert */
+    .alert {
+      padding: 1rem 1.5rem;
+      border-radius: 10px;
+      margin-top: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--accent-danger);
+      color: var(--accent-danger);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* Meter Card */
+    .meter-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 2rem;
+      transition: var(--transition);
+      box-shadow: var(--shadow-md);
+    }
+
+    .meter-header {
+      background: var(--bg-tertiary);
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .meter-info {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .meter-icon {
+      width: 48px;
+      height: 48px;
+      background: var(--gradient-primary);
       border-radius: 12px;
-      border: 2px solid rgba(255,255,255,0.3);
-      background: #111;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.25rem;
+      box-shadow: var(--shadow-md);
     }
 
-    .footer {
-      margin: 3rem auto;
+    .meter-details h3 {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.25rem;
+    }
+
+    .meter-stats {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      list-style: none;
+      padding: 0;
+      margin: 0.5rem 0;
+    }
+
+    .meter-stats li {
+      display: flex;
+      flex-direction: column;
+      min-width: 120px;
+    }
+
+    .meter-stats strong {
+      color: var(--text-secondary);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.25rem;
+    }
+
+    .meter-stats span {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    /* Graph Grid Layout */
+    .graphs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 1rem;
+      padding: 1rem;
+    }
+
+    /* Graph Container */
+    .graph-container {
+      background: var(--bg-secondary);
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      transition: var(--transition);
+      height: fit-content;
+    }
+
+    .graph-container:hover {
+      border-color: var(--accent-primary);
+      box-shadow: var(--shadow-md);
+    }
+
+    .graph-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 1rem;
+      background: var(--bg-tertiary);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .graph-title {
+      font-weight: 500;
+      color: var(--text-primary);
+      font-size: 0.875rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .graph-title i {
+      font-size: 0.875rem;
+    }
+
+    .visibility-toggle {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+      font-size: 1rem;
+    }
+
+    .visibility-toggle:hover {
+      background: var(--gradient-primary);
+      border-color: transparent;
+      color: white;
+      box-shadow: var(--shadow-glow);
+    }
+
+    .visibility-toggle.hidden {
+      background: var(--bg-tertiary);
+      color: var(--text-tertiary);
+    }
+
+    .graph-content {
+      position: relative;
+      background: var(--bg-secondary);
+      max-height: 350px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .graph-image {
+      display: block;
+      width: 100%;
+      height: auto;
+      max-height: 350px;
+      object-fit: contain;
+    }
+
+    .graph-hidden-message {
+      display: none;
+      padding: 2rem;
       text-align: center;
-      color: #888;
-      font-size: 0.9rem;
+      color: var(--text-tertiary);
     }
 
-    @media(max-width: 768px) {
-      .plot-container img { max-width: 100%; }
-      .meter-card ul { flex-direction: column; gap: 0.5rem; }
+    .graph-hidden-message i {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      opacity: 0.5;
+    }
+
+    .graph-content.hidden .graph-image {
+      display: none;
+    }
+
+    .graph-content.hidden .graph-hidden-message {
+      display: block;
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 3rem 0;
+      color: var(--text-tertiary);
+      font-size: 0.875rem;
+      border-top: 1px solid var(--border-color);
+      margin-top: 4rem;
+    }
+
+    /* Loading Animation */
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Responsive */
+    @media (max-width: 1200px) {
+      .graphs-grid {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      }
+    }
+
+    @media (max-width: 768px) {
+      .header-content {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+      }
+      
+      .card-body {
+        padding: 1.5rem;
+      }
+      
+      .year-option {
+        padding: 0.6rem 1.5rem;
+      }
+
+      .graphs-grid {
+        grid-template-columns: 1fr;
+        padding: 0.75rem;
+      }
+      
+      .graph-content {
+        max-height: 250px;
+      }
+      
+      .graph-image {
+        max-height: 250px;
+      }
+
+      .meter-stats {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .graph-content {
+        max-height: 200px;
+      }
+      
+      .graph-image {
+        max-height: 200px;
+      }
+      
+      .graph-header {
+        padding: 0.5rem 0.75rem;
+      }
+      
+      .graph-title {
+        font-size: 0.8rem;
+      }
+      
+      .visibility-toggle {
+        width: 28px;
+        height: 28px;
+        font-size: 0.875rem;
+      }
+    }
+
+    /* Tech Grid Background */
+    .tech-grid {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: 
+        linear-gradient(rgba(96, 165, 250, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(96, 165, 250, 0.03) 1px, transparent 1px);
+      background-size: 50px 50px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Glow Effects */
+    .glow-text {
+      text-shadow: 0 0 20px rgba(96, 165, 250, 0.5);
+    }
+
+    /* Code Style */
+    .code {
+      font-family: 'JetBrains Mono', monospace;
+      background: var(--code-bg);
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.875rem;
+    }
+
+    .form-text {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
     }
   </style>
 </head>
 <body>
-  <div class="bg-overlay"></div>
+  <div class="tech-grid"></div>
+  
+  <!-- Header -->
+  <header class="header">
+    <div class="header-content">
+      <div class="header-left">
+        <h1>Water Meter Analytics Platform</h1>
+        <p><span class="code">KHARIF_2024</span> • Legacy Data Analysis System</p>
+      </div>
+      <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
+        <div class="theme-toggle-slider">
+          <i class="fas fa-sun" id="theme-icon"></i>
+        </div>
+      </button>
+    </div>
+  </header>
 
-  <h1>Meter Reading Analytics</h1>
-
-  <!-- TOGGLE BUTTON HERE -->
-  <div class="toggle-switch">
-    <div class="toggle-wrapper">
-      <button class="toggle-option active" onclick="window.location.href='{% url 'meter_reading' %}'">2024 Format</button>
-      <button class="toggle-option" onclick="window.location.href='{% url 'meter_reading_25' %}'">2025 Format</button>
+  <!-- Year Toggle -->
+  <div class="year-toggle-container">
+    <div class="year-toggle">
+      <button class="year-option active" onclick="location.href='{% url 'meter_reading' %}'">
+        <i class="fas fa-database"></i> 2024 Format
+      </button>
+      <button class="year-option" onclick="location.href='{% url 'meter_reading_25' %}'">
+        <i class="fas fa-rocket"></i> 2025 Format
+      </button>
     </div>
   </div>
 
-  <div class="upload-panel">
-    <form method="post" enctype="multipart/form-data">
-      {% csrf_token %}
-      <label>Meter Reading File:<br><input type="file" name="meter_file" required></label><br><br>
-      <label>Master File:<br><input type="file" name="master_file" required></label><br>
-      <button type="submit">Upload & Analyze</button>
-    </form>
-  </div>
-
-  {% if error_message %}
-    <div style="text-align:center; color:#ff3860;"><strong>{{ error_message }}</strong></div>
-  {% endif %}
-
-  {% if farm_ids %}
-    <div class="farm-select">
-      <form method="post">{% csrf_token %}
-        <select name="selected_farm">
-          {% for f in farm_ids %}
-            <option value="{{ f }}" {% if f == selected_farm %}selected{% endif %}>{{ f }}</option>
-          {% endfor %}
-        </select>
-        <button type="submit">Analyze Farm</button>
-      </form>
+  <div class="container">
+    <!-- Upload Section -->
+    <div class="glass-card">
+      <div class="card-header">
+        <h2><i class="fas fa-cloud-upload-alt icon"></i> Legacy Data Upload Terminal</h2>
+      </div>
+      <div class="card-body">
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="form-group">
+            <label class="form-label" for="meter_file">
+              <i class="fas fa-file-excel"></i> Meter Reading Data File
+            </label>
+            <input type="file" name="meter_file" id="meter_file" class="form-control" accept=".xlsx,.xls" required>
+            <small class="form-text">
+              <i class="fas fa-info-circle"></i> Upload your 2024 format meter reading Excel file
+            </small>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label" for="master_file">
+              <i class="fas fa-server"></i> Master Database File
+            </label>
+            <input type="file" name="master_file" id="master_file" class="form-control" accept=".xlsx,.xls" required>
+            <small class="form-text">
+              <i class="fas fa-info-circle"></i> Upload the corresponding master database file
+            </small>
+          </div>
+          
+          <button type="submit" class="btn btn-primary btn-block">
+            <i class="fas fa-sync-alt"></i> Upload & Analyze Data
+          </button>
+        </form>
+        
+        {% if error_message %}
+          <div class="alert">
+            <i class="fas fa-exclamation-triangle"></i> {{ error_message }}
+          </div>
+        {% endif %}
+      </div>
     </div>
-  {% endif %}
 
-  {% if meter_results %}
-    {% for result in meter_results %}
+    <!-- Farm Selection -->
+    {% if farm_ids %}
+    <div class="glass-card">
+      <div class="card-header">
+        <h2><i class="fas fa-microchip icon"></i> Farm Selection Panel</h2>
+      </div>
+      <div class="card-body">
+        <form method="post">
+          {% csrf_token %}
+          <div class="form-group">
+            <label class="form-label" for="selected_farm">
+              <i class="fas fa-fingerprint"></i> Farm Identifier
+            </label>
+            <select name="selected_farm" id="selected_farm" class="form-control" required>
+              <option value="">-- Select farm unit --</option>
+              {% for f in farm_ids %}
+                <option value="{{ f }}" {% if f == selected_farm %}selected{% endif %}>{{ f }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-chart-area"></i> Analyze Farm
+          </button>
+        </form>
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Results -->
+    {% if meter_results %}
+    <div class="results-section">
+      <div class="results-header">
+        <h2 class="glow-text" style="text-align: center; font-size: 2rem; font-weight: 700; background: var(--gradient-accent); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 2rem;">
+          Data Visualization Matrix
+        </h2>
+      </div>
+
+      {% for result in meter_results %}
       <div class="meter-card">
-        <h3>Meter: {{ result.meter }}</h3>
-        <ul>
-          <li><strong>Village:</strong> {{ result.info.village }}</li>
-          <li><strong>Size:</strong> {{ result.info.size }} Acres</li>
-          <li><strong>Type:</strong> {{ result.info.farm_type }}</li>
-        </ul>
-        <div class="plot-container">
+        <div class="meter-header">
+          <div class="meter-info">
+            <div class="meter-icon">
+              <i class="fas fa-water"></i>
+            </div>
+            <div class="meter-details">
+              <h3>Meter Unit <span class="code">{{ result.meter }}</span></h3>
+              <ul class="meter-stats">
+                <li><strong>Village:</strong> <span>{{ result.info.village }}</span></li>
+                <li><strong>Size:</strong> <span>{{ result.info.size }} Acres</span></li>
+                <li><strong>Type:</strong> <span>{{ result.info.farm_type }}</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        
+        <div class="graphs-grid">
           {% for plot in result.plots %}
-            <img src="data:image/png;base64,{{ plot }}" alt="Plot for {{ result.meter }}"/>
+          <div class="graph-container">
+            <div class="graph-header">
+              <span class="graph-title">
+                <i class="fas fa-chart-line" style="color: var(--accent-primary);"></i>
+                Analysis Plot {{ forloop.counter }}
+              </span>
+              <button class="visibility-toggle" onclick="toggleGraph(this)" title="Toggle visibility">
+                <i class="fas fa-eye"></i>
+              </button>
+            </div>
+            <div class="graph-content">
+              <img src="data:image/png;base64,{{ plot }}" alt="Data visualization for {{ result.meter }}" class="graph-image">
+              <div class="graph-hidden-message">
+                <i class="fas fa-eye-slash"></i>
+                <p>Visualization Hidden</p>
+              </div>
+            </div>
+          </div>
           {% endfor %}
         </div>
       </div>
-    {% endfor %}
-  {% endif %}
-
-  <div class="footer">
-    Need help? Upload correct files or contact Digi-Village Tech Team for assistance.
+      {% endfor %}
+    </div>
+    {% endif %}
   </div>
+
+  <footer class="footer">
+    <p>&copy; 2025 Digi-Village Water Meter Analysis Platform • Version 1.0 (Legacy)</p>
+  </footer>
+
+  <script>
+    // Theme Toggle
+    function initTheme() {
+      const savedTheme = localStorage.getItem('theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      updateThemeIcon(savedTheme);
+    }
+
+    function toggleTheme() {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+      
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      updateThemeIcon(newTheme);
+    }
+
+    function updateThemeIcon(theme) {
+      const icon = document.getElementById('theme-icon');
+      icon.className = theme === 'light' ? 'fas fa-sun' : 'fas fa-moon';
+    }
+
+    // Graph Toggle
+    function toggleGraph(button) {
+      const container = button.closest('.graph-container');
+      const content = container.querySelector('.graph-content');
+      const icon = button.querySelector('i');
+      
+      if (content.classList.contains('hidden')) {
+        content.classList.remove('hidden');
+        button.classList.remove('hidden');
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+      } else {
+        content.classList.add('hidden');
+        button.classList.add('hidden');
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
+      }
+    }
+
+    // Initialize theme on load
+    initTheme();
+
+    // Add ripple effect to buttons
+    document.querySelectorAll('.btn').forEach(button => {
+      button.addEventListener('click', function(e) {
+        const ripple = document.createElement('span');
+        const rect = this.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+        const x = e.clientX - rect.left - size / 2;
+        const y = e.clientY - rect.top - size / 2;
+        
+        ripple.style.width = ripple.style.height = size + 'px';
+        ripple.style.left = x + 'px';
+        ripple.style.top = y + 'px';
+        ripple.classList.add('ripple');
+        
+        this.appendChild(ripple);
+        
+        setTimeout(() => ripple.remove(), 600);
+      });
+    });
+  </script>
 </body>
 </html>
