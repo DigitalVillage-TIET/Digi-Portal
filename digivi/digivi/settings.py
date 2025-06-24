@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,7 +26,8 @@ SECRET_KEY = 'django-insecure-5+h6r+bn7gf#&!38m+0$)u7fk0$61pfy)9_vs)nsva3yn)r6r0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+STATIC_ROOT = BASE_DIR / 'static'
+ALLOWED_HOSTS = ['*']  # or your server IP/domain
 
 
 # Application definition
@@ -120,3 +122,9 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Google Sheets Configuration
+MASTER_DATA_SHEET_ID = "10_bnGF7WBZ0J3aSvl8riufNbZjXAxB7wcnN3545fGzw"
+
+# Option 1: Use service account key file
+GOOGLE_SERVICE_ACCOUNT_KEY_PATH = os.path.join(BASE_DIR, 'creds.json')

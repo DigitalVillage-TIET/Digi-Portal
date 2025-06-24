@@ -1,11 +1,337 @@
-# digivi/utils.py
-
 import pandas as pd
 import io
 import base64
 import matplotlib.pyplot as plt
 from datetime import datetime
+import gspread
+from google.oauth2.service_account import Credentials
+import pandas as pd
+import logging
+from django.conf import settings
+from io import BytesIO
 
+logger = logging.getLogger(__name__)
+
+# ANSI color codes for terminal output
+class Colors:
+    GREEN = '\033[92m'
+    RED = '\033[91m'
+    YELLOW = '\033[93m'
+    BLUE = '\033[94m'
+    CYAN = '\033[96m'
+    WHITE = '\033[97m'
+    BOLD = '\033[1m'
+    END = '\033[0m'
+
+def print_status(message, status="info"):
+    """Print colored status messages with icons"""
+    if status == "success":
+        print(f"{Colors.GREEN}✓ {message}{Colors.END}")
+    elif status == "error":
+        print(f"{Colors.RED}✗ {message}{Colors.END}")
+    elif status == "warning":
+        print(f"{Colors.YELLOW}⚠ {message}{Colors.END}")
+    elif status == "info":
+        print(f"{Colors.BLUE}ℹ {message}{Colors.END}")
+    elif status == "process":
+        print(f"{Colors.CYAN}⚡ {message}{Colors.END}")
+
+def get_google_sheets_client():
+    """
+    Create and return a Google Sheets client using service account credentials.
+    
+    Returns:
+        gspread.Client: Authenticated Google Sheets client
+    """
+    try:
+        print_status("Initializing Google Sheets client...", "process")
+        
+        # Define the scope for Google Sheets API
+        scope = [
+            "https://spreadsheets.google.com/feeds",
+            "https://www.googleapis.com/auth/drive"
+        ]
+        print_status("API scopes configured", "success")
+        
+        # Load credentials from service account key file
+        # Make sure to set GOOGLE_SERVICE_ACCOUNT_KEY_PATH in your settings
+        print_status("Loading service account credentials...", "process")
+        credentials = Credentials.from_service_account_file(
+            settings.GOOGLE_SERVICE_ACCOUNT_KEY_PATH, 
+            scopes=scope
+        )
+        print_status("Service account credentials loaded", "success")
+        
+        # Create and return the client
+        print_status("Authorizing Google Sheets client...", "process")
+        client = gspread.authorize(credentials)
+        print_status("Google Sheets client authorized successfully", "success")
+        return client
+    
+    except Exception as e:
+        print_status(f"Failed to create Google Sheets client: {e}", "error")
+        logger.error(f"Error creating Google Sheets client: {e}")
+        return None
+
+def get_google_sheets_client_from_dict():
+    """
+    Alternative method: Create Google Sheets client from credentials dictionary.
+    Use this if you store credentials as a dictionary in settings instead of a file.
+    
+    Returns:
+        gspread.Client: Authenticated Google Sheets client
+    """
+    try:
+        print_status("Initializing Google Sheets client from dict...", "process")
+        
+        # Define the scope for Google Sheets API
+        scope = [
+            "https://spreadsheets.google.com/feeds",
+            "https://www.googleapis.com/auth/drive"
+        ]
+        print_status("API scopes configured", "success")
+        
+        # Load credentials from dictionary
+        # Make sure to set GOOGLE_SERVICE_ACCOUNT_INFO as a dict in your settings
+        print_status("Loading credentials from dictionary...", "process")
+        credentials = Credentials.from_service_account_info(
+            settings.GOOGLE_SERVICE_ACCOUNT_INFO, 
+            scopes=scope
+        )
+        print_status("Credentials loaded from dictionary", "success")
+        
+        # Create and return the client
+        print_status("Authorizing Google Sheets client...", "process")
+        client = gspread.authorize(credentials)
+        print_status("Google Sheets client authorized successfully", "success")
+        return client
+    
+    except Exception as e:
+        print_status(f"Failed to create Google Sheets client from dict: {e}", "error")
+        logger.error(f"Error creating Google Sheets client from dict: {e}")
+        return None
+
+def load_master_from_google_sheets():
+    """
+    Load master data from Google Sheets and return as a dictionary of DataFrames.
+    
+    Returns:
+        dict: Dictionary with sheet names as keys and DataFrames as values
+        None: If loading fails
+    """
+    try:
+        print_status("Starting master data load from Google Sheets...", "process")
+        
+        # Get the Google Sheets client
+        client = get_google_sheets_client()
+        if not client:
+            print_status("Google Sheets client creation failed", "error")
+            logger.error("Failed to create Google Sheets client")
+            return None
+        
+        # Open the spreadsheet using the ID from settings
+        print_status("Opening spreadsheet...", "process")
+        spreadsheet = client.open_by_key(settings.MASTER_DATA_SHEET_ID)
+        print_status(f"Spreadsheet opened: {spreadsheet.title}", "success")
+        
+        # Get all worksheets
+        print_status("Retrieving worksheets...", "process")
+        worksheets = spreadsheet.worksheets()
+        print_status(f"Found {len(worksheets)} worksheets", "success")
+        
+        master_data = {}
+        
+        for worksheet in worksheets:
+            try:
+                print_status(f"Processing worksheet: {worksheet.title}", "process")
+                
+                # Get all values from the worksheet
+                values = worksheet.get_all_values()
+                
+                if not values:
+                    print_status(f"Worksheet '{worksheet.title}' is empty", "warning")
+                    logger.warning(f"Worksheet '{worksheet.title}' is empty")
+                    continue
+                
+                # Convert to DataFrame
+                # First row is assumed to be headers
+                headers = values[0]
+                data = values[1:] if len(values) > 1 else []
+                
+                df = pd.DataFrame(data, columns=headers)
+                
+                # Clean up empty rows and columns
+                df = df.dropna(how='all')  # Remove completely empty rows
+                df = df.loc[:, ~df.columns.str.contains('^Unnamed')]  # Remove unnamed columns
+                
+                # Convert numeric columns where possible
+                for col in df.columns:
+                    df[col] = pd.to_numeric(df[col], errors='ignore')
+                
+                master_data[worksheet.title] = df
+                print_status(f"Worksheet '{worksheet.title}' loaded successfully ({len(df)} rows)", "success")
+                logger.info(f"Successfully loaded worksheet '{worksheet.title}' with {len(df)} rows")
+                
+            except Exception as e:
+                print_status(f"Failed to load worksheet '{worksheet.title}': {e}", "error")
+                logger.error(f"Error loading worksheet '{worksheet.title}': {e}")
+                continue
+        
+        if master_data:
+            print_status(f"Master data load completed - {len(master_data)} worksheets loaded", "success")
+            logger.info(f"Successfully loaded {len(master_data)} worksheets from Google Sheets")
+            return master_data
+        else:
+            print_status("No worksheets were successfully loaded", "error")
+            logger.error("No worksheets were successfully loaded")
+            return None
+            
+    except Exception as e:
+        print_status(f"Master data load failed: {e}", "error")
+        logger.error(f"Error loading master data from Google Sheets: {e}")
+        return None
+
+def refresh_master_data_cache(request):
+    """
+    Refresh the master data cache by loading fresh data from Google Sheets.
+    
+    Args:
+        request: Django request object (for session access)
+    
+    Returns:
+        bool: True if successful, False otherwise
+    """
+    try:
+        print_status("Starting master data cache refresh...", "process")
+        
+        master25 = load_master_from_google_sheets()
+        if master25:
+            print_status("Converting data to JSON for session storage...", "process")
+            request.session['master25'] = {
+                name: df.to_json(date_format='iso') for name, df in master25.items()
+            }
+            print_status("Master data cache refreshed successfully", "success")
+            logger.info("Master data cache refreshed successfully")
+            return True
+        else:
+            print_status("Master data cache refresh failed", "error")
+            logger.error("Failed to refresh master data cache")
+            return False
+    except Exception as e:
+        print_status(f"Cache refresh error: {e}", "error")
+        logger.error(f"Error refreshing master data cache: {e}")
+        return False
+
+def get_sheet_info(sheet_id):
+    """
+    Get basic information about a Google Sheet.
+    
+    Args:
+        sheet_id (str): Google Sheets ID
+    
+    Returns:
+        dict: Sheet information including title, worksheets, etc.
+        None: If operation fails
+    """
+    try:
+        print_status("Retrieving sheet information...", "process")
+        
+        client = get_google_sheets_client()
+        if not client:
+            print_status("Failed to get Google Sheets client", "error")
+            return None
+        
+        print_status("Opening spreadsheet for info retrieval...", "process")
+        spreadsheet = client.open_by_key(sheet_id)
+        print_status(f"Spreadsheet accessed: {spreadsheet.title}", "success")
+        
+        info = {
+            'title': spreadsheet.title,
+            'id': spreadsheet.id,
+            'url': spreadsheet.url,
+            'worksheets': []
+        }
+        
+        print_status("Collecting worksheet information...", "process")
+        for worksheet in spreadsheet.worksheets():
+            worksheet_info = {
+                'title': worksheet.title,
+                'id': worksheet.id,
+                'row_count': worksheet.row_count,
+                'col_count': worksheet.col_count
+            }
+            info['worksheets'].append(worksheet_info)
+            print_status(f"Worksheet info collected: {worksheet.title} ({worksheet.row_count}x{worksheet.col_count})", "success")
+        
+        print_status("Sheet information retrieval completed", "success")
+        return info
+    
+    except Exception as e:
+        print_status(f"Failed to get sheet info: {e}", "error")
+        logger.error(f"Error getting sheet info: {e}")
+        return None
+
+def validate_google_sheets_connection():
+    """
+    Validate that Google Sheets API connection is working.
+    
+    Returns:
+        tuple: (success: bool, message: str)
+    """
+    try:
+        print_status("Validating Google Sheets connection...", "process")
+        
+        client = get_google_sheets_client()
+        if not client:
+            print_status("Google Sheets client validation failed", "error")
+            return False, "Failed to create Google Sheets client"
+        
+        # Try to access the master sheet
+        print_status("Testing access to master sheet...", "process")
+        spreadsheet = client.open_by_key(settings.MASTER_DATA_SHEET_ID)
+        
+        success_msg = f"Successfully connected to sheet: {spreadsheet.title}"
+        print_status(success_msg, "success")
+        return True, success_msg
+    
+    except Exception as e:
+        error_msg = f"Connection failed: {str(e)}"
+        print_status(error_msg, "error")
+        return False, error_msg
+
+def error_fix(df):
+    df = df.copy() 
+    to_drop = set()
+    col = df.columns[1]
+
+    i = 0
+    while i <= len(df) - 3:
+        idx_i = df.index[i]
+        idx_ip1 = df.index[i+1]
+        idx_ip2 = df.index[i+2]
+
+        if idx_i in to_drop or idx_ip1 in to_drop or idx_ip2 in to_drop:
+            i += 1
+            continue
+
+        v_i = df.loc[idx_i, col]
+        v_ip1 = df.loc[idx_ip1, col]
+        v_ip2 = df.loc[idx_ip2, col]
+
+        if v_i > v_ip1 and v_i > v_ip2:
+            to_drop.add(idx_i)
+        elif v_i > v_ip1 and v_i < v_ip2:
+            to_drop.add(idx_ip1)
+        i += 1
+
+    # Additional rule: second last > last
+    if len(df) >= 2:
+        second_last_idx = df.index[-2]
+        last_idx = df.index[-1]
+        if df.loc[second_last_idx, col] > df.loc[last_idx, col]:
+            to_drop.add(second_last_idx)
+
+    return df.drop(index=to_drop).reset_index(drop=True)
 
 # --- 2024 Helpers ---
 def filter_data_by_date_range(raw_df, start_date, end_date):
@@ -259,6 +585,8 @@ def get_2025plots(raw_df, master_df, selected_farm, meter_list, start_date_enter
 
         # Deduplicate: keep the latest reading if multiple on same date
         df = df.drop_duplicates(subset=[date_column], keep='last')
+
+        df = error_fix(df)
 
         # Calculate time difference and deltas
         df['Days Since Previous Reading'] = df[date_column].diff().dt.days.fillna(method='bfill').fillna(1).astype(int)
@@ -570,6 +898,8 @@ def get_tables(raw_df, master_df, farm_list, col_to_get, start_date_enter = None
         # Deduplicate: keep the latest reading if multiple on same date
         df = df.drop_duplicates(subset=[date_column], keep='last')
 
+        df = error_fix(df)
+
         # Calculate time difference and deltas
         df['Days Since Previous Reading'] = df[date_column].diff().dt.days.fillna(method='bfill').fillna(1).astype(int)
         df['Delta m³'] = df['Reading in the meter - in m3'].diff().fillna(method='bfill').fillna(0)
@@ -645,7 +975,7 @@ def get_tables(raw_df, master_df, farm_list, col_to_get, start_date_enter = None
     return combined_df
 
 
-def calculate_avg_m3_per_acre(group_type, group_label, farm_ids, raw_df, master25, start_date_enter = None, end_date_enter = None):
+def calculate_avg_m3_per_acre(group_type, group_label, farm_ids, raw_df, master25, column_to_see, start_date_enter = None, end_date_enter = None):
     """
     Given a group label (like 'Group-A Complied') and its farm IDs, 
     returns a dataframe with Days column and average m³ per acre per day.
@@ -715,6 +1045,8 @@ def calculate_avg_m3_per_acre(group_type, group_label, farm_ids, raw_df, master2
         # Deduplicate: keep the latest reading if multiple on same date
         df = df.drop_duplicates(subset=[date_column], keep='last')
 
+        df = error_fix(df)
+
         # Calculate time difference and deltas
         df['Days Since Previous Reading'] = df[date_column].diff().dt.days.fillna(method='bfill').fillna(0).astype(int)
         df['Delta m³'] = df['Reading in the meter - in m3'].diff().fillna(method='bfill').fillna(0)
@@ -782,7 +1114,7 @@ def calculate_avg_m3_per_acre(group_type, group_label, farm_ids, raw_df, master2
             if filled_df.empty:
                 continue
             filled_df['Day'] = (pd.to_datetime(filled_df[date_col]) - tpr_date).dt.days
-            meter_df = filled_df[["Day", "m³ per Acre per Avg Day"]].reset_index(drop=True).rename(columns={"m³ per Acre per Avg Day": meter})
+            meter_df = filled_df[["Day", column_to_see]].reset_index(drop=True).rename(columns={column_to_see: meter})
             all_meter_dfs.append(meter_df)
 
     if not all_meter_dfs:
@@ -810,7 +1142,7 @@ import matplotlib.pyplot as plt
 import base64
 from io import BytesIO
 
-def generate_group_analysis_plot(df):
+def generate_group_analysis_plot(df, col_name):
     """
     Takes a DataFrame where:
     - The first column is 'Day'
@@ -822,7 +1154,7 @@ def generate_group_analysis_plot(df):
         plt.plot(df['Day'], df[col], label=col, linewidth=2)
     
     plt.xlabel("Days from transplanting")
-    plt.ylabel("Daily Average m3/acre")
+    plt.ylabel(col_name)
     plt.title("Group-wise Water Usage Comparison")
     plt.grid(True)
     plt.legend()
@@ -993,7 +1325,7 @@ def generate_word_report(results, filter_type, filter_value, raw_df, master_df):
 
 
 
-def generate_group_analysis_report(group_type, selected_groups, group_plot_base64, group_data):
+def generate_group_analysis_report(group_type, selected_groups, group_plot_base64, group_plot2, group_data):
     """
     Generate a Word document report for group analysis
     """
@@ -1092,6 +1424,10 @@ def generate_group_analysis_report(group_type, selected_groups, group_plot_base6
     # Add the comparative graph
     try:
         img_data = base64.b64decode(group_plot_base64)
+        img_stream = BytesIO(img_data)
+        doc.add_picture(img_stream, width=Inches(6.5))
+
+        img_data = base64.b64decode(group_plot2)
         img_stream = BytesIO(img_data)
         doc.add_picture(img_stream, width=Inches(6.5))
     except Exception as e:
