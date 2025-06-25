@@ -53,3 +53,5 @@ python-dateutil==2.9.0
 gspread
 oauthlib
 PyJWT
+djangorestframework
+django-filter
