@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from django.core.files.storage import default_storage
 import pandas as pd
 from io import BytesIO
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from datetime import datetime  # Add this import
 from io import BytesIO
 from .utils import (
@@ -13,14 +13,81 @@ from .utils import (
     encode_plot_to_base64, get_tables,
     calculate_avg_m3_per_acre, generate_group_analysis_plot
 )
+from django.urls import reverse
+from functools import wraps
+from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
+import jwt
+from django.views.decorators.csrf import csrf_exempt
+import datetime
+from django.conf import settings
 
 
+
+# Hardcoded credentials for API JWT
+JWT_SECRET = 'your_jwt_secret_key'  
+JWT_ALGORITHM = 'HS256'
+JWT_COOKIE_NAME = 'auth_token'
+
+LOGIN_USERNAME = 'digivi-analyst'
+LOGIN_PASSWORD = 'analyst123'
+
+def login_view(request):  # LOGIN VIEW
+    error = None
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        if username == LOGIN_USERNAME and password == LOGIN_PASSWORD:
+            payload = {
+                'username': username,
+                'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=1),
+                'iat': datetime.datetime.utcnow(),
+            }
+            token = jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
+            response = redirect('index')
+            response.set_cookie(JWT_COOKIE_NAME, token, httponly=True, samesite='Lax')
+            return response
+        else:
+            error = 'Invalid credentials.'
+    return render(request, 'landing.html', {'error': error, 'show_login_modal': True})
+
+def logout_view(request):  # LOGOUT VIEW
+    response = redirect('landing')
+    response.delete_cookie(JWT_COOKIE_NAME)
+    return response
+
+def require_auth(view_func):  
+    @wraps(view_func)
+    def _wrapped_view(request, *args, **kwargs):
+        token = request.COOKIES.get(JWT_COOKIE_NAME)
+        if not token:
+            return redirect('landing')
+        try:
+            jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+        except Exception:
+            return redirect('landing')
+        return view_func(request, *args, **kwargs)
+    return _wrapped_view
+
+@require_auth
 def index(request):
     return render(request, 'index.html')
 
 def landing(request):
-    return render(request, 'landing.html')
+    token = request.COOKIES.get(JWT_COOKIE_NAME)
+    is_authenticated = False
+    if token:
+        try:
+            jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+            is_authenticated = True
+        except Exception:
+            is_authenticated = False
+    return render(request, 'landing.html', {'is_authenticated': is_authenticated})
 
+@require_auth
+def landing_protected(request):
+    return render(request, 'landing_protected.html')
+
+@require_auth
 def meter_reading(request):
     meter_df = master_df = None
     error_message = meter_preview = None
@@ -96,6 +163,7 @@ def meter_reading(request):
     })
 
 
+@require_auth
 def water_level(request):
     pipe_df = master_df = None
     error_message = None
@@ -125,14 +193,17 @@ def water_level(request):
     })
 
 
+@require_auth
 def farmer_survey(request):
     return render(request, 'farmer_survey.html')
 
 
+@require_auth
 def evapotranspiration(request):
     return render(request, 'evapotranspiration.html')
 
 
+@require_auth
 def mapping(request):
     return render(request, 'mapping.html')
 
@@ -144,6 +215,7 @@ import pandas as pd
 
 from .utils import kharif2025_farms, get_2025plots, get_meters_by_village
 
+@require_auth
 def meter_reading_25_view(request):
     # ANSI color codes for terminal output
     class Colors:
@@ -584,6 +656,7 @@ def meter_reading_25_view(request):
         'filter_end_date': filter_end_date,
     })
 
+@require_auth
 def grouping_25(request):
     if request.method == 'POST':
         selected_label = request.POST.get('group_type')
@@ -720,3 +793,24 @@ def grouping_25(request):
             })
     
     return render(request, 'grouping.html')
+
+@csrf_exempt
+def api_token(request):
+    if request.method == 'POST':
+        import json
+        data = json.loads(request.body.decode())
+        username = data.get('username')
+        password = data.get('password')
+        if username == API_USERNAME and password == API_PASSWORD:
+            payload = {
+                'username': username,
+                'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=1),
+                'iat': datetime.datetime.utcnow(),
+            }
+            token = jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
+            return JsonResponse({'access': token})
+        else:
+            return JsonResponse({'detail': 'Invalid credentials'}, status=401)
+    return JsonResponse({'detail': 'Method not allowed'}, status=405)
+
+    

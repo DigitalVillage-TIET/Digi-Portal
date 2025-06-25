@@ -509,10 +509,84 @@
             margin-bottom: 4rem;
         }
 
+        /* Professor Cards - Larger and More Prominent */
         .leaders-grid {
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 3rem;
+            margin-bottom: 6rem; /* Extra space before research team */
         }
 
+        .professor-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 2px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 4rem 3rem;
+            text-align: center;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            min-height: 420px;
+        }
+
+        .professor-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.1), transparent);
+            transition: left 0.8s;
+        }
+
+        .professor-card:hover::before {
+            left: 100%;
+        }
+
+        .professor-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: var(--shadow-lg), 0 0 40px rgba(59, 130, 246, 0.2);
+            border-color: var(--accent-primary);
+        }
+
+        .professor-photo {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 2rem;
+            border: 4px solid var(--accent-primary);
+            transition: var(--transition);
+            position: relative;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .professor-card:hover .professor-photo {
+            transform: scale(1.08);
+            box-shadow: 0 0 40px rgba(59, 130, 246, 0.4);
+            border-color: var(--accent-secondary);
+        }
+
+        .professor-name {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .professor-role {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+        }
+
+        /* Research Team Cards */
         .members-grid {
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
         }
@@ -598,6 +672,162 @@
             background: var(--accent-primary);
             color: white;
             transform: translateY(-2px);
+        }
+
+        /* Developer Cards - Creative Tech-Inspired Design */
+        .developer-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 0;
+            text-align: left;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            min-height: 300px;
+        }
+
+        .developer-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-tertiary));
+            z-index: 1;
+        }
+
+        .developer-card::after {
+            content: '</>';
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            color: rgba(255, 255, 255, 0.8);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.5rem;
+            font-weight: 600;
+            z-index: 2;
+        }
+
+        .developer-card:hover {
+            transform: translateY(-12px) rotateX(5deg);
+            box-shadow: var(--shadow-lg), 0 25px 50px rgba(59, 130, 246, 0.2);
+            border-color: var(--accent-primary);
+        }
+
+        .developer-card:hover::before {
+            background: linear-gradient(135deg, var(--accent-secondary), var(--accent-primary));
+        }
+
+        .developer-content {
+            padding: 2rem;
+            position: relative;
+            z-index: 3;
+            background: var(--bg-secondary);
+            margin-top: 60px;
+            border-radius: 0 0 20px 20px;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .developer-photo {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--accent-primary);
+            transition: var(--transition);
+            z-index: 4;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            flex-shrink: 0;
+        }
+
+        .developer-card:hover .developer-photo {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 12px 35px rgba(59, 130, 246, 0.3);
+        }
+
+        .developer-info {
+            flex: 1;
+        }
+
+        .developer-name {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .developer-role {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 1.5rem;
+            font-weight: 400;
+        }
+
+        .developer-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--accent-primary);
+            background: transparent;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.8rem 1.5rem;
+            border: 2px solid var(--accent-primary);
+            border-radius: 12px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            font-size: 0.9rem;
+        }
+
+        .developer-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-primary);
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+
+        .developer-link:hover::before {
+            left: 0;
+        }
+
+        .developer-link:hover {
+            color: white;
+            border-color: var(--accent-primary);
+            transform: translateX(5px);
+        }
+
+        .code-pattern {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 100px;
+            height: 60px;
+            opacity: 0.05;
+            background-image: 
+                linear-gradient(90deg, var(--accent-primary) 1px, transparent 1px),
+                linear-gradient(180deg, var(--accent-primary) 1px, transparent 1px);
+            background-size: 10px 10px;
+            z-index: 1;
+        }
+
+        /* Section Spacing */
+        .section-divider {
+            height: 4rem;
         }
 
         /* Modal */
@@ -793,8 +1023,26 @@
                 grid-template-columns: 1fr;
             }
 
+            .leaders-grid {
+                margin-bottom: 4rem;
+            }
+
             .team-grid {
                 gap: 1.5rem;
+            }
+
+            .professor-card {
+                min-height: auto;
+                padding: 3rem 2rem;
+            }
+
+            .professor-photo {
+                width: 130px;
+                height: 130px;
+            }
+
+            .professor-name {
+                font-size: 1.6rem;
             }
         }
 
@@ -932,19 +1180,32 @@
                 <p class="section-subtitle">Pioneering Innovation in Agricultural Technology</p>
             </div>
             
-            <!-- Leaders -->
+            <!-- Professor Cards - Larger and More Prominent -->
             <div class="team-grid leaders-grid">
-                <div class="team-card">
-                    <img src="https://i.ibb.co/W4YV6FWv/Dr-Karun-Verma.jpg" alt="Prof. Karun Verma" class="team-photo">
-                    <h3 class="team-name">Prof. Karun Verma</h3>
-                    <p class="team-role">Associate Professor at Thapar Institute of Engineering & Technology</p>
+                <div class="professor-card">
+                    <img src="https://i.ibb.co/W4YV6FWv/Dr-Karun-Verma.jpg" alt="Prof. Karun Verma" class="professor-photo">
+                    <h3 class="professor-name">Prof. Karun Verma</h3>
+                    <p class="professor-role">Associate Professor at Thapar Institute of Engineering & Technology</p>
                 </div>
-                <div class="team-card">
-                    <img src="https://i.ibb.co/gLYx5JVq/Dr-Ram.jpg" alt="Prof. Ram Fishmen" class="team-photo">
-                    <h3 class="team-name">Prof. Ram Fishmen</h3>
-                    <p class="team-role">Associate Professor of Public Policy, Tel Aviv University, and Director, Nitsan Lab for Sustainable Development</p>
+                <div class="professor-card">
+                    <img src="https://i.ibb.co/gLYx5JVq/Dr-Ram.jpg" alt="Prof. Ram Fishmen" class="professor-photo">
+                    <h3 class="professor-name">Prof. Ram Fishmen</h3>
+                    <p class="professor-role">Associate Professor of Public Policy, Tel Aviv University, and Director, Nitsan Lab for Sustainable Development</p>
+                </div>
+                <div class="professor-card">
+                    <img src="https://i.ibb.co/Rp56NY8N/Jhilik-mam.jpg" alt="Dr. Jhilik Bhattacharya" class="professor-photo">
+                    <h3 class="professor-name">Dr. Jhilik Bhattacharya</h3>
+                    <p class="professor-role">Associate Professor & Associate Head at TIET</p>
+                </div>
+                <div class="professor-card">
+                    <img src="https://i.ibb.co/N63YNK6t/Amit-sir.jpg" alt="Dr. Amit Mishra" class="professor-photo">
+                    <h3 class="professor-name">Dr. Amit Mishra</h3>
+                    <p class="professor-role">Associate Professor</p>
                 </div>
             </div>
+
+            <!-- Section Divider -->
+            <div class="section-divider"></div>
 
             <!-- Research Team -->
             <div class="team-grid members-grid">
@@ -976,29 +1237,44 @@
             </div>
             
             <div class="team-grid members-grid">
-                <div class="team-card">
-                    <img src="https://i.ibb.co/bMgn5Zz5/Danish.jpg" alt="Danish Sharma" class="team-photo">
-                    <h3 class="team-name">Danish Sharma</h3>
-                    <p class="team-role">Final Year B.E. Student at TIET</p>
-                    <a href="https://www.linkedin.com/in/danish-workmain/" target="_blank" class="team-link">
-                        <i class="fab fa-linkedin"></i> LinkedIn
-                    </a>
+                <div class="developer-card">
+                    <div class="code-pattern"></div>
+                    <div class="developer-content">
+                        <img src="https://i.ibb.co/bMgn5Zz5/Danish.jpg" alt="Danish Sharma" class="developer-photo">
+                        <div class="developer-info">
+                            <h3 class="developer-name">Danish Sharma</h3>
+                            <p class="developer-role">Final Year B.E. Student at TIET</p>
+                            <a href="https://www.linkedin.com/in/danish-workmain/" target="_blank" class="developer-link">
+                                <i class="fab fa-linkedin"></i> Connect
+                            </a>
+                        </div>
+                    </div>
                 </div>
-                <div class="team-card">
-                    <img src="https://via.placeholder.com/120x120/374151/ffffff?text=SS" alt="Samrath Singh" class="team-photo">
-                    <h3 class="team-name">Samrath Singh Kharbanda</h3>
-                    <p class="team-role">Final Year B.E. Student at TIET</p>
-                    <a href="#" class="team-link">
-                        <i class="fab fa-linkedin"></i> LinkedIn
-                    </a>
+                <div class="developer-card">
+                    <div class="code-pattern"></div>
+                    <div class="developer-content">
+                        <img src="https://i.ibb.co/j9CXVgF9/Samrath.jpg" alt="Samrath Singh" class="developer-photo">
+                        <div class="developer-info">
+                            <h3 class="developer-name">Samrath Singh Kharbanda</h3>
+                            <p class="developer-role">Final Year B.E. Student at TIET</p>
+                            <a href="https://www.linkedin.com/in/samrath-singh-kharbanda-b93283346" target="_blank" class="developer-link">
+                                <i class="fab fa-linkedin"></i> Connect
+                            </a>
+                        </div>
+                    </div>
                 </div>
-                <div class="team-card">
-                    <img src="https://i.ibb.co/8DGfD0TD/Ashmit.jpg" alt="Ashmit Cajla" class="team-photo">
-                    <h3 class="team-name">Ashmit Cajla</h3>
-                    <p class="team-role">Pre-Final Year B.E. Student at TIET</p>
-                    <a href="https://www.linkedin.com/in/ashmitcajla/" target="_blank" class="team-link">
-                        <i class="fab fa-linkedin"></i> LinkedIn
-                    </a>
+                <div class="developer-card">
+                    <div class="code-pattern"></div>
+                    <div class="developer-content">
+                        <img src="https://i.ibb.co/8DGfD0TD/Ashmit.jpg" alt="Ashmit Cajla" class="developer-photo">
+                        <div class="developer-info">
+                            <h3 class="developer-name">Ashmit Cajla</h3>
+                            <p class="developer-role">Pre-Final Year B.E. Student at TIET</p>
+                            <a href="https://www.linkedin.com/in/ashmitcajla/" target="_blank" class="developer-link">
+                                <i class="fab fa-linkedin"></i> Connect
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1176,7 +1452,7 @@
 
         // Observe all cards
         document.addEventListener('DOMContentLoaded', () => {
-            const cards = document.querySelectorAll('.team-card, .glass-card');
+            const cards = document.querySelectorAll('.professor-card, .team-card, .developer-card, .glass-card');
             cards.forEach(card => {
                 card.style.opacity = '0';
                 card.style.transform = 'translateY(20px)';

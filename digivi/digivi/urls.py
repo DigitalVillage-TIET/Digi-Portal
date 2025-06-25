@@ -17,9 +17,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from . import views
+from django.views.generic.base import RedirectView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('login/', views.login_view, name='login'),
+    path('logout/', views.logout_view, name='logout'),
+    path('api/token/', views.api_token, name='api_token'),
     path('', views.landing, name='landing'),
     path('index/', views.index, name='index'),
     path('meter-reading-25/', views.meter_reading_25_view, name='meter_reading_25'),
@@ -28,6 +32,7 @@ urlpatterns = [
     path('farmer_survey/', views.farmer_survey, name='farmer_survey'),
     path('evapotranspiration/', views.evapotranspiration, name='evapotranspiration'),
     path('mapping/', views.mapping, name='mapping'),
-    path('grouping-25/', views.grouping_25, name='grouping-25'),  
+    path('grouping-25/', views.grouping_25, name='grouping-25'),
+    path('home/', views.landing_protected, name='landing_protected'),
 ]
 

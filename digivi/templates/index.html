@@ -580,6 +580,45 @@
                 font-size: 1.25rem;
             }
         }
+
+        .btn-logout {
+            background: linear-gradient(90deg, #ef4444, #f59e0b);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 0.7rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(239, 68, 68, 0.08);
+            transition: background 0.2s, box-shadow 0.2s;
+        }
+        .btn-logout:hover {
+            background: linear-gradient(90deg, #dc2626, #fbbf24);
+            box-shadow: 0 4px 16px rgba(239, 68, 68, 0.15);
+        }
+        .btn-home {
+            background: var(--glass-bg);
+            color: var(--accent-primary);
+            border: 2px solid var(--accent-primary);
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 0.7rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s, border-color 0.2s;
+        }
+        .btn-home:hover {
+            background: var(--accent-primary);
+            color: #fff;
+            border-color: var(--accent-primary);
+        }
     </style>
 </head>
 <body>
@@ -606,8 +645,11 @@
                 </div>
             </div>
             <div class="nav-right">
-                <a href="../" class="btn-back">
-                    <i class="fas fa-arrow-left"></i> Back to Home
+                <a href="/" class="btn-home">
+                    <i class="fas fa-home"></i> Back to Home
+                </a>
+                <a href="/logout/" class="btn-home">
+                    <i class="fas fa-sign-out-alt"></i> Logout
                 </a>
                 <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
                     <div class="theme-toggle-slider">

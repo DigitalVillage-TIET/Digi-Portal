@@ -1,0 +1,55 @@
+# Core Django Framework
+Django==5.2.0
+
+# Data Processing and Analysis
+pandas==2.2.2
+numpy==1.26.4
+
+# Excel File Processing
+openpyxl==3.1.2
+xlsxwriter==3.2.0
+
+# Data Visualization
+matplotlib==3.8.4
+
+# Word Document Generation
+python-docx==1.1.0
+
+# Additional Python Libraries (if needed for deployment)
+# Web Server (for production)
+gunicorn==21.2.0
+
+# Environment variables management
+python-decouple==3.8
+
+# Database (if switching from SQLite)
+# psycopg2-binary==2.9.9  # PostgreSQL
+# mysqlclient==2.2.4      # MySQL
+
+# Development and Testing
+# pytest==8.2.2
+# pytest-django==4.8.0
+
+# Static files handling (for production)
+whitenoise==6.6.0
+
+# CORS handling (if needed for API access)
+# django-cors-headers==4.3.1
+
+# Time zone support
+pytz==2024.1
+
+# File upload handling
+Pillow==10.3.0
+
+# Security and authentication enhancements
+# django-allauth==0.63.3
+
+# Additional utilities
+six==1.16.0
+python-dateutil==2.9.0
+
+#latest
+gspread
+oauthlib
+PyJWT

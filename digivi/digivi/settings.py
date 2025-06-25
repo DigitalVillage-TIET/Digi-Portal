@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -128,3 +129,9 @@ MASTER_DATA_SHEET_ID = "10_bnGF7WBZ0J3aSvl8riufNbZjXAxB7wcnN3545fGzw"
 
 # Option 1: Use service account key file
 GOOGLE_SERVICE_ACCOUNT_KEY_PATH = os.path.join(BASE_DIR, 'creds.json')
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
