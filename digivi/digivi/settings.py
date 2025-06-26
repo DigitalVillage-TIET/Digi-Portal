@@ -29,6 +29,15 @@ DEBUG = True
 STATIC_ROOT = BASE_DIR / 'static'
 ALLOWED_HOSTS = ['*']  # or your server IP/domain
 
+# CSRF trusted origins for production deployment
+CSRF_TRUSTED_ORIGINS = [
+    'https://dv-portal.thapar.edu:8443',
+    'http://dv-portal.thapar.edu:8443',
+    'https://dv-portal.thapar.edu',
+    'http://dv-portal.thapar.edu',
+    'http://localhost:8000',
+    'http://127.0.0.1:8000',
+]
 
 # Application definition
 
