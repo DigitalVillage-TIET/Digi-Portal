@@ -1807,39 +1807,43 @@
         </div>
     </section>
 
-    <!-- Login Modal -->
-    <div class="modal" id="loginModal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeModal()">
-                <i class="fas fa-times"></i>
+<!-- Login Modal - Replace the existing modal section in landing.html -->
+<div class="modal" id="loginModal">
+    <div class="modal-content">
+        <button class="modal-close" onclick="closeModal()">
+            <i class="fas fa-times"></i>
+        </button>
+        <h2 class="modal-title">Member Access</h2>
+        <!-- IMPORTANT: Form now submits to Django backend -->
+        <form id="loginForm" method="POST" action="{% url 'login' %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label class="form-label">Username</label>
+                <input type="text" class="form-input" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Password</label>
+                <input type="password" class="form-input" id="password" name="password" required>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%;">
+                <i class="fas fa-lock"></i> Secure Login
             </button>
-            <h2 class="modal-title">Member Access</h2>
-            <form id="loginForm">
-                <div class="form-group">
-                    <label class="form-label">Username</label>
-                    <input type="text" class="form-input" id="username" required>
+            <!-- Django error handling -->
+            {% if error %}
+                <div class="error-message" style="display: block;">
+                    {{ error }}
                 </div>
-                <div class="form-group">
-                    <label class="form-label">Password</label>
-                    <input type="password" class="form-input" id="password" required>
-                </div>
-                <button type="submit" class="btn btn-primary" style="width: 100%;">
-                    <i class="fas fa-lock"></i> Secure Login
-                </button>
-                <div class="error-message" id="errorMessage">
-                    Invalid credentials. Please try again.
-                </div>
-            </form>
-        </div>
+            {% endif %}
+        </form>
     </div>
-
+</div>
     <!-- Footer -->
     <footer class="footer">
         <p class="footer-text">© 2025 DIGI-VI | Digital Village Intelligence Platform. All rights reserved.</p>
     </footer>
 
     <script>
-        // Theme Management
+        // Updated JavaScript - Remove client-side login handling
         function initTheme() {
             const savedTheme = localStorage.getItem('theme') || 'dark';
             document.documentElement.setAttribute('data-theme', savedTheme);
@@ -1931,7 +1935,11 @@
             const modal = document.getElementById('loginModal');
             modal.classList.remove('active');
             document.getElementById('loginForm').reset();
-            document.getElementById('errorMessage').style.display = 'none';
+            // Clear Django error message if exists
+            const errorMsg = document.querySelector('.error-message');
+            if (errorMsg) {
+                errorMsg.style.display = 'none';
+            }
         }
 
         // Click outside modal to close
@@ -1941,26 +1949,12 @@
             }
         });
 
-        // Login Form
-        document.getElementById('loginForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            
-            if (username === 'digivi-analyst' && password === 'analyst123') {
-                // Add loading animation
-                const btn = e.target.querySelector('button[type="submit"]');
-                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Authenticating...';
-                
-                setTimeout(() => {
-                    window.location.href = 'index/';
-                }, 1000);
-            } else {
-                document.getElementById('errorMessage').style.display = 'block';
-                document.getElementById('password').value = '';
-            }
-        });
+        // Show modal if there's a login error from Django
+        {% if show_login_modal %}
+            window.addEventListener('load', () => {
+                openModal();
+            });
+        {% endif %}
 
         // Scroll Effects
         let lastScroll = 0;
@@ -2012,7 +2006,7 @@
                 card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
                 observer.observe(card);
             });
-        });
+        }); 
     </script>
 </body>
 </html>

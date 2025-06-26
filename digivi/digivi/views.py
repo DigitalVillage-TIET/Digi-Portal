@@ -23,13 +23,20 @@ from django.conf import settings
 
 
 
-# Hardcoded credentials for API JWT
+
+# Add these constants at the top of views.py after imports
+
+# Hardcoded credentials for login
 JWT_SECRET = 'your_jwt_secret_key'  
 JWT_ALGORITHM = 'HS256'
 JWT_COOKIE_NAME = 'auth_token'
 
 LOGIN_USERNAME = 'digivi-analyst'
 LOGIN_PASSWORD = 'analyst123'
+
+# API credentials (if you're using the API endpoint)
+API_USERNAME = 'digivi-analyst'  # Add this line
+API_PASSWORD = 'analyst123'      # Add this line
 
 def login_view(request):  # LOGIN VIEW
     error = None
@@ -48,7 +55,13 @@ def login_view(request):  # LOGIN VIEW
             return response
         else:
             error = 'Invalid credentials.'
-    return render(request, 'landing.html', {'error': error, 'show_login_modal': True})
+    
+    # If GET request or invalid credentials, show landing page with modal
+    return render(request, 'landing.html', {
+        'error': error, 
+        'show_login_modal': True,
+        'is_authenticated': False
+    })
 
 def logout_view(request):  # LOGOUT VIEW
     response = redirect('landing')
@@ -72,6 +85,7 @@ def require_auth(view_func):
 def index(request):
     return render(request, 'index.html')
 
+
 def landing(request):
     token = request.COOKIES.get(JWT_COOKIE_NAME)
     is_authenticated = False
@@ -81,6 +95,11 @@ def landing(request):
             is_authenticated = True
         except Exception:
             is_authenticated = False
+    
+    # If user is already authenticated, redirect to index
+    if is_authenticated:
+        return redirect('index')
+    
     return render(request, 'landing.html', {'is_authenticated': is_authenticated})
 
 @require_auth
