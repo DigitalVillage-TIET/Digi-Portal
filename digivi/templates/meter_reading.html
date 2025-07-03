@@ -38,10 +38,12 @@
       --gradient-primary: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
       --gradient-secondary: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
       --gradient-accent: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+      --gradient-success: linear-gradient(135deg, #10b981 0%, #059669 100%);
       
       --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
       --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
       --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
       --shadow-glow: 0 0 20px rgba(59, 130, 246, 0.15);
       
       --glass-bg: rgba(255, 255, 255, 0.7);
@@ -70,10 +72,12 @@
       --gradient-primary: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
       --gradient-secondary: linear-gradient(135deg, #22d3ee 0%, #60a5fa 100%);
       --gradient-accent: linear-gradient(135deg, #a78bfa 0%, #f472b6 100%);
+      --gradient-success: linear-gradient(135deg, #34d399 0%, #059669 100%);
       
       --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
       --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
       --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+      --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
       --shadow-glow: 0 0 30px rgba(96, 165, 250, 0.3);
       
       --glass-bg: rgba(30, 30, 30, 0.6);
@@ -107,6 +111,109 @@
       opacity: 0.05;
       pointer-events: none;
       z-index: 0;
+    }
+
+    /* Loading Overlay */
+    .loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(10px);
+      z-index: 9999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .loading-overlay.show {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .loading-content {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 3rem 2rem;
+      text-align: center;
+      max-width: 400px;
+      width: 90%;
+      box-shadow: var(--shadow-xl);
+    }
+
+    .loading-spinner {
+      width: 60px;
+      height: 60px;
+      border: 4px solid var(--border-color);
+      border-top: 4px solid var(--accent-primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 1.5rem;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .loading-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .loading-description {
+      color: var(--text-secondary);
+      margin-bottom: 1.5rem;
+      font-size: 0.95rem;
+    }
+
+    .progress-container {
+      background: var(--bg-tertiary);
+      border-radius: 10px;
+      height: 8px;
+      overflow: hidden;
+      margin-bottom: 1rem;
+    }
+
+    .progress-bar {
+      background: var(--gradient-primary);
+      height: 100%;
+      width: 0%;
+      transition: width 0.3s ease;
+      position: relative;
+    }
+
+    .progress-bar::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+      animation: shimmer 2s infinite;
+    }
+
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    .progress-text {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      font-weight: 500;
     }
 
     /* Header */
@@ -143,6 +250,39 @@
       font-size: 0.95rem;
       color: var(--text-secondary);
       font-weight: 400;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    /* Back to Templates Button */
+    .btn-back {
+      background: var(--glass-bg);
+      color: var(--accent-primary);
+      border: 2px solid var(--accent-primary);
+      backdrop-filter: blur(10px);
+      padding: 0.75rem 1.5rem;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      transition: var(--transition);
+      white-space: nowrap;
+    }
+
+    .btn-back:hover {
+      background: var(--accent-primary);
+      color: white;
+      border-color: var(--accent-primary);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
     }
 
     /* Theme Toggle */
@@ -194,6 +334,48 @@
       padding: 2rem;
       position: relative;
       z-index: 1;
+    }
+
+    /* Year Toggle */
+    .year-toggle-container {
+      display: flex;
+      justify-content: center;
+      margin: 2rem 0;
+    }
+
+    .year-toggle {
+      display: inline-flex;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 4px;
+      gap: 4px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .year-option {
+      padding: 0.75rem 2rem;
+      border: none;
+      background: transparent;
+      color: var(--text-secondary);
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+      font-size: 0.95rem;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .year-option:hover {
+      color: var(--text-primary);
+    }
+
+    .year-option.active {
+      background: var(--gradient-primary);
+      color: white;
+      box-shadow: var(--shadow-md);
     }
 
     /* Glass Card */
@@ -258,48 +440,6 @@
       background: var(--bg-secondary);
     }
 
-    /* Year Toggle */
-    .year-toggle-container {
-      display: flex;
-      justify-content: center;
-      margin: 2rem 0;
-    }
-
-    .year-toggle {
-      display: inline-flex;
-      background: var(--bg-secondary);
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      padding: 4px;
-      gap: 4px;
-      box-shadow: var(--shadow-sm);
-    }
-
-    .year-option {
-      padding: 0.75rem 2rem;
-      border: none;
-      background: transparent;
-      color: var(--text-secondary);
-      font-weight: 500;
-      cursor: pointer;
-      transition: var(--transition);
-      font-size: 0.95rem;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .year-option:hover {
-      color: var(--text-primary);
-    }
-
-    .year-option.active {
-      background: var(--gradient-primary);
-      color: white;
-      box-shadow: var(--shadow-md);
-    }
-
     /* Forms */
     .form-group {
       margin-bottom: 1.5rem;
@@ -335,7 +475,7 @@
       box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1), var(--shadow-glow);
     }
 
-    /* Buttons */
+    /* Button */
     .btn {
       padding: 0.875rem 1.75rem;
       border: none;
@@ -382,6 +522,12 @@
       box-shadow: var(--shadow-lg), var(--shadow-glow);
     }
 
+    .btn-primary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
     .btn-secondary {
       background: var(--bg-tertiary);
       color: var(--accent-primary);
@@ -398,6 +544,26 @@
     .btn-block {
       width: 100%;
       justify-content: center;
+    }
+
+    .btn-loading {
+      position: relative;
+      color: transparent !important;
+    }
+
+    .btn-loading::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      top: 50%;
+      left: 50%;
+      margin-left: -10px;
+      margin-top: -10px;
+      border: 2px solid transparent;
+      border-top-color: #ffffff;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
     }
 
     /* Alert */
@@ -610,21 +776,6 @@
       margin-top: 4rem;
     }
 
-    /* Loading Animation */
-    .loading {
-      display: inline-block;
-      width: 20px;
-      height: 20px;
-      border: 2px solid rgba(255, 255, 255, 0.3);
-      border-radius: 50%;
-      border-top-color: white;
-      animation: spin 1s linear infinite;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
     /* Responsive */
     @media (max-width: 1200px) {
       .graphs-grid {
@@ -637,6 +788,22 @@
         flex-direction: column;
         gap: 1rem;
         text-align: center;
+      }
+      
+      .header-right {
+        flex-direction: column;
+        gap: 1rem;
+        width: 100%;
+      }
+      
+      .card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+      }
+      
+      .integration-badge {
+        margin-left: 0;
       }
       
       .card-body {
@@ -663,6 +830,10 @@
       .meter-stats {
         flex-direction: column;
         gap: 0.5rem;
+      }
+
+      .sync-details {
+        grid-template-columns: 1fr;
       }
     }
 
@@ -705,12 +876,6 @@
       z-index: 0;
     }
 
-    /* Glow Effects */
-    .glow-text {
-      text-shadow: 0 0 20px rgba(96, 165, 250, 0.5);
-    }
-
-    /* Code Style */
     .code {
       font-family: 'JetBrains Mono', monospace;
       background: var(--code-bg);
@@ -727,11 +892,176 @@
       font-size: 0.85rem;
       color: var(--text-secondary);
     }
+
+    .form-text.warning {
+      color: var(--accent-warning);
+    }
+
+    /* Integration Badge */
+    .integration-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: white;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.85em;
+      font-weight: 500;
+      box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+    }
+
+    .card-header {
+      padding: 1.5rem 2rem;
+      background: var(--gradient-primary);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    /* Fallback Section */
+    .fallback-section {
+      margin-top: 1.5rem;
+      padding: 1rem;
+      background: rgba(245, 158, 11, 0.05);
+      border-radius: 12px;
+      border-left: 4px solid var(--accent-warning);
+    }
+
+    .fallback-toggle {
+      margin-bottom: 1rem;
+    }
+
+    .toggle-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      font-weight: 500;
+      color: var(--accent-warning);
+      font-size: 0.9rem;
+    }
+
+    #manual-upload-toggle {
+      margin-right: 8px;
+      accent-color: var(--accent-warning);
+    }
+
+    .manual-upload {
+      transition: all 0.3s ease;
+      overflow: hidden;
+    }
+
+    /* Sync Status Section */
+    .sync-status-section {
+      margin-top: 1.5rem;
+      padding: 1.5rem;
+      background: var(--bg-tertiary);
+      border-radius: 12px;
+      border-left: 4px solid var(--accent-success);
+    }
+
+    .sync-status-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+      font-weight: 600;
+      color: var(--accent-success);
+      font-size: 1rem;
+    }
+
+    .sync-details {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+
+    .sync-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .sync-label {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-weight: 500;
+    }
+
+    .sync-value {
+      font-weight: 600;
+      color: var(--text-primary);
+      font-size: 0.9rem;
+    }
+
+    .status-active {
+      color: var(--accent-success);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .status-active i {
+      font-size: 0.6rem;
+      animation: pulse-dot 2s infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    /* Results */
+    .results-section {
+      margin-top: 2rem;
+    }
+
+    .results-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .results-header h2 {
+      font-size: 2rem;
+      font-weight: 700;
+      background: var(--gradient-accent);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.5rem;
+    }
+
+    .glow-text {
+      text-shadow: 0 0 20px rgba(96, 165, 250, 0.5);
+    }
   </style>
 </head>
 <body>
   <div class="tech-grid"></div>
   
+  <!-- Loading Overlay -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-content">
+      <div class="loading-spinner"></div>
+      <div class="loading-title">Processing Legacy Data</div>
+      <div class="loading-description" id="loadingDescription">
+        Processing your 2024 format files...
+      </div>
+      <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+      <div class="progress-text">
+        <span id="progressText">0%</span> Complete
+      </div>
+    </div>
+  </div>
+
   <!-- Header -->
   <header class="header">
     <div class="header-content">
@@ -739,11 +1069,16 @@
         <h1>Water Meter Analytics Platform</h1>
         <p><span class="code">KHARIF_2024</span> • Legacy Data Analysis System</p>
       </div>
-      <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
-        <div class="theme-toggle-slider">
-          <i class="fas fa-sun" id="theme-icon"></i>
-        </div>
-      </button>
+      <div class="header-right">
+        <a href="{% url 'index' %}" class="btn-back">
+          <i class="fas fa-arrow-left"></i> Back to Templates
+        </a>
+        <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
+          <div class="theme-toggle-slider">
+            <i class="fas fa-sun" id="theme-icon"></i>
+          </div>
+        </button>
+      </div>
     </div>
   </header>
 
@@ -764,9 +1099,12 @@
     <div class="glass-card">
       <div class="card-header">
         <h2><i class="fas fa-cloud-upload-alt icon"></i> Legacy Data Upload Terminal</h2>
+        <div class="integration-badge">
+          <i class="fas fa-database"></i> Legacy Format Processing
+        </div>
       </div>
       <div class="card-body">
-        <form method="post" enctype="multipart/form-data">
+        <form method="post" enctype="multipart/form-data" id="uploadForm">
           {% csrf_token %}
           <div class="form-group">
             <label class="form-label" for="meter_file">
@@ -788,7 +1126,7 @@
             </small>
           </div>
           
-          <button type="submit" class="btn btn-primary btn-block">
+          <button type="submit" class="btn btn-primary btn-block" id="uploadBtn">
             <i class="fas fa-sync-alt"></i> Upload & Analyze Data
           </button>
         </form>
@@ -797,6 +1135,32 @@
           <div class="alert">
             <i class="fas fa-exclamation-triangle"></i> {{ error_message }}
           </div>
+        {% endif %}
+        
+        <!-- Sync Status Section -->
+        {% if farm_ids %}
+        <div class="sync-status-section">
+          <div class="sync-status-header">
+            <i class="fas fa-check-circle" style="color: var(--accent-success);"></i>
+            <span>Legacy Data Successfully Processed</span>
+          </div>
+          <div class="sync-details">
+            <div class="sync-item">
+              <span class="sync-label">Last Upload:</span>
+              <span class="sync-value">{{ "now"|date:"M d, Y H:i:s" }}</span>
+            </div>
+            <div class="sync-item">
+              <span class="sync-label">Format:</span>
+              <span class="sync-value">Kharif 2024 Legacy</span>
+            </div>
+            <div class="sync-item">
+              <span class="sync-label">Status:</span>
+              <span class="sync-value status-active">
+                <i class="fas fa-circle"></i> Active
+              </span>
+            </div>
+          </div>
+        </div>
         {% endif %}
       </div>
     </div>
@@ -808,7 +1172,7 @@
         <h2><i class="fas fa-microchip icon"></i> Farm Selection Panel</h2>
       </div>
       <div class="card-body">
-        <form method="post">
+        <form method="post" id="farmSelectionForm">
           {% csrf_token %}
           <div class="form-group">
             <label class="form-label" for="selected_farm">
@@ -821,7 +1185,7 @@
               {% endfor %}
             </select>
           </div>
-          <button type="submit" class="btn btn-primary">
+          <button type="submit" class="btn btn-primary" id="analyzeBtn">
             <i class="fas fa-chart-area"></i> Analyze Farm
           </button>
         </form>
@@ -833,9 +1197,7 @@
     {% if meter_results %}
     <div class="results-section">
       <div class="results-header">
-        <h2 class="glow-text" style="text-align: center; font-size: 2rem; font-weight: 700; background: var(--gradient-accent); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 2rem;">
-          Data Visualization Matrix
-        </h2>
+        <h2 class="glow-text">Data Visualization Matrix</h2>
       </div>
 
       {% for result in meter_results %}
@@ -909,6 +1271,88 @@
       const icon = document.getElementById('theme-icon');
       icon.className = theme === 'light' ? 'fas fa-sun' : 'fas fa-moon';
     }
+
+    // Enhanced Loading System
+    function showLoading() {
+      const overlay = document.getElementById('loadingOverlay');
+      const progressBar = document.getElementById('progressBar');
+      const progressText = document.getElementById('progressText');
+      const description = document.getElementById('loadingDescription');
+      
+      overlay.classList.add('show');
+      
+      // Simulate realistic loading progression for 2024 format
+      const steps = [
+        { progress: 0, text: "Initializing upload...", duration: 500 },
+        { progress: 20, text: "Uploading meter file...", duration: 1000 },
+        { progress: 40, text: "Uploading master file...", duration: 800 },
+        { progress: 60, text: "Validating legacy format...", duration: 1200 },
+        { progress: 75, text: "Processing farm data...", duration: 1000 },
+        { progress: 90, text: "Generating analysis...", duration: 800 },
+        { progress: 100, text: "Complete!", duration: 300 }
+      ];
+      
+      let currentStep = 0;
+      
+      function updateProgress() {
+        if (currentStep < steps.length) {
+          const step = steps[currentStep];
+          progressBar.style.width = step.progress + '%';
+          progressText.textContent = step.progress + '%';
+          description.textContent = step.text;
+          
+          setTimeout(() => {
+            currentStep++;
+            updateProgress();
+          }, step.duration);
+        } else {
+          // Hide loading after completion
+          setTimeout(() => {
+            hideLoading();
+          }, 1000);
+        }
+      }
+      
+      updateProgress();
+    }
+
+    function hideLoading() {
+      const overlay = document.getElementById('loadingOverlay');
+      overlay.classList.remove('show');
+    }
+
+    // Form Submission with Loading
+    document.getElementById('uploadForm').addEventListener('submit', function(e) {
+      const meterFile = document.getElementById('meter_file');
+      const masterFile = document.getElementById('master_file');
+      
+      if (!meterFile.files.length || !masterFile.files.length) {
+        e.preventDefault();
+        alert('Please select both meter reading and master database files.');
+        return;
+      }
+      
+      const uploadBtn = document.getElementById('uploadBtn');
+      uploadBtn.classList.add('btn-loading');
+      uploadBtn.disabled = true;
+      
+      showLoading();
+    });
+
+    // Farm Selection Form with Loading
+    document.getElementById('farmSelectionForm')?.addEventListener('submit', function(e) {
+      const farmSelect = document.getElementById('selected_farm');
+      
+      if (!farmSelect.value) {
+        e.preventDefault();
+        alert('Please select a farm to analyze.');
+        return;
+      }
+      
+      const analyzeBtn = document.getElementById('analyzeBtn');
+      analyzeBtn.classList.add('btn-loading');
+      analyzeBtn.disabled = true;
+    });
 
     // Graph Toggle
     function toggleGraph(button) {
