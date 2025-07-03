@@ -5,7 +5,7 @@ from django.core.files.storage import default_storage
 import pandas as pd
 from io import BytesIO
 from django.http import HttpResponse, JsonResponse
-from datetime import datetime  # Add this import
+import datetime  # Add this import
 from io import BytesIO
 from .utils import (
     kharif2024_farms, get_2024plots,
@@ -554,7 +554,7 @@ def meter_reading_25_view(request):
             docx_buffer.getvalue(),
             content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document'
         )
-        response['Content-Disposition'] = f'attachment; filename="water_analysis_report_{datetime.now().strftime("%Y%m%d_%H%M%S")}.docx"'
+        response['Content-Disposition'] = f'attachment; filename="water_analysis_report_{datetime.datetime.now().strftime("%Y%m%d_%H%M%S")}.docx"'
         return response
 
 # 6) When a farm is selected, generate graphs
@@ -710,7 +710,7 @@ def grouping_25(request):
                 docx_buffer.getvalue(),
                 content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document'
             )
-            response['Content-Disposition'] = f'attachment; filename="group_analysis_report_{datetime.now().strftime("%Y%m%d_%H%M%S")}.docx"'
+            response['Content-Disposition'] = f'attachment; filename="group_analysis_report_{datetime.datetime.now().strftime("%Y%m%d_%H%M%S")}.docx"'
             return response
 
         if selected_label and selected_checkboxes and raw_df is not None and master25:
