@@ -18,7 +18,6 @@ from functools import wraps
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 import jwt
 from django.views.decorators.csrf import csrf_exempt
-import datetime
 from django.conf import settings
 
 
