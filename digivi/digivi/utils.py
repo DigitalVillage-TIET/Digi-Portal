@@ -967,9 +967,10 @@ def generate_group_analysis_plot(df, col_name):
     plt.title("Group-wise Water Usage Comparison")
     plt.grid(True)
     plt.legend()
-    # Force axis to start from zero
-    plt.set_xlim(left=0)
-    plt.set_ylim(bottom=0)
+    # Force axis to start from zero using current axes
+    ax = plt.gca()
+    ax.set_xlim(left=0)
+    ax.set_ylim(bottom=0)
     plt.tight_layout()
     
     buf = BytesIO()
