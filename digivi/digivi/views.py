@@ -454,8 +454,6 @@ def meter_reading_25_view(request):
         
         # Apply date filter if enabled
         if use_date_filter and filter_start_date and filter_end_date:
-            from .utils import filter_data_by_date_range
-            raw_df = filter_data_by_date_range(raw_df, filter_start_date, filter_end_date)
             date_range_info['current_min'] = filter_start_date
             date_range_info['current_max'] = filter_end_date
 
@@ -691,9 +689,6 @@ def grouping_25(request):
         if raw_df is not None and request.session.get('use_date_filter', False):
             start_date = request.session.get('filter_start_date')
             end_date = request.session.get('filter_end_date')
-            if start_date and end_date:
-                from .utils import filter_data_by_date_range
-                raw_df = filter_data_by_date_range(raw_df, start_date, end_date)
 
        
 

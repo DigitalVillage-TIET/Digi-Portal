@@ -333,25 +333,87 @@ def error_fix(df):
 
     return df.drop(index=to_drop).reset_index(drop=True)
 
-# --- 2024 Helpers ---
-def filter_data_by_date_range(raw_df, start_date, end_date):
-    """
-    Filter raw data by date range
-    """
-    # Ensure Date column is datetime
-    date_col = 'Date'
-    raw_df[date_col] = pd.to_datetime(raw_df[date_col], dayfirst=False)
-    
-    # Convert string dates to datetime if needed
-    if isinstance(start_date, str):
-        start_date = pd.to_datetime(start_date)
-    if isinstance(end_date, str):
-        end_date = pd.to_datetime(end_date)
-    
-    # Filter the dataframe
-    filtered_df = raw_df[(raw_df[date_col] >= start_date) & (raw_df[date_col] <= end_date)].copy()
-    
-    return filtered_df
+def get_filled(meter_name, filtered_data, date_column, start_date, end_date, plot_size):
+    if not meter_name:
+        raise ValueError("Meter name missing.")
+        
+    # Filter data for the specific meter
+    df = filtered_data[filtered_data['Meter Serial Number - as shown on meter'] == meter_name].copy()
+    if df.empty:
+        return pd.DataFrame()
+        
+    # Keep only relevant columns
+    df = df[[date_column, 'Reading in the meter - in m3']].dropna()
+
+    # Convert date column to datetime
+    df[date_column] = pd.to_datetime(df[date_column])
+
+    # Sort by date (if timestamps existed, include them in sort)
+    df = df.sort_values(date_column)
+
+    # Deduplicate: keep the latest reading if multiple on same date
+    df = df.drop_duplicates(subset=[date_column], keep='last')
+
+    df = error_fix(df)
+
+    # Calculate time difference and deltas
+    df['Days Since Previous Reading'] = df[date_column].diff().dt.days.fillna(method='bfill').fillna(1).astype(int)
+    df['Delta m³'] = df['Reading in the meter - in m3'].diff().fillna(method='bfill').fillna(0)
+
+    if plot_size <= 0:
+        raise ValueError("Invalid plot size.")
+
+    # Normalize per acre and per day
+    df['m³ per Acre'] = df['Delta m³'] / plot_size
+    df['m³ per Acre per Avg Day'] = df['m³ per Acre'] / df['Days Since Previous Reading'].replace(0, 1)
+
+
+    # Create filled daily dataframe
+    filled = create_adjusted_filled_dataframe(
+        meter_data=df,
+        start_date=start_date,
+        end_date=end_date,
+        date_column=date_column,
+        avg_day_column='m³ per Acre per Avg Day'
+    )
+
+    return filled
+
+def create_adjusted_filled_dataframe(meter_data, start_date, end_date, date_column, avg_day_column):
+    # shift first reading to align with start_date
+    filtered = meter_data[meter_data[date_column] >= start_date]
+
+    if filtered.empty:
+        return filtered
+
+    if not filtered.empty:
+        first_index = filtered.index[0]
+        days_diff = (filtered.iloc[0][date_column] - start_date).days + 1
+            
+        # Get column names explicitly
+        col_m3_per_acre = 'm³ per Acre'
+        col_avg_day = 'm³ per Acre per Avg Day'
+
+        # Update values explicitly using column names
+        meter_data.loc[first_index, col_m3_per_acre] = meter_data.loc[first_index, col_m3_per_acre]
+        meter_data.loc[first_index, col_avg_day] = meter_data.loc[first_index, col_avg_day] / days_diff
+
+        
+    all_dates = pd.date_range(start=start_date, end=end_date, freq='D')
+    base = pd.DataFrame({date_column: all_dates})
+    merged = pd.merge(base, meter_data, on=date_column, how='left')
+
+    last_date = start_date
+    for idx, row in merged.iterrows():
+        if pd.isna(row[avg_day_column]):
+            next_rows = meter_data[meter_data[date_column] > row[date_column]]
+            if not next_rows.empty:
+                merged.iloc[idx, 1:] = next_rows.iloc[0, 1:]
+            else:
+                merged.iloc[idx, 1:] = 0
+        else:
+            last_date = row[date_column]
+    return merged
 
 def kharif2024_farms(master_df):
     meters_df = master_df['Meters'][['Kharif 24 Meter Serial No', 'Kharif 24 FARMID']].copy()
@@ -412,7 +474,7 @@ def get_2024plots(selected_farm, meter_df, master_df, meter_list):
     # get filled dataframes per meter
     plot_size = farm_row['Kharif 24 Acres farm/plot'].values[0]
     filled = {
-        m: get_filled(m, filtered, date_col, start_date, end_date, plot_size)
+        m: get_filled_2024(m, filtered, date_col, start_date, end_date, plot_size)
         for m in meter_list
     }
 
@@ -439,7 +501,7 @@ def get_2024plots(selected_farm, meter_df, master_df, meter_list):
     return plots
 
 
-def create_adjusted_filled_dataframe(meter_data, start_date, end_date, date_column, avg_day_column):
+def create_adjusted_filled_dataframe_2024(meter_data, start_date, end_date, date_column, avg_day_column):
     # shift first reading to align with start_date
     filtered = meter_data[meter_data[date_column] > start_date]
     if not filtered.empty:
@@ -471,7 +533,7 @@ def create_adjusted_filled_dataframe(meter_data, start_date, end_date, date_colu
     return merged
 
 
-def get_filled(meter_name, filtered_data, date_column, start_date, end_date, plot_size):
+def get_filled_2024(meter_name, filtered_data, date_column, start_date, end_date, plot_size):
     if not meter_name:
         raise ValueError("Meter name missing.")
 
@@ -488,7 +550,7 @@ def get_filled(meter_name, filtered_data, date_column, start_date, end_date, plo
     df['m³ per Acre'] = df['Delta m³'] / plot_size
     df['m³ per Acre per Avg Day'] = df['m³ per Acre'] / df['Days Since Previous Reading'].replace(0, 1)
 
-    return create_adjusted_filled_dataframe(
+    return create_adjusted_filled_dataframe_2024(
         meter_data=df,
         start_date=start_date,
         end_date=end_date,
@@ -521,98 +583,6 @@ def kharif2025_farms(master_df):
 
 
 def get_2025plots(raw_df, master_df, selected_farm, meter_list, start_date_enter = None, end_date_enter = None):
-    import pandas as pd
-    import matplotlib.pyplot as plt
-    import base64
-    import io
-
-    def encode_plot_to_base64(fig):
-        buf = io.BytesIO()
-        fig.savefig(buf, format='png')
-        buf.seek(0)
-        return base64.b64encode(buf.getvalue()).decode('utf-8')
-
-    def create_adjusted_filled_dataframe(meter_data, start_date, end_date, date_column, avg_day_column):
-        # shift first reading to align with start_date
-        filtered = meter_data[meter_data[date_column] > start_date]
-        if not filtered.empty:
-            first_index = filtered.index[0]
-            days_diff = (filtered.iloc[0][date_column] - start_date).days + 1
-            
-            # Get column names explicitly
-            col_m3_per_acre = 'm³ per Acre'
-            col_avg_day = 'm³ per Acre per Avg Day'
-
-            # Update values explicitly using column names
-            meter_data.loc[first_index, col_m3_per_acre] = meter_data.loc[first_index, col_m3_per_acre]
-            meter_data.loc[first_index, col_avg_day] = meter_data.loc[first_index, col_avg_day] / days_diff
-
-        
-
-        all_dates = pd.date_range(start=start_date, end=end_date, freq='D')
-        base = pd.DataFrame({date_column: all_dates})
-        merged = pd.merge(base, meter_data, on=date_column, how='left')
-
-        last_date = start_date
-        for idx, row in merged.iterrows():
-            if pd.isna(row[avg_day_column]):
-                next_rows = meter_data[meter_data[date_column] > row[date_column]]
-                if not next_rows.empty:
-                    merged.iloc[idx, 1:] = next_rows.iloc[0, 1:]
-                else:
-                    merged.iloc[idx, 1:] = 0
-            else:
-                last_date = row[date_column]
-        return merged
-
-    def get_filled(meter_name, filtered_data, date_column, start_date, end_date, plot_size):
-        if not meter_name:
-            raise ValueError("Meter name missing.")
-        
-        # Filter data for the specific meter
-        df = filtered_data[filtered_data['Meter Serial Number - as shown on meter'] == meter_name].copy()
-        if df.empty:
-            return pd.DataFrame()
-        
-        # Keep only relevant columns
-        df = df[[date_column, 'Reading in the meter - in m3']].dropna()
-
-        # Convert date column to datetime
-        df[date_column] = pd.to_datetime(df[date_column])
-
-        # Sort by date (if timestamps existed, include them in sort)
-        df = df.sort_values(date_column)
-
-        # Deduplicate: keep the latest reading if multiple on same date
-        df = df.drop_duplicates(subset=[date_column], keep='last')
-
-        df = error_fix(df)
-
-        # Calculate time difference and deltas
-        df['Days Since Previous Reading'] = df[date_column].diff().dt.days.fillna(method='bfill').fillna(1).astype(int)
-        df['Delta m³'] = df['Reading in the meter - in m3'].diff().fillna(method='bfill').fillna(0)
-
-        if plot_size <= 0:
-            raise ValueError("Invalid plot size.")
-
-        # Normalize per acre and per day
-        df['m³ per Acre'] = df['Delta m³'] / plot_size
-        df['m³ per Acre per Avg Day'] = df['m³ per Acre'] / df['Days Since Previous Reading'].replace(0, 1)
-
-        # Create filled daily dataframe
-        filled = create_adjusted_filled_dataframe(
-            meter_data=df,
-            start_date=start_date,
-            end_date=end_date,
-            date_column=date_column,
-            avg_day_column='m³ per Acre per Avg Day'
-        )
-
-        return filled
-
-
-    # --- Start of main function logic ---
-
     meta = master_df['Farm details']
     farm_row = meta[meta['Kharif 25 Farm ID'] == selected_farm]
     if farm_row.empty:
@@ -658,6 +628,9 @@ def get_2025plots(raw_df, master_df, selected_farm, meter_list, start_date_enter
         ax1.plot(filled_df['Day'], filled_df['m³ per Acre per Avg Day'], label='Daily m³ per Acre per day', color='blue')
         ax1.set(title=f'Daily Avg per Acre | Meter {meter}', xlabel='Days from transplanting', ylabel='Daily Avg m³ per Acre')
         ax1.legend()
+        # Force axis to start from zero
+        ax1.set_xlim(left=0)
+        ax1.set_ylim(bottom=0)
         fig1.tight_layout()
         meter_plots.append(encode_plot_to_base64(fig1))
         plt.close(fig1)
@@ -668,6 +641,9 @@ def get_2025plots(raw_df, master_df, selected_farm, meter_list, start_date_enter
         # ax2.plot(filled_df['Day'], filled_df['Weekly Avg'], label='Weekly Avg', linestyle=':', color='orange')
         ax2.set(title=f'Moving Average | Meter {meter}', xlabel='Days from transplanting', ylabel='7-days SMA m³ per Acre')
         ax2.legend()
+        # Force axis to start from zero
+        ax2.set_xlim(left=0)
+        ax2.set_ylim(bottom=0)
         fig2.tight_layout()
         meter_plots.append(encode_plot_to_base64(fig2))
         plt.close(fig2)
@@ -677,6 +653,9 @@ def get_2025plots(raw_df, master_df, selected_farm, meter_list, start_date_enter
         ax3.plot(filled_df['Day'], filled_df['Delta m³'], marker='o', linestyle='-', color='purple', label='Delta m³')
         ax3.set(title=f'Meter Actual readings of meter | Meter {meter}', xlabel='Days from transplanting', ylabel='Delta of readings (m³)')
         ax3.legend()
+        # Force axis to start from zero
+        ax3.set_xlim(left=0)
+        ax3.set_ylim(bottom=0)
         fig3.tight_layout()
         meter_plots.append(encode_plot_to_base64(fig3))
         plt.close(fig3)
@@ -686,6 +665,9 @@ def get_2025plots(raw_df, master_df, selected_farm, meter_list, start_date_enter
         ax4.plot(filled_df['Day'], filled_df['m³ per Acre'], marker='x', linestyle='-', color='red', label='Delta m³/Acre')
         ax4.set(title=f'Meter readings per Acre | Meter {meter}', xlabel='Days from transplanting', ylabel='Delta of reading per Acre (m³) ')
         ax4.legend()
+        # Force axis to start from zero
+        ax4.set_xlim(left=0)
+        ax4.set_ylim(bottom=0)
         fig4.tight_layout()
         meter_plots.append(encode_plot_to_base64(fig4))
         plt.close(fig4)
@@ -840,88 +822,6 @@ def get_2025plots_combined(raw_df, master_df, selected_farm, meter_list, start_d
     return plots_base64
 
 def get_tables(raw_df, master_df, farm_list, col_to_get, start_date_enter = None, end_date_enter = None):
-
-    def create_adjusted_filled_dataframe(meter_data, start_date, end_date, date_column, avg_day_column):
-        # shift first reading to align with start_date
-        filtered = meter_data[meter_data[date_column] > start_date]
-
-        if filtered.empty:
-            return filtered
-
-        if not filtered.empty:
-            first_index = filtered.index[0]
-            days_diff = (filtered.iloc[0][date_column] - start_date).days + 1
-            
-            # Get column names explicitly
-            col_m3_per_acre = 'm³ per Acre'
-            col_avg_day = 'm³ per Acre per Avg Day'
-
-            # Update values explicitly using column names
-            meter_data.loc[first_index, col_m3_per_acre] = meter_data.loc[first_index, col_m3_per_acre]
-            meter_data.loc[first_index, col_avg_day] = meter_data.loc[first_index, col_avg_day] / days_diff
-
-        
-        all_dates = pd.date_range(start=start_date, end=end_date, freq='D')
-        base = pd.DataFrame({date_column: all_dates})
-        merged = pd.merge(base, meter_data, on=date_column, how='left')
-
-        last_date = start_date
-        for idx, row in merged.iterrows():
-            if pd.isna(row[avg_day_column]):
-                next_rows = meter_data[meter_data[date_column] > row[date_column]]
-                if not next_rows.empty:
-                    merged.iloc[idx, 1:] = next_rows.iloc[0, 1:]
-                else:
-                    merged.iloc[idx, 1:] = 0
-            else:
-                last_date = row[date_column]
-        return merged
-
-    def get_filled(meter_name, filtered_data, date_column, start_date, end_date, plot_size):
-        if not meter_name:
-            raise ValueError("Meter name missing.")
-        
-        # Filter data for the specific meter
-        df = filtered_data[filtered_data['Meter Serial Number - as shown on meter'] == meter_name].copy()
-        if df.empty:
-            return pd.DataFrame()
-        
-        # Keep only relevant columns
-        df = df[[date_column, 'Reading in the meter - in m3']].dropna()
-
-        # Convert date column to datetime
-        df[date_column] = pd.to_datetime(df[date_column])
-
-        # Sort by date (if timestamps existed, include them in sort)
-        df = df.sort_values(date_column)
-
-        # Deduplicate: keep the latest reading if multiple on same date
-        df = df.drop_duplicates(subset=[date_column], keep='last')
-
-        df = error_fix(df)
-
-        # Calculate time difference and deltas
-        df['Days Since Previous Reading'] = df[date_column].diff().dt.days.fillna(method='bfill').fillna(1).astype(int)
-        df['Delta m³'] = df['Reading in the meter - in m3'].diff().fillna(method='bfill').fillna(0)
-
-        if plot_size <= 0:
-            raise ValueError("Invalid plot size.")
-
-        # Normalize per acre and per day
-        df['m³ per Acre'] = df['Delta m³'] / plot_size
-        df['m³ per Acre per Avg Day'] = df['m³ per Acre'] / df['Days Since Previous Reading'].replace(0, 1)
-
-        # Create filled daily dataframe
-        filled = create_adjusted_filled_dataframe(
-            meter_data=df,
-            start_date=start_date,
-            end_date=end_date,
-            date_column=date_column,
-            avg_day_column='m³ per Acre per Avg Day'
-        )
-
-        return filled
-
     # Clean meter data
     date_col = 'Date'
     raw_df[date_col] = pd.to_datetime(raw_df[date_col], dayfirst=False)
@@ -982,92 +882,6 @@ def calculate_avg_m3_per_acre(group_type, group_label, farm_ids, raw_df, master2
     """
     kharif_sheet = master25.get("Farm details")
     all_meter_dfs = []
-
-    import pandas as pd
-    import matplotlib.pyplot as plt
-    import base64
-    import io
-
-    def create_adjusted_filled_dataframe(meter_data, start_date, end_date, date_column, avg_day_column):
-        # shift first reading to align with start_date
-        filtered = meter_data[meter_data[date_column] > start_date]
-
-        if filtered.empty:
-            return filtered
-
-        if not filtered.empty:
-            first_index = filtered.index[0]
-            days_diff = (filtered.iloc[0][date_column] - start_date).days + 1
-            
-            # Get column names explicitly
-            col_m3_per_acre = 'm³ per Acre'
-            col_avg_day = 'm³ per Acre per Avg Day'
-
-            # Update values explicitly using column names
-            meter_data.loc[first_index, col_m3_per_acre] = meter_data.loc[first_index, col_m3_per_acre]
-            meter_data.loc[first_index, col_avg_day] = meter_data.loc[first_index, col_avg_day] / days_diff
-
-        
-        all_dates = pd.date_range(start=start_date, end=end_date, freq='D')
-        base = pd.DataFrame({date_column: all_dates})
-        merged = pd.merge(base, meter_data, on=date_column, how='left')
-
-        last_date = start_date
-        for idx, row in merged.iterrows():
-            if pd.isna(row[avg_day_column]):
-                next_rows = meter_data[meter_data[date_column] > row[date_column]]
-                if not next_rows.empty:
-                    merged.iloc[idx, 1:] = next_rows.iloc[0, 1:]
-                else:
-                    merged.iloc[idx, 1:] = 0
-            else:
-                last_date = row[date_column]
-        return merged
-
-    def get_filled(meter_name, filtered_data, date_column, start_date, end_date, plot_size):
-        if not meter_name:
-            raise ValueError("Meter name missing.")
-        
-        # Filter data for the specific meter
-        df = filtered_data[filtered_data['Meter Serial Number - as shown on meter'] == meter_name].copy()
-        if df.empty:
-            return pd.DataFrame()
-        
-        # Keep only relevant columns
-        df = df[[date_column, 'Reading in the meter - in m3']].dropna()
-
-        # Convert date column to datetime
-        df[date_column] = pd.to_datetime(df[date_column])
-
-        # Sort by date (if timestamps existed, include them in sort)
-        df = df.sort_values(date_column)
-
-        # Deduplicate: keep the latest reading if multiple on same date
-        df = df.drop_duplicates(subset=[date_column], keep='last')
-
-        df = error_fix(df)
-
-        # Calculate time difference and deltas
-        df['Days Since Previous Reading'] = df[date_column].diff().dt.days.fillna(method='bfill').fillna(0).astype(int)
-        df['Delta m³'] = df['Reading in the meter - in m3'].diff().fillna(method='bfill').fillna(0)
-
-        if plot_size <= 0:
-            raise ValueError("Invalid plot size.")
-
-        # Normalize per acre and per day
-        df['m³ per Acre'] = df['Delta m³'] / plot_size
-        df['m³ per Acre per Avg Day'] = df['m³ per Acre'] / df['Days Since Previous Reading'].replace(0, 1)
-
-        # Create filled daily dataframe
-        filled = create_adjusted_filled_dataframe(
-            meter_data=df,
-            start_date=start_date,
-            end_date=end_date,
-            date_column=date_column,
-            avg_day_column='m³ per Acre per Avg Day'
-        )
-
-        return filled
 
 
     # --- Start of main function logic ---
@@ -1137,11 +951,6 @@ def calculate_avg_m3_per_acre(group_type, group_label, farm_ids, raw_df, master2
 
     return final_df
 
-
-import matplotlib.pyplot as plt
-import base64
-from io import BytesIO
-
 def generate_group_analysis_plot(df, col_name):
     """
     Takes a DataFrame where:
@@ -1158,6 +967,9 @@ def generate_group_analysis_plot(df, col_name):
     plt.title("Group-wise Water Usage Comparison")
     plt.grid(True)
     plt.legend()
+    # Force axis to start from zero
+    plt.set_xlim(left=0)
+    plt.set_ylim(bottom=0)
     plt.tight_layout()
     
     buf = BytesIO()
