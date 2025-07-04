@@ -5,20 +5,29 @@ from django.core.files.storage import default_storage
 import pandas as pd
 from io import BytesIO
 from django.http import HttpResponse, JsonResponse
-from datetime import datetime  # Add this import
+import datetime  # Add this import
 from io import BytesIO
 from .utils import (
     kharif2024_farms, get_2024plots,
     kharif2025_farms, get_2025plots,
     encode_plot_to_base64, get_tables,
-    calculate_avg_m3_per_acre, generate_group_analysis_plot
+    calculate_avg_m3_per_acre, generate_group_analysis_plot,
+    load_and_validate_data,
+    clean_and_process_data,
+    create_merged_dataset,
+    apply_comprehensive_filters,
+    render_comparative_analysis,
+    get_farm_analysis_data,
+    create_zip_package,
+    prepare_comprehensive_downloads,
+    get_per_farm_downloads,
+    get_village_level_analysis
 )
 from django.urls import reverse
 from functools import wraps
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 import jwt
 from django.views.decorators.csrf import csrf_exempt
-import datetime
 from django.conf import settings
 
 
@@ -181,35 +190,548 @@ def meter_reading(request):
         'meter_results': meter_results,
     })
 
+def get_comparative_analysis(section, merged_df, kharif_df, custom_groups_df):
+    comparative = render_comparative_analysis(merged_df, kharif_df, custom_groups_df)
+    if section == 'village':
+        return comparative['village']['summary_df']
+    elif section == 'rc':
+        return comparative['rc']['summary_df']
+    elif section == 'awd':
+        return comparative['awd']['summary_df']
+    elif section == 'dsr_tpr':
+        return comparative['dsr_tpr']['summary_df']
+    elif section == 'custom':
+        return comparative['custom']['summary_df']
+    else:
+        return None
+    
 
-@require_auth
-def water_level(request):
-    pipe_df = master_df = None
-    error_message = None
-    pipe_preview = None
-    master_previews = {}
+def sanitize_filename(filename):
+    """Sanitize filename for safe file operations"""
+    return re.sub(r'[^\w\-_\.]', '_', str(filename))
 
-    if request.method == 'POST':
-        if 'pipe_file' in request.FILES:
+def load_full_context(context, merged_df, kharif_df, farm_daily_avg, weekly_avg, session):
+    """Load all necessary context to prevent page breaking when errors occur"""
+    def categorize_files(downloadables):
+        complete_dataset = [f for f in downloadables if f.startswith('01_') or f.startswith('02_')]
+        study_group = [f for f in downloadables if any(k in f.lower() for k in ['remote', 'awd', 'dsr', 'tpr'])]
+        analysis_reports = [f for f in downloadables if 'village_summary' in f or 'farm_summary' in f]
+        return complete_dataset, study_group, analysis_reports
+ 
+
+from io import StringIO
+from django.shortcuts import render
+from django.http import HttpResponse
+from .utils import (
+    load_and_validate_data,
+    clean_and_process_data,
+    create_merged_dataset,
+    apply_comprehensive_filters,
+    render_comparative_analysis,
+    get_farm_analysis_data,
+    create_zip_package,
+    prepare_comprehensive_downloads,
+    get_per_farm_downloads,
+    get_village_level_analysis
+)
+import pandas as pd
+import json
+import io
+import zipfile
+from io import StringIO
+import re
+def water_dashboard_view(request):
+    context = {}
+    session = request.session
+
+    def categorize_files(downloadables):
+        complete_dataset = [f for f in downloadables if f.startswith('01_') or f.startswith('02_')]
+        study_group = [f for f in downloadables if any(k in f.lower() for k in ['remote', 'awd', 'dsr', 'tpr'])]
+        analysis_reports = [f for f in downloadables if 'village_summary' in f or 'farm_summary' in f]
+        return complete_dataset, study_group, analysis_reports
+
+    # ----------------------------------
+    # 0️⃣ Handle Direct CSV Download
+    # ----------------------------------
+    if 'download' in request.GET:
+        filename = request.GET['download']
+        if 'merged_df' not in session or 'kharif_df' not in session:
+            return HttpResponse(b"No data loaded.", status=400)
+
+        merged_df = pd.read_json(session['merged_df'], orient='split')
+        kharif_df = pd.read_json(session['kharif_df'], orient='split')
+        farm_daily_avg = pd.read_json(session['farm_daily_avg'], orient='split') if 'farm_daily_avg' in session else None
+        weekly_avg = pd.read_json(session['weekly_avg'], orient='split') if 'weekly_avg' in session else None
+
+        downloadables = prepare_comprehensive_downloads(merged_df, kharif_df, farm_daily_avg, weekly_avg)
+        if filename.startswith('farm_'):
+            downloadables.update(get_per_farm_downloads(merged_df, farm_daily_avg))
+        elif filename.startswith('village_'):
+            downloadables.update(get_village_level_analysis(merged_df, kharif_df))
+        if filename not in downloadables:
+            return HttpResponse(b"File not found.", status=404)
+
+        response = HttpResponse(downloadables[filename], content_type='text/csv')
+        response['Content-Disposition'] = f'attachment; filename={filename}'
+        return response
+
+    # ----------------------------------
+    # 1️⃣ Handle File Upload
+    # ----------------------------------
+    if request.method == 'POST' and 'kharif_file' in request.FILES and 'water_file' in request.FILES:
+        kharif_df, water_df, missing_kharif, missing_water = load_and_validate_data(
+            request.FILES['kharif_file'], request.FILES['water_file']
+        )
+        if missing_kharif or missing_water:
+            context['error'] = f"Missing columns: Kharif: {missing_kharif}, Water: {missing_water}"
+            return render(request, 'water_meters.html', context)
+
+        kharif_cleaned, water_cleaned = clean_and_process_data(kharif_df, water_df)
+        filtered_kharif, filtered_water = apply_comprehensive_filters(kharif_cleaned, water_cleaned, {
+            'villages': [], 'date_range': None, 'available_groups': {},
+            'remote_controllers': 'All', 'awd_study': 'All',
+            'farming_method': 'All', 'min_readings': 1, 'remove_outliers': False
+        })
+
+        merged_df, farm_daily_avg, weekly_avg = create_merged_dataset(filtered_kharif, filtered_water)
+
+        session['merged_df'] = merged_df.to_json(orient='split')
+        session['kharif_df'] = kharif_cleaned.to_json(orient='split')
+        session['filtered_kharif'] = filtered_kharif.to_json(orient='split')
+        session['filtered_water'] = filtered_water.to_json(orient='split')
+        session['farm_daily_avg'] = farm_daily_avg.to_json(orient='split')
+        session['weekly_avg'] = weekly_avg.to_json(orient='split')
+
+        context['summary'] = {
+            'total_records': len(merged_df),
+            'unique_farms': merged_df['Farm ID'].nunique(),
+            'total_villages': merged_df['Village'].nunique() if 'Village' in merged_df.columns else 0,
+            'date_range': f"{merged_df['Date'].min().date()} to {merged_df['Date'].max().date()}",
+            'avg_level': round(merged_df['Water Level (mm)'].mean(), 1)
+        }
+        context['merged_loaded'] = True
+        context['available_farms'] = sorted(merged_df["Farm ID"].unique())
+        context['available_villages'] = sorted(merged_df["Village"].dropna().unique()) if 'Village' in merged_df.columns else []
+        context['selected_farm'] = context['available_farms'][0] if context['available_farms'] else None
+
+        # 🔍 Load Valid Custom Groups
+        custom_groups_df = {}
+        for k, v in session.get('custom_groups', {}).items():
             try:
-                df = pd.read_excel(request.FILES['pipe_file'])
-                pipe_preview = df.head().to_html()
+                df = pd.read_json(StringIO(v), orient='split')
+                if df.empty:
+                    print(f"[WARN] Custom group '{k}' is empty.")
+                    continue
+                required = {"Farm ID", "Village", "Water Level (mm)", "Date", "Days from TPR"}
+                if not required.issubset(df.columns):
+                    print(f"[WARN] Custom group '{k}' missing columns: {required - set(df.columns)}")
+                    continue
+                custom_groups_df[k] = df
             except Exception as e:
-                error_message = f"Error processing pipe file: {e}"
+                print(f"[ERROR] Failed to parse custom group '{k}':", e)
 
-        if 'master_file' in request.FILES:
-            try:
-                master = pd.read_excel(request.FILES['master_file'], sheet_name=None)
-                for name, df in master.items():
-                    master_previews[name] = df.head().to_html()
-            except Exception as e:
-                error_message = f"Error processing master file: {e}"
+        print("[DEBUG] Valid custom group keys:", list(custom_groups_df.keys()))
 
-    return render(request, 'water_level.html', {
-        'error_message': error_message,
-        'pipe_preview': pipe_preview,
-        'master_previews': master_previews,
-    })
+        # 📊 Comparative Analysis
+        comparative = render_comparative_analysis(merged_df, kharif_cleaned, custom_groups_df)
+        context['comparative'] = {
+            'village': {
+                'plot': comparative['village']['plot'].to_html(full_html=False),
+                'summary_df': comparative['village']['summary_df'].to_html(index=False, classes="table table-bordered table-sm")
+            },
+            'rc': {
+                'plot': comparative['rc']['plot'].to_html(full_html=False),
+                'summary_df': comparative['rc']['summary_df'].to_html(index=False, classes="table table-bordered table-sm")
+            },
+            'awd': {
+                'plot': comparative['awd']['plot'].to_html(full_html=False),
+                'summary_df': comparative['awd']['summary_df'].to_html(index=False, classes="table table-bordered table-sm")
+            },
+            'dsr_tpr': {
+                'plot': comparative['dsr_tpr']['plot'].to_html(full_html=False),
+                'summary_df': comparative['dsr_tpr']['summary_df'].to_html(index=False, classes="table table-bordered table-sm")
+            },
+            'compliance': {
+                'df': comparative['compliance']['df'].to_html(index=False, classes="table table-striped"),
+                'summary': comparative['compliance']['summary']
+            },
+            'custom': {
+                'summary_df': (
+                    comparative['custom']['summary_df'].to_html(index=False, classes="table table-bordered table-sm")
+                    if comparative['custom'].get('summary_df') is not None and not comparative['custom']['summary_df'].empty
+                    else "<div class='text-muted'>No valid custom groups available.</div>"
+                ),
+                'chart_html': comparative['custom'].get('chart_html', None)
+            }
+        }
+        context['custom_groups'] = list(custom_groups_df.keys())
+
+        # 📥 Download Links
+        downloads = prepare_comprehensive_downloads(merged_df, kharif_cleaned, farm_daily_avg, weekly_avg)
+        ds1, ds2, ds3 = categorize_files(downloads)
+        context['complete_dataset_files'] = [{'filename': f, 'display_name': pretty_download_name(f)} for f in ds1]
+        context['study_group_files'] = [{'filename': f, 'display_name': pretty_download_name(f)} for f in ds2]
+        context['analysis_report_files'] = [{'filename': f, 'display_name': pretty_download_name(f)} for f in ds3]
+
+        # 📊 Overall Stats
+        stats = {
+            'mean': round(merged_df['Water Level (mm)'].mean(), 2),
+            'std': round(merged_df['Water Level (mm)'].std(), 2),
+            'min': round(merged_df['Water Level (mm)'].min(), 2),
+            'max': round(merged_df['Water Level (mm)'].max(), 2),
+            'total_readings': len(merged_df),
+            'unique_farms': merged_df['Farm ID'].nunique()
+        }
+        context['farm_summary_stats'] = stats
+
+        # Selected farm downloads
+        farm = context['selected_farm']
+        context['per_farm_downloads'] = [
+            {'filename': f"farm_{sanitize_filename(farm)}_{suffix}.csv", 'display_name': label}
+            for suffix, label in zip(['detailed', 'summary', 'daily_avg'], ["Detailed Data", "Summary Row", "Daily Averages"])
+        ] if farm else []
+
+    # ----------------------------------
+    # 2️⃣ Handle AJAX Farm Selection
+    # ----------------------------------
+    if 'merged_df' in session and request.method == 'POST' and 'download_zip' not in request.POST:
+        merged_df = pd.read_json(session['merged_df'], orient='split')
+        kharif_df = pd.read_json(session['kharif_df'], orient='split')
+        farm_daily_avg = pd.read_json(session['farm_daily_avg'], orient='split')
+        weekly_avg = pd.read_json(session['weekly_avg'], orient='split')
+        available_farms = sorted(merged_df["Farm ID"].unique())
+        selected_farm = request.POST.get('selected_farm') or (available_farms[0] if available_farms else None)
+        context.update({
+            'available_farms': available_farms,
+            'selected_farm': selected_farm,
+            'merged_loaded': True
+        })
+        if selected_farm:
+            analysis = get_farm_analysis_data(selected_farm, merged_df, farm_daily_avg, weekly_avg)
+            context['farm_analysis'] = {
+                "plot1": analysis["plot1"],
+                "plot2": analysis["plot2"],
+                "summary": analysis["summary"],
+                "pivot_table_html": analysis["pivot_table"]
+            }
+            context['farm_summary_stats'] = {
+                'mean': round(analysis["summary"]["average"], 1),
+                'std': round(analysis["summary"]["std_dev"], 1),
+                'min': round(analysis["summary"]["min"], 1),
+                'max': round(analysis["summary"]["max"], 1),
+            }
+            context['per_farm_downloads'] = [
+                {'filename': f"farm_{sanitize_filename(selected_farm)}_{suffix}.csv", 'display_name': label}
+                for suffix, label in zip(['detailed', 'summary', 'daily_avg'], ["Detailed Data", "Summary Row", "Daily Averages"])
+            ]
+        if 'farm_select' in request.POST:
+            return render(request, 'water_meters.html', context)
+
+    # ----------------------------------
+    # 3️⃣ Download Full ZIP
+    # ----------------------------------
+    if request.method == 'POST' and 'download_zip' in request.POST:
+        merged_df = pd.read_json(session['merged_df'], orient='split')
+        kharif_df = pd.read_json(session['kharif_df'], orient='split')
+        farm_daily_avg = pd.read_json(session['farm_daily_avg'], orient='split')
+        weekly_avg = pd.read_json(session['weekly_avg'], orient='split')
+        zip_buffer = create_zip_package(merged_df, kharif_df, farm_daily_avg, weekly_avg)
+        response = HttpResponse(zip_buffer.getvalue(), content_type='application/zip')
+        response['Content-Disposition'] = 'attachment; filename=agri_dashboard_package.zip'
+        return response
+
+    # ----------------------------------
+    # 4️⃣ Village Summary Download
+    # ----------------------------------
+    if 'download_village_summary' in request.GET:
+        merged_df = pd.read_json(session['merged_df'], orient='split')
+        selected_villages = request.GET.getlist('villages')
+        filtered_df = merged_df[merged_df['Village'].isin(selected_villages)] if selected_villages else merged_df
+        summary_csv = get_village_level_analysis(filtered_df)['summary_df'].to_csv(index=False)
+        return HttpResponse(summary_csv, content_type='text/csv', headers={
+            'Content-Disposition': 'attachment; filename=village_summary.csv'
+        })
+
+    # ----------------------------------
+    # 5️⃣ Village Analysis ZIP
+    # ----------------------------------
+    if 'download_village_analysis' in request.GET:
+        merged_df = pd.read_json(session['merged_df'], orient='split')
+        selected_villages = request.GET.getlist('villages')
+        filtered_df = merged_df[merged_df['Village'].isin(selected_villages)] if selected_villages else merged_df
+        village_result = get_village_level_analysis(filtered_df)
+
+        zip_buffer = io.BytesIO()
+        with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zf:
+            zf.writestr('village_summary.csv', village_result['summary_df'].to_csv(index=False))
+            if 'trend_df' in village_result:
+                zf.writestr('village_daily_trends.csv', village_result['trend_df'].to_csv(index=False))
+        zip_buffer.seek(0)
+        return HttpResponse(zip_buffer.getvalue(), content_type='application/zip', headers={
+            'Content-Disposition': 'attachment; filename=village_analysis.zip'
+        })
+
+    # ----------------------------------
+    # 6️⃣ Handle Custom Group Creation
+    # ----------------------------------
+    if request.method == 'POST' and 'create_custom_group' in request.POST:
+        if 'merged_df' not in session:
+            context['error'] = "No data loaded. Please upload files first."
+            return render(request, 'water_meters.html', context)
+
+        merged_df = pd.read_json(session['merged_df'], orient='split')
+        kharif_df = pd.read_json(session['kharif_df'], orient='split')
+        farm_daily_avg = pd.read_json(session['farm_daily_avg'], orient='split')
+        weekly_avg = pd.read_json(session['weekly_avg'], orient='split')
+
+        group_count = int(request.POST.get('group_count', 1))
+        custom_groups = session.get('custom_groups', {})
+
+        group_created = False
+        for i in range(1, group_count + 1):
+            group_name = request.POST.get(f'group_name_{i}', '').strip()
+            selected_farms = request.POST.getlist(f'selected_farms_{i}')
+            selected_villages = request.POST.getlist(f'selected_villages_{i}')
+            if not group_name:
+                context['error'] = f"Group name is required for group {i}."
+                return render(request, 'water_meters.html', context)
+            if not selected_farms and not selected_villages:
+                context['error'] = f"Please select at least one farm or village for group {i}."
+                return render(request, 'water_meters.html', context)
+            # Create custom group DataFrame
+            custom_group_data = merged_df.copy()
+            if selected_farms:
+                custom_group_data = custom_group_data[custom_group_data['Farm ID'].isin(selected_farms)]
+            if selected_villages:
+                custom_group_data = custom_group_data[custom_group_data['Village'].isin(selected_villages)]
+            if custom_group_data.empty:
+                context['error'] = f"No data found for the selected farms/villages in group {i}."
+                return render(request, 'water_meters.html', context)
+            custom_groups[group_name] = custom_group_data.to_json(orient='split')
+            group_created = True
+
+        if group_created:
+            session['custom_groups'] = custom_groups
+            session.modified = True
+            context['success_message'] = f"Custom group(s) created successfully."
+
+        # Regenerate comparative analysis with updated custom groups
+        custom_groups_df = {k: pd.read_json(StringIO(v), orient='split') for k, v in custom_groups.items()}
+        comparative_results = render_comparative_analysis(merged_df, kharif_df, custom_groups_df)
+        
+        # Set up context for comparative analysis
+        context['comparative'] = {
+            'village': {
+                'plot': comparative_results['village']['plot'].to_html(full_html=False),
+                'summary_df': comparative_results['village']['summary_df'].to_html(index=False, classes="table table-bordered table-sm")
+            },
+            'rc': {
+                'plot': comparative_results['rc']['plot'].to_html(full_html=False),
+                'summary_df': comparative_results['rc']['summary_df'].to_html(index=False, classes="table table-bordered table-sm")
+            },
+            'awd': {
+                'plot': comparative_results['awd']['plot'].to_html(full_html=False),
+                'summary_df': comparative_results['awd']['summary_df'].to_html(index=False, classes="table table-bordered table-sm")
+            },
+            'dsr_tpr': {
+                'plot': comparative_results['dsr_tpr']['plot'].to_html(full_html=False),
+                'summary_df': comparative_results['dsr_tpr']['summary_df'].to_html(index=False, classes="table table-bordered table-sm")
+            },
+            'compliance': {
+                'df': comparative_results['compliance']['df'].to_html(index=False, classes="table table-striped"),
+                'summary': comparative_results['compliance']['summary']
+            },
+            'custom': {
+                'summary_df': (
+                    comparative_results['custom']['summary_df'].to_html(index=False, classes="table table-bordered table-sm")
+                    if comparative_results['custom'].get('summary_df') is not None and not comparative_results['custom']['summary_df'].empty
+                    else "<div class='text-muted'>No valid custom groups available.</div>"
+                ),
+                'chart_html': comparative_results['custom'].get('chart_html', None)
+            }
+        }
+        
+        # Set up other required context
+        context['merged_loaded'] = True
+        context['available_farms'] = sorted(merged_df["Farm ID"].unique())
+        context['available_villages'] = sorted(merged_df["Village"].dropna().unique()) if 'Village' in merged_df.columns else []
+        context['custom_groups'] = list(custom_groups_df.keys())
+        
+        # Set up download categories
+        downloads = prepare_comprehensive_downloads(merged_df, kharif_df, farm_daily_avg, weekly_avg)
+        ds1, ds2, ds3 = categorize_files(downloads)
+        context['complete_dataset_files'] = [{'filename': f, 'display_name': pretty_download_name(f)} for f in ds1]
+        context['study_group_files'] = [{'filename': f, 'display_name': pretty_download_name(f)} for f in ds2]
+        context['analysis_report_files'] = [{'filename': f, 'display_name': pretty_download_name(f)} for f in ds3]
+        
+        # Farm summary statistics
+        stats = {
+            'mean': round(merged_df['Water Level (mm)'].mean(), 2),
+            'std': round(merged_df['Water Level (mm)'].std(), 2),
+            'min': round(merged_df['Water Level (mm)'].min(), 2),
+            'max': round(merged_df['Water Level (mm)'].max(), 2),
+            'total_readings': len(merged_df),
+            'unique_farms': merged_df['Farm ID'].nunique()
+        }
+        context['farm_summary_stats'] = stats
+        
+        # Reload the page with updated context
+        return render(request, 'water_meters.html', context)
+
+    # ----------------------------------
+    # 7️⃣ Handle Custom Group Deletion
+    # ----------------------------------
+    if request.method == 'POST' and 'delete_custom_group' in request.POST:
+        if 'merged_df' not in session:
+            context['error'] = "No data loaded. Please upload files first."
+            return render(request, 'water_meters.html', context)
+        
+        merged_df = pd.read_json(session['merged_df'], orient='split')
+        kharif_df = pd.read_json(session['kharif_df'], orient='split')
+        farm_daily_avg = pd.read_json(session['farm_daily_avg'], orient='split')
+        weekly_avg = pd.read_json(session['weekly_avg'], orient='split')
+        
+        group_name = request.POST.get('group_name', '').strip()
+        if not group_name:
+            context['error'] = "Group name is required for deletion."
+            # Load context to prevent breaking
+            context = load_full_context(context, merged_df, kharif_df, farm_daily_avg, weekly_avg, session)
+            return render(request, 'water_meters.html', context)
+        
+        custom_groups = session.get('custom_groups', {})
+        if group_name in custom_groups:
+            del custom_groups[group_name]
+            session['custom_groups'] = custom_groups
+            session.modified = True
+            context['success_message'] = f"Custom group '{group_name}' deleted successfully."
+        else:
+            context['error'] = f"Custom group '{group_name}' not found."
+            # Load context to prevent breaking
+            context = load_full_context(context, merged_df, kharif_df, farm_daily_avg, weekly_avg, session)
+            return render(request, 'water_meters.html', context)
+        
+        # Regenerate comparative analysis with updated custom groups
+        custom_groups_df = {k: pd.read_json(StringIO(v), orient='split') for k, v in custom_groups.items()}
+        comparative_results = render_comparative_analysis(merged_df, kharif_df, custom_groups_df)
+        
+        # Set up context for comparative analysis
+        context['comparative'] = {
+            'village': {
+                'plot': comparative_results['village']['plot'].to_html(full_html=False),
+                'summary_df': comparative_results['village']['summary_df'].to_html(index=False, classes="table table-bordered table-sm")
+            },
+            'rc': {
+                'plot': comparative_results['rc']['plot'].to_html(full_html=False),
+                'summary_df': comparative_results['rc']['summary_df'].to_html(index=False, classes="table table-bordered table-sm")
+            },
+            'awd': {
+                'plot': comparative_results['awd']['plot'].to_html(full_html=False),
+                'summary_df': comparative_results['awd']['summary_df'].to_html(index=False, classes="table table-bordered table-sm")
+            },
+            'dsr_tpr': {
+                'plot': comparative_results['dsr_tpr']['plot'].to_html(full_html=False),
+                'summary_df': comparative_results['dsr_tpr']['summary_df'].to_html(index=False, classes="table table-bordered table-sm")
+            },
+            'compliance': {
+                'df': comparative_results['compliance']['df'].to_html(index=False, classes="table table-striped"),
+                'summary': comparative_results['compliance']['summary']
+            },
+            'custom': {
+                'summary_df': (
+                    comparative_results['custom']['summary_df'].to_html(index=False, classes="table table-bordered table-sm")
+                    if comparative_results['custom'].get('summary_df') is not None and not comparative_results['custom']['summary_df'].empty
+                    else "<div class='text-muted'>No valid custom groups available.</div>"
+                ),
+                'chart_html': comparative_results['custom'].get('chart_html', None)
+            }
+        }
+        
+        # Set up other required context
+        context['merged_loaded'] = True
+        context['available_farms'] = sorted(merged_df["Farm ID"].unique())
+        context['available_villages'] = sorted(merged_df["Village"].dropna().unique()) if 'Village' in merged_df.columns else []
+        context['custom_groups'] = list(custom_groups_df.keys())
+        
+        # Set up download categories
+        downloads = prepare_comprehensive_downloads(merged_df, kharif_df, farm_daily_avg, weekly_avg)
+        ds1, ds2, ds3 = categorize_files(downloads)
+        context['complete_dataset_files'] = [{'filename': f, 'display_name': pretty_download_name(f)} for f in ds1]
+        context['study_group_files'] = [{'filename': f, 'display_name': pretty_download_name(f)} for f in ds2]
+        context['analysis_report_files'] = [{'filename': f, 'display_name': pretty_download_name(f)} for f in ds3]
+        
+        # Farm summary statistics
+        stats = {
+            'mean': round(merged_df['Water Level (mm)'].mean(), 2),
+            'std': round(merged_df['Water Level (mm)'].std(), 2),
+            'min': round(merged_df['Water Level (mm)'].min(), 2),
+            'max': round(merged_df['Water Level (mm)'].max(), 2),
+            'total_readings': len(merged_df),
+            'unique_farms': merged_df['Farm ID'].nunique()
+        }
+        context['farm_summary_stats'] = stats
+        
+        # Reload the page with updated context
+        return render(request, 'water_meters.html', context)
+    if request.method == 'GET' and any(k in request.GET for k in [
+    'download_village_analysis', 'download_rc_analysis', 'download_awd_analysis', 'download_dsr_tpr_analysis', 'download_custom_group_analysis'
+    ]):
+       section_map = {
+        'download_village_analysis': 'village',
+        'download_rc_analysis': 'rc',
+        'download_awd_analysis': 'awd',
+        'download_dsr_tpr_analysis': 'dsr_tpr',
+        'download_custom_group_analysis': 'custom'
+    }
+       for key, section in section_map.items():
+        if key in request.GET:
+            merged_df = pd.read_json(session['merged_df'], orient='split')
+            kharif_df = pd.read_json(session['kharif_df'], orient='split')
+            custom_groups = session.get('custom_groups', {})
+            custom_groups_df = {k: pd.read_json(StringIO(v), orient='split') for k, v in custom_groups.items()}
+            summary_df = get_comparative_analysis(section, merged_df, kharif_df, custom_groups_df)
+            if summary_df is not None:
+                summary_csv = summary_df.to_csv(index=False)
+                return HttpResponse(summary_csv, content_type='text/csv', headers={
+                    'Content-Disposition': f'attachment; filename={section}_analysis.csv'
+                })
+            else:
+                return HttpResponse(b"No data available.", status=400)
+    # ----------------------------------
+    # 🖼️ Final Page Render
+    # ----------------------------------
+    return render(request, 'water_meters.html', context)
+
+# Helper for pretty download names
+def pretty_download_name(filename):
+    mapping = {
+        "01_complete_merged_data.csv": "Complete Merged Dataset",
+        "02_raw_kharif_data.csv": "Raw Kharif Data",
+        "20_village_summary.csv": "Village Summary",
+        "21_farm_summary.csv": "Farm Summary",
+        "30_remote_controller_summary.csv": "Remote Controller Summary",
+        "31_awd_study_summary.csv": "AWD Study Summary",
+        "32_dsr_vs_tpr_summary.csv": "DSR vs TPR Summary",
+    }
+    # For study group files
+    if filename.endswith(".csv") and filename[3:-4]:
+        name = filename[3:-4].replace("_", " ").title()
+        if "Remote Controllers Treatment" in name:
+            return "Remote Controllers Treatment"
+        if "Remote Controllers Control" in name:
+            return "Remote Controllers Control"
+        if "Awd Group A Treatment" in name:
+            return "AWD Group A Treatment"
+        if "Awd Group B Training" in name:
+            return "AWD Group B Training"
+        if "Awd Group C Control" in name:
+            return "AWD Group C Control"
+        if "Dsr Farms" in name:
+            return "DSR Farms"
+        if "Tpr Farms" in name:
+            return "TPR Farms"
+        return name
+    return mapping.get(filename, filename)
+
 
 
 @require_auth
@@ -454,8 +976,6 @@ def meter_reading_25_view(request):
         
         # Apply date filter if enabled
         if use_date_filter and filter_start_date and filter_end_date:
-            from .utils import filter_data_by_date_range
-            raw_df = filter_data_by_date_range(raw_df, filter_start_date, filter_end_date)
             date_range_info['current_min'] = filter_start_date
             date_range_info['current_max'] = filter_end_date
 
@@ -557,7 +1077,7 @@ def meter_reading_25_view(request):
             docx_buffer.getvalue(),
             content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document'
         )
-        response['Content-Disposition'] = f'attachment; filename="water_analysis_report_{datetime.now().strftime("%Y%m%d_%H%M%S")}.docx"'
+        response['Content-Disposition'] = f'attachment; filename="water_analysis_report_{datetime.datetime.now().strftime("%Y%m%d_%H%M%S")}.docx"'
         return response
 
 # 6) When a farm is selected, generate graphs
@@ -691,9 +1211,6 @@ def grouping_25(request):
         if raw_df is not None and request.session.get('use_date_filter', False):
             start_date = request.session.get('filter_start_date')
             end_date = request.session.get('filter_end_date')
-            if start_date and end_date:
-                from .utils import filter_data_by_date_range
-                raw_df = filter_data_by_date_range(raw_df, start_date, end_date)
 
        
 
@@ -716,7 +1233,7 @@ def grouping_25(request):
                 docx_buffer.getvalue(),
                 content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document'
             )
-            response['Content-Disposition'] = f'attachment; filename="group_analysis_report_{datetime.now().strftime("%Y%m%d_%H%M%S")}.docx"'
+            response['Content-Disposition'] = f'attachment; filename="group_analysis_report_{datetime.datetime.now().strftime("%Y%m%d_%H%M%S")}.docx"'
             return response
 
         if selected_label and selected_checkboxes and raw_df is not None and master25:
