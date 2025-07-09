@@ -7,9 +7,11 @@ from io import BytesIO
 from django.http import HttpResponse, JsonResponse
 import datetime  # Add this import
 from io import BytesIO
+# In views.py, update the imports section:
 from .utils import (
     kharif2024_farms, get_2024plots,
-    kharif2025_farms, get_2025plots,
+    kharif2025_farms, get_2025plots, get_2025plots_combined,
+    get_2025plots_plotly, get_2025plots_combined_plotly,  # Add these new imports
     encode_plot_to_base64, get_tables,
     calculate_avg_m3_per_acre, generate_group_analysis_plot,
     load_and_validate_data,
@@ -756,6 +758,9 @@ import pandas as pd
 
 from .utils import kharif2025_farms, get_2025plots, get_meters_by_village
 
+
+
+# Replace the existing meter_reading_25_view function with this updated version:
 @require_auth
 def meter_reading_25_view(request):
     # ANSI color codes for terminal output
@@ -1011,9 +1016,10 @@ def meter_reading_25_view(request):
 
     # Handle Word report download
     if request.method == 'POST' and request.POST.get('download_report') and raw_df is not None and master25:
-        # Reconstruct results based on what was selected
+        # Reconstruct results based on what was selected - GENERATE MATPLOTLIB FOR REPORTS
         filter_type = None
         filter_value = None
+        report_results = []
         
         if request.POST.get('report_filter_type') == 'farm':
             selected = request.POST.get('report_filter_value')
@@ -1033,7 +1039,7 @@ def meter_reading_25_view(request):
                     'meter': meter,
                     'plots': encoded_imgs[4*idx : 4*idx + 4]
                 }
-                results.append(block)
+                report_results.append(block)
                 
         elif request.POST.get('report_filter_type') == 'village':
             selected_village = request.POST.get('report_filter_value')
@@ -1042,10 +1048,8 @@ def meter_reading_25_view(request):
             from .utils import get_meters_by_village
             
             village_meters = get_meters_by_village(raw_df, selected_village)
-            all_encoded_imgs = []
-            meter_to_farm = {}
-            
             farm_dict = kharif2025_farms(master25)
+            meter_to_farm = {}
             for farm_id, meter_list in farm_dict.items():
                 for meter in meter_list:
                     meter_to_farm[meter] = farm_id
@@ -1066,11 +1070,11 @@ def meter_reading_25_view(request):
                             'farm': farm_id,
                             'plots': meter_imgs[idx:idx+4]
                         }
-                        results.append(block)
+                        report_results.append(block)
         
         # Generate Word report
         from .utils import generate_word_report
-        docx_buffer = generate_word_report(results, filter_type, filter_value, raw_df, master25)
+        docx_buffer = generate_word_report(report_results, filter_type, filter_value, raw_df, master25)
         
         # Return Word document
         response = HttpResponse(
@@ -1080,42 +1084,49 @@ def meter_reading_25_view(request):
         response['Content-Disposition'] = f'attachment; filename="water_analysis_report_{datetime.datetime.now().strftime("%Y%m%d_%H%M%S")}.docx"'
         return response
 
-# 6) When a farm is selected, generate graphs
+    # 6) When a farm is selected, generate BOTH matplotlib (for reports) and plotly (for display)
     if selected and raw_df is not None and master25:
         mapping = kharif2025_farms(master25)
         meters = mapping.get(selected, [])
         
-        # Generate individual meter plots
+        # Generate PLOTLY plots for portal display
         if use_date_filter and filter_start_date and filter_end_date:
             filter_start = pd.to_datetime(filter_start_date)
             filter_end = pd.to_datetime(filter_end_date)
+            plotly_htmls = get_2025plots_plotly(raw_df, master25, selected, meters, start_date_enter=filter_start, end_date_enter=filter_end)
+            # Also generate matplotlib for potential reports
             encoded_imgs = get_2025plots(raw_df, master25, selected, meters, start_date_enter=filter_start, end_date_enter=filter_end)
         else:
+            plotly_htmls = get_2025plots_plotly(raw_df, master25, selected, meters)
+            # Also generate matplotlib for potential reports
             encoded_imgs = get_2025plots(raw_df, master25, selected, meters)
 
-        # Group 4 graphs per meter
+        # Group plots per meter - 4 plotly plots per meter
         for idx, meter in enumerate(meters):
             block = {
                 'meter': meter,
-                'plots': encoded_imgs[4*idx : 4*idx + 4],
+                'plotly_plots': plotly_htmls[4*idx : 4*idx + 4],  # Plotly for display
+                'plots': encoded_imgs[4*idx : 4*idx + 4],         # Matplotlib for reports
                 'is_combined': False
             }
             results.append(block)
         
         # Generate combined plots if multiple meters
         if len(meters) > 1:
-            from .utils import get_2025plots_combined
             if use_date_filter and filter_start_date and filter_end_date:
                 filter_start = pd.to_datetime(filter_start_date)
                 filter_end = pd.to_datetime(filter_end_date)
+                combined_plotly = get_2025plots_combined_plotly(raw_df, master25, selected, meters, start_date_enter=filter_start, end_date_enter=filter_end)
                 combined_imgs = get_2025plots_combined(raw_df, master25, selected, meters, start_date_enter=filter_start, end_date_enter=filter_end)
             else:
+                combined_plotly = get_2025plots_combined_plotly(raw_df, master25, selected, meters)
                 combined_imgs = get_2025plots_combined(raw_df, master25, selected, meters)
             
-            if combined_imgs:
+            if combined_plotly:
                 combined_block = {
                     'meter': ' + '.join(meters),
-                    'plots': combined_imgs,
+                    'plotly_plots': combined_plotly,  # Plotly for display
+                    'plots': combined_imgs,           # Matplotlib for reports
                     'is_combined': True,
                     'farm': selected
                 }
@@ -1123,7 +1134,7 @@ def meter_reading_25_view(request):
     
     # 7) When a village is selected, generate graphs for all meters in that village
     elif selected_village and raw_df is not None and master25:
-        from .utils import get_meters_by_village, get_2025plots_combined
+        from .utils import get_meters_by_village
         
         # Get all meters for this village
         village_meters = get_meters_by_village(raw_df, selected_village)
@@ -1151,15 +1162,18 @@ def meter_reading_25_view(request):
                 if use_date_filter and filter_start_date and filter_end_date:
                     filter_start = pd.to_datetime(filter_start_date)
                     filter_end = pd.to_datetime(filter_end_date)
+                    meter_plotly = get_2025plots_plotly(raw_df, master25, farm_id, [meter], start_date_enter=filter_start, end_date_enter=filter_end)
                     meter_imgs = get_2025plots(raw_df, master25, farm_id, [meter], start_date_enter=filter_start, end_date_enter=filter_end)
                 else:
+                    meter_plotly = get_2025plots_plotly(raw_df, master25, farm_id, [meter])
                     meter_imgs = get_2025plots(raw_df, master25, farm_id, [meter])
                 
-                for idx in range(0, len(meter_imgs), 4):
+                for idx in range(0, len(meter_plotly), 4):
                     block = {
                         'meter': meter,
                         'farm': farm_id,
-                        'plots': meter_imgs[idx:idx+4],
+                        'plotly_plots': meter_plotly[idx:idx+4],  # Plotly for display
+                        'plots': meter_imgs[idx:idx+4],           # Matplotlib for reports
                         'is_combined': False
                     }
                     results.append(block)
@@ -1169,15 +1183,18 @@ def meter_reading_25_view(request):
                 if use_date_filter and filter_start_date and filter_end_date:
                     filter_start = pd.to_datetime(filter_start_date)
                     filter_end = pd.to_datetime(filter_end_date)
+                    combined_plotly = get_2025plots_combined_plotly(raw_df, master25, farm_id, farm_meters, start_date_enter=filter_start, end_date_enter=filter_end)
                     combined_imgs = get_2025plots_combined(raw_df, master25, farm_id, farm_meters, start_date_enter=filter_start, end_date_enter=filter_end)
                 else:
+                    combined_plotly = get_2025plots_combined_plotly(raw_df, master25, farm_id, farm_meters)
                     combined_imgs = get_2025plots_combined(raw_df, master25, farm_id, farm_meters)
                 
-                if combined_imgs:
+                if combined_plotly:
                     combined_block = {
                         'meter': ' + '.join(farm_meters),
                         'farm': farm_id,
-                        'plots': combined_imgs,
+                        'plotly_plots': combined_plotly,  # Plotly for display
+                        'plots': combined_imgs,           # Matplotlib for reports
                         'is_combined': True
                     }
                     results.append(combined_block)
@@ -1194,7 +1211,6 @@ def meter_reading_25_view(request):
         'filter_start_date': filter_start_date,
         'filter_end_date': filter_end_date,
     })
-
 @require_auth
 def grouping_25(request):
     if request.method == 'POST':

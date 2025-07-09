@@ -2289,3 +2289,338 @@ def get_per_farm_downloads(merged_df, farm_daily_avg):
             downloads[f"farm_{safe_farm_id}_daily_avg.csv"] = daily_avg.to_csv(index=False)
 
     return downloads
+
+
+import plotly.graph_objects as go
+from datetime import datetime
+
+# Add these new functions to utils.py (parallel to existing matplotlib functions)
+
+def get_2025plots_plotly(raw_df, master_df, selected_farm, meter_list, start_date_enter=None, end_date_enter=None):
+    """
+    Generate Plotly interactive plots for multiple meters (parallel to get_2025plots)
+    Returns list of Plotly HTML strings instead of base64 images
+    """
+    meta = master_df['Farm details']
+    farm_row = meta[meta['Kharif 25 Farm ID'] == selected_farm]
+    if farm_row.empty:
+        raise ValueError(f"Farm ID {selected_farm} not found in metadata.")
+    farm_row = farm_row.iloc[0]
+
+    acreage = farm_row.get('Kharif 25 Acres farm - farmer reporting') or 1
+    if pd.isna(acreage) or acreage <= 0:
+        acreage = 1
+
+    if pd.notna(farm_row.get('Kharif 25 Paddy transplanting date (TPR)')):
+        start_date = pd.to_datetime(farm_row['Kharif 25 Paddy transplanting date (TPR)'], dayfirst=True)
+    else:
+        start_date = pd.to_datetime('20/06/2025', dayfirst=True)
+
+    if start_date_enter is not None:
+        start_date = pd.to_datetime(start_date_enter)
+
+    end_date = pd.to_datetime(datetime.now().date())
+    if end_date_enter is not None:
+        end_date = pd.to_datetime(end_date_enter)
+
+    # Clean meter data
+    date_col = 'Date'
+    raw_df[date_col] = pd.to_datetime(raw_df[date_col], dayfirst=False)
+    raw_df = raw_df.sort_values(date_col)
+
+    plots_html = []
+
+    for meter in meter_list:
+        filled_df = get_filled(meter, raw_df, date_col, start_date, end_date, acreage)
+        if filled_df.empty:
+            continue
+
+        filled_df['Day'] = (pd.to_datetime(filled_df[date_col]) - start_date).dt.days
+        filled_df['7-day SMA'] = filled_df['m³ per Acre per Avg Day'].rolling(window=7, min_periods=1).mean()
+
+        # Graph 1: m³ per Acre per Avg Day
+        fig1 = go.Figure()
+        fig1.add_trace(go.Scatter(
+            x=filled_df['Day'],
+            y=filled_df['m³ per Acre per Avg Day'],
+            mode='lines+markers',
+            name='Daily m³ per Acre per day',
+            line=dict(color='#3b82f6', width=2),
+            marker=dict(size=4),
+            hovertemplate='<b>Day %{x}</b><br>Daily Avg: %{y:.2f} m³/acre<extra></extra>'
+        ))
+        fig1.update_layout(
+            title=f'Daily Avg per Acre | Meter {meter}',
+            xaxis_title='Days from transplanting',
+            yaxis_title='Daily Avg m³ per Acre',
+            height=450,
+            margin=dict(l=60, r=60, t=80, b=60),
+            hovermode='x unified',
+            plot_bgcolor='rgba(0,0,0,0)',
+            paper_bgcolor='rgba(0,0,0,0)'
+        )
+        fig1.update_xaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
+        fig1.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
+        plots_html.append(fig1.to_html(full_html=False, include_plotlyjs='cdn'))
+
+        # Graph 2: Moving Averages
+        fig2 = go.Figure()
+        fig2.add_trace(go.Scatter(
+            x=filled_df['Day'],
+            y=filled_df['7-day SMA'],
+            mode='lines+markers',
+            name='7-day SMA',
+            line=dict(color='#10b981', width=2, dash='dash'),
+            marker=dict(size=4),
+            hovertemplate='<b>Day %{x}</b><br>7-day SMA: %{y:.2f} m³/acre<extra></extra>'
+        ))
+        fig2.update_layout(
+            title=f'Moving Average | Meter {meter}',
+            xaxis_title='Days from transplanting',
+            yaxis_title='7-days SMA m³ per Acre',
+            height=450,
+            margin=dict(l=60, r=60, t=80, b=60),
+            hovermode='x unified',
+            plot_bgcolor='rgba(0,0,0,0)',
+            paper_bgcolor='rgba(0,0,0,0)'
+        )
+        fig2.update_xaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
+        fig2.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
+        plots_html.append(fig2.to_html(full_html=False, include_plotlyjs='cdn'))
+
+        # Graph 3: Delta Analysis
+        fig3 = go.Figure()
+        fig3.add_trace(go.Scatter(
+            x=filled_df['Day'],
+            y=filled_df['Delta m³'],
+            mode='lines+markers',
+            name='Delta m³',
+            line=dict(color='#8b5cf6', width=2),
+            marker=dict(size=6, symbol='circle'),
+            hovertemplate='<b>Day %{x}</b><br>Delta: %{y:.2f} m³<extra></extra>'
+        ))
+        fig3.update_layout(
+            title=f'Meter Actual readings | Meter {meter}',
+            xaxis_title='Days from transplanting',
+            yaxis_title='Delta of readings (m³)',
+            height=450,
+            margin=dict(l=60, r=60, t=80, b=60),
+            hovermode='x unified',
+            plot_bgcolor='rgba(0,0,0,0)',
+            paper_bgcolor='rgba(0,0,0,0)'
+        )
+        fig3.update_xaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
+        fig3.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
+        plots_html.append(fig3.to_html(full_html=False, include_plotlyjs='cdn'))
+
+        # Graph 4: Delta per Acre
+        fig4 = go.Figure()
+        fig4.add_trace(go.Scatter(
+            x=filled_df['Day'],
+            y=filled_df['m³ per Acre'],
+            mode='lines+markers',
+            name='Delta m³/Acre',
+            line=dict(color='#ef4444', width=2),
+            marker=dict(size=6, symbol='x'),
+            hovertemplate='<b>Day %{x}</b><br>Per Acre: %{y:.2f} m³<extra></extra>'
+        ))
+        fig4.update_layout(
+            title=f'Meter readings per Acre | Meter {meter}',
+            xaxis_title='Days from transplanting',
+            yaxis_title='Delta of reading per Acre (m³)',
+            height=450,
+            margin=dict(l=60, r=60, t=80, b=60),
+            hovermode='x unified',
+            plot_bgcolor='rgba(0,0,0,0)',
+            paper_bgcolor='rgba(0,0,0,0)'
+        )
+        fig4.update_xaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
+        fig4.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
+        plots_html.append(fig4.to_html(full_html=False, include_plotlyjs='cdn'))
+
+    return plots_html
+
+
+def get_2025plots_combined_plotly(raw_df, master_df, selected_farm, meter_list, start_date_enter=None, end_date_enter=None):
+    """
+    Generate combined Plotly plots for multiple meters (parallel to get_2025plots_combined)
+    Returns list of Plotly HTML strings instead of base64 images
+    """
+    if len(meter_list) < 2:
+        return []  # No combined plots for single meter
+
+    # Get farm metadata (same logic as original)
+    meta = master_df['Farm details']
+    farm_row = meta[meta['Kharif 25 Farm ID'] == selected_farm]
+    if farm_row.empty:
+        raise ValueError(f"Farm ID {selected_farm} not found in metadata.")
+    farm_row = farm_row.iloc[0]
+
+    acreage = farm_row.get('Kharif 25 Acres farm - farmer reporting') or 1
+    if pd.isna(acreage) or acreage <= 0:
+        acreage = 1
+
+    if pd.notna(farm_row.get('Kharif 25 Paddy transplanting date (TPR)')):
+        start_date = pd.to_datetime(farm_row['Kharif 25 Paddy transplanting date (TPR)'], dayfirst=True)
+    else:
+        start_date = pd.to_datetime('20/06/2025', dayfirst=True)
+
+    if start_date_enter is not None:
+        start_date = pd.to_datetime(start_date_enter)
+
+    end_date = pd.to_datetime(datetime.now().date())
+    if end_date_enter is not None:
+        end_date = pd.to_datetime(end_date_enter)
+
+    # Clean meter data
+    date_col = 'Date'
+    raw_df[date_col] = pd.to_datetime(raw_df[date_col], dayfirst=False)
+    raw_df = raw_df.sort_values(date_col)
+
+    # Get data for all meters (same logic as original)
+    all_meter_data = []
+    for meter in meter_list:
+        meter_df = raw_df[raw_df['Meter Serial Number - as shown on meter'] == meter].copy()
+        if not meter_df.empty:
+            meter_df = meter_df[[date_col, 'Reading in the meter - in m3']].dropna()
+            meter_df[date_col] = pd.to_datetime(meter_df[date_col])
+            meter_df = meter_df.sort_values(date_col)
+            meter_df = meter_df.drop_duplicates(subset=[date_col], keep='last')
+            meter_df['Meter'] = meter
+            all_meter_data.append(meter_df)
+
+    if not all_meter_data:
+        return []
+
+    # Combine all meter data (same logic)
+    combined_df = pd.concat(all_meter_data, ignore_index=True)
+    combined_grouped = combined_df.groupby(date_col).agg({
+        'Reading in the meter - in m3': 'sum'
+    }).reset_index()
+
+    combined_grouped = combined_grouped.sort_values(date_col)
+    combined_grouped['Days Since Previous Reading'] = combined_grouped[date_col].diff().dt.days.fillna(1).astype(int)
+    combined_grouped['Delta m³'] = combined_grouped['Reading in the meter - in m3'].diff().fillna(0)
+
+    # Normalize per acre
+    combined_grouped['m³ per Acre'] = combined_grouped['Delta m³'] / acreage
+    combined_grouped['m³ per Acre per Avg Day'] = combined_grouped['m³ per Acre'] / combined_grouped['Days Since Previous Reading'].replace(0, 1)
+
+    # Fill daily data
+    all_dates = pd.date_range(start=start_date, end=end_date, freq='D')
+    base = pd.DataFrame({date_col: all_dates})
+    filled_df = pd.merge(base, combined_grouped, on=date_col, how='left')
+
+    # Forward fill values
+    for col in ['m³ per Acre', 'm³ per Acre per Avg Day', 'Delta m³']:
+        filled_df[col] = filled_df[col].fillna(0)
+
+    # Calculate days from start
+    filled_df['Day'] = (filled_df[date_col] - start_date).dt.days
+    filled_df['7-day SMA'] = filled_df['m³ per Acre per Avg Day'].rolling(window=7, min_periods=1).mean()
+
+    # Generate plots
+    plots_html = []
+    meters_label = " + ".join(meter_list)
+
+    # Graph 1: Daily avg per acre
+    fig1 = go.Figure()
+    fig1.add_trace(go.Scatter(
+        x=filled_df['Day'],
+        y=filled_df['m³ per Acre per Avg Day'],
+        mode='lines+markers',
+        name='Combined Daily m³ per Acre per day',
+        line=dict(color='#3b82f6', width=3),
+        marker=dict(size=4),
+        hovertemplate='<b>Day %{x}</b><br>Combined Daily Avg: %{y:.2f} m³/acre<extra></extra>'
+    ))
+    fig1.update_layout(
+        title=f'Combined Daily Avg per Acre | Meters: {meters_label}',
+        xaxis_title='Days from transplanting',
+        yaxis_title='Daily Avg m³ per Acre',
+        height=450,
+        margin=dict(l=60, r=60, t=80, b=60),
+        hovermode='x unified',
+        plot_bgcolor='rgba(0,0,0,0)',
+        paper_bgcolor='rgba(0,0,0,0)'
+    )
+    fig1.update_xaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
+    fig1.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
+    plots_html.append(fig1.to_html(full_html=False, include_plotlyjs='cdn'))
+
+    # Graph 2: 7-day SMA
+    fig2 = go.Figure()
+    fig2.add_trace(go.Scatter(
+        x=filled_df['Day'],
+        y=filled_df['7-day SMA'],
+        mode='lines+markers',
+        name='Combined 7-day SMA',
+        line=dict(color='#10b981', width=3, dash='dash'),
+        marker=dict(size=4),
+        hovertemplate='<b>Day %{x}</b><br>Combined 7-day SMA: %{y:.2f} m³/acre<extra></extra>'
+    ))
+    fig2.update_layout(
+        title=f'Combined Moving Average | Meters: {meters_label}',
+        xaxis_title='Days from transplanting',
+        yaxis_title='7-days SMA m³ per Acre',
+        height=450,
+        margin=dict(l=60, r=60, t=80, b=60),
+        hovermode='x unified',
+        plot_bgcolor='rgba(0,0,0,0)',
+        paper_bgcolor='rgba(0,0,0,0)'
+    )
+    fig2.update_xaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
+    fig2.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
+    plots_html.append(fig2.to_html(full_html=False, include_plotlyjs='cdn'))
+
+    # Graph 3: Delta Analysis
+    fig3 = go.Figure()
+    fig3.add_trace(go.Scatter(
+        x=filled_df['Day'],
+        y=filled_df['Delta m³'],
+        mode='lines+markers',
+        name='Combined Delta m³',
+        line=dict(color='#8b5cf6', width=3),
+        marker=dict(size=6, symbol='circle'),
+        hovertemplate='<b>Day %{x}</b><br>Combined Delta: %{y:.2f} m³<extra></extra>'
+    ))
+    fig3.update_layout(
+        title=f'Combined Meter Readings | Meters: {meters_label}',
+        xaxis_title='Days from transplanting',
+        yaxis_title='Combined Delta of readings (m³)',
+        height=450,
+        margin=dict(l=60, r=60, t=80, b=60),
+        hovermode='x unified',
+        plot_bgcolor='rgba(0,0,0,0)',
+        paper_bgcolor='rgba(0,0,0,0)'
+    )
+    fig3.update_xaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
+    fig3.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
+    plots_html.append(fig3.to_html(full_html=False, include_plotlyjs='cdn'))
+
+    # Graph 4: Delta per Acre
+    fig4 = go.Figure()
+    fig4.add_trace(go.Scatter(
+        x=filled_df['Day'],
+        y=filled_df['m³ per Acre'],
+        mode='lines+markers',
+        name='Combined Delta m³/Acre',
+        line=dict(color='#ef4444', width=3),
+        marker=dict(size=6, symbol='x'),
+        hovertemplate='<b>Day %{x}</b><br>Combined Per Acre: %{y:.2f} m³<extra></extra>'
+    ))
+    fig4.update_layout(
+        title=f'Combined Readings per Acre | Meters: {meters_label}',
+        xaxis_title='Days from transplanting',
+        yaxis_title='Combined Delta per Acre (m³)',
+        height=450,
+        margin=dict(l=60, r=60, t=80, b=60),
+        hovermode='x unified',
+        plot_bgcolor='rgba(0,0,0,0)',
+        paper_bgcolor='rgba(0,0,0,0)'
+    )
+    fig4.update_xaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
+    fig4.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
+    plots_html.append(fig4.to_html(full_html=False, include_plotlyjs='cdn'))
+
+    return plots_html
