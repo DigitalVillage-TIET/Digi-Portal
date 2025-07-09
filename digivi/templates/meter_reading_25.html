@@ -1403,6 +1403,7 @@
           <label class="form-label" for="selected_village">
             <i class="fas fa-location-dot"></i> Village Name
           </label>
+          <input type="text" id="search_village" class="form-control" placeholder="Search village..." style="margin-bottom: 10px;">
           <select name="selected_village" id="selected_village" class="form-control" required>
             <option value="">-- Select village name --</option>
             {% for village in village_names %}
@@ -1433,6 +1434,7 @@
           <label class="form-label" for="selected_farm">
             <i class="fas fa-fingerprint"></i> Farm Identifier
           </label>
+          <input type="text" id="search_farm" class="form-control" placeholder="Search farm..." style="margin-bottom: 10px;">
           <select name="selected_farm" id="selected_farm" class="form-control" required>
             <option value="">-- Select farm unit --</option>
             {% for fid in farm_ids %}
@@ -1810,6 +1812,47 @@
       
       setTimeout(() => ripple.remove(), 600);
     });
+  });
+
+  // Function to make dropdowns searchable
+  function setupSearchableDropdown(searchInputId, selectId) {
+    const searchInput = document.getElementById(searchInputId);
+    const selectElement = document.getElementById(selectId);
+    const originalOptions = Array.from(selectElement.options);
+
+    searchInput.addEventListener('input', function() {
+      const searchText = searchInput.value.toLowerCase();
+      selectElement.innerHTML = ''; // Clear current options
+
+      originalOptions.forEach(option => {
+        if (option.value === '' || option.text.toLowerCase().includes(searchText)) {
+          selectElement.appendChild(option);
+        }
+      });
+
+      // If no options match, add a "No results" option (optional)
+      if (selectElement.options.length === 0) {
+        const noResultsOption = document.createElement('option');
+        noResultsOption.value = '';
+        noResultsOption.textContent = 'No results found';
+        noResultsOption.disabled = true;
+        selectElement.appendChild(noResultsOption);
+      }
+    });
+
+    // Restore all options when search input is cleared
+    searchInput.addEventListener('blur', function() {
+      if (searchInput.value === '') {
+        selectElement.innerHTML = '';
+        originalOptions.forEach(option => selectElement.appendChild(option));
+      }
+    });
+  }
+
+  // Initialize searchable dropdowns
+  document.addEventListener('DOMContentLoaded', function() {
+    setupSearchableDropdown('search_village', 'selected_village');
+    setupSearchableDropdown('search_farm', 'selected_farm');
   });
 </script>
 </body>
