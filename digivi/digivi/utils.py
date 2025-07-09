@@ -379,9 +379,57 @@ def get_filled(meter_name, filtered_data, date_column, start_date, end_date, plo
 
     return filled
 
+def get_dates(meter_name, filtered_data, date_column, start_date, end_date, plot_size):
+    if not meter_name:
+        raise ValueError("Meter name missing.")
+        
+    # Filter data for the specific meter
+    df = filtered_data[filtered_data['Meter Serial Number - as shown on meter'] == meter_name].copy()
+    if df.empty:
+        return pd.DataFrame()
+        
+    # Keep only relevant columns
+    df = df[[date_column, 'Reading in the meter - in m3']].dropna()
+
+    # Convert date column to datetime
+    df[date_column] = pd.to_datetime(df[date_column])
+
+    # Sort by date (if timestamps existed, include them in sort)
+    df = df.sort_values(date_column)
+
+    # Deduplicate: keep the latest reading if multiple on same date
+    df = df.drop_duplicates(subset=[date_column], keep='last')
+
+    df = error_fix(df)
+
+    # Calculate time difference and deltas
+    df['Days Since Previous Reading'] = df[date_column].diff().dt.days.fillna(method='bfill').fillna(1).astype(int)
+    df['Delta m³'] = df['Reading in the meter - in m3'].diff().fillna(method='bfill').fillna(0)
+
+    if plot_size <= 0:
+        raise ValueError("Invalid plot size.")
+
+    # Normalize per acre and per day
+    df['m³ per Acre'] = df['Delta m³'] / plot_size
+    df['m³ per Acre per Avg Day'] = df['m³ per Acre'] / df['Days Since Previous Reading'].replace(0, 1)
+
+    filtered = df[(df[date_column] >= start_date) & (df[date_column] <= end_date)]
+
+    return filtered
+
+
+
 def create_adjusted_filled_dataframe(meter_data, start_date, end_date, date_column, avg_day_column):
     # shift first reading to align with start_date
     filtered = meter_data[meter_data[date_column] >= start_date]
+    
+    # Get the last date in the filtered DataFrame
+    last_date_in_df = filtered['Date'].max()
+
+    # Update end_date if needed
+    if last_date_in_df < end_date:
+        end_date = last_date_in_df
+
 
     if filtered.empty:
         return filtered
@@ -413,6 +461,7 @@ def create_adjusted_filled_dataframe(meter_data, start_date, end_date, date_colu
                 merged.iloc[idx, 1:] = 0
         else:
             last_date = row[date_column]
+    
     return merged
 
 def kharif2024_farms(master_df):
@@ -2337,18 +2386,31 @@ def get_2025plots_plotly(raw_df, master_df, selected_farm, meter_list, start_dat
 
         filled_df['Day'] = (pd.to_datetime(filled_df[date_col]) - start_date).dt.days
         filled_df['7-day SMA'] = filled_df['m³ per Acre per Avg Day'].rolling(window=7, min_periods=1).mean()
+        x_axis = filled_df['Date'] if start_date_enter else filled_df['Day']
 
+        dates_for_reading = get_dates(meter, raw_df, date_col, start_date, end_date, acreage)
+
+        marker_points = filled_df[filled_df['Date'].isin(dates_for_reading['Date'])]
         # Graph 1: m³ per Acre per Avg Day
         fig1 = go.Figure()
         fig1.add_trace(go.Scatter(
-            x=filled_df['Day'],
+            x=x_axis,
             y=filled_df['m³ per Acre per Avg Day'],
-            mode='lines+markers',
+            mode='lines',
             name='Daily m³ per Acre per day',
             line=dict(color='#3b82f6', width=2),
-            marker=dict(size=4),
             hovertemplate='<b>Day %{x}</b><br>Daily Avg: %{y:.2f} m³/acre<extra></extra>'
         ))
+        fig1.add_trace(go.Scatter(
+            x=marker_points['Date'],
+            y=marker_points['m³ per Acre per Avg Day'],
+            mode='markers',
+            name='Reading Dates',
+            marker=dict(color='#3b82f6', size=6),
+            showlegend=False,
+            hovertemplate='<b>Day %{x}</b><br>Daily Avg: %{y:.2f} m³/acre<extra></extra>'
+        ))
+
         fig1.update_layout(
             title=f'Daily Avg per Acre | Meter {meter}',
             xaxis_title='Days from transplanting',
@@ -2366,13 +2428,21 @@ def get_2025plots_plotly(raw_df, master_df, selected_farm, meter_list, start_dat
         # Graph 2: Moving Averages
         fig2 = go.Figure()
         fig2.add_trace(go.Scatter(
-            x=filled_df['Day'],
+            x=x_axis,
             y=filled_df['7-day SMA'],
-            mode='lines+markers',
+            mode='lines',
             name='7-day SMA',
             line=dict(color='#10b981', width=2, dash='dash'),
-            marker=dict(size=4),
             hovertemplate='<b>Day %{x}</b><br>7-day SMA: %{y:.2f} m³/acre<extra></extra>'
+        ))
+        fig2.add_trace(go.Scatter(
+            x=marker_points['Date'],
+            y=marker_points['7-day SMA'],
+            mode='markers',
+            name='Reading Dates',
+            marker=dict(color='#3b82f6', size=6),
+            showlegend=False,
+            hovertemplate='<b>Day %{x}</b><br>Daily Avg: %{y:.2f} m³/acre<extra></extra>'
         ))
         fig2.update_layout(
             title=f'Moving Average | Meter {meter}',
@@ -2391,13 +2461,21 @@ def get_2025plots_plotly(raw_df, master_df, selected_farm, meter_list, start_dat
         # Graph 3: Delta Analysis
         fig3 = go.Figure()
         fig3.add_trace(go.Scatter(
-            x=filled_df['Day'],
+            x=x_axis,
             y=filled_df['Delta m³'],
-            mode='lines+markers',
+            mode='lines',
             name='Delta m³',
             line=dict(color='#8b5cf6', width=2),
-            marker=dict(size=6, symbol='circle'),
             hovertemplate='<b>Day %{x}</b><br>Delta: %{y:.2f} m³<extra></extra>'
+        ))
+        fig3.add_trace(go.Scatter(
+            x=marker_points['Date'],
+            y=marker_points['Delta m³'],
+            mode='markers',
+            name='Reading Dates',
+            marker=dict(color='#3b82f6', size=6),
+            showlegend=False,
+            hovertemplate='<b>Day %{x}</b><br>Daily Avg: %{y:.2f} m³/acre<extra></extra>'
         ))
         fig3.update_layout(
             title=f'Meter Actual readings | Meter {meter}',
@@ -2416,13 +2494,21 @@ def get_2025plots_plotly(raw_df, master_df, selected_farm, meter_list, start_dat
         # Graph 4: Delta per Acre
         fig4 = go.Figure()
         fig4.add_trace(go.Scatter(
-            x=filled_df['Day'],
+            x=x_axis,
             y=filled_df['m³ per Acre'],
-            mode='lines+markers',
+            mode='lines',
             name='Delta m³/Acre',
             line=dict(color='#ef4444', width=2),
-            marker=dict(size=6, symbol='x'),
             hovertemplate='<b>Day %{x}</b><br>Per Acre: %{y:.2f} m³<extra></extra>'
+        ))
+        fig4.add_trace(go.Scatter(
+            x=marker_points['Date'],
+            y=marker_points['m³ per Acre'],
+            mode='markers',
+            name='Reading Dates',
+            marker=dict(color='#3b82f6', size=6),
+            showlegend=False,
+            hovertemplate='<b>Day %{x}</b><br>Daily Avg: %{y:.2f} m³/acre<extra></extra>'
         ))
         fig4.update_layout(
             title=f'Meter readings per Acre | Meter {meter}',
