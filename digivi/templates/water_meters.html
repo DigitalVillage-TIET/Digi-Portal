@@ -1023,6 +1023,77 @@
     </div>
   {% endif %}
 
+  <!-- Date Range Filter Section -->
+  {% if merged_loaded %}
+    <div class="glass-card filter-section">
+      <div class="card-header">
+        <h2><i class="fas fa-calendar-alt icon"></i> Date Range Filter</h2>
+        <div class="integration-badge">
+          <i class="fas fa-filter"></i> Analysis Period Control
+        </div>
+      </div>
+      <div class="card-body">
+        <form id="dateFilterForm" method="POST" action="{% url 'water_dashboard' %}">
+          {% csrf_token %}
+          <input type="hidden" name="update_date_filter" value="1">
+          
+          <div class="form-group">
+            <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+              <input type="checkbox" id="use_date_filter" name="use_date_filter" 
+                     {% if use_date_filter %}checked{% endif %}
+                     onchange="toggleDateFilter()">
+              <label for="use_date_filter" style="margin-left: 0.5rem; font-weight: 600;">
+                <i class="fas fa-calendar-check"></i> Enable Date Range Filtering
+              </label>
+            </div>
+          </div>
+          
+          <div id="date-range-inputs" style="{% if not use_date_filter %}display: none;{% endif %}">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+              <div class="form-group">
+                <label class="form-label" for="start_date">
+                  <i class="fas fa-calendar-day"></i> Start Date
+                </label>
+                <input type="date" name="start_date" id="start_date" class="form-control" 
+                       value="{{ start_date }}" 
+                       onchange="validateDateRange()">
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label" for="end_date">
+                  <i class="fas fa-calendar-day"></i> End Date
+                </label>
+                <input type="date" name="end_date" id="end_date" class="form-control" 
+                       value="{{ end_date }}"
+                       onchange="validateDateRange()">
+              </div>
+            </div>
+            
+            <div class="form-group" style="margin-top: 1rem;">
+              <button type="submit" class="btn btn-primary" id="applyDateFilter">
+                <i class="fas fa-filter"></i> Apply Date Filter
+              </button>
+              <button type="button" class="btn btn-secondary" onclick="clearDateFilter()" style="margin-left: 0.5rem;">
+                <i class="fas fa-times"></i> Clear Filter
+              </button>
+            </div>
+            
+            <div id="date-validation-message" style="margin-top: 0.5rem; color: var(--accent-danger); font-size: 0.875rem; display: none;">
+              <i class="fas fa-exclamation-triangle"></i> End date must be after start date
+            </div>
+          </div>
+          
+          {% if use_date_filter and start_date and end_date %}
+            <div class="alert success" style="margin-top: 1rem;">
+              <i class="fas fa-info-circle"></i>
+              <p><strong>Active Filter:</strong> Showing data from {{ start_date }} to {{ end_date }}</p>
+            </div>
+          {% endif %}
+        </form>
+      </div>
+    </div>
+  {% endif %}
+
   <!-- Rest of the template continues with tabs... -->
   {% if merged_loaded %}
     <div class="tab-buttons">
@@ -1054,6 +1125,85 @@ function toggleManualUpload() {
     kharifFile.required = false;
     kharifFile.value = '';
   }
+}
+
+// Date Filter Functions
+function toggleDateFilter() {
+  const toggle = document.getElementById('use_date_filter');
+  const inputs = document.getElementById('date-range-inputs');
+  const startDate = document.getElementById('start_date');
+  const endDate = document.getElementById('end_date');
+  
+  if (toggle.checked) {
+    inputs.style.display = 'block';
+    startDate.required = true;
+    endDate.required = true;
+    // Set default dates if empty
+    if (!startDate.value || !endDate.value) {
+      const today = new Date();
+      const oneMonthAgo = new Date(today.getFullYear(), today.getMonth() - 1, today.getDate());
+      if (!startDate.value) {
+        startDate.value = oneMonthAgo.toISOString().split('T')[0];
+      }
+      if (!endDate.value) {
+        endDate.value = today.toISOString().split('T')[0];
+      }
+    }
+  } else {
+    inputs.style.display = 'none';
+    startDate.required = false;
+    endDate.required = false;
+    clearValidationMessage();
+  }
+}
+
+function validateDateRange() {
+  const startDate = document.getElementById('start_date');
+  const endDate = document.getElementById('end_date');
+  const messageDiv = document.getElementById('date-validation-message');
+  const submitButton = document.getElementById('applyDateFilter');
+  
+  if (startDate.value && endDate.value) {
+    const start = new Date(startDate.value);
+    const end = new Date(endDate.value);
+    
+    if (start >= end) {
+      messageDiv.style.display = 'block';
+      submitButton.disabled = true;
+      submitButton.style.opacity = '0.5';
+    } else {
+      messageDiv.style.display = 'none';
+      submitButton.disabled = false;
+      submitButton.style.opacity = '1';
+    }
+  } else {
+    messageDiv.style.display = 'none';
+    submitButton.disabled = false;
+    submitButton.style.opacity = '1';
+  }
+}
+
+function clearDateFilter() {
+  const toggle = document.getElementById('use_date_filter');
+  const startDate = document.getElementById('start_date');
+  const endDate = document.getElementById('end_date');
+  const form = document.getElementById('dateFilterForm');
+  
+  toggle.checked = false;
+  startDate.value = '';
+  endDate.value = '';
+  toggleDateFilter();
+  
+  // Submit the form to clear the filter
+  form.submit();
+}
+
+function clearValidationMessage() {
+  const messageDiv = document.getElementById('date-validation-message');
+  const submitButton = document.getElementById('applyDateFilter');
+  messageDiv.style.display = 'none';
+  submitButton.disabled = false;
+  submitButton.style.opacity = '1';
 }
 </script>
 <div class="external-link">

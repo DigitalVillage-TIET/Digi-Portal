@@ -138,6 +138,7 @@ MASTER_DATA_SHEET_ID = "10_bnGF7WBZ0J3aSvl8riufNbZjXAxB7wcnN3545fGzw"
 
 # # Option 1: Use service account key file
 GOOGLE_SERVICE_ACCOUNT_KEY_PATH = os.path.join('/home/admin2025/', 'Credentials.json')
+# GOOGLE_SERVICE_ACCOUNT_KEY_PATH = os.path.join('/Users/ashmitcajla/Desktop/DIGI_VI/', 'Credentials.json')
 
 
 REST_FRAMEWORK = {

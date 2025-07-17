@@ -257,6 +257,32 @@ def water_dashboard_view(request):
         analysis_reports = [f for f in downloadables if 'village_summary' in f or 'farm_summary' in f]
         return complete_dataset, study_group, analysis_reports
 
+    # Handle date range filtering
+    use_date_filter = request.POST.get('use_date_filter') == 'on' or session.get('use_date_filter', False)
+    start_date = request.POST.get('start_date') or session.get('start_date')
+    end_date = request.POST.get('end_date') or session.get('end_date')
+    
+    # Store date filter settings in session
+    if 'update_date_filter' in request.POST:
+        use_date_filter = request.POST.get('use_date_filter') == 'on'
+        session['use_date_filter'] = use_date_filter
+        if use_date_filter:
+            start_date = request.POST.get('start_date')
+            end_date = request.POST.get('end_date')
+            session['start_date'] = start_date
+            session['end_date'] = end_date
+        else:
+            session['start_date'] = None
+            session['end_date'] = None
+            start_date = None
+            end_date = None
+        session.modified = True
+    
+    # Pass date filter settings to context
+    context['use_date_filter'] = use_date_filter
+    context['start_date'] = start_date
+    context['end_date'] = end_date
+
     def load_full_context(context, merged_df, kharif_df, farm_daily_avg, weekly_avg, session):
         """Helper function to load complete context data"""
         # Basic data setup
@@ -428,8 +454,14 @@ def water_dashboard_view(request):
             return render(request, 'water_meters.html', context)
 
         kharif_cleaned, water_cleaned = clean_and_process_data(kharif_df, water_df)
+        
+        # Prepare date range for filtering
+        date_range = None
+        if use_date_filter and start_date and end_date:
+            date_range = (start_date, end_date)
+        
         filtered_kharif, filtered_water = apply_comprehensive_filters(kharif_cleaned, water_cleaned, {
-            'villages': [], 'date_range': None, 'available_groups': {},
+            'villages': [], 'date_range': date_range, 'available_groups': {},
             'remote_controllers': 'All', 'awd_study': 'All',
             'farming_method': 'All', 'min_readings': 1, 'remove_outliers': False
         })
@@ -439,6 +471,8 @@ def water_dashboard_view(request):
         # Store in session
         session['merged_df'] = merged_df.to_json(orient='split')
         session['kharif_df'] = kharif_cleaned.to_json(orient='split')
+        session['kharif_cleaned'] = kharif_cleaned.to_json(orient='split')  # Store original cleaned data
+        session['water_cleaned'] = water_cleaned.to_json(orient='split')   # Store original cleaned data
         session['filtered_kharif'] = filtered_kharif.to_json(orient='split')
         session['filtered_water'] = filtered_water.to_json(orient='split')
         session['farm_daily_avg'] = farm_daily_avg.to_json(orient='split')
@@ -459,9 +493,9 @@ def water_dashboard_view(request):
         return render(request, 'water_meters.html', context)
 
     # ----------------------------------
-    # 2️⃣ Handle AJAX Farm Selection
+    # 2️⃣ Handle AJAX Farm Selection & Date Filter Updates
     # ----------------------------------
-    if 'merged_df' in session and request.method == 'POST' and 'download_zip' not in request.POST and 'create_custom_group' not in request.POST and 'delete_custom_group' not in request.POST:
+    if 'merged_df' in session and request.method == 'POST' and 'download_zip' not in request.POST and 'create_custom_group' not in request.POST and 'delete_custom_group' not in request.POST and 'update_date_filter' not in request.POST:
         merged_df = pd.read_json(session['merged_df'], orient='split')
         kharif_df = pd.read_json(session['kharif_df'], orient='split')
         farm_daily_avg = pd.read_json(session['farm_daily_avg'], orient='split')
@@ -472,6 +506,56 @@ def water_dashboard_view(request):
             context['selected_farm'] = selected_farm
         
         # Load full context
+        context = load_full_context(context, merged_df, kharif_df, farm_daily_avg, weekly_avg, session)
+        
+        return render(request, 'water_meters.html', context)
+
+    # ----------------------------------
+    # 2.5️⃣ Handle Date Filter Updates (requires data reprocessing)
+    # ----------------------------------
+    if 'merged_df' in session and request.method == 'POST' and 'update_date_filter' in request.POST:
+        # Reload the original cleaned data
+        kharif_df = pd.read_json(session['kharif_df'], orient='split')
+        filtered_kharif = pd.read_json(session['filtered_kharif'], orient='split')
+        filtered_water = pd.read_json(session['filtered_water'], orient='split')
+        
+        # Get the original cleaned data to reapply filters
+        water_df = pd.read_json(session.get('water_cleaned', session['filtered_water']), orient='split')
+        kharif_cleaned = pd.read_json(session.get('kharif_cleaned', session['kharif_df']), orient='split')
+        
+        # Prepare date range for filtering
+        date_range = None
+        if use_date_filter and start_date and end_date:
+            date_range = (start_date, end_date)
+        
+        # Reapply filters with new date range
+        filtered_kharif, filtered_water = apply_comprehensive_filters(kharif_cleaned, water_df, {
+            'villages': [], 'date_range': date_range, 'available_groups': {},
+            'remote_controllers': 'All', 'awd_study': 'All',
+            'farming_method': 'All', 'min_readings': 1, 'remove_outliers': False
+        })
+        
+        # Recreate merged dataset with filtered data
+        merged_df, farm_daily_avg, weekly_avg = create_merged_dataset(filtered_kharif, filtered_water)
+        
+        # Update session with new filtered data
+        session['merged_df'] = merged_df.to_json(orient='split')
+        session['filtered_kharif'] = filtered_kharif.to_json(orient='split')
+        session['filtered_water'] = filtered_water.to_json(orient='split')
+        session['farm_daily_avg'] = farm_daily_avg.to_json(orient='split')
+        session['weekly_avg'] = weekly_avg.to_json(orient='split')
+        session.modified = True
+        
+        # Basic summary with filtered data
+        context['summary'] = {
+            'total_records': len(merged_df),
+            'unique_farms': merged_df['Farm ID'].nunique(),
+            'total_villages': merged_df['Village'].nunique() if 'Village' in merged_df.columns else 0,
+            'date_range': f"{merged_df['Date'].min().date()} to {merged_df['Date'].max().date()}",
+            'avg_level': round(merged_df['Water Level (mm)'].mean(), 1)
+        }
+        
+        # Load full context with filtered data
         context = load_full_context(context, merged_df, kharif_df, farm_daily_avg, weekly_avg, session)
         
         return render(request, 'water_meters.html', context)

@@ -1,0 +1,13 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Django Development Server",
+			"type": "shell",
+			"command": "cd /Users/ashmitcajla/Documents/GitHub/Digi-Portal/digivi && python manage.py runserver",
+			"group": "build",
+			"isBackground": true,
+			"problemMatcher": []
+		}
+	]
+}

@@ -950,7 +950,7 @@ def calculate_avg_m3_per_acre(group_type, group_label, farm_ids, raw_df, master2
         tpr_col = "Kharif 25 Paddy transplanting date (TPR)"
         tpr_date = acreage_row[tpr_col].values[0]
         if pd.isna(tpr_date) or tpr_date == "":
-            tpr_date = pd.to_datetime("2025-06-20")
+            tpr_date = pd.to_datetime("2025-07-02")
         else:
             tpr_date = pd.to_datetime(tpr_date)
         
@@ -2423,11 +2423,11 @@ def clean_and_process_data(kharif_df, water_df):
     if 'Village name' in water.columns:
         water['Village_Normalized'] = water['Village name'].apply(normalize_text)
 
-    # Dates
+    # Dates - Use actual TPR date if available, otherwise default to July 2, 2025
     kharif['Kharif 25 Paddy transplanting date (TPR)'] = pd.to_datetime(
         kharif['Kharif 25 Paddy transplanting date (TPR)'], errors='coerce'
     )
-    kharif['Kharif 25 Paddy transplanting date (TPR)'].fillna(pd.Timestamp('2025-06-01'), inplace=True)
+    kharif['Kharif 25 Paddy transplanting date (TPR)'].fillna(pd.Timestamp('2025-07-02'), inplace=True)
 
     water['Date'] = pd.to_datetime(water['Date'], errors='coerce')
     water = water.dropna(subset=['Date'])
@@ -2474,14 +2474,23 @@ def create_merged_dataset(kharif_df, water_df):
         "Kharif 25 Village": "Village"
     }, inplace=True)
 
-    merged["Days from TPR"] = (merged["Date"] - merged["TPR Date"]).dt.days
+    # Ensure both Date and TPR Date are properly converted to datetime
+    merged["Date"] = pd.to_datetime(merged["Date"], errors='coerce')
+    merged["TPR Date"] = pd.to_datetime(merged["TPR Date"], errors='coerce')
+    
+    # Calculate days from TPR, handling NaT values
+    merged["Days from TPR"] = (merged["Date"] - merged["TPR Date"]).dt.days.fillna(0).astype(int)
     merged["Week from TPR"] = (merged["Days from TPR"] / 7).astype(int)
 
     # Farm daily average
     farm_avg = merged.groupby(["Farm ID", "Date"]).agg({
         "Water Level (mm)": "mean", "TPR Date": "first", "Village": "first"
     }).reset_index()
-    farm_avg["Days from TPR"] = (farm_avg["Date"] - farm_avg["TPR Date"]).dt.days
+    
+    # Ensure datetime conversion for farm_avg as well
+    farm_avg["Date"] = pd.to_datetime(farm_avg["Date"], errors='coerce')
+    farm_avg["TPR Date"] = pd.to_datetime(farm_avg["TPR Date"], errors='coerce')
+    farm_avg["Days from TPR"] = (farm_avg["Date"] - farm_avg["TPR Date"]).dt.days.fillna(0).astype(int)
     farm_avg["Week from TPR"] = (farm_avg["Days from TPR"] / 7).astype(int)
 
     # Weekly average
