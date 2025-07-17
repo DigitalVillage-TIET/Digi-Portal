@@ -3,15 +3,18 @@
 from django.shortcuts import render, redirect
 from django.core.files.storage import default_storage
 import pandas as pd
-from io import BytesIO
+from io import BytesIO, StringIO
 from django.http import HttpResponse, JsonResponse
 import datetime  # Add this import
-from io import BytesIO
+import io
+import zipfile
+import re
+import jwt
 # In views.py, update the imports section:
 from .utils import (
     kharif2024_farms, get_2024plots,
     kharif2025_farms, get_2025plots, get_2025plots_combined,
-    get_2025plots_plotly, get_2025plots_combined_plotly,  # Add these new imports
+    get_2025plots_plotly, get_2025plots_combined_plotly, 
     encode_plot_to_base64, get_tables,
     calculate_avg_m3_per_acre, generate_group_analysis_plot,
     load_and_validate_data,
@@ -23,7 +26,9 @@ from .utils import (
     create_zip_package,
     prepare_comprehensive_downloads,
     get_per_farm_downloads,
-    get_village_level_analysis
+    get_village_level_analysis,
+    load_master_from_google_sheets,
+    print_status
 )
 from django.urls import reverse
 from functools import wraps
@@ -375,12 +380,51 @@ def water_dashboard_view(request):
     # ----------------------------------
     # 1️⃣ Handle File Upload
     # ----------------------------------
-    if request.method == 'POST' and 'kharif_file' in request.FILES and 'water_file' in request.FILES:
-        kharif_df, water_df, missing_kharif, missing_water = load_and_validate_data(
-            request.FILES['kharif_file'], request.FILES['water_file']
-        )
-        if missing_kharif or missing_water:
-            context['error'] = f"Missing columns: Kharif: {missing_kharif}, Water: {missing_water}"
+    if request.method == 'POST' and 'water_file' in request.FILES:
+        try:
+            # Load the water level file
+            kharif_df, water_df, missing_kharif, missing_water = load_and_validate_data(
+                None, request.FILES['water_file']
+            )
+            if missing_water:
+                context['error'] = f"Missing columns in water file: {missing_water}"
+                return render(request, 'water_meters.html', context)
+
+            # Try to load kharif data from Google Sheets first
+            if 'kharif_file' not in request.FILES:  # Only use Google Sheets if no manual override
+                print_status("Attempting to load master data from Google Sheets...", "process")
+                try:
+                    master_data = load_master_from_google_sheets()
+                    if master_data and 'Farm details' in master_data:  # Use correct sheet name
+                        kharif_df = master_data['Farm details']
+                        print_status(f"Successfully loaded farm details from Google Sheets: {len(kharif_df)} rows", "success")
+                    elif master_data:
+                        # Try different potential sheet names
+                        for sheet_name in master_data.keys():
+                            if any(keyword in sheet_name.lower() for keyword in ['farm', 'kharif', 'detail']):
+                                kharif_df = master_data[sheet_name]
+                                print_status(f"Found farm data in sheet '{sheet_name}': {len(kharif_df)} rows", "success")
+                                break
+                        if kharif_df is None:
+                            print_status(f"No farm details sheet found. Available sheets: {list(master_data.keys())}", "warning")
+                except Exception as e:
+                    print_status(f"Failed to load from Google Sheets: {e}", "error")
+
+            # Fall back to manual upload if Google Sheets failed or manual override provided
+            if kharif_df is None and 'kharif_file' in request.FILES:
+                print_status("Loading farm details from manual upload...", "process")
+                kharif_df, _, missing_kharif = load_and_validate_data(
+                    request.FILES['kharif_file'], None
+                )
+                if missing_kharif:
+                    context['error'] = f"Missing columns in kharif file: {missing_kharif}"
+                    return render(request, 'water_meters.html', context)
+            elif kharif_df is None:
+                context['error'] = "Could not load farm details from Google Sheets and no manual file provided"
+                return render(request, 'water_meters.html', context)
+
+        except Exception as e:
+            context['error'] = f"Error processing files: {e}"
             return render(request, 'water_meters.html', context)
 
         kharif_cleaned, water_cleaned = clean_and_process_data(kharif_df, water_df)
@@ -766,7 +810,6 @@ def meter_reading_25_view(request):
         
             # Load master data from Google Sheets
             print_status("Loading master data from Google Sheets...", "process")
-            from .utils import load_master_from_google_sheets
             master25 = load_master_from_google_sheets()
             
             if master25:
