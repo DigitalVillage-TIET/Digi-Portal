@@ -2821,3 +2821,25 @@ def api_token(request):
         else:
             return JsonResponse({'detail': 'Invalid credentials'}, status=401)
     return JsonResponse({'detail': 'Method not allowed'}, status=405)
+
+
+def agriculture_view(request):
+    return render(request, 'agriculture.html')
+
+def crop_view(request):
+    return render(request, 'crop_residue.html')
+
+def dsr_view(request):
+    return render(request, 'dsr.html')
+
+def farmers_view(request):
+    return render(request, 'farmers.html')
+
+def stages_view(request):
+    return render(request, 'stages.html')
+
+def tpr_view(request):
+    return render(request, 'tpr.html')
+
+def tubewell_view(request):
+    return render(request, 'tubewell.html')
