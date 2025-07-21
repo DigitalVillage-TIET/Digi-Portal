@@ -688,6 +688,24 @@
             margin-bottom: 1rem;
         }
 
+        .clickable-title {
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            display: inline-block;
+        }
+
+        .clickable-title:hover {
+            transform: scale(1.02);
+            filter: brightness(1.1);
+        }
+
+        .clickable-title::after {
+            content: '';
+            font-size: 0.7em;
+            opacity: 0.7;
+        }
+
         
 
         .section-subtitle {
@@ -835,6 +853,89 @@
             background: var(--accent-primary);
             color: white;
             transform: translateY(-2px);
+        }
+
+        /* Team Modal Styles */
+        .team-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+
+        .team-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .team-modal-content {
+            background: var(--bg-secondary);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            width: 90%;
+            max-width: 1200px;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: scale(0.9);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .team-modal.active .team-modal-content {
+            transform: scale(1);
+        }
+
+        .team-modal-close {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            width: 40px;
+            height: 40px;
+            background: var(--accent-danger);
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            color: white;
+            font-size: 1.5rem;
+            z-index: 10;
+        }
+
+        .team-modal-close:hover {
+            background: #dc2626;
+            transform: scale(1.1);
+        }
+
+        .team-modal-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+            padding-top: 1rem;
+        }
+
+        .team-modal-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
         }
 
         /* Modal */
@@ -1033,6 +1134,19 @@
 
             .team-grid {
                 gap: 1.5rem;
+            }
+
+            .team-modal-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .team-modal-content {
+                width: 95%;
+                padding: 1.5rem;
+            }
+
+            .team-modal-title {
+                font-size: 2rem;
             }
         }
 
@@ -1555,6 +1669,36 @@
             z-index: 1;
         }
 
+        /* Team Section Spacing */
+        .team-section {
+            margin-bottom: 4rem;
+        }
+
+        .team-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .team-subtitle {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 2.5rem;
+            text-align: left;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .team-subtitle::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 70%;
+            width: 5px;
+            background: var(--gradient-primary);
+            border-radius: 5px;
+        }
 
  
 
@@ -1619,7 +1763,7 @@
     <div class="mobile-menu" id="mobileMenu">
         <div class="mobile-menu-links">
             <a href="#home" class="nav-link" onclick="toggleMobileMenu()">{% trans "Home" %}</a>
-            <a href="#research-studies" class="nav-link" onclick="toggleMobileMenu()">{% trans "Project" %}</a>
+            <a href="#research-studies" class="nav-link" onclick="toggleMobileMenu()">{% trans "Research Studies" %}</a>
             <a href="#team" class="nav-link" onclick="toggleMobileMenu()">{% trans "Team" %}</a>
             <a href="#developers" class="nav-link" onclick="toggleMobileMenu()">{% trans "Developers" %}</a>
         </div>
@@ -1885,159 +2029,156 @@
             <div class="research-modal-text main-content">
                 <h3 class="research-title">{% trans "Remote Sensing" %}</h3>
                 <p>{% blocktrans %}
-                    Remote sensing uses satellite to monitor crop health, soil conditions, and water use at scale.
+                    Remote sensing technology uses satellite imagery to monitor crop health, soil moisture, and agricultural productivity from a distance.
                 {% endblocktrans %}</p>
-            </div>
-            <div class="research-image-gallery">
-                <figure class="research-figure">
-                    <img src="https://i.ibb.co/YT4GdpY5/Screenshot-2025-07-14-at-10-18-28-PM.png" alt="{% trans 'Drone crop monitoring' %}" class="research-img">
-                    <figcaption class="research-figcaption">{% trans "Satellite-based remote sensing for crop health assessment." %}</figcaption>
-                </figure>
             </div>
             <div class="research-modal-text main-content">
                 <h3>{% trans "Detailed Explanation of the Research" %}</h3>
                 <p>{% blocktrans %}
-                    This technology helps identify water-stressed areas, optimize irrigation schedules, and detect anomalies such as pest infestations or nutrient deficiencies, supporting precision agriculture and large-scale water management.
+                    By analyzing spectral data, remote sensing helps in early detection of crop stress, optimizing fertilizer application, and improving overall farm management.
                 {% endblocktrans %}</p>
-                </div>
+            </div>
         </div>
     </div>
-</div>
 </section>
+
+
     <!-- Knowledge Base Section -->
+    <section class="knowledge-base" id="knowledge-base">
+        <div class="knowledge-base-container">
+            <div class="knowledge-base-header">
+                <h2 class="knowledge-base-title">{% trans "Knowledge Base" %}</h2>
+                <p class="knowledge-base-subtitle">
+                    {% blocktrans %}
+                        Explore our comprehensive collection of insights, guides, and resources to enhance your understanding
+                    {% endblocktrans %}
+                </p>
+            </div>
 
-<section class="knowledge-base" id="knowledge-base">
-    <div class="knowledge-base-container">
-        <div class="knowledge-base-header">
-            <h2 class="knowledge-base-title">{% trans "Knowledge Base" %}</h2>
-            <p class="knowledge-base-subtitle">
-                {% blocktrans %}
-                    Explore our comprehensive collection of insights, guides, and resources to enhance your understanding
-                {% endblocktrans %}
-            </p>
+            <div class="carousel-container">
+                <div class="carousel-track" id="carouselTrack">
+                    <!-- Slide 1 -->
+                    <div class="carousel-item">
+                        <h3>{% trans "Agriculture in Punjab" %}</h3>
+                        <p>{% blocktrans %}
+                            Punjab, often referred to as the "Granary of India", is one of the most agriculturally
+                            prosperous states in the country. The state's agricultural success is largely attributed to the
+                            Green Revolution of the 1960s, which introduced high-yielding varieties (HYVs),
+                            mechanization, and chemical fertilizers, transforming Punjab into a leading food producer.
+                        {% endblocktrans %}</p>
+                        <a href="{% url 'agriculture' %}" class="carousel-link">
+                            <span>{% trans "To know more about this topic click here" %}</span>
+                        </a>
+                    </div>
+
+                    <!-- Slide 2 -->
+                    <div class="carousel-item">
+                        <h3>{% trans "Crop residue management" %}</h3>
+                        <p>{% blocktrans %}
+                            At the end of the rice season farmers use the combine to harvest rice, this leaves hard
+                            stubbles at the root of the plant projecting 10-15 cm above surface level. Thereafter, farmers
+                            will plough the field with a reaper to cut these stubbles leaving behind straw.
+                        {% endblocktrans %}</p>
+                        <a href="{% url 'crop_residue' %}" class="carousel-link">
+                            <span>{% trans "To know more about this topic click here" %}</span>
+                        </a>
+                    </div>
+
+                    <!-- Slide 3 -->
+                    <div class="carousel-item">
+                        <h3>{% trans "Direct Seeded Rice" %}</h3>
+                        <p>{% blocktrans %}
+                            The Direct Seeded Rice (DSR) method is an emerging alternative to traditional transplanting.
+                            Unlike the transplanting method, DSR involves sowing rice seeds with a tractor-seeder directly
+                            into the field without a separate nursery or puddling.
+                        {% endblocktrans %}</p>
+                        <a href="{% url 'dsr' %}" class="carousel-link">
+                            <span>{% trans "To know more about this topic click here" %}</span>
+                        </a>
+                    </div>
+
+                    <!-- Slide 4 -->
+                    <div class="carousel-item">
+                        <h3>{% trans "Farm" %}</h3>
+                        <p>{% blocktrans %}
+                            A piece of land with a distinct irrigation source that can be identified. It is cultivated by a main
+                            operator, that is the owner or leaseholder of the farm land.
+                        {% endblocktrans %}</p>
+                        <a href="{% url 'farmers' %}" class="carousel-link">
+                            <span>{% trans "To know more about this topic click here" %}</span>
+                        </a>
+                    </div>
+
+                    <!-- Slide 5 -->
+                    <div class="carousel-item">
+                        <h3>{% trans "Stages of Paddy rice" %}</h3>
+                        <p>{% blocktrans %}
+                            The growth stages of paddy rice (Oryza sativa) can be broadly divided into four key phases.
+                            Click below to learn about these phases in detail.
+                        {% endblocktrans %}</p>
+                        <a href="{% url 'stages' %}" class="carousel-link">
+                            <span>{% trans "To know more about this topic click here" %}</span>
+                        </a>
+                    </div>
+
+                    <!-- Slide 6 -->
+                    <div class="carousel-item">
+                        <h3>{% trans "Transplanting Rice" %}</h3>
+                        <p>{% blocktrans %}
+                            The transplanting rice (TPR) method of rice cultivation has been a traditional and widely
+                            practiced technique in Punjab, India, where rice is the major kharif (monsoon) crop. This
+                            method involves raising seedlings in a separate nursery and then transplanting them into a
+                            puddled, waterlogged field.
+                        {% endblocktrans %}</p>
+                        <a href="{% url 'tpr' %}" class="carousel-link">
+                            <span>{% trans "To know more about this topic click here" %}</span>
+                        </a>
+                    </div>
+
+                    <!-- Slide 7 -->
+                    <div class="carousel-item">
+                        <h3>{% trans "Tube-well" %}</h3>
+                        <p>{% blocktrans %}
+                            Tube-well is by far the most pervasive source of irrigation in the area. It is a bore-well dug
+                            under the surface level the depth of which can vary between areas but it is 100 to 400ft,
+                            mostly around 200ft. The tube-well is called like this as it is a bore in a tube shape. Its
+                            diameter tends to be small, relative to the traditional wells. Diameter is usually 3-6".
+                        {% endblocktrans %}</p>
+                        <a href="{% url 'tubewell' %}" class="carousel-link">
+                            <span>{% trans "To know more about this topic click here" %}</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Navigation Dots -->
+                <div class="carousel-nav" id="carouselNav">
+                    <div class="carousel-dot active" onclick="goToSlide(0)"></div>
+                    <div class="carousel-dot" onclick="goToSlide(1)"></div>
+                    <div class="carousel-dot" onclick="goToSlide(2)"></div>
+                    <div class="carousel-dot" onclick="goToSlide(3)"></div>
+                    <div class="carousel-dot" onclick="goToSlide(4)"></div>
+                    <div class="carousel-dot" onclick="goToSlide(5)"></div>
+                    <div class="carousel-dot" onclick="goToSlide(6)"></div>
+                </div>
+
+                <!-- Arrow Navigation -->
+                <div class="carousel-arrow prev" onclick="previousSlide()">‹</div>
+                <div class="carousel-arrow next" onclick="nextSlide()">›</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+<section class="section" id="team">
+    <div class="section-container">
+        <div class="section-header">
+            <h2 class="section-title">{% trans "Meet Our Team" %}</h2>
+            <p class="section-subtitle">{% trans "The minds behind the innovation" %}</p>
         </div>
 
-        <div class="carousel-container">
-            <div class="carousel-track" id="carouselTrack">
-                <!-- Slide 1 -->
-                <div class="carousel-item">
-                    <h3>{% trans "Agriculture in Punjab" %}</h3>
-                    <p>{% blocktrans %}
-                        Punjab, often referred to as the "Granary of India", is one of the most agriculturally
-                        prosperous states in the country. The state's agricultural success is largely attributed to the
-                        Green Revolution of the 1960s, which introduced high-yielding varieties (HYVs),
-                        mechanization, and chemical fertilizers, transforming Punjab into a leading food producer.
-                    {% endblocktrans %}</p>
-                    <a href="{% url 'agriculture' %}" class="carousel-link">
-                        <span>{% trans "To know more about this topic click here" %}</span>
-                    </a>
-                </div>
-
-                <!-- Slide 2 -->
-                <div class="carousel-item">
-                    <h3>{% trans "Crop residue management" %}</h3>
-                    <p>{% blocktrans %}
-                        At the end of the rice season farmers use the combine to harvest rice, this leaves hard
-                        stubbles at the root of the plant projecting 10-15 cm above surface level. Thereafter, farmers
-                        will plough the field with a reaper to cut these stubbles leaving behind straw.
-                    {% endblocktrans %}</p>
-                    <a href="{% url 'crop_residue' %}" class="carousel-link">
-                        <span>{% trans "To know more about this topic click here" %}</span>
-                    </a>
-                </div>
-
-                <!-- Slide 3 -->
-                <div class="carousel-item">
-                    <h3>{% trans "Direct Seeded Rice" %}</h3>
-                    <p>{% blocktrans %}
-                        The Direct Seeded Rice (DSR) method is an emerging alternative to traditional transplanting.
-                        Unlike the transplanting method, DSR involves sowing rice seeds with a tractor-seeder directly
-                        into the field without a separate nursery or puddling.
-                    {% endblocktrans %}</p>
-                    <a href="{% url 'dsr' %}" class="carousel-link">
-                        <span>{% trans "To know more about this topic click here" %}</span>
-                    </a>
-                </div>
-
-                <!-- Slide 4 -->
-                <div class="carousel-item">
-                    <h3>{% trans "Farm" %}</h3>
-                    <p>{% blocktrans %}
-                        A piece of land with a distinct irrigation source that can be identified. It is cultivated by a main
-                        operator, that is the owner or leaseholder of the farm land.
-                    {% endblocktrans %}</p>
-                    <a href="{% url 'farmers' %}" class="carousel-link">
-                        <span>{% trans "To know more about this topic click here" %}</span>
-                    </a>
-                </div>
-
-                <!-- Slide 5 -->
-                <div class="carousel-item">
-                    <h3>{% trans "Stages of Paddy rice" %}</h3>
-                    <p>{% blocktrans %}
-                        The growth stages of paddy rice (Oryza sativa) can be broadly divided into four key phases.
-                        Click below to learn about these phases in detail.
-                    {% endblocktrans %}</p>
-                    <a href="{% url 'stages' %}" class="carousel-link">
-                        <span>{% trans "To know more about this topic click here" %}</span>
-                    </a>
-                </div>
-
-                <!-- Slide 6 -->
-                <div class="carousel-item">
-                    <h3>{% trans "Transplanting Rice" %}</h3>
-                    <p>{% blocktrans %}
-                        The transplanting rice (TPR) method of rice cultivation has been a traditional and widely
-                        practiced technique in Punjab, India, where rice is the major kharif (monsoon) crop. This
-                        method involves raising seedlings in a separate nursery and then transplanting them into a
-                        puddled, waterlogged field.
-                    {% endblocktrans %}</p>
-                    <a href="{% url 'tpr' %}" class="carousel-link">
-                        <span>{% trans "To know more about this topic click here" %}</span>
-                    </a>
-                </div>
-
-                <!-- Slide 7 -->
-                <div class="carousel-item">
-                    <h3>{% trans "Tube-well" %}</h3>
-                    <p>{% blocktrans %}
-                        Tube-well is by far the most pervasive source of irrigation in the area. It is a bore-well dug
-                        under the surface level the depth of which can vary between areas but it is 100 to 400ft,
-                        mostly around 200ft. The tube-well is called like this as it is a bore in a tube shape. Its
-                        diameter tends to be small, relative to the traditional wells. Diameter is usually 3-6".
-                    {% endblocktrans %}</p>
-                    <a href="{% url 'tubewell' %}" class="carousel-link">
-                        <span>{% trans "To know more about this topic click here" %}</span>
-                    </a>
-                </div>
-            </div>
-
-            <!-- Navigation Dots -->
-            <div class="carousel-nav" id="carouselNav">
-                <div class="carousel-dot active" onclick="goToSlide(0)"></div>
-                <div class="carousel-dot" onclick="goToSlide(1)"></div>
-                <div class="carousel-dot" onclick="goToSlide(2)"></div>
-                <div class="carousel-dot" onclick="goToSlide(3)"></div>
-                <div class="carousel-dot" onclick="goToSlide(4)"></div>
-                <div class="carousel-dot" onclick="goToSlide(5)"></div>
-                <div class="carousel-dot" onclick="goToSlide(6)"></div>
-            </div>
-
-            <!-- Arrow Navigation -->
-            <div class="carousel-arrow prev" onclick="previousSlide()">‹</div>
-            <div class="carousel-arrow next" onclick="nextSlide()">›</div>
-        </div>
-    </div>
-</section>
-
-    <section class="section" id="team" style="background: var(--bg-tertiary);">
-        <div class="section-container">
-            <div class="section-header">
-                <h2 class="section-title">{% trans "Leadership & Research Team" %}</h2>
-                <p class="section-subtitle">{% trans "Pioneering Innovation in Agricultural Technology" %}</p>
-            </div>
-    
-            <!-- Leaders -->
+        <!-- Leadership & Research Team -->
+        <div class="team-section">
+            <h3 class="team-subtitle clickable-title" data-modal-target="#leadership-modal">{% trans "Principal Investigators" %}</h3>
             <div class="team-grid leaders-grid">
                 <div class="team-card">
                     <img src="https://i.ibb.co/W4YV6FWv/Dr-Karun-Verma.jpg" alt="{% trans 'Prof. Karun Verma' %}" class="team-photo">
@@ -2049,392 +2190,432 @@
                     <h3 class="team-name">{% trans "Prof. Ram Fishman" %}</h3>
                     <p class="team-role">{% trans "Associate Professor of Public Policy, Tel Aviv University, and Director, Nitsan Lab for Sustainable Development" %}</p>
                 </div>
-                <div class="team-card">
-                   <img src="https://i.ibb.co/Rp56NY8N/Jhilik-mam.jpg" alt="{% trans 'Dr. Jhilik Bhattacharya' %}" class="team-photo">
-                    <h3 class="team-name">{% trans "Dr. Jhilik Bhattacharya" %}</h3>
-                    <p class="team-role">{% trans "Associate Professor & Associate Head at TIET" %}</p>
-                </div>
-                <div class="team-card">
-                   <img src="https://i.ibb.co/N63YNK6t/Amit-sir.jpg" alt="{% trans 'Dr. Amit Mishra' %}" class="team-photo">
-                    <h3 class="team-name">{% trans "Dr. Amit Mishra" %}</h3>
-                    <p class="team-role">{% trans "Associate Professor" %}</p>
                 </div>
             </div>
         </div>
-    </section>
-    
-    <!-- Developers Section -->
-    <section class="section" id="developers">
-        <div class="section-container">
-            <div class="section-header">
-                <h2 class="section-title">{% trans "Field and Research Team" %}</h2>
-                <p class="section-subtitle">{% trans "The dedicated team driving field operations and research insights on the ground." %}</p>
-            </div>
-    
-            <div class="team-grid members-grid">
-                {% comment "Team member cards" %}
-                {% for name, role in team_members %}
-                <div class="team-card">
-                    <img src="" alt="{% trans name %}" class="team-photo">
-                    <h3 class="team-name">{% trans name %}</h3>
-                    <p class="team-role">{% trans role %}</p>
-                </div>
-                {% endfor %}
-                {% endcomment %}
-    
-                <!-- Hardcoded version -->
-                <div class="team-card"><img src="https://i.ibb.co/ycdP7v0r/Gunteshwar-photo.png" alt="Gunteshwar Singh" class="team-photo"><h3 class="team-name">{% trans "Gunteshwar Singh" %}</h3><p class="team-role">{% trans "Field Manager" %}</p></div>
-                <div class="team-card"><img src="https://i.ibb.co/Swj6vGHC/Satyam-photo.png" alt="Satyam Yadav" class="team-photo"><h3 class="team-name">{% trans "Satyam Yadav" %}</h3><p class="team-role">{% trans "Senior Research Assistant" %}</p></div>
-                <div class="team-card"><img src="https://i.ibb.co/jKcmNpS/Gaurav-photo.png" alt="Gaurav Sharma" class="team-photo"><h3 class="team-name">{% trans "Gaurav Sharma" %}</h3><p class="team-role">{% trans "Senior Research Assistant" %}</p></div>
-                <div class="team-card"><img src="https://i.ibb.co/yn5w2vRb/Napinder-photo.png" alt="Napinder Singh" class="team-photo"><h3 class="team-name">{% trans "Napinder Singh" %}</h3><p class="team-role">{% trans "Senior Research Assistant" %}</p></div>
-                <div class="team-card"><img src="https://i.ibb.co/rRHc63Xj/Kanwar-photo.png" alt="Ajay Kanwar" class="team-photo"><h3 class="team-name">{% trans "Ajay Kanwar" %}</h3><p class="team-role">{% trans "Senior Field Assistant" %}</p></div>
-                <div class="team-card"><img src="https://i.ibb.co/GfPNdnF7/Satnam-photo.png" alt="Satnam Singh" class="team-photo"><h3 class="team-name">{% trans "Satnam Singh" %}</h3><p class="team-role">{% trans "Senior Field Assistant" %}</p></div>
-                <div class="team-card"><img src="https://i.ibb.co/RTHsRHTF/Yogesh-photo.png" alt="Yogesh Sharma" class="team-photo"><h3 class="team-name">{% trans "Yogesh Sharma" %}</h3><p class="team-role">{% trans "Senior Field Assistant" %}</p></div>
-                <div class="team-card"><img src="https://i.ibb.co/sp5ML9zc/Dan-photo.png" alt="Dan Etgar" class="team-photo"><h3 class="team-name">{% trans "Dan Etgar" %}</h3><p class="team-role">{% trans "PhD Candidate at Tel Aviv University" %}</p></div>
-                <div class="team-card"><img src="https://i.ibb.co/rKpSnyLY/Marcello-photo.png" alt="Marcello Liberman" class="team-photo"><h3 class="team-name">{% trans "Marcello Liberman" %}</h3><p class="team-role">{% trans "Research Project Manager at Nitsan Lab @ TAU" %}</p></div>
-            </div>
-        </div>
-    </section>
 
-    <section class="section" id="developers">
-        <div class="section-container">
-            <div class="section-header">
-                <h2 class="section-title">{% trans "Development Team" %}</h2>
-                <p class="section-subtitle">{% trans "Building the Future of Agricultural Technology" %}</p>
-            </div>
-            
-            <div class="team-grid members-grid">
-                <div class="developer-card">
-                    <div class="code-pattern"></div>
-                    <div class="developer-content">
-                        <img src="https://i.ibb.co/bMgn5Zz5/Danish.jpg" alt="{% trans 'Danish Sharma' %}" class="developer-photo">
-                        <div class="developer-info">
-                            <h3 class="developer-name">{% trans "Danish Sharma" %}</h3>
-                            <p class="developer-role">{% trans "Final Year B.E. Student at TIET" %}</p>
-                            <a href="https://www.linkedin.com/in/danish-workmain/" target="_blank" class="developer-link">
-                                <i class="fab fa-linkedin"></i> {% trans "Connect" %}
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="developer-card">
-                    <div class="code-pattern"></div>
-                    <div class="developer-content">
-                        <img src="https://i.ibb.co/j9CXVgF9/Samrath.jpg" alt="{% trans 'Samrath Singh' %}" class="developer-photo">
-                        <div class="developer-info">
-                            <h3 class="developer-name">{% trans "Samrath Singh Kharbanda" %}</h3>
-                            <p class="developer-role">{% trans "Final Year B.E. Student at TIET" %}</p>
-                            <a href="https://www.linkedin.com/in/samrath-singh-kharbanda-b93283346" target="_blank" class="developer-link">
-                                <i class="fab fa-linkedin"></i> {% trans "Connect" %}
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="developer-card">
-                    <div class="code-pattern"></div>
-                    <div class="developer-content">
-                        <img src="https://i.ibb.co/8DGfD0TD/Ashmit.jpg" alt="{% trans 'Ashmit Cajla' %}" class="developer-photo">
-                        <div class="developer-info">
-                            <h3 class="developer-name">{% trans "Ashmit Cajla" %}</h3>
-                            <p class="developer-role">{% trans "Pre-Final Year B.E. Student at TIET" %}</p>
-                            <a href="https://www.linkedin.com/in/ashmitcajla/" target="_blank" class="developer-link">
-                                <i class="fab fa-linkedin"></i> {% trans "Connect" %}
-                            </a>
-                        </div>
-                    </div>
+        <!-- Lead Researcher -->
+        <div class="team-section">
+            <h3 class="team-subtitle">{% trans "Lead Researcher" %}</h3>
+            <div class="team-grid members-grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); justify-content: center;">
+                <div class="team-card" style="max-width: 400px; margin: 0 auto;">
+                    <img src="https://i.ibb.co/sp5ML9zc/Dan-photo.png" alt="Dan Etgar" class="team-photo">
+                    <h4 class="team-name">{% trans "Dan Etgar" %}</h4>
+                    <p class="team-role">{% trans "Lead Researcher, PhD Candidate at Tel Aviv University" %}</p>
+                    <a href="https://www.linkedin.com/in/danetgar/" class="developer-link" target="_blank">{% trans "View Profile" %} <i class="fab fa-linkedin"></i></a>
                 </div>
             </div>
         </div>
-    </section>
-    
+
+        <!-- Field Researchers -->
+        <div class="team-section">
+            <h3 class="team-subtitle clickable-title" data-modal-target="#field-researchers-modal">{% trans "Field Researchers" %}</h3>
+            <div class="team-grid members-grid">
+                <div class="team-card">
+                    <img src="https://i.ibb.co/Vp2GvM2d/Liron.png" alt="Liron Dana" class="team-photo">
+                    <h4 class="team-name">{% trans "Liron Dana" %}</h4>
+                    <p class="team-role">{% trans "Field Researcher" %}</p>
+                </div>
+                <div class="team-card">
+                    <img src="https://i.ibb.co/rKpSnyLY/Marcello-photo.png" alt="Marcello Liberman" class="team-photo">
+                    <h4 class="team-name">{% trans "Marcello Liberman" %}</h4>
+                    <p class="team-role">{% trans "Field Researcher" %}</p>
+                </div>
+                <div class="team-card">
+                    <img src="https://i.ibb.co/1Jm6tW4w/Shir-Choen.png" alt="Shir Choen" class="team-photo">
+                    <h4 class="team-name">{% trans "Shir Choen" %}</h4>
+                    <p class="team-role">{% trans "Field Researcher" %}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Field Assistants -->
+        <div class="team-section">
+            <h3 class="team-subtitle clickable-title" data-modal-target="#field-assistants-modal">{% trans "Field Assistants" %}</h3>
+            <div class="team-grid members-grid">
+                <div class="team-card">
+                    <img src="https://i.ibb.co/ycdP7v0r/Gunteshwar-photo.png" alt="Field Assistant 1" class="team-photo">
+                    <h4 class="team-name">{% trans "Gunteshwar Singh" %}</h4>
+                    <p class="team-role">{% trans "Field Assistant" %}</p>
+                </div>
+                <div class="team-card">
+                    <img src="https://i.ibb.co/Swj6vGHC/Satyam-photo.png" alt="Field Assistant 2" class="team-photo">
+                    <h4 class="team-name">{% trans "Satyam Yadav" %}</h4>
+                    <p class="team-role">{% trans "Field Assistant" %}</p>
+                </div>
+                <div class="team-card">
+                    <img src="https://i.ibb.co/jKcmNpS/Gaurav-photo.png" alt="Field Assistant 3" class="team-photo">
+                    <h4 class="team-name">{% trans "Gaurav Sharma" %}</h4>
+                    <p class="team-role">{% trans "Field Assistant" %}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Development Team -->
+        <div class="team-section" id="developers">
+            <h3 class="team-subtitle">{% trans "Development Team" %}</h3>
+            <div class="team-grid members-grid" style="grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));">
+                <div class="developer-card">
+                    <div class="developer-content">
+                        <img src="https://i.ibb.co/bMgn5Zz5/Danish.jpg" alt="Danish" class="developer-photo">
+                        <div class="developer-info">
+                            <h4 class="developer-name">{% trans "Danish Sharma" %}</h4>
+                            <p class="developer-role">{% trans "Final Year B.E. Student at TIET, Senior Data Sci. and SDE intern" %}</p>
+                            <a href="https://www.linkedin.com/in/danish-workmain/" class="developer-link" target="_blank">{% trans "View Profile" %} <i class="fab fa-linkedin"></i></a>
+                        </div>
+                    </div>
+                    <div class="code-pattern"></div>
+                </div>
+                <div class="developer-card">
+                    <div class="developer-content">
+                        <img src="https://i.ibb.co/j9CXVgF9/Samrath.jpg" alt="Sam" class="developer-photo">
+                        <div class="developer-info">
+                            <h4 class="developer-name">{% trans "Samrath Singh Kharbanda" %}</h4>
+                            <p class="developer-role">{% trans "Final Year B.E. Student at TIET, Senior Data Sci. and SDE intern" %}</p>
+                            <a href="#" class="developer-link">{% trans "View Profile" %} <i class="fab fa-linkedin"></i></a>
+                        </div>
+                    </div>
+                    <div class="code-pattern"></div>
+                </div>
+                <div class="developer-card">
+                    <div class="developer-content">
+                        <img src="https://i.ibb.co/8DGfD0TD/Ashmit.jpg" alt="Ashmit" class="developer-photo">
+                        <div class="developer-info">
+                            <h4 class="developer-name">{% trans "Ashmit Cajla" %}</h4>
+                            <p class="developer-role">{% trans "Pre-Final Year B.E. Student at TIET, Junior Data Sci. and SDE intern" %}</p>
+                            <a href="#" class="developer-link">{% trans "View Profile" %} <i class="fab fa-linkedin"></i></a>
+                        </div>
+                    </div>
+                    <div class="code-pattern"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Team Modals -->
+<!-- Leadership Modal -->
+<div class="team-modal" id="leadership-modal">
+    <div class="team-modal-content">
+        <button class="team-modal-close" data-modal-close="#leadership-modal">&times;</button>
+        <h2 class="team-modal-title">{% trans "Principal Investigators" %}</h2>
+        <div class="team-modal-grid">
+            <div class="team-card">
+                <img src="https://i.ibb.co/W4YV6FWv/Dr-Karun-Verma.jpg" alt="Prof. Karun" class="team-photo">
+                <h4 class="team-name">{% trans "Prof. Karun" %}</h4>
+                <p class="team-role">{% trans "Associate Professor at Thapar Institute of Engineering & Technology" %}</p>
+                <a href="https://www.thapar.edu/faculties/view/Karun-Verma/MzI1/NA==" class="team-link" target="_blank">{% trans "View Profile" %} <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="team-card">
+                <img src="https://i.ibb.co/gLYx5JVq/Dr-Ram.jpg" alt="Dr. Ram" class="team-photo">
+                <h4 class="team-name">{% trans "Prof. Ram" %}</h4>
+                <p class="team-role">{% trans "Associate Professor of Public Policy, Tel Aviv University, and Director, Nitsan Lab for Sustainable Development" %}</p>
+                <a href="https://english.tau.ac.il/profile/ramf" class="team-link" target="_blank">{% trans "View Profile" %} <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="team-card">
+                <img src="https://i.ibb.co/Rp56NY8N/Jhilik-mam.jpg alt="Prof. Jhilik Bhattacharya" class="team-photo">
+                <h4 class="team-name">{% trans "Prof. Jhilik Bhattacharya" %}</h4>
+                <p class="team-role">{% trans "Associate Professor & Associate Head at TIET" %}</p>
+                <a href="https://csed.thapar.edu/facultydetails/OTkx" class="team-link" target="_blank">{% trans "View Profile" %} <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="team-card">
+                <img src="https://i.ibb.co/N63YNK6t/Amit-sir.jpg" alt="Prof. Amit Mishra" class="team-photo">
+                <h4 class="team-name">{% trans "Prof. Amit Mishra" %}</h4>
+                <p class="team-role">{% trans "Associate Professor, TIEY" %}</p>
+                <a href="https://www.thapar.edu/faculties/view/Dr.-Amit-Mishra/Mjc5/MTU=" class="team-link" target="_blank">{% trans "View Profile" %} <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="team-card">
+                <img src="https://i.ibb.co/N2jSKk01/Hadas.jpg" alt="Prof. Hadas Mamane" class="team-photo">
+                <h4 class="team-name">{% trans "Prof. Hadas Mamane" %}</h4>
+                <p class="team-role">{% trans "Professor of Water Technologies at Tel Aviv University" %}</p>
+                <a href="https://english.tau.ac.il/profile/hadasmg" class="team-link" target="_blank">{% trans "View Profile" %} <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Field Researchers Modal -->
+<div class="team-modal" id="field-researchers-modal">
+    <div class="team-modal-content">
+        <button class="team-modal-close" data-modal-close="#field-researchers-modal">&times;</button>
+        <h2 class="team-modal-title">{% trans "Field Researchers" %}</h2>
+        <div class="team-modal-grid">
+            <div class="team-card">
+                <img src="https://i.ibb.co/Vp2GvM2d/Liron.png" alt="Liron Dana" class="team-photo">
+                <h4 class="team-name">{% trans "Liron Dana" %}</h4>
+                <p class="team-role">{% trans "Field Researcher" %}</p>
+            </div>
+            <div class="team-card">
+                <img src="https://i.ibb.co/rKpSnyLY/Marcello-photo.png" alt="Marcello Liberman" class="team-photo">
+                <h4 class="team-name">{% trans "Marcello Liberman" %}</h4>
+                <p class="team-role">{% trans "Field Researcher" %}</p>
+            </div>
+            <div class="team-card">
+                <img src="https://i.ibb.co/1Jm6tW4w/Shir-Choen.png" alt="Shir Choen" class="team-photo">
+                <h4 class="team-name">{% trans "Shir Choen" %}</h4>
+                <p class="team-role">{% trans "Field Researcher" %}</p>
+            </div>
+            <div class="team-card">
+                <img src="https://i.ibb.co/j1568x2/Rinat.png" alt="Rinat Kaplan" class="team-photo">
+                <h4 class="team-name">{% trans "Rinat Kaplan" %}</h4>
+                <p class="team-role">{% trans "Field Researcher" %}</p>
+            </div>
+            <div class="team-card">
+                <img src="https://i.ibb.co/cjk9P5g/Yotam.png" alt="Yotam golan" class="team-photo">
+                <h4 class="team-name">{% trans "Yotam golan" %}</h4>
+                <p class="team-role">{% trans "Field Researcher" %}</p>
+            </div>
+            <div class="team-card">
+                <img src="https://i.ibb.co/fdJQ3SbZ/Briana.png" alt="Briana Wiser" class="team-photo">
+                <h4 class="team-name">{% trans "Briana Wiser" %}</h4>
+                <p class="team-role">{% trans "Field Researcher" %}</p>
+            </div>
+            <div class="team-card">
+                <img src="https://i.ibb.co/1YYsXzFX/RotemM.png" alt="Rotem Mayer" class="team-photo">
+                <h4 class="team-name">{% trans "Rotem Mayer" %}</h4>
+                <p class="team-role">{% trans "Field Researcher" %}</p>
+            </div>
+            <div class="team-card">
+                <img src="https://i.ibb.co/xSJ2Fr66/RotemH.png" alt="Rotem Hanan" class="team-photo">
+                <h4 class="team-name">{% trans "Rotem Hanan" %}</h4>
+                <p class="team-role">{% trans "Field Researcher" %}</p>
+            </div>
+            <div class="team-card">
+                <img src="https://i.ibb.co/XZXJ9vqX/Ziv-Hilel.png" alt="Ziv Hilel" class="team-photo">
+                <h4 class="team-name">{% trans "Ziv Hilel" %}</h4>
+                <p class="team-role">{% trans "Field Researcher" %}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Field Assistants Modal -->
+<div class="team-modal" id="field-assistants-modal">
+    <div class="team-modal-content">
+        <button class="team-modal-close" data-modal-close="#field-assistants-modal">&times;</button>
+        <h2 class="team-modal-title">{% trans "Field Assistants" %}</h2>
+        <div class="team-modal-grid">
+            <div class="team-card">
+                <img src="https://i.ibb.co/ycdP7v0r/Gunteshwar-photo.png" alt="Field Assistant 1" class="team-photo">
+                <h4 class="team-name">{% trans "Gunteshwar Singh" %}</h4>
+                <p class="team-role">{% trans "Field Assistant" %}</p>
+            </div>
+            <div class="team-card">
+                <img src="https://i.ibb.co/Swj6vGHC/Satyam-photo.png" alt="Field Assistant 2" class="team-photo">
+                <h4 class="team-name">{% trans "Satyam Yadav" %}</h4>
+                <p class="team-role">{% trans "Field Assistant" %}</p>
+            </div>
+            <div class="team-card">
+                <img src="https://i.ibb.co/jKcmNpS/Gaurav-photo.png" alt="Field Assistant 3" class="team-photo">
+                <h4 class="team-name">{% trans "Gaurav Sharma" %}</h4>
+                <p class="team-role">{% trans "Field Assistant" %}</p>
+            </div>
+            <div class="team-card">
+                <img src="https://i.ibb.co/yn5w2vRb/Napinder-photo.png" alt="Field Assistant 4" class="team-photo">
+                <h4 class="team-name">{% trans "Napinder Singh" %}</h4>
+                <p class="team-role">{% trans "Field Assistant" %}</p>
+            </div>
+             <div class="team-card">
+                <img src="https://i.ibb.co/rRHc63Xj/Kanwar-photo.png" alt="Field Assistant 4" class="team-photo">
+                <h4 class="team-name">{% trans "Ajay Kanwar" %}</h4>
+                <p class="team-role">{% trans "Field Assistant" %}</p>
+            </div>
+             <div class="team-card">
+                <img src="https://i.ibb.co/GfPNdnF7/Satnam-photo.png" alt="Field Assistant 4" class="team-photo">
+                <h4 class="team-name">{% trans "Satnam Singh" %}</h4>
+                <p class="team-role">{% trans "Field Assistant" %}</p>
+            </div>
+             <div class="team-card">
+                <img src="https://i.ibb.co/RTHsRHTF/Yogesh-photo.png" alt="Field Assistant 4" class="team-photo">
+                <h4 class="team-name">{% trans "Yogesh Sharma" %}</h4>
+                <p class="team-role">{% trans "Field Assistant" %}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
     <!-- Login Modal -->
     <div class="modal" id="loginModal">
         <div class="modal-content">
-            <button class="modal-close" onclick="closeModal()">
-                <i class="fas fa-times"></i>
-            </button>
+            <button class="modal-close" onclick="closeModal()">&times;</button>
             <h2 class="modal-title">{% trans "Member Access" %}</h2>
-            <form id="loginForm" method="POST" action="/login/">
-                {% csrf_token %}
+            <form id="loginForm">
                 <div class="form-group">
-                    <label class="form-label">{% trans "Username" %}</label>
-                    <input type="text" class="form-input" id="username" name="username" required>
+                    <label for="username" class="form-label">{% trans "Username" %}</label>
+                    <input type="text" id="username" class="form-input" required>
                 </div>
                 <div class="form-group">
-                    <label class="form-label">{% trans "Password" %}</label>
-                    <input type="password" class="form-input" id="password" name="password" required>
+                    <label for="password" class="form-label">{% trans "Password" %}</label>
+                    <input type="password" id="password" class="form-input" required>
                 </div>
-                <button type="submit" class="btn btn-primary" style="width: 100%;">
-                    <i class="fas fa-lock"></i> {% trans "Secure Login" %}
-                </button>
-                {% if error %}
-                <div class="error-message" id="errorMessage" style="display: block;">
-                    {{ error }}
-                </div>
-                {% else %}
-                <div class="error-message" id="errorMessage" style="display: none;">
-                    {% trans "Invalid credentials. Please try again." %}
-                </div>
-                {% endif %}
+                <button type="submit" class="btn btn-primary" style="width: 100%;">{% trans "Login" %}</button>
+                <div class="error-message" id="errorMessage"></div>
             </form>
         </div>
     </div>
-    
+
     <!-- Footer -->
     <footer class="footer">
-        <p class="footer-text">
-            {% trans "©️ 2025 DIGI-VI | Digital Village Intelligence Platform. All rights reserved." %}
-        </p>
+        <p class="footer-text">&copy; {% now "Y" %} T2CEFS. {% trans "All Rights Reserved." %}</p>
     </footer>
-    
 
     <script>
-        // Theme Management
-        function initTheme() {
-            const savedTheme = localStorage.getItem('theme') || 'dark';
-            document.documentElement.setAttribute('data-theme', savedTheme);
-            updateThemeIcon(savedTheme);
+        // --- Loading Screen --- //
+        window.addEventListener('load', () => {
+            document.getElementById('loader').classList.add('hidden');
+        });
+
+        // --- Particle Animation --- //
+        const particlesContainer = document.getElementById('particles');
+        const numParticles = 50;
+        for (let i = 0; i < numParticles; i++) {
+            let particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = `${Math.random() * 100}vw`;
+            particle.style.top = `${Math.random() * 100}vh`;
+            particle.style.animationDuration = `${Math.random() * 10 + 15}s`;
+            particle.style.animationDelay = `${Math.random() * 5}s`;
+            particlesContainer.appendChild(particle);
         }
 
+        // --- Theme Toggle --- //
+        const themeToggle = document.querySelector('.theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', currentTheme);
+        updateThemeIcon(currentTheme);
+
         function toggleTheme() {
-            const currentTheme = document.documentElement.getAttribute('data-theme');
-            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-            
+            const newTheme = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
             document.documentElement.setAttribute('data-theme', newTheme);
             localStorage.setItem('theme', newTheme);
             updateThemeIcon(newTheme);
         }
 
         function updateThemeIcon(theme) {
-            const icon = document.getElementById('theme-icon');
-            icon.className = theme === 'light' ? 'fas fa-sun' : 'fas fa-moon';
-        }
-
-        // Particles
-        function createParticles() {
-            const container = document.getElementById('particles');
-            const particleCount = 50;
-            
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.animationDelay = Math.random() * 20 + 's';
-                particle.style.animationDuration = (Math.random() * 20 + 20) + 's';
-                container.appendChild(particle);
-            }
-        }
-
-        // Smooth Scroll
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-
-        // Mobile Menu
-        function toggleMobileMenu() {
-            const menu = document.getElementById('mobileMenu');
-            menu.classList.toggle('active');
-        }
-
-        // Modal
-        function openModal() {
-            const modal = document.getElementById('loginModal');
-            modal.classList.add('active');
-        }
-
-        function closeModal() {
-            const modal = document.getElementById('loginModal');
-            modal.classList.remove('active');
-            document.getElementById('loginForm').reset();
-            document.getElementById('errorMessage').style.display = 'none';
-        }
-
-        // Click outside modal to close
-        document.getElementById('loginModal').addEventListener('click', (e) => {
-            if (e.target === e.currentTarget) {
-                closeModal();
-            }
-        });
-
-        // Login Form
-        // (Removed JS credential check. Let the form submit to the backend.)
-
-        // Scroll Effects
-        let lastScroll = 0;
-        window.addEventListener('scroll', () => {
-            const nav = document.querySelector('.nav-header');
-            const currentScroll = window.pageYOffset;
-            
-            if (currentScroll > 100) {
-                nav.style.background = 'var(--bg-secondary)';
-                nav.style.boxShadow = 'var(--shadow-lg)';
+            if (theme === 'dark') {
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
             } else {
-                nav.style.background = 'var(--glass-bg)';
-                nav.style.boxShadow = 'none';
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+            }
+        }
+
+        // --- Mobile Menu --- //
+        const mobileMenu = document.getElementById('mobileMenu');
+        function toggleMobileMenu() {
+            mobileMenu.classList.toggle('active');
+        }
+
+        // --- Login Modal --- //
+        const loginModal = document.getElementById('loginModal');
+        function openModal() {
+            loginModal.classList.add('active');
+        }
+        function closeModal() {
+            loginModal.classList.remove('active');
+        }
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Dummy login logic
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('errorMessage');
+            if (username === 'admin' && password === 'password') {
+                alert('Login successful!');
+                closeModal();
+            } else {
+                errorMessage.textContent = 'Invalid credentials. Please try again.';
+                errorMessage.style.display = 'block';
             }
         });
 
-        // Initialize
-        window.addEventListener('load', () => {
-            initTheme();
-            createParticles();
-            
-            // Hide loader
-            setTimeout(() => {
-                document.getElementById('loader').classList.add('hidden');
-            }, 500);
-        });
+        // --- Knowledge Base Carousel --- //
+        const track = document.querySelector('.carousel-track');
+        const items = Array.from(track.children);
+        const dotsNav = document.querySelector('.carousel-nav');
+        const dots = Array.from(dotsNav.children);
+        const nextButton = document.querySelector('.carousel-arrow.next');
+        const prevButton = document.querySelector('.carousel-arrow.prev');
+        let currentIndex = 0;
 
-        // Intersection Observer for animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
+        const updateCarousel = (targetIndex) => {
+            const currentItem = items[currentIndex];
+            const targetItem = items[targetIndex];
+            const amountToMove = targetItem.offsetLeft - currentItem.offsetLeft;
+            track.style.transform = `translateX(-${targetItem.offsetLeft}px)`;
+            
+            dots[currentIndex].classList.remove('active');
+            dots[targetIndex].classList.add('active');
+            currentIndex = targetIndex;
         };
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, observerOptions);
-
-        // Observe all cards
-        document.addEventListener('DOMContentLoaded', () => {
-            const cards = document.querySelectorAll('.team-card, .glass-card');
-            cards.forEach(card => {
-                card.style.opacity = '0';
-                card.style.transform = 'translateY(20px)';
-                card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-                observer.observe(card);
-            });
+        nextButton.addEventListener('click', () => {
+            const nextIndex = (currentIndex + 1) % items.length;
+            updateCarousel(nextIndex);
         });
 
-       // Swiper for Research Studies
-       document.addEventListener('DOMContentLoaded', function () {
-            if (window.Swiper) {
-                new Swiper('.research-swiper', {
-                    slidesPerView: 1,
-                    spaceBetween: 0,
-                    loop: true,
-                    navigation: {
-                        nextEl: '.swiper-button-next',
-                        prevEl: '.swiper-button-prev',
-                    },
-                    pagination: {
-                        el: '.swiper-pagination',
-                        clickable: true,
-                    },
-                    effect: 'slide',
-                });
-            }
+        prevButton.addEventListener('click', () => {
+            const prevIndex = (currentIndex - 1 + items.length) % items.length;
+            updateCarousel(prevIndex);
         });
 
-        // Research Modal Logic
-        function openResearchModal(modalId) {
-            document.body.style.overflow = 'hidden';
-            const modal = document.getElementById(modalId);
-            if (modal) {
-                modal.classList.add('active');
-                setTimeout(() => {
-                    modal.querySelector('.research-modal-content').focus();
-                }, 100);
-            }
-        }
-        function closeResearchModal() {
-            document.body.style.overflow = '';
-            document.querySelectorAll('.research-modal.active').forEach(modal => {
-                modal.classList.remove('active');
-            });
-        }
-        // Open modal on button click
-        document.querySelectorAll('.research-learn-btn').forEach(btn => {
-            btn.addEventListener('click', function (e) {
-                const modalId = this.getAttribute('data-modal');
-                openResearchModal(modalId);
+        dotsNav.addEventListener('click', e => {
+            const targetDot = e.target.closest('.carousel-dot');
+            if (!targetDot) return;
+            const targetIndex = dots.findIndex(dot => dot === targetDot);
+            updateCarousel(targetIndex);
+        });
+
+        // --- Research Studies Swiper --- //
+        const researchSwiper = new Swiper('.research-swiper', {
+            loop: true,
+            slidesPerView: 'auto',
+            centeredSlides: true,
+            spaceBetween: 30,
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+        });
+
+        // --- Research Modals --- //
+        document.querySelectorAll('[data-modal]').forEach(button => {
+            button.addEventListener('click', () => {
+                const modalId = button.getAttribute('data-modal');
+                document.getElementById(modalId).classList.add('active');
             });
         });
-        // Close modal on overlay or close button
-        document.querySelectorAll('.research-modal').forEach(modal => {
-            modal.querySelector('.research-modal-overlay').addEventListener('click', closeResearchModal);
-            modal.querySelector('.research-modal-close').addEventListener('click', closeResearchModal);
-        });
-        // ESC key closes modal
-        document.addEventListener('keydown', function (e) {
-            if (e.key === 'Escape') {
-                closeResearchModal();
-            }
+
+        document.querySelectorAll('.research-modal-close, .research-modal-overlay').forEach(element => {
+            element.addEventListener('click', (e) => {
+                if (e.target !== e.currentTarget && !e.target.classList.contains('research-modal-close')) return;
+                element.closest('.research-modal').classList.remove('active');
+            });
         });
 
-
-
-
-        // Theme toggle functionality
-        function toggleTheme() {
-            const root = document.documentElement;
-            const currentTheme = root.getAttribute('data-theme');
-            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-            const slider = document.querySelector('.theme-toggle-slider');
-            
-            root.setAttribute('data-theme', newTheme);
-            slider.textContent = newTheme === 'light' ? '🌙' : '☀️';
-        }
-
-        // Keyboard navigation
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowLeft') {
-                previousSlide();
-            } else if (e.key === 'ArrowRight') {
-                nextSlide();
-            }
+        // --- Team Modals --- //
+        document.querySelectorAll('[data-modal-target]').forEach(title => {
+            title.addEventListener('click', () => {
+                const modalId = title.getAttribute('data-modal-target');
+                document.querySelector(modalId).classList.add('active');
+            });
         });
 
-        // Carousel Functionality for Knowledge Base Section
-let currentSlide = 0;
-const carouselTrack = document.getElementById('carouselTrack');
-const slides = document.querySelectorAll('.carousel-item');
-const dots = document.querySelectorAll('.carousel-dot');
-const totalSlides = slides.length;
-
-// Go to a specific slide
-function goToSlide(index) {
-    if (index < 0) index = totalSlides - 1;
-    if (index >= totalSlides) index = 0;
-    currentSlide = index;
-    const offset = -100 * currentSlide;
-    carouselTrack.style.transform = `translateX(${offset}%)`;
-
-    // Update dots
-    dots.forEach((dot, i) => {
-        dot.classList.toggle('active', i === currentSlide);
-    });
-}
-
-// Go to next slide
-function nextSlide() {
-    goToSlide(currentSlide + 1);
-}
-
-// Go to previous slide
-function previousSlide() {
-    goToSlide(currentSlide - 1);
-}
-
-// Initialize carousel on page load
-window.addEventListener('DOMContentLoaded', () => {
-    goToSlide(0);
-});
+        document.querySelectorAll('[data-modal-close]').forEach(button => {
+            button.addEventListener('click', () => {
+                const modalId = button.getAttribute('data-modal-close');
+                document.querySelector(modalId).classList.remove('active');
+            });
+        });
 
     </script>
+
 </body>
 </html>

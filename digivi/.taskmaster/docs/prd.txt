@@ -1,6 +1,1 @@
-Product Requirements Document for Digivi
-
-1. Feature: Smart Dropdowns
-   Description: Enhance the user experience in the meter reading form by converting standard dropdowns for 'farm identifier' and 'village name' into smart, searchable dropdowns. Users should be able to type into the dropdown to filter the available options dynamically.
-   Affected File: meter_reading_25.html
-   Implementation Notes: This feature must be implemented using frontend technologies (HTML, CSS, JavaScript) only, without requiring any backend changes. Consider using a lightweight JavaScript library or custom JavaScript for the search functionality.
+This project is a web application for visualizing agricultural data. The user wants to improve the responsiveness of the development team section on the landing page.
