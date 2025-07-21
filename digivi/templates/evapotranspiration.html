@@ -1,5 +1,6 @@
+{% load i18n %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ LANGUAGE_CODE }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,71 +14,76 @@
             box-sizing: border-box;
         }
 
-        :root {
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+:root {
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
-        /* Light Theme */
-        :root[data-theme="light"] {
-            --bg-primary: #f8fafc;
-            --bg-secondary: #ffffff;
-            --bg-tertiary: #f1f5f9;
-            --text-primary: #0f172a;
-            --text-secondary: #475569;
-            --text-tertiary: #64748b;
-            --border-color: #e2e8f0;
-            
-            --accent-primary: #3b82f6;
-            --accent-secondary: #8b5cf6;
-            --accent-tertiary: #06b6d4;
-            --accent-success: #10b981;
-            --accent-warning: #f59e0b;
-            --accent-danger: #ef4444;
-            
-            --gradient-primary: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
-            --gradient-secondary: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
-            --gradient-accent: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
-            --gradient-hero: linear-gradient(135deg, #dbeafe 0%, #e9d5ff 100%);
-            
-            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
-            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
-            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
-            --shadow-glow: 0 0 20px rgba(59, 130, 246, 0.15);
-            
-            --glass-bg: rgba(255, 255, 255, 0.7);
-            --glass-border: rgba(255, 255, 255, 0.2);
-        }
+/* 🌱 Light Theme – Green & White */
+:root[data-theme="light"] {
+    --bg-primary: #f8fff5; /* very light greenish white */
+    --bg-secondary: #ffffff;
+    --bg-tertiary: #e6f4ea; /* light green */
+    
+    --text-primary: #0c4f2a;
+    --text-secondary: #2e7d46;
+    --text-tertiary: #4caf50;
 
-        /* Dark Theme */
-        :root[data-theme="dark"] {
-            --bg-primary: #0a0a0a;
-            --bg-secondary: #111111;
-            --bg-tertiary: #1a1a1a;
-            --text-primary: #f1f5f9;
-            --text-secondary: #cbd5e1;
-            --text-tertiary: #94a3b8;
-            --border-color: #27272a;
-            
-            --accent-primary: #60a5fa;
-            --accent-secondary: #a78bfa;
-            --accent-tertiary: #22d3ee;
-            --accent-success: #34d399;
-            --accent-warning: #fbbf24;
-            --accent-danger: #f87171;
-            
-            --gradient-primary: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
-            --gradient-secondary: linear-gradient(135deg, #22d3ee 0%, #60a5fa 100%);
-            --gradient-accent: linear-gradient(135deg, #a78bfa 0%, #f472b6 100%);
-            --gradient-hero: linear-gradient(135deg, #1e293b 0%, #312e81 100%);
-            
-            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
-            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.3);
-            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.4);
-            --shadow-glow: 0 0 30px rgba(96, 165, 250, 0.3);
-            
-            --glass-bg: rgba(30, 30, 30, 0.6);
-            --glass-border: rgba(255, 255, 255, 0.1);
-        }
+    --border-color: #cde9d7;
+
+    --accent-primary: #0c4f2a;  /* deep green */
+    --accent-secondary: #349a62; /* lighter green */
+    --accent-tertiary: #6fcf97;
+    --accent-success: #3cb371;
+    --accent-warning: #f59e0b;
+    --accent-danger: #ef4444;
+
+    --gradient-primary: linear-gradient(135deg, #0c4f2a 0%, #349a62 100%);
+    --gradient-secondary: linear-gradient(135deg, #349a62 0%, #6fcf97 100%);
+    --gradient-accent: linear-gradient(135deg, #0c4f2a 0%, #6fcf97 100%);
+    --gradient-hero: linear-gradient(135deg, #e6f4ea 0%, #cde9d7 100%);
+
+    --shadow-sm: 0 1px 3px rgba(12, 79, 42, 0.1);
+    --shadow-md: 0 4px 6px rgba(12, 79, 42, 0.1);
+    --shadow-lg: 0 10px 15px rgba(12, 79, 42, 0.15);
+    --shadow-glow: 0 0 20px rgba(52, 154, 98, 0.2);
+
+    --glass-bg: rgba(255, 255, 255, 0.7);
+    --glass-border: rgba(52, 154, 98, 0.2);
+}
+
+/* 🌿 Dark Theme – Green & Black */
+:root[data-theme="dark"] {
+    --bg-primary: #0a0a0a;
+    --bg-secondary: #0f0f0f;
+    --bg-tertiary: #1a1a1a;
+
+    --text-primary: #d9f7e5;
+    --text-secondary: white;
+    --text-tertiary: #6fcf97;
+
+    --border-color: #1f1f1f;
+
+    --accent-primary: #349a62;
+    --accent-secondary: #6fcf97;
+    --accent-tertiary: #3cb371;
+    --accent-success: #34d399;
+    --accent-warning: #fbbf24;
+    --accent-danger: #f87171;
+
+    --gradient-primary: linear-gradient(135deg, #0c4f2a 0%, #349a62 100%);
+    --gradient-secondary: linear-gradient(135deg, #1f7a47 0%, #6fcf97 100%);
+    --gradient-accent: linear-gradient(135deg, #349a62 0%, #3cb371 100%);
+    --gradient-hero: linear-gradient(135deg, #1a1a1a 0%, Black 100%);
+
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.4);
+    --shadow-glow: 0 0 30px rgba(52, 154, 98, 0.3);
+
+    --glass-bg: rgba(20, 40, 30, 0.6);
+    --glass-border: rgba(255, 255, 255, 0.05);
+}
+
 
         body {
             font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -531,14 +537,26 @@
     <nav class="nav-header">
         <div class="nav-content">
             <div class="nav-left">
-                <div class="nav-brand">DIGI-VI</div>
-                <div class="nav-subtitle">Evapotranspiration Analysis</div>
+                <div class="nav-brand">{% trans "DIGI-VI" %}</div>
+                <div class="nav-subtitle">{% trans "Evapotranspiration Analysis" %}</div>
             </div>
             <div class="nav-right">
                 <a href="../index/" class="btn-back">
-                    <i class="fas fa-arrow-left"></i> Back to Templates
+                    <i class="fas fa-arrow-left"></i> {% trans "Back to Templates" %}
                 </a>
-                <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
+                <form action="{% url 'set_language' %}" method="post" style="display:inline; margin-right: 10px;" >
+                    {% csrf_token %}
+                    <input name="next" type="hidden" value="{{ request.path }}">
+                    <input type="hidden" name="language" value="{% if LANGUAGE_CODE == 'en' %}pa{% else %}en{% endif %}">
+                    <button type="submit" class="btn-back">
+                        {% if LANGUAGE_CODE == 'en' %}
+                            {% trans "Switch to Punjabi" %}
+                        {% else %}
+                            {% trans "Switch to English" %}
+                        {% endif %}
+                    </button>
+                </form>
+                <button class="theme-toggle" onclick="toggleTheme()" title="{% trans "Toggle theme" %}">
                     <div class="theme-toggle-slider">
                         <i class="fas fa-sun" id="theme-icon"></i>
                     </div>
@@ -555,9 +573,9 @@
                 <div class="hero-icon">
                     <i class="fas fa-cloud-sun"></i>
                 </div>
-                <h1 class="hero-title">Evapotranspiration Analysis</h1>
+                <h1 class="hero-title">{% trans "Evapotranspiration Analysis" %}</h1>
                 <p class="hero-subtitle">
-                    Advanced crop water requirement calculations using ET models, weather data, and soil moisture analytics for precision irrigation planning.
+                    {% blocktrans %}Advanced crop water requirement calculations using ET models, weather data, and soil moisture analytics for precision irrigation planning.{% endblocktrans %}
                 </p>
             </div>
 
@@ -565,31 +583,32 @@
             <div class="dev-status">
                 <div class="status-badge">
                     <i class="fas fa-tools"></i>
-                    Under Development
+                    {% trans "Under Development" %}
                 </div>
-                <h2 class="dev-title">Coming Soon: Advanced ET Analytics</h2>
-
+                <h2 class="dev-title">{% trans "Coming Soon: Advanced ET Analytics" %}</h2>
             </div>
 
             <!-- Mini Game -->
             <div class="game-section">
                 <div class="game-header">
-                    <h3 class="game-title">Weather Memory Challenge</h3>
-                    <p class="game-subtitle">Match the weather icons while we develop the ET analysis tool!</p>
+                    <h3 class="game-title">{% trans "Weather Memory Challenge" %}</h3>
+                    <p class="game-subtitle">
+                        {% blocktrans %}Match the weather icons while we develop the ET analysis tool!{% endblocktrans %}
+                    </p>
                 </div>
 
                 <div class="game-stats">
                     <div class="stat-item">
                         <div class="stat-value" id="moves">0</div>
-                        <div class="stat-label">Moves</div>
+                        <div class="stat-label">{% trans "Moves" %}</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-value" id="matches">0</div>
-                        <div class="stat-label">Matches</div>
+                        <div class="stat-label">{% trans "Matches" %}</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-value" id="timer">00:00</div>
-                        <div class="stat-label">Time</div>
+                        <div class="stat-label">{% trans "Time" %}</div>
                     </div>
                 </div>
 
@@ -599,10 +618,10 @@
 
                 <div class="game-controls">
                     <button class="btn-game" onclick="startNewGame()">
-                        <i class="fas fa-redo"></i> New Game
+                        <i class="fas fa-redo"></i> {% trans "New Game" %}
                     </button>
                     <button class="btn-game" onclick="resetGame()">
-                        <i class="fas fa-refresh"></i> Reset
+                        <i class="fas fa-refresh"></i> {% trans "Reset" %}
                     </button>
                 </div>
             </div>
@@ -611,7 +630,7 @@
 
     <!-- Footer -->
     <footer class="footer">
-        <p>&copy; 2025 DIGI-VI Evapotranspiration Analysis • Development Preview</p>
+        <p>&copy; 2025 {% trans "DIGI-VI Evapotranspiration Analysis • Development Preview" %}</p>
     </footer>
 
     <script>

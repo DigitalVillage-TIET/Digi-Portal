@@ -1,5 +1,6 @@
+{% load i18n %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{LANGUAGE_CODE}}">
 <head>
   <meta charset="UTF-8">
   <title>Meter Reading Analysis - Kharif 2024</title>
@@ -14,76 +15,77 @@
     }
 
     :root {
-      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
-    /* Light Theme */
-    :root[data-theme="light"] {
-      --bg-primary: #f8fff5;
-      --bg-secondary: #ffffff;
-      --bg-tertiary: #e6f4ea;
-      --text-primary: #0c4f2a;
-      --text-secondary: #2e7d46;
-      --text-tertiary: #4caf50;
-      --border-color: #d0e7d3;
-      --border-hover: #aed9be;
-      
-      --accent-primary: #3cb371;
-      --accent-secondary: #5ba870;
-      --accent-tertiary: #6fcf97;
-      --accent-success: #3cb371;
-      --accent-warning: #f59e0b;
-      --accent-danger: #ef4444;
-      
-      --gradient-primary: linear-gradient(135deg, #3cb371 0%, #5ba870 100%);
-      --gradient-secondary: linear-gradient(135deg, #6fcf97 0%, #3cb371 100%);
-      --gradient-accent: linear-gradient(135deg, #5ba870 0%, #ec4899 100%);
-      --gradient-success: linear-gradient(135deg, #3cb371 0%, #059669 100%);
-      
-      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
-      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-      --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-      --shadow-glow: 0 0 20px rgba(59, 130, 246, 0.15);
-      
-      --glass-bg: rgba(255, 255, 255, 0.7);
-      --glass-border: rgba(255, 255, 255, 0.2);
-      --code-bg: #f3f4f6;
-    }
+/* 🌱 Light Theme – Green & White */
+:root[data-theme="light"] {
+    --bg-primary: #f8fff5; /* very light greenish white */
+    --bg-secondary: #ffffff;
+    --bg-tertiary: #e6f4ea; /* light green */
+    
+    --text-primary: #0c4f2a;
+    --text-secondary: #2e7d46;
+    --text-tertiary: #4caf50;
 
-    /* Dark Theme */
-    :root[data-theme="dark"] {
-      --bg-primary: #0a0a0a;
-      --bg-secondary: #111111;
-      --bg-tertiary: #1a1a1a;
-      --text-primary: #e6f4ea;
-      --text-secondary: #aed9be;
-      --text-tertiary: #94a3b8;
-      --border-color: #27272a;
-      --border-hover: #3f3f46;
-      
-      --accent-primary: #3cb371;
-      --accent-secondary: #5ba870;
-      --accent-tertiary: #6fcf97;
-      --accent-success: #3cb371;
-      --accent-warning: #fbbf24;
-      --accent-danger: #f87171;
-      
-      --gradient-primary: linear-gradient(135deg, #3cb371 0%, #5ba870 100%);
-      --gradient-secondary: linear-gradient(135deg, #6fcf97 0%, #3cb371 100%);
-      --gradient-accent: linear-gradient(135deg, #5ba870 0%, #f472b6 100%);
-      --gradient-success: linear-gradient(135deg, #3cb371 0%, #059669 100%);
-      
-      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
-      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
-      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
-      --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-      --shadow-glow: 0 0 30px rgba(96, 165, 250, 0.3);
-      
-      --glass-bg: rgba(30, 30, 30, 0.6);
-      --glass-border: rgba(255, 255, 255, 0.1);
-      --code-bg: #1e1e1e;
-    }
+    --border-color: #cde9d7;
+
+    --accent-primary: #0c4f2a;  /* deep green */
+    --accent-secondary: #349a62; /* lighter green */
+    --accent-tertiary: #6fcf97;
+    --accent-success: #3cb371;
+    --accent-warning: #f59e0b;
+    --accent-danger: #ef4444;
+
+    --gradient-primary: linear-gradient(135deg, #0c4f2a 0%, #349a62 100%);
+    --gradient-secondary: linear-gradient(135deg, #349a62 0%, #6fcf97 100%);
+    --gradient-accent: linear-gradient(135deg, #0c4f2a 0%, #6fcf97 100%);
+    --gradient-hero: linear-gradient(135deg, #e6f4ea 0%, #cde9d7 100%);
+
+    --shadow-sm: 0 1px 3px rgba(12, 79, 42, 0.1);
+    --shadow-md: 0 4px 6px rgba(12, 79, 42, 0.1);
+    --shadow-lg: 0 10px 15px rgba(12, 79, 42, 0.15);
+    --shadow-glow: 0 0 20px rgba(52, 154, 98, 0.2);
+
+    --glass-bg: rgba(255, 255, 255, 0.7);
+    --glass-border: rgba(52, 154, 98, 0.2);
+    --code-bg: white;
+}
+
+/* 🌿 Dark Theme – Green & Black */
+:root[data-theme="dark"] {
+    --bg-primary: #0a0a0a;
+    --bg-secondary: #0f0f0f;
+    --bg-tertiary: #1a1a1a;
+
+    --text-primary: #d9f7e5;
+    --text-secondary: white;
+    --text-tertiary: #6fcf97;
+
+    --border-color: #1f1f1f;
+
+    --accent-primary: #349a62;
+    --accent-secondary: #6fcf97;
+    --accent-tertiary: #3cb371;
+    --accent-success: #34d399;
+    --accent-warning: #fbbf24;
+    --accent-danger: #f87171;
+
+    --gradient-primary: linear-gradient(135deg, #0c4f2a 0%, #349a62 100%);
+    --gradient-secondary: linear-gradient(135deg, #1f7a47 0%, #6fcf97 100%);
+    --gradient-accent: linear-gradient(135deg, #349a62 0%, #3cb371 100%);
+    --gradient-hero: linear-gradient(135deg, #1a1a1a 0%, Black 100%);
+
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.4);
+    --shadow-glow: 0 0 30px rgba(52, 154, 98, 0.3);
+
+    --glass-bg: rgba(20, 40, 30, 0.6);
+    --glass-border: rgba(255, 255, 255, 0.05);
+    --code-bg: rgba(12, 31, 22, 0.8);
+
+}
 
     body {
       font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -878,7 +880,7 @@
 
     .code {
       font-family: 'JetBrains Mono', monospace;
-      background: var(--code-bg);
+      background: black;
       padding: 0.25rem 0.5rem;
       border-radius: 4px;
       font-size: 0.875rem;
@@ -902,7 +904,7 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      background: linear-gradient(135deg, #6366f1, #5ba870);
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
       color: white;
       padding: 6px 12px;
       border-radius: 20px;
@@ -1044,211 +1046,226 @@
 </head>
 <body>
   <div class="tech-grid"></div>
-  
   <!-- Loading Overlay -->
-  <div class="loading-overlay" id="loadingOverlay">
-    <div class="loading-content">
-      <div class="loading-spinner"></div>
-      <div class="loading-title">Processing Legacy Data</div>
-      <div class="loading-description" id="loadingDescription">
-        Processing your 2024 format files...
-      </div>
-      <div class="progress-container">
-        <div class="progress-bar" id="progressBar"></div>
-      </div>
-      <div class="progress-text">
-        <span id="progressText">0%</span> Complete
-      </div>
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="loading-content">
+    <div class="loading-spinner"></div>
+    <div class="loading-title">{% trans "Processing Legacy Data" %}</div>
+    <div class="loading-description" id="loadingDescription">
+      {% trans "Processing your 2024 format files..." %}
+    </div>
+    <div class="progress-container">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+    <div class="progress-text">
+      <span id="progressText">0%</span> {% trans "Complete" %}
     </div>
   </div>
+</div>
 
-  <!-- Header -->
-  <header class="header">
-    <div class="header-content">
-      <div class="header-left">
-        <h1>Water Meter Analytics Platform</h1>
-        <p><span class="code">KHARIF_2024</span> • Legacy Data Analysis System</p>
-      </div>
-      <div class="header-right">
-        <a href="{% url 'index' %}" class="btn-back">
-          <i class="fas fa-arrow-left"></i> Back to Templates
-        </a>
-        <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
-          <div class="theme-toggle-slider">
-            <i class="fas fa-sun" id="theme-icon"></i>
-          </div>
+<!-- Header -->
+<header class="header">
+  <div class="header-content">
+    <div class="header-left">
+      <h1>{% trans "Water Meter Analytics Platform" %}</h1>
+      <p><span class="code">KHARIF_2024</span> • {% trans "Legacy Data Analysis System" %}</p>
+    </div>
+    <div class="header-right">
+      <a href="{% url 'index' %}" class="btn-back">
+        <i class="fas fa-arrow-left"></i> {% trans "Back to Templates" %}
+      </a>
+
+      <form action="{% url 'set_language' %}" method="post" style="display:inline; margin-right: 10px;">
+        {% csrf_token %}
+        <input name="next" type="hidden" value="{{ request.path }}">
+        <input type="hidden" name="language" value="{% if LANGUAGE_CODE == 'en' %}pa{% else %}en{% endif %}">
+        <button type="submit" class="btn-back">
+          {% if LANGUAGE_CODE == 'en' %}
+            {% trans "Switch to Punjabi" %}
+          {% else %}
+            {% trans "Switch to English" %}
+          {% endif %}
         </button>
-      </div>
-    </div>
-  </header>
+      </form>
 
-  <!-- Year Toggle -->
-  <div class="year-toggle-container">
-    <div class="year-toggle">
-      <button class="year-option active" onclick="location.href='{% url 'meter_reading' %}'">
-        <i class="fas fa-database"></i> 2024 Format
-      </button>
-      <button class="year-option" onclick="location.href='{% url 'meter_reading_25' %}'">
-        <i class="fas fa-rocket"></i> 2025 Format
+      <button class="theme-toggle" onclick="toggleTheme()" title="{% trans 'Toggle theme' %}">
+        <div class="theme-toggle-slider">
+          <i class="fas fa-sun" id="theme-icon"></i>
+        </div>
       </button>
     </div>
   </div>
+</header>
 
-  <div class="container">
-    <!-- Upload Section -->
-    <div class="glass-card">
-      <div class="card-header">
-        <h2><i class="fas fa-cloud-upload-alt icon"></i> Legacy Data Upload Terminal</h2>
-        <div class="integration-badge">
-          <i class="fas fa-database"></i> Legacy Format Processing
-        </div>
-      </div>
-      <div class="card-body">
-        <form method="post" enctype="multipart/form-data" id="uploadForm">
-          {% csrf_token %}
-          <div class="form-group">
-            <label class="form-label" for="meter_file">
-              <i class="fas fa-file-excel"></i> Meter Reading Data File
-            </label>
-            <input type="file" name="meter_file" id="meter_file" class="form-control" accept=".xlsx,.xls" required>
-            <small class="form-text">
-              <i class="fas fa-info-circle"></i> Upload your 2024 format meter reading Excel file
-            </small>
-          </div>
-          
-          <div class="form-group">
-            <label class="form-label" for="master_file">
-              <i class="fas fa-server"></i> Master Database File
-            </label>
-            <input type="file" name="master_file" id="master_file" class="form-control" accept=".xlsx,.xls" required>
-            <small class="form-text">
-              <i class="fas fa-info-circle"></i> Upload the corresponding master database file
-            </small>
-          </div>
-          
-          <button type="submit" class="btn btn-primary btn-block" id="uploadBtn">
-            <i class="fas fa-sync-alt"></i> Upload & Analyze Data
-          </button>
-        </form>
-        
-        {% if error_message %}
-          <div class="alert">
-            <i class="fas fa-exclamation-triangle"></i> {{ error_message }}
-          </div>
-        {% endif %}
-        
-        <!-- Sync Status Section -->
-        {% if farm_ids %}
-        <div class="sync-status-section">
-          <div class="sync-status-header">
-            <i class="fas fa-check-circle" style="color: var(--accent-success);"></i>
-            <span>Legacy Data Successfully Processed</span>
-          </div>
-          <div class="sync-details">
-            <div class="sync-item">
-              <span class="sync-label">Last Upload:</span>
-              <span class="sync-value">{{ "now"|date:"M d, Y H:i:s" }}</span>
-            </div>
-            <div class="sync-item">
-              <span class="sync-label">Format:</span>
-              <span class="sync-value">Kharif 2024 Legacy</span>
-            </div>
-            <div class="sync-item">
-              <span class="sync-label">Status:</span>
-              <span class="sync-value status-active">
-                <i class="fas fa-circle"></i> Active
-              </span>
-            </div>
-          </div>
-        </div>
-        {% endif %}
+<!-- Year Toggle -->
+<div class="year-toggle-container">
+  <div class="year-toggle">
+    <button class="year-option active" onclick="location.href='{% url 'meter_reading' %}'">
+      <i class="fas fa-database"></i> {% trans "2024 Format" %}
+    </button>
+    <button class="year-option" onclick="location.href='{% url 'meter_reading_25' %}'">
+      <i class="fas fa-rocket"></i> {% trans "2025 Format" %}
+    </button>
+  </div>
+</div>
+
+<div class="container">
+  <!-- Upload Section -->
+  <div class="glass-card">
+    <div class="card-header">
+      <h2><i class="fas fa-cloud-upload-alt icon"></i> {% trans "Legacy Data Upload Terminal" %}</h2>
+      <div class="integration-badge">
+        <i class="fas fa-database"></i> {% trans "Legacy Format Processing" %}
       </div>
     </div>
+    <div class="card-body">
+      <form method="post" enctype="multipart/form-data" id="uploadForm">
+        {% csrf_token %}
+        <div class="form-group">
+          <label class="form-label" for="meter_file">
+            <i class="fas fa-file-excel"></i> {% trans "Meter Reading Data File" %}
+          </label>
+          <input type="file" name="meter_file" id="meter_file" class="form-control" accept=".xlsx,.xls" required>
+          <small class="form-text">
+            <i class="fas fa-info-circle"></i> {% trans "Upload your 2024 format meter reading Excel file" %}
+          </small>
+        </div>
 
-    <!-- Farm Selection -->
-    {% if farm_ids %}
-    <div class="glass-card">
-      <div class="card-header">
-        <h2><i class="fas fa-microchip icon"></i> Farm Selection Panel</h2>
-      </div>
-      <div class="card-body">
-        <form method="post" id="farmSelectionForm">
-          {% csrf_token %}
-          <div class="form-group">
-            <label class="form-label" for="selected_farm">
-              <i class="fas fa-fingerprint"></i> Farm Identifier
-            </label>
-            <select name="selected_farm" id="selected_farm" class="form-control" required>
-              <option value="">-- Select farm unit --</option>
-              {% for f in farm_ids %}
-                <option value="{{ f }}" {% if f == selected_farm %}selected{% endif %}>{{ f }}</option>
-              {% endfor %}
-            </select>
+        <div class="form-group">
+          <label class="form-label" for="master_file">
+            <i class="fas fa-server"></i> {% trans "Master Database File" %}
+          </label>
+          <input type="file" name="master_file" id="master_file" class="form-control" accept=".xlsx,.xls" required>
+          <small class="form-text">
+            <i class="fas fa-info-circle"></i> {% trans "Upload the corresponding master database file" %}
+          </small>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block" id="uploadBtn">
+          <i class="fas fa-sync-alt"></i> {% trans "Upload & Analyze Data" %}
+        </button>
+      </form>
+
+      {% if error_message %}
+        <div class="alert">
+          <i class="fas fa-exclamation-triangle"></i> {{ error_message }}
+        </div>
+      {% endif %}
+
+      <!-- Sync Status Section -->
+      {% if farm_ids %}
+      <div class="sync-status-section">
+        <div class="sync-status-header">
+          <i class="fas fa-check-circle" style="color: var(--accent-success);"></i>
+          <span>{% trans "Legacy Data Successfully Processed" %}</span>
+        </div>
+        <div class="sync-details">
+          <div class="sync-item">
+            <span class="sync-label">{% trans "Last Upload:" %}</span>
+            <span class="sync-value">{{ "now"|date:"M d, Y H:i:s" }}</span>
           </div>
-          <button type="submit" class="btn btn-primary" id="analyzeBtn">
-            <i class="fas fa-chart-area"></i> Analyze Farm
-          </button>
-        </form>
-      </div>
-    </div>
-    {% endif %}
-
-    <!-- Results -->
-    {% if meter_results %}
-    <div class="results-section">
-      <div class="results-header">
-        <h2 class="glow-text">Data Visualization Matrix</h2>
-      </div>
-
-      {% for result in meter_results %}
-      <div class="meter-card">
-        <div class="meter-header">
-          <div class="meter-info">
-            <div class="meter-icon">
-              <i class="fas fa-water"></i>
-            </div>
-            <div class="meter-details">
-              <h3>Meter Unit <span class="code">{{ result.meter }}</span></h3>
-              <ul class="meter-stats">
-                <li><strong>Village:</strong> <span>{{ result.info.village }}</span></li>
-                <li><strong>Size:</strong> <span>{{ result.info.size }} Acres</span></li>
-                <li><strong>Type:</strong> <span>{{ result.info.farm_type }}</span></li>
-              </ul>
-            </div>
+          <div class="sync-item">
+            <span class="sync-label">{% trans "Format:" %}</span>
+            <span class="sync-value">{% trans "Kharif 2024 Legacy" %}</span>
+          </div>
+          <div class="sync-item">
+            <span class="sync-label">{% trans "Status:" %}</span>
+            <span class="sync-value status-active">
+              <i class="fas fa-circle"></i> {% trans "Active" %}
+            </span>
           </div>
         </div>
-        
-        <div class="graphs-grid">
-          {% for plot in result.plots %}
-          <div class="graph-container">
-            <div class="graph-header">
-              <span class="graph-title">
-                <i class="fas fa-chart-line" style="color: var(--accent-primary);"></i>
-                Analysis Plot {{ forloop.counter }}
-              </span>
-              <button class="visibility-toggle" onclick="toggleGraph(this)" title="Toggle visibility">
-                <i class="fas fa-eye"></i>
-              </button>
-            </div>
-            <div class="graph-content">
-              <img src="data:image/png;base64,{{ plot }}" alt="Data visualization for {{ result.meter }}" class="graph-image">
-              <div class="graph-hidden-message">
-                <i class="fas fa-eye-slash"></i>
-                <p>Visualization Hidden</p>
-              </div>
-            </div>
-          </div>
-          {% endfor %}
-        </div>
       </div>
-      {% endfor %}
+      {% endif %}
     </div>
-    {% endif %}
   </div>
 
-  <footer class="footer">
-    <p>&copy; 2025 Digi-Village Water Meter Analysis Platform • Version 1.0 (Legacy)</p>
-  </footer>
+  <!-- Farm Selection -->
+  {% if farm_ids %}
+  <div class="glass-card">
+    <div class="card-header">
+      <h2><i class="fas fa-microchip icon"></i> {% trans "Farm Selection Panel" %}</h2>
+    </div>
+    <div class="card-body">
+      <form method="post" id="farmSelectionForm">
+        {% csrf_token %}
+        <div class="form-group">
+          <label class="form-label" for="selected_farm">
+            <i class="fas fa-fingerprint"></i> {% trans "Farm Identifier" %}
+          </label>
+          <select name="selected_farm" id="selected_farm" class="form-control" required>
+            <option value="">{% trans "-- Select farm unit --" %}</option>
+            {% for f in farm_ids %}
+              <option value="{{ f }}" {% if f == selected_farm %}selected{% endif %}>{{ f }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary" id="analyzeBtn">
+          <i class="fas fa-chart-area"></i> {% trans "Analyze Farm" %}
+        </button>
+      </form>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Results -->
+  {% if meter_results %}
+  <div class="results-section">
+    <div class="results-header">
+      <h2 class="glow-text">{% trans "Data Visualization Matrix" %}</h2>
+    </div>
+
+    {% for result in meter_results %}
+    <div class="meter-card">
+      <div class="meter-header">
+        <div class="meter-info">
+          <div class="meter-icon">
+            <i class="fas fa-water"></i>
+          </div>
+          <div class="meter-details">
+            <h3>
+              {% blocktrans %}Meter Unit <span class="code">{{ result.meter }}</span>{% endblocktrans %}
+            </h3>
+            <ul class="meter-stats">
+              <li><strong>{% trans "Village:" %}</strong> <span>{{ result.info.village }}</span></li>
+              <li><strong>{% trans "Size:" %}</strong> <span>{{ result.info.size }} {% trans "Acres" %}</span></li>
+              <li><strong>{% trans "Type:" %}</strong> <span>{{ result.info.farm_type }}</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="graphs-grid">
+        {% for plot in result.plots %}
+        <div class="graph-container">
+          <div class="graph-header">
+            <span class="graph-title">
+              <i class="fas fa-chart-line" style="color: var(--accent-primary);"></i>
+              {% blocktrans %}Analysis Plot {{ forloop.counter }}{% endblocktrans %}
+            </span>
+            <button class="visibility-toggle" onclick="toggleGraph(this)" title="{% trans 'Toggle visibility' %}">
+              <i class="fas fa-eye"></i>
+            </button>
+          </div>
+          <div class="graph-content">
+            <img src="data:image/png;base64,{{ plot }}" alt="{% blocktrans %}Data visualization for {{ result.meter }}{% endblocktrans %}" class="graph-image">
+            <div class="graph-hidden-message">
+              <i class="fas fa-eye-slash"></i>
+              <p>{% trans "Visualization Hidden" %}</p>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+</div>
+
+<footer class="footer">
+  <p>&copy; 2025 {% trans "Digi-Village Water Meter Analysis Platform" %} • {% trans "Version 1.0 (Legacy)" %}</p>
+</footer>
 
   <script>
     // Theme Toggle

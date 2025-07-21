@@ -1,5 +1,6 @@
+{% load i18n %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{LANGUAGE_CODE}}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,70 +15,74 @@
         }
 
         :root {
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
-        /* Light Theme */
-        :root[data-theme="light"] {
-            --bg-primary: #f8fafc;
-            --bg-secondary: #ffffff;
-            --bg-tertiary: #f1f5f9;
-            --text-primary: #0f172a;
-            --text-secondary: #475569;
-            --text-tertiary: #64748b;
-            --border-color: #e2e8f0;
-            
-            --accent-primary: #3b82f6;
-            --accent-secondary: #8b5cf6;
-            --accent-tertiary: #06b6d4;
-            --accent-success: #10b981;
-            --accent-warning: #f59e0b;
-            --accent-danger: #ef4444;
-            
-            --gradient-primary: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
-            --gradient-secondary: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
-            --gradient-accent: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
-            --gradient-hero: linear-gradient(135deg, #dbeafe 0%, #e9d5ff 100%);
-            
-            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
-            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
-            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
-            --shadow-glow: 0 0 20px rgba(59, 130, 246, 0.15);
-            
-            --glass-bg: rgba(255, 255, 255, 0.7);
-            --glass-border: rgba(255, 255, 255, 0.2);
-        }
+/* 🌱 Light Theme – Green & White */
+:root[data-theme="light"] {
+    --bg-primary: #f8fff5; /* very light greenish white */
+    --bg-secondary: #ffffff;
+    --bg-tertiary: #e6f4ea; /* light green */
+    
+    --text-primary: #0c4f2a;
+    --text-secondary: #2e7d46;
+    --text-tertiary: #4caf50;
 
-        /* Dark Theme */
-        :root[data-theme="dark"] {
-            --bg-primary: #0a0a0a;
-            --bg-secondary: #111111;
-            --bg-tertiary: #1a1a1a;
-            --text-primary: #f1f5f9;
-            --text-secondary: #cbd5e1;
-            --text-tertiary: #94a3b8;
-            --border-color: #27272a;
-            
-            --accent-primary: #60a5fa;
-            --accent-secondary: #a78bfa;
-            --accent-tertiary: #22d3ee;
-            --accent-success: #34d399;
-            --accent-warning: #fbbf24;
-            --accent-danger: #f87171;
-            
-            --gradient-primary: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
-            --gradient-secondary: linear-gradient(135deg, #22d3ee 0%, #60a5fa 100%);
-            --gradient-accent: linear-gradient(135deg, #a78bfa 0%, #f472b6 100%);
-            --gradient-hero: linear-gradient(135deg, #1e293b 0%, #312e81 100%);
-            
-            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
-            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.3);
-            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.4);
-            --shadow-glow: 0 0 30px rgba(96, 165, 250, 0.3);
-            
-            --glass-bg: rgba(30, 30, 30, 0.6);
-            --glass-border: rgba(255, 255, 255, 0.1);
-        }
+    --border-color: #cde9d7;
+
+    --accent-primary: #0c4f2a;  /* deep green */
+    --accent-secondary: #349a62; /* lighter green */
+    --accent-tertiary: #6fcf97;
+    --accent-success: #3cb371;
+    --accent-warning: #f59e0b;
+    --accent-danger: #ef4444;
+
+    --gradient-primary: linear-gradient(135deg, #0c4f2a 0%, #349a62 100%);
+    --gradient-secondary: linear-gradient(135deg, #349a62 0%, #6fcf97 100%);
+    --gradient-accent: linear-gradient(135deg, #0c4f2a 0%, #6fcf97 100%);
+    --gradient-hero: linear-gradient(135deg, #e6f4ea 0%, #cde9d7 100%);
+
+    --shadow-sm: 0 1px 3px rgba(12, 79, 42, 0.1);
+    --shadow-md: 0 4px 6px rgba(12, 79, 42, 0.1);
+    --shadow-lg: 0 10px 15px rgba(12, 79, 42, 0.15);
+    --shadow-glow: 0 0 20px rgba(52, 154, 98, 0.2);
+
+    --glass-bg: rgba(255, 255, 255, 0.7);
+    --glass-border: rgba(52, 154, 98, 0.2);
+}
+
+/* 🌿 Dark Theme – Green & Black */
+:root[data-theme="dark"] {
+    --bg-primary: #0a0a0a;
+    --bg-secondary: #0f0f0f;
+    --bg-tertiary: #1a1a1a;
+
+    --text-primary: #d9f7e5;
+    --text-secondary: white;
+    --text-tertiary: #6fcf97;
+
+    --border-color: #1f1f1f;
+
+    --accent-primary: #349a62;
+    --accent-secondary: #6fcf97;
+    --accent-tertiary: #3cb371;
+    --accent-success: #34d399;
+    --accent-warning: #fbbf24;
+    --accent-danger: #f87171;
+
+    --gradient-primary: linear-gradient(135deg, #0c4f2a 0%, #349a62 100%);
+    --gradient-secondary: linear-gradient(135deg, #1f7a47 0%, #6fcf97 100%);
+    --gradient-accent: linear-gradient(135deg, #349a62 0%, #3cb371 100%);
+    --gradient-hero: linear-gradient(135deg, #1a1a1a 0%, Black 100%);
+
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.4);
+    --shadow-glow: 0 0 30px rgba(52, 154, 98, 0.3);
+
+    --glass-bg: rgba(20, 40, 30, 0.6);
+    --glass-border: rgba(255, 255, 255, 0.05);
+}
 
         body {
             font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -625,14 +630,26 @@
     <nav class="nav-header">
         <div class="nav-content">
             <div class="nav-left">
-                <div class="nav-brand">DIGI-VI</div>
-                <div class="nav-subtitle">Farmer Survey Analysis</div>
+                <div class="nav-brand">{% trans "DIGI-VI" %}</div>
+                <div class="nav-subtitle">{% trans "Farmer Survey Analysis" %}</div>
             </div>
             <div class="nav-right">
                 <a href="../index/" class="btn-back">
-                    <i class="fas fa-arrow-left"></i> Back to Templates
+                    <i class="fas fa-arrow-left"></i> {% trans "Back to Templates" %}
                 </a>
-                <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
+                <form action="{% url 'set_language' %}" method="post" style="display:inline; margin-right: 10px;">
+                    {% csrf_token %}
+                    <input name="next" type="hidden" value="{{ request.path }}">
+                    <input type="hidden" name="language" value="{% if LANGUAGE_CODE == 'en' %}pa{% else %}en{% endif %}">
+                    <button type="submit" class="btn-back">
+                        {% if LANGUAGE_CODE == 'en' %}
+                            {% trans "Switch to Punjabi" %}
+                        {% else %}
+                            {% trans "Switch to English" %}
+                        {% endif %}
+                    </button>
+                </form>
+                <button class="theme-toggle" onclick="toggleTheme()" title="{% trans "Toggle theme" %}">
                     <div class="theme-toggle-slider">
                         <i class="fas fa-sun" id="theme-icon"></i>
                     </div>
@@ -649,10 +666,10 @@
                 <div class="hero-icon">
                     <i class="fas fa-clipboard-list"></i>
                 </div>
-                <h1 class="hero-title">Farmer Survey Analysis</h1>
+                <h1 class="hero-title">{% trans "Farmer Survey Analysis" %}</h1>
                 <p class="hero-subtitle">
-                    Comprehensive survey analysis tools for gathering and processing farmer feedback, crop performance, 
-                    and field conditions with advanced statistical modeling.
+                    {% blocktrans %}Comprehensive survey analysis tools for gathering and processing farmer feedback, crop performance, 
+                    and field conditions with advanced statistical modeling.{% endblocktrans %}
                 </p>
             </div>
 
@@ -660,31 +677,30 @@
             <div class="dev-status">
                 <div class="status-badge">
                     <i class="fas fa-tools"></i>
-                    Under Development
+                    {% trans "Under Development" %}
                 </div>
-                <h2 class="dev-title">Coming Soon: Smart Survey Analytics</h2>
-
+                <h2 class="dev-title">{% trans "Coming Soon: Smart Survey Analytics" %}</h2>
             </div>
 
             <!-- Quiz Game -->
             <div class="quiz-section">
                 <div class="quiz-header">
-                    <h3 class="quiz-title">Agriculture Knowledge Quiz</h3>
-                    <p class="quiz-subtitle">Test your farming knowledge while we develop the survey tool!</p>
+                    <h3 class="quiz-title">{% trans "Agriculture Knowledge Quiz" %}</h3>
+                    <p class="quiz-subtitle">{% trans "Test your farming knowledge while we develop the survey tool!" %}</p>
                 </div>
 
                 <div class="quiz-stats">
                     <div class="stat-item">
                         <div class="stat-value" id="currentQuestion">1</div>
-                        <div class="stat-label">Question</div>
+                        <div class="stat-label">{% trans "Question" %}</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-value" id="score">0</div>
-                        <div class="stat-label">Score</div>
+                        <div class="stat-label">{% trans "Score" %}</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-value" id="accuracy">0%</div>
-                        <div class="stat-label">Accuracy</div>
+                        <div class="stat-label">{% trans "Accuracy" %}</div>
                     </div>
                 </div>
 
@@ -695,13 +711,13 @@
 
                     <div class="quiz-controls">
                         <button class="btn-quiz" id="nextBtn" onclick="nextQuestion()" style="display: none;">
-                            <i class="fas fa-arrow-right"></i> Next Question
+                            <i class="fas fa-arrow-right"></i> {% trans "Next Question" %}
                         </button>
                         <button class="btn-quiz" onclick="startNewQuiz()">
-                            <i class="fas fa-redo"></i> New Quiz
+                            <i class="fas fa-redo"></i> {% trans "New Quiz" %}
                         </button>
                         <button class="btn-quiz" onclick="resetQuiz()">
-                            <i class="fas fa-refresh"></i> Reset
+                            <i class="fas fa-refresh"></i> {% trans "Reset" %}
                         </button>
                     </div>
                 </div>
@@ -711,9 +727,8 @@
 
     <!-- Footer -->
     <footer class="footer">
-        <p>&copy; 2025 DIGI-VI Farmer Survey Analysis • Development Preview</p>
+        <p>&copy; 2025 {% trans "DIGI-VI Farmer Survey Analysis • Development Preview" %}</p>
     </footer>
-
     <script>
         // Theme Management
         function initTheme() {
@@ -736,97 +751,96 @@
             icon.className = theme === 'light' ? 'fas fa-sun' : 'fas fa-moon';
         }
 
-        // Quiz Questions
-        const quizQuestions = [
-            {
-                question: "What is the primary benefit of crop rotation?",
-                answers: [
-                    "Increases soil fertility and breaks pest cycles",
-                    "Reduces water consumption",
-                    "Increases farm size",
-                    "Improves weather conditions"
-                ],
-                correct: 0,
-                difficulty: "easy"
-            },
-            {
-                question: "Which nutrient deficiency causes yellowing of leaves (chlorosis)?",
-                answers: [
-                    "Phosphorus",
-                    "Potassium", 
-                    "Nitrogen",
-                    "Calcium"
-                ],
-                correct: 2,
-                difficulty: "medium"
-            },
-            {
-                question: "What does pH measure in soil?",
-                answers: [
-                    "Nutrient content",
-                    "Water retention",
-                    "Acidity or alkalinity",
-                    "Organic matter"
-                ],
-                correct: 2,
-                difficulty: "easy"
-            },
-            {
-                question: "Which irrigation method is most water-efficient?",
-                answers: [
-                    "Flood irrigation",
-                    "Sprinkler irrigation",
-                    "Drip irrigation",
-                    "Furrow irrigation"
-                ],
-                correct: 2,
-                difficulty: "medium"
-            },
-            {
-                question: "What is the ideal soil pH range for most crops?",
-                answers: [
-                    "4.0 - 5.5",
-                    "6.0 - 7.0",
-                    "7.5 - 8.5",
-                    "8.5 - 9.0"
-                ],
-                correct: 1,
-                difficulty: "hard"
-            },
-            {
-                question: "Which farming practice helps prevent soil erosion?",
-                answers: [
-                    "Deep tillage",
-                    "Contour farming",
-                    "Monoculture",
-                    "Excessive grazing"
-                ],
-                correct: 1,
-                difficulty: "easy"
-            },
-            {
-                question: "What is the main purpose of adding organic matter to soil?",
-                answers: [
-                    "Increase soil temperature",
-                    "Improve soil structure and fertility",
-                    "Reduce soil pH",
-                    "Prevent plant growth"
-                ],
-                correct: 1,
-                difficulty: "medium"
-            },
-            {
-                question: "Which pest management approach is most sustainable?",
-                answers: [
-                    "Heavy pesticide use",
-                    "Integrated Pest Management (IPM)",
-                    "Ignoring pests completely",
-                    "Using only chemical controls"
-                ],
-                correct: 1,
-                difficulty: "hard"
-            }
-        ];
+    const quizQuestions = [
+        {
+            question: "{{ _('What is the primary benefit of crop rotation?') }}",
+            answers: [
+                "{{ _('Increases soil fertility and breaks pest cycles') }}",
+                "{{ _('Reduces water consumption') }}",
+                "{{ _('Increases farm size') }}",
+                "{{ _('Improves weather conditions') }}"
+            ],
+            correct: 0,
+            difficulty: "easy"
+        },
+        {
+            question: "{{ _('Which nutrient deficiency causes yellowing of leaves (chlorosis)?') }}",
+            answers: [
+                "{{ _('Phosphorus') }}",
+                "{{ _('Potassium') }}",
+                "{{ _('Nitrogen') }}",
+                "{{ _('Calcium') }}"
+            ],
+            correct: 2,
+            difficulty: "medium"
+        },
+        {
+            question: "{{ _('What does pH measure in soil?') }}",
+            answers: [
+                "{{ _('Nutrient content') }}",
+                "{{ _('Water retention') }}",
+                "{{ _('Acidity or alkalinity') }}",
+                "{{ _('Organic matter') }}"
+            ],
+            correct: 2,
+            difficulty: "easy"
+        },
+        {
+            question: "{{ _('Which irrigation method is most water-efficient?') }}",
+            answers: [
+                "{{ _('Flood irrigation') }}",
+                "{{ _('Sprinkler irrigation') }}",
+                "{{ _('Drip irrigation') }}",
+                "{{ _('Furrow irrigation') }}"
+            ],
+            correct: 2,
+            difficulty: "medium"
+        },
+        {
+            question: "{{ _('What is the ideal soil pH range for most crops?') }}",
+            answers: [
+                "{{ _('4.0 - 5.5') }}",
+                "{{ _('6.0 - 7.0') }}",
+                "{{ _('7.5 - 8.5') }}",
+                "{{ _('8.5 - 9.0') }}"
+            ],
+            correct: 1,
+            difficulty: "hard"
+        },
+        {
+            question: "{{ _('Which farming practice helps prevent soil erosion?') }}",
+            answers: [
+                "{{ _('Deep tillage') }}",
+                "{{ _('Contour farming') }}",
+                "{{ _('Monoculture') }}",
+                "{{ _('Excessive grazing') }}"
+            ],
+            correct: 1,
+            difficulty: "easy"
+        },
+        {
+            question: "{{ _('What is the main purpose of adding organic matter to soil?') }}",
+            answers: [
+                "{{ _('Increase soil temperature') }}",
+                "{{ _('Improve soil structure and fertility') }}",
+                "{{ _('Reduce soil pH') }}",
+                "{{ _('Prevent plant growth') }}"
+            ],
+            correct: 1,
+            difficulty: "medium"
+        },
+        {
+            question: "{{ _('Which pest management approach is most sustainable?') }}",
+            answers: [
+                "{{ _('Heavy pesticide use') }}",
+                "{{ _('Integrated Pest Management (IPM)') }}",
+                "{{ _('Ignoring pests completely') }}",
+                "{{ _('Using only chemical controls') }}"
+            ],
+            correct: 1,
+            difficulty: "hard"
+        }
+    ];
 
         let quizState = {
             currentQuestion: 0,
