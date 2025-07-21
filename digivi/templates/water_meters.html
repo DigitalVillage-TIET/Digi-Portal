@@ -21,71 +21,71 @@
       --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    /* Light Theme */
+    /* 🌱 Light Theme – Green & White */
     :root[data-theme="light"] {
-      --bg-primary: #f8fafc;
+      --bg-primary: #f8fff5; /* very light greenish white */
       --bg-secondary: #ffffff;
-      --bg-tertiary: #f1f5f9;
-      --text-primary: #0f172a;
-      --text-secondary: #475569;
-      --text-tertiary: #64748b;
-      --border-color: #e2e8f0;
-      --border-hover: #cbd5e1;
+      --bg-tertiary: #e6f4ea; /* light green */
       
-      --accent-primary: #3b82f6;
-      --accent-secondary: #8b5cf6;
-      --accent-tertiary: #06b6d4;
-      --accent-success: #10b981;
+      --text-primary: #0c4f2a;
+      --text-secondary: #2e7d46;
+      --text-tertiary: #4caf50;
+
+      --border-color: #cde9d7;
+
+      --accent-primary: #0c4f2a;  /* deep green */
+      --accent-secondary: #349a62; /* lighter green */
+      --accent-tertiary: #6fcf97;
+      --accent-success: #3cb371;
       --accent-warning: #f59e0b;
       --accent-danger: #ef4444;
-      
-      --gradient-primary: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
-      --gradient-secondary: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
-      --gradient-accent: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
-      --gradient-success: linear-gradient(135deg, #10b981 0%, #059669 100%);
-      
-      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
-      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-      --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-      --shadow-glow: 0 0 20px rgba(59, 130, 246, 0.15);
-      
+
+      --gradient-primary: linear-gradient(135deg, #0c4f2a 0%, #349a62 100%);
+      --gradient-secondary: linear-gradient(135deg, #349a62 0%, #6fcf97 100%);
+      --gradient-accent: linear-gradient(135deg, #0c4f2a 0%, #6fcf97 100%);
+      --gradient-hero: linear-gradient(135deg, #e6f4ea 0%, #cde9d7 100%);
+
+      --shadow-sm: 0 1px 3px rgba(12, 79, 42, 0.1);
+      --shadow-md: 0 4px 6px rgba(12, 79, 42, 0.1);
+      --shadow-lg: 0 10px 15px rgba(12, 79, 42, 0.15);
+      --shadow-glow: 0 0 20px rgba(52, 154, 98, 0.2);
+
       --glass-bg: rgba(255, 255, 255, 0.7);
-      --glass-border: rgba(255, 255, 255, 0.2);
+      --glass-border: rgba(52, 154, 98, 0.2);
       --code-bg: #f3f4f6;
     }
 
-    /* Dark Theme */
+    /* 🌿 Dark Theme – Green & Black */
     :root[data-theme="dark"] {
       --bg-primary: #0a0a0a;
-      --bg-secondary: #111111;
+      --bg-secondary: #0f0f0f;
       --bg-tertiary: #1a1a1a;
-      --text-primary: #f1f5f9;
-      --text-secondary: #cbd5e1;
-      --text-tertiary: #94a3b8;
-      --border-color: #27272a;
-      --border-hover: #3f3f46;
-      
-      --accent-primary: #60a5fa;
-      --accent-secondary: #a78bfa;
-      --accent-tertiary: #22d3ee;
+
+      --text-primary: #d9f7e5;
+      --text-secondary: white;
+      --text-tertiary: #6fcf97;
+
+      --border-color: #1f1f1f;
+
+      --accent-primary: #349a62;
+      --accent-secondary: #6fcf97;
+      --accent-tertiary: #3cb371;
       --accent-success: #34d399;
       --accent-warning: #fbbf24;
       --accent-danger: #f87171;
-      
-      --gradient-primary: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
-      --gradient-secondary: linear-gradient(135deg, #22d3ee 0%, #60a5fa 100%);
-      --gradient-accent: linear-gradient(135deg, #a78bfa 0%, #f472b6 100%);
-      --gradient-success: linear-gradient(135deg, #34d399 0%, #059669 100%);
-      
-      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
-      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
-      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
-      --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-      --shadow-glow: 0 0 30px rgba(96, 165, 250, 0.3);
-      
-      --glass-bg: rgba(30, 30, 30, 0.6);
-      --glass-border: rgba(255, 255, 255, 0.1);
+
+      --gradient-primary: linear-gradient(135deg, #0c4f2a 0%, #349a62 100%);
+      --gradient-secondary: linear-gradient(135deg, #1f7a47 0%, #6fcf97 100%);
+      --gradient-accent: linear-gradient(135deg, #349a62 0%, #3cb371 100%);
+      --gradient-hero: linear-gradient(135deg, #1a1a1a 0%, Black 100%);
+
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+      --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.3);
+      --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.4);
+      --shadow-glow: 0 0 30px rgba(52, 154, 98, 0.3);
+
+      --glass-bg: rgba(20, 40, 30, 0.6);
+      --glass-border: rgba(255, 255, 255, 0.05);
       --code-bg: #1e1e1e;
     }
 
@@ -117,6 +117,109 @@
       z-index: 0;
     }
 
+    /* Loading Overlay */
+    .loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(10px);
+      z-index: 9999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .loading-overlay.show {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .loading-content {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 3rem 2rem;
+      text-align: center;
+      max-width: 400px;
+      width: 90%;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .loading-spinner {
+      width: 60px;
+      height: 60px;
+      border: 4px solid var(--border-color);
+      border-top: 4px solid var(--accent-primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 1.5rem;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .loading-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .loading-description {
+      color: var(--text-secondary);
+      margin-bottom: 1.5rem;
+      font-size: 0.95rem;
+    }
+
+    .progress-container {
+      background: var(--bg-tertiary);
+      border-radius: 10px;
+      height: 8px;
+      overflow: hidden;
+      margin-bottom: 1rem;
+    }
+
+    .progress-bar {
+      background: var(--gradient-primary);
+      height: 100%;
+      width: 0%;
+      transition: width 0.3s ease;
+      position: relative;
+    }
+
+    .progress-bar::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+      animation: shimmer 2s infinite;
+    }
+
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    .progress-text {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
     /* Tech Grid Background */
     .tech-grid {
       position: fixed;
@@ -125,8 +228,8 @@
       right: 0;
       bottom: 0;
       background-image: 
-        linear-gradient(rgba(96, 165, 250, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(96, 165, 250, 0.03) 1px, transparent 1px);
+        linear-gradient(rgba(52, 154, 98, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(52, 154, 98, 0.03) 1px, transparent 1px);
       background-size: 50px 50px;
       pointer-events: none;
       z-index: 0;
@@ -266,8 +369,8 @@
     }
 
     @keyframes glow {
-      from { filter: drop-shadow(0 0 20px rgba(139, 92, 246, 0.3)); }
-      to { filter: drop-shadow(0 0 30px rgba(139, 92, 246, 0.5)); }
+      from { filter: drop-shadow(0 0 20px rgba(52, 154, 98, 0.3)); }
+      to { filter: drop-shadow(0 0 30px rgba(52, 154, 98, 0.5)); }
     }
 
     .sub-header {
@@ -367,6 +470,22 @@
       opacity: 0.9;
     }
 
+    /* Integration Badge */
+    .integration-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #4285f4, #34a853);
+      color: white;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.85em;
+      font-weight: 500;
+      box-shadow: 0 2px 8px rgba(66, 133, 244, 0.3);
+      position: relative;
+      z-index: 1;
+    }
+
     .card-body {
       padding: 2rem;
       background: var(--bg-secondary);
@@ -404,7 +523,20 @@
       outline: none;
       border-color: var(--accent-primary);
       background: var(--bg-secondary);
-      box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1), var(--shadow-glow);
+      box-shadow: 0 0 0 3px rgba(52, 154, 98, 0.1), var(--shadow-glow);
+    }
+
+    .form-text {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+
+    .form-text.warning {
+      color: var(--accent-warning);
     }
 
     /* Button */
@@ -454,6 +586,12 @@
       box-shadow: var(--shadow-lg), var(--shadow-glow);
     }
 
+    .btn-primary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
     .btn-secondary {
       background: var(--bg-tertiary);
       color: var(--accent-primary);
@@ -474,12 +612,32 @@
 
     .btn-success:hover {
       transform: translateY(-2px);
-      box-shadow: var(--shadow-lg), 0 0 20px rgba(16, 185, 129, 0.3);
+      box-shadow: var(--shadow-lg), 0 0 20px rgba(52, 211, 153, 0.3);
     }
 
     .btn-block {
       width: 100%;
       justify-content: center;
+    }
+
+    .btn-loading {
+      position: relative;
+      color: transparent !important;
+    }
+
+    .btn-loading::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      top: 50%;
+      left: 50%;
+      margin-left: -10px;
+      margin-top: -10px;
+      border: 2px solid transparent;
+      border-top-color: #ffffff;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
     }
 
     /* Alert Messages */
@@ -500,7 +658,7 @@
     }
 
     .alert.success {
-      background: rgba(16, 185, 129, 0.1);
+      background: rgba(52, 211, 153, 0.1);
       color: var(--accent-success);
       border: 1px solid var(--accent-success);
     }
@@ -801,6 +959,134 @@
       box-shadow: var(--shadow-md);
     }
 
+    /* Sync Sections */
+    .sync-info-section {
+      margin-bottom: 2rem;
+      padding: 1.5rem;
+      background: linear-gradient(135deg, rgba(52, 154, 98, 0.1), rgba(111, 207, 151, 0.1));
+      border: 1px solid rgba(52, 154, 98, 0.3);
+      border-radius: 8px;
+    }
+
+    .sync-info-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--accent-primary);
+      font-weight: 600;
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+    }
+
+    .sync-info-content p {
+      margin: 0 0 1rem 0;
+      color: var(--text-secondary);
+    }
+
+    .sync-status-indicator {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--accent-success);
+      font-weight: 500;
+    }
+
+    .sync-active {
+      color: var(--accent-success);
+      animation: pulse-dot 2s infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    .fallback-section {
+      margin: 1.5rem 0;
+      padding: 1rem;
+      border: 1px dashed var(--border-color);
+      border-radius: 8px;
+      background: rgba(245, 158, 11, 0.05);
+      border-left: 4px solid var(--accent-warning);
+    }
+
+    .fallback-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .toggle-label {
+      color: var(--accent-warning);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 500;
+    }
+
+    .manual-upload {
+      transition: all 0.3s ease;
+      overflow: hidden;
+    }
+
+    .sync-status-section {
+      margin-top: 2rem;
+      padding: 1.5rem;
+      background: var(--bg-tertiary);
+      border-radius: 8px;
+      border-left: 4px solid var(--accent-success);
+    }
+
+    .sync-status-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--accent-success);
+      font-weight: 600;
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+    }
+
+    .sync-details {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+
+    .sync-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .sync-label {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-weight: 500;
+    }
+
+    .sync-value {
+      font-weight: 600;
+      color: var(--text-primary);
+      font-size: 0.9rem;
+    }
+
+    .status-active {
+      color: var(--accent-success);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .status-active i {
+      font-size: 0.6rem;
+      animation: pulse-dot 2s infinite;
+    }
+
     /* Responsive Design */
     @media (max-width: 768px) {
       .header-content {
@@ -823,6 +1109,10 @@
         flex-direction: column;
         align-items: flex-start;
         gap: 0.75rem;
+      }
+      
+      .integration-badge {
+        margin-left: 0;
       }
       
       .card-body {
@@ -855,6 +1145,10 @@
       .stat-value {
         font-size: 1.5rem;
       }
+
+      .sync-details {
+        grid-template-columns: 1fr;
+      }
     }
 
     @media (max-width: 480px) {
@@ -879,6 +1173,23 @@
 
 <body>
   <div class="tech-grid"></div>
+  
+  <!-- Loading Overlay -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-content">
+      <div class="loading-spinner"></div>
+      <div class="loading-title">Processing Data</div>
+      <div class="loading-description" id="loadingDescription">
+        Uploading and syncing your water level data...
+      </div>
+      <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+      <div class="progress-text">
+        <span id="progressText">0%</span> Complete
+      </div>
+    </div>
+  </div>
   
   <!-- Header -->
   <header class="header">
@@ -905,483 +1216,214 @@
     <p class="sub-header">Comprehensive analysis with advanced filtering, comparisons, and enhanced downloads</p>
 
     <!-- Updated Upload Section -->
-<div class="container">
-  <div class="glass-card">
-    <div class="card-header">
-      <h2><i class="fas fa-cloud-upload-alt icon"></i> Data Upload Terminal</h2>
-      <div class="integration-badge">
-        <i class="fab fa-google"></i> Google Sheets Auto-Sync Enabled
-      </div>
-    </div>
-    <div class="card-body">
-      <form method="POST" enctype="multipart/form-data" id="uploadForm">
-        {% csrf_token %}
-        
-        <!-- Master Database Auto-Sync Info -->
-        <div class="sync-info-section">
-          <div class="sync-info-header">
-            <i class="fas fa-cloud-sync-alt"></i>
-            <span>Master Database Auto-Sync</span>
-          </div>
-          <div class="sync-info-content">
-            <p><i class="fas fa-info-circle"></i> Master database automatically syncs from Google Sheets. No manual upload required.</p>
-            <div class="sync-status-indicator">
-              <i class="fas fa-circle sync-active"></i>
-              <span>Google Sheets Connection: Active</span>
-            </div>
-          </div>
-        </div>
-        
-        <div class="form-group">
-          <label class="form-label" for="water_file">
-            <i class="fas fa-tint"></i> Water Level Excel File
-          </label>
-          <input type="file" name="water_file" id="water_file" class="form-control" accept=".xlsx,.xls" required />
-          <small class="form-text">
-            <i class="fas fa-info-circle"></i> Upload your water level measurement data file
-          </small>
-        </div>
-       
-        <!-- Fallback Option -->
-        <div class="fallback-section">
-          <div class="fallback-toggle">
-            <input type="checkbox" id="manual-upload-toggle" onchange="toggleManualUpload()">
-            <label for="manual-upload-toggle" class="toggle-label">
-              <i class="fas fa-tools"></i> Use Manual Master File Upload (Fallback)
-            </label>
-          </div>
-         
-          <div id="manual-upload-section" class="manual-upload" style="display: none;">
-            <div class="form-group">
-              <label class="form-label" for="kharif_file">
-                <i class="fas fa-server"></i> Master Database File (Optional Override)
-              </label>
-              <input type="file" name="kharif_file" id="kharif_file" class="form-control" accept=".xlsx,.xls">
-              <small class="form-text warning">
-                <i class="fas fa-exclamation-triangle"></i> Only use this if Google Sheets sync fails
-              </small>
-            </div>
-          </div>
-        </div>
-       
-        <button type="submit" class="btn btn-primary btn-block" id="uploadBtn">
-          <i class="fas fa-chart-bar"></i> Upload & Analyze
-        </button>
-      </form>
-     
-      {% if error %}
-        <div class="alert error">
-          <i class="fas fa-exclamation-triangle"></i>
-          <p>{{ error }}</p>
-        </div>
-      {% endif %}
-     
-      <!-- Sync Status Section - Only show when data exists -->
-      {% if summary %}
-      <div class="sync-status-section">
-        <div class="sync-status-header">
-          <i class="fas fa-check-circle"></i>
-          <span>Data Successfully Synced</span>
-        </div>
-        <div class="sync-details">
-          <div class="sync-item">
-            <span class="sync-label">Last Sync:</span>
-            <span class="sync-value">
-              {% now "M d, Y H:i:s" %}
-            </span>
-          </div>
-          <div class="sync-item">
-            <span class="sync-label">Source:</span>
-            <span class="sync-value">Google Sheets + Raw Data Upload</span>
-          </div>
-          <div class="sync-item">
-            <span class="sync-label">Status:</span>
-            <span class="sync-value status-active">
-              <i class="fas fa-circle"></i> Active
-            </span>
-          </div>
-          {% if request.FILES.water_file %}
-          <div class="sync-item">
-            <span class="sync-label">Last File:</span>
-            <span class="sync-value">{{ request.FILES.water_file.name }}</span>
-          </div>
-          {% endif %}
-        </div>
-      </div>
-      {% endif %}
-    </div>
-  </div>
-
-  {% if summary %}
-    <div class="summary">
-      <strong><i class="fas fa-chart-pie"></i> Data Overview</strong><br />
-      Total Records: <span class="code">{{ summary.total_records }}</span><br />
-      Unique Farms: <span class="code">{{ summary.unique_farms }}</span><br />
-      Villages: <span class="code">{{ summary.total_villages }}</span><br />
-      Date Range: <span class="code">{{ summary.date_range }}</span><br />
-      Avg Water Level: <span class="code">{{ summary.avg_level }} mm</span>
-    </div>
-  {% endif %}
-
-  <!-- Date Range Filter Section -->
-  {% if merged_loaded %}
-    <div class="glass-card filter-section">
+    <div class="glass-card">
       <div class="card-header">
-        <h2><i class="fas fa-calendar-alt icon"></i> Date Range Filter</h2>
+        <h2><i class="fas fa-cloud-upload-alt icon"></i> Data Upload Terminal</h2>
         <div class="integration-badge">
-          <i class="fas fa-filter"></i> Analysis Period Control
+          <i class="fab fa-google"></i> Google Sheets Auto-Sync Enabled
         </div>
       </div>
       <div class="card-body">
-        <form id="dateFilterForm" method="POST" action="{% url 'water_dashboard' %}">
+        <form method="POST" enctype="multipart/form-data" id="uploadForm">
           {% csrf_token %}
-          <input type="hidden" name="update_date_filter" value="1">
+          
+          <!-- Master Database Auto-Sync Info -->
+          <div class="sync-info-section">
+            <div class="sync-info-header">
+              <i class="fas fa-cloud-sync-alt"></i>
+              <span>Master Database Auto-Sync</span>
+            </div>
+            <div class="sync-info-content">
+              <p><i class="fas fa-info-circle"></i> Master database automatically syncs from Google Sheets. No manual upload required.</p>
+              <div class="sync-status-indicator">
+                <i class="fas fa-circle sync-active"></i>
+                <span>Google Sheets Connection: Active</span>
+              </div>
+            </div>
+          </div>
           
           <div class="form-group">
-            <div style="display: flex; align-items: center; margin-bottom: 1rem;">
-              <input type="checkbox" id="use_date_filter" name="use_date_filter" 
-                     {% if use_date_filter %}checked{% endif %}
-                     onchange="toggleDateFilter()">
-              <label for="use_date_filter" style="margin-left: 0.5rem; font-weight: 600;">
-                <i class="fas fa-calendar-check"></i> Enable Date Range Filtering
+            <label class="form-label" for="water_file">
+              <i class="fas fa-tint"></i> Water Level Excel File
+            </label>
+            <input type="file" name="water_file" id="water_file" class="form-control" accept=".xlsx,.xls" required />
+            <small class="form-text">
+              <i class="fas fa-info-circle"></i> Upload your water level measurement data file
+            </small>
+          </div>
+         
+          <!-- Fallback Option -->
+          <div class="fallback-section">
+            <div class="fallback-toggle">
+              <input type="checkbox" id="manual-upload-toggle" onchange="toggleManualUpload()">
+              <label for="manual-upload-toggle" class="toggle-label">
+                <i class="fas fa-tools"></i> Use Manual Master File Upload (Fallback)
               </label>
             </div>
-          </div>
-          
-          <div id="date-range-inputs" style="{% if not use_date_filter %}display: none;{% endif %}">
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+           
+            <div id="manual-upload-section" class="manual-upload" style="display: none;">
               <div class="form-group">
-                <label class="form-label" for="start_date">
-                  <i class="fas fa-calendar-day"></i> Start Date
+                <label class="form-label" for="kharif_file">
+                  <i class="fas fa-server"></i> Master Database File (Optional Override)
                 </label>
-                <input type="date" name="start_date" id="start_date" class="form-control" 
-                       value="{{ start_date }}" 
-                       onchange="validateDateRange()">
-              </div>
-              
-              <div class="form-group">
-                <label class="form-label" for="end_date">
-                  <i class="fas fa-calendar-day"></i> End Date
-                </label>
-                <input type="date" name="end_date" id="end_date" class="form-control" 
-                       value="{{ end_date }}"
-                       onchange="validateDateRange()">
+                <input type="file" name="kharif_file" id="kharif_file" class="form-control" accept=".xlsx,.xls">
+                <small class="form-text warning">
+                  <i class="fas fa-exclamation-triangle"></i> Only use this if Google Sheets sync fails
+                </small>
               </div>
             </div>
-            
-            <div class="form-group" style="margin-top: 1rem;">
-              <button type="submit" class="btn btn-primary" id="applyDateFilter">
-                <i class="fas fa-filter"></i> Apply Date Filter
-              </button>
-              <button type="button" class="btn btn-secondary" onclick="clearDateFilter()" style="margin-left: 0.5rem;">
-                <i class="fas fa-times"></i> Clear Filter
-              </button>
-            </div>
-            
-            <div id="date-validation-message" style="margin-top: 0.5rem; color: var(--accent-danger); font-size: 0.875rem; display: none;">
-              <i class="fas fa-exclamation-triangle"></i> End date must be after start date
-            </div>
           </div>
-          
-          {% if use_date_filter and start_date and end_date %}
-            <div class="alert success" style="margin-top: 1rem;">
-              <i class="fas fa-info-circle"></i>
-              <p><strong>Active Filter:</strong> Showing data from {{ start_date }} to {{ end_date }}</p>
-            </div>
-          {% endif %}
+         
+          <button type="submit" class="btn btn-primary btn-block" id="uploadBtn">
+            <i class="fas fa-chart-bar"></i> Upload & Analyze
+          </button>
         </form>
+       
+        {% if error %}
+          <div class="alert error">
+            <i class="fas fa-exclamation-triangle"></i>
+            <p>{{ error }}</p>
+          </div>
+        {% endif %}
+       
+        <!-- Sync Status Section - Only show when data exists -->
+        {% if summary %}
+        <div class="sync-status-section">
+          <div class="sync-status-header">
+            <i class="fas fa-check-circle"></i>
+            <span>Data Successfully Synced</span>
+          </div>
+          <div class="sync-details">
+            <div class="sync-item">
+              <span class="sync-label">Last Sync:</span>
+              <span class="sync-value">
+                {% now "M d, Y H:i:s" %}
+              </span>
+            </div>
+            <div class="sync-item">
+              <span class="sync-label">Source:</span>
+              <span class="sync-value">Google Sheets + Raw Data Upload</span>
+            </div>
+            <div class="sync-item">
+              <span class="sync-label">Status:</span>
+              <span class="sync-value status-active">
+                <i class="fas fa-circle"></i> Active
+              </span>
+            </div>
+            {% if request.FILES.water_file %}
+            <div class="sync-item">
+              <span class="sync-label">Last File:</span>
+              <span class="sync-value">{{ request.FILES.water_file.name }}</span>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+        {% endif %}
       </div>
     </div>
-  {% endif %}
 
-  <!-- Rest of the template continues with tabs... -->
-  {% if merged_loaded %}
-    <div class="tab-buttons">
-      <button id="btn-farm" class="active">
-        <i class="fas fa-seedling"></i> Individual Farm Analysis
-      </button>
-      <button id="btn-comp">
-        <i class="fas fa-chart-line"></i> Comparative Analysis
-      </button>
-      <button id="btn-download">
-        <i class="fas fa-download"></i> Data Downloads
-      </button>
-    </div>
-    <!-- Rest of the tabs content... -->
-  {% endif %}
-</div>
+    {% if summary %}
+      <div class="summary">
+        <strong><i class="fas fa-chart-pie"></i> Data Overview</strong><br />
+        Total Records: <span class="code">{{ summary.total_records }}</span><br />
+        Unique Farms: <span class="code">{{ summary.unique_farms }}</span><br />
+        Villages: <span class="code">{{ summary.total_villages }}</span><br />
+        Date Range: <span class="code">{{ summary.date_range }}</span><br />
+        Avg Water Level: <span class="code">{{ summary.avg_level }} mm</span>
+      </div>
+    {% endif %}
 
-<script>
-function toggleManualUpload() {
-  const toggle = document.getElementById('manual-upload-toggle');
-  const section = document.getElementById('manual-upload-section');
-  const kharifFile = document.getElementById('kharif_file');
-  
-  if (toggle.checked) {
-    section.style.display = 'block';
-    kharifFile.required = true;
-  } else {
-    section.style.display = 'none';
-    kharifFile.required = false;
-    kharifFile.value = '';
-  }
-}
+    <!-- Date Range Filter Section -->
+    {% if merged_loaded %}
+      <div class="glass-card filter-section">
+        <div class="card-header">
+          <h2><i class="fas fa-calendar-alt icon"></i> Date Range Filter</h2>
+          <div class="integration-badge">
+            <i class="fas fa-filter"></i> Analysis Period Control
+          </div>
+        </div>
+        <div class="card-body">
+          <form id="dateFilterForm" method="POST" action="{% url 'water_dashboard' %}">
+            {% csrf_token %}
+            <input type="hidden" name="update_date_filter" value="1">
+            
+            <div class="form-group">
+              <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                <input type="checkbox" id="use_date_filter" name="use_date_filter" 
+                       {% if use_date_filter %}checked{% endif %}
+                       onchange="toggleDateFilter()">
+                <label for="use_date_filter" style="margin-left: 0.5rem; font-weight: 600;">
+                  <i class="fas fa-calendar-check"></i> Enable Date Range Filtering
+                </label>
+              </div>
+            </div>
+            
+            <div id="date-range-inputs" style="{% if not use_date_filter %}display: none;{% endif %}">
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div class="form-group">
+                  <label class="form-label" for="start_date">
+                    <i class="fas fa-calendar-day"></i> Start Date
+                  </label>
+                  <input type="date" name="start_date" id="start_date" class="form-control" 
+                         value="{{ start_date }}" 
+                         onchange="validateDateRange()">
+                </div>
+                
+                <div class="form-group">
+                  <label class="form-label" for="end_date">
+                    <i class="fas fa-calendar-day"></i> End Date
+                  </label>
+                  <input type="date" name="end_date" id="end_date" class="form-control" 
+                         value="{{ end_date }}"
+                         onchange="validateDateRange()">
+                </div>
+              </div>
+              
+              <div class="form-group" style="margin-top: 1rem;">
+                <button type="submit" class="btn btn-primary" id="applyDateFilter">
+                  <i class="fas fa-filter"></i> Apply Date Filter
+                </button>
+                <button type="button" class="btn btn-secondary" onclick="clearDateFilter()" style="margin-left: 0.5rem;">
+                  <i class="fas fa-times"></i> Clear Filter
+                </button>
+              </div>
+              
+              <div id="date-validation-message" style="margin-top: 0.5rem; color: var(--accent-danger); font-size: 0.875rem; display: none;">
+                <i class="fas fa-exclamation-triangle"></i> End date must be after start date
+              </div>
+            </div>
+            
+            {% if use_date_filter and start_date and end_date %}
+              <div class="alert success" style="margin-top: 1rem;">
+                <i class="fas fa-info-circle"></i>
+                <p><strong>Active Filter:</strong> Showing data from {{ start_date }} to {{ end_date }}</p>
+              </div>
+            {% endif %}
+          </form>
+        </div>
+      </div>
+    {% endif %}
 
-// Date Filter Functions
-function toggleDateFilter() {
-  const toggle = document.getElementById('use_date_filter');
-  const inputs = document.getElementById('date-range-inputs');
-  const startDate = document.getElementById('start_date');
-  const endDate = document.getElementById('end_date');
-  
-  if (toggle.checked) {
-    inputs.style.display = 'block';
-    startDate.required = true;
-    endDate.required = true;
-    // Set default dates if empty
-    if (!startDate.value || !endDate.value) {
-      const today = new Date();
-      const oneMonthAgo = new Date(today.getFullYear(), today.getMonth() - 1, today.getDate());
-      if (!startDate.value) {
-        startDate.value = oneMonthAgo.toISOString().split('T')[0];
-      }
-      if (!endDate.value) {
-        endDate.value = today.toISOString().split('T')[0];
-      }
-    }
-  } else {
-    inputs.style.display = 'none';
-    startDate.required = false;
-    endDate.required = false;
-    clearValidationMessage();
-  }
-}
-
-function validateDateRange() {
-  const startDate = document.getElementById('start_date');
-  const endDate = document.getElementById('end_date');
-  const messageDiv = document.getElementById('date-validation-message');
-  const submitButton = document.getElementById('applyDateFilter');
-  
-  if (startDate.value && endDate.value) {
-    const start = new Date(startDate.value);
-    const end = new Date(endDate.value);
-    
-    if (start >= end) {
-      messageDiv.style.display = 'block';
-      submitButton.disabled = true;
-      submitButton.style.opacity = '0.5';
-    } else {
-      messageDiv.style.display = 'none';
-      submitButton.disabled = false;
-      submitButton.style.opacity = '1';
-    }
-  } else {
-    messageDiv.style.display = 'none';
-    submitButton.disabled = false;
-    submitButton.style.opacity = '1';
-  }
-}
-
-function clearDateFilter() {
-  const toggle = document.getElementById('use_date_filter');
-  const startDate = document.getElementById('start_date');
-  const endDate = document.getElementById('end_date');
-  const form = document.getElementById('dateFilterForm');
-  
-  toggle.checked = false;
-  startDate.value = '';
-  endDate.value = '';
-  toggleDateFilter();
-  
-  // Submit the form to clear the filter
-  form.submit();
-}
-
-function clearValidationMessage() {
-  const messageDiv = document.getElementById('date-validation-message');
-  const submitButton = document.getElementById('applyDateFilter');
-  messageDiv.style.display = 'none';
-  submitButton.disabled = false;
-  submitButton.style.opacity = '1';
-}
-</script>
-<div class="external-link">
+    <div class="external-link">
       <a href="https://v45bgthcmmrztmbstkddra.streamlit.app/" target="_blank">
         <i class="fas fa-external-link-alt"></i> Analyze 2024 Data
       </a>
     </div>
 
-<style>
-.sync-info-section {
-  margin-bottom: 2rem;
-  padding: 1.5rem;
-  background: linear-gradient(135deg, rgba(66, 133, 244, 0.1), rgba(52, 168, 83, 0.1));
-  border: 1px solid rgba(66, 133, 244, 0.3);
-  border-radius: 8px;
-}
+    <!-- Rest of the template continues with tabs... -->
+    {% if merged_loaded %}
+      <div class="tab-buttons">
+        <button id="btn-farm" class="active">
+          <i class="fas fa-seedling"></i> Individual Farm Analysis
+        </button>
+        <button id="btn-comp">
+          <i class="fas fa-chart-line"></i> Comparative Analysis
+        </button>
+        <button id="btn-download">
+          <i class="fas fa-download"></i> Data Downloads
+        </button>
+      </div>
 
-.sync-info-header {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: #4285f4;
-  font-weight: 600;
-  font-size: 1.1rem;
-  margin-bottom: 1rem;
-}
-
-.sync-info-content p {
-  margin: 0 0 1rem 0;
-  color: var(--text-secondary);
-}
-
-.sync-status-indicator {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: #34a853;
-  font-weight: 500;
-}
-
-.sync-active {
-  color: #34a853;
-  animation: pulse 2s infinite;
-}
-
-.integration-badge {
-  background: linear-gradient(135deg, #4285f4, #34a853);
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 20px;
-  font-size: 0.9rem;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-left: auto;
-}
-
-.fallback-section {
-  margin: 1.5rem 0;
-  padding: 1rem;
-  border: 1px dashed var(--border-color);
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.05);
-}
-
-.fallback-toggle {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
-}
-
-.toggle-label {
-  color: var(--text-secondary);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.manual-upload {
-  transition: all 0.3s ease;
-  overflow: hidden;
-}
-
-.form-text.warning {
-  color: #ff9800;
-}
-
-.sync-status-section {
-  margin-top: 2rem;
-  padding: 1.5rem;
-  background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(56, 142, 60, 0.1));
-  border: 1px solid rgba(76, 175, 80, 0.3);
-  border-radius: 8px;
-}
-
-.sync-status-header {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: #4caf50;
-  font-weight: 600;
-  font-size: 1.1rem;
-  margin-bottom: 1rem;
-}
-
-.sync-details {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem;
-}
-
-.sync-item {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
-
-.sync-label {
-  font-size: 0.9rem;
-  color: var(--text-secondary);
-  font-weight: 500;
-}
-
-.sync-value {
-  font-weight: 600;
-  color: var(--text-primary);
-}
-
-.status-active {
-  color: #4caf50;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.status-active i {
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0% { opacity: 1; }
-  50% { opacity: 0.5; }
-  100% { opacity: 1; }
-}
-
-.card-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 1rem;
-}
-
-.card-header h2 {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin: 0;
-}
-
-@media (max-width: 768px) {
-  .card-header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  
-  .integration-badge {
-    margin-left: 0;
-  }
-  
-  .sync-details {
-    grid-template-columns: 1fr;
-  }
-}
-
-</style>
       <!-- Tab 1: Farm Analysis -->
       <div id="farm" class="tab-content active">
         <div class="glass-card">
@@ -1751,6 +1793,7 @@ function clearValidationMessage() {
           </div>
         </div>
       </div>
+    {% endif %}
 
     {% if not merged_loaded %}
     <div class="info-box">
@@ -1850,6 +1893,176 @@ function clearValidationMessage() {
     function updateThemeIcon(theme) {
       const icon = document.getElementById('theme-icon');
       icon.className = theme === 'light' ? 'fas fa-sun' : 'fas fa-moon';
+    }
+
+    // Manual Upload Toggle
+    function toggleManualUpload() {
+      const toggle = document.getElementById('manual-upload-toggle');
+      const section = document.getElementById('manual-upload-section');
+      const kharifFile = document.getElementById('kharif_file');
+      
+      if (toggle.checked) {
+        section.style.display = 'block';
+        section.style.opacity = '0';
+        setTimeout(() => {
+          section.style.opacity = '1';
+        }, 10);
+        kharifFile.required = true;
+      } else {
+        section.style.opacity = '0';
+        setTimeout(() => {
+          section.style.display = 'none';
+          kharifFile.value = '';
+        }, 300);
+        kharifFile.required = false;
+      }
+    }
+
+    // Enhanced Loading System
+    function showLoading() {
+      const overlay = document.getElementById('loadingOverlay');
+      const progressBar = document.getElementById('progressBar');
+      const progressText = document.getElementById('progressText');
+      const description = document.getElementById('loadingDescription');
+      
+      overlay.classList.add('show');
+      
+      // Simulate realistic loading progression
+      const steps = [
+        { progress: 0, text: "Initializing upload...", duration: 500 },
+        { progress: 15, text: "Uploading water level data...", duration: 1000 },
+        { progress: 35, text: "Validating data format...", duration: 800 },
+        { progress: 50, text: "Connecting to Google Sheets...", duration: 1200 },
+        { progress: 70, text: "Syncing master database...", duration: 1000 },
+        { progress: 85, text: "Processing farm analysis...", duration: 800 },
+        { progress: 95, text: "Generating visualizations...", duration: 600 },
+        { progress: 100, text: "Complete!", duration: 300 }
+      ];
+      
+      let currentStep = 0;
+      
+      function updateProgress() {
+        if (currentStep < steps.length) {
+          const step = steps[currentStep];
+          progressBar.style.width = step.progress + '%';
+          progressText.textContent = step.progress + '%';
+          description.textContent = step.text;
+          
+          setTimeout(() => {
+            currentStep++;
+            updateProgress();
+          }, step.duration);
+        } else {
+          // Hide loading after completion
+          setTimeout(() => {
+            hideLoading();
+          }, 1000);
+        }
+      }
+      
+      updateProgress();
+    }
+
+    function hideLoading() {
+      const overlay = document.getElementById('loadingOverlay');
+      overlay.classList.remove('show');
+    }
+
+    // Form Submission with Loading
+    document.getElementById('uploadForm').addEventListener('submit', function(e) {
+      const fileInput = document.getElementById('water_file');
+      if (!fileInput.files.length) {
+        e.preventDefault();
+        alert('Please select a water level file to upload.');
+        return;
+      }
+      
+      const uploadBtn = document.getElementById('uploadBtn');
+      uploadBtn.classList.add('btn-loading');
+      uploadBtn.disabled = true;
+      
+      showLoading();
+      
+      // The form will submit normally, but with visual feedback
+    });
+
+    // Date Filter Functions
+    function toggleDateFilter() {
+      const toggle = document.getElementById('use_date_filter');
+      const inputs = document.getElementById('date-range-inputs');
+      const startDate = document.getElementById('start_date');
+      const endDate = document.getElementById('end_date');
+      
+      if (toggle.checked) {
+        inputs.style.display = 'block';
+        startDate.required = true;
+        endDate.required = true;
+        // Set default dates if empty
+        if (!startDate.value || !endDate.value) {
+          const today = new Date();
+          const oneMonthAgo = new Date(today.getFullYear(), today.getMonth() - 1, today.getDate());
+          if (!startDate.value) {
+            startDate.value = oneMonthAgo.toISOString().split('T')[0];
+          }
+          if (!endDate.value) {
+            endDate.value = today.toISOString().split('T')[0];
+          }
+        }
+      } else {
+        inputs.style.display = 'none';
+        startDate.required = false;
+        endDate.required = false;
+        clearValidationMessage();
+      }
+    }
+
+    function validateDateRange() {
+      const startDate = document.getElementById('start_date');
+      const endDate = document.getElementById('end_date');
+      const messageDiv = document.getElementById('date-validation-message');
+      const submitButton = document.getElementById('applyDateFilter');
+      
+      if (startDate.value && endDate.value) {
+        const start = new Date(startDate.value);
+        const end = new Date(endDate.value);
+        
+        if (start >= end) {
+          messageDiv.style.display = 'block';
+          submitButton.disabled = true;
+          submitButton.style.opacity = '0.5';
+        } else {
+          messageDiv.style.display = 'none';
+          submitButton.disabled = false;
+          submitButton.style.opacity = '1';
+        }
+      } else {
+        messageDiv.style.display = 'none';
+        submitButton.disabled = false;
+        submitButton.style.opacity = '1';
+      }
+    }
+
+    function clearDateFilter() {
+      const toggle = document.getElementById('use_date_filter');
+      const startDate = document.getElementById('start_date');
+      const endDate = document.getElementById('end_date');
+      const form = document.getElementById('dateFilterForm');
+      
+      toggle.checked = false;
+      startDate.value = '';
+      endDate.value = '';
+      toggleDateFilter();
+      
+      // Submit the form to clear the filter
+      form.submit();
+    }
+
+    function clearValidationMessage() {
+      const messageDiv = document.getElementById('date-validation-message');
+      const submitButton = document.getElementById('applyDateFilter');
+      messageDiv.style.display = 'none';
+      submitButton.disabled = false;
+      submitButton.style.opacity = '1';
     }
 
     // Tab Functions
@@ -1964,6 +2177,32 @@ function clearValidationMessage() {
       document.getElementById('custom-groups-section').style.display = 'block';
     }
 
+    // Date Filter Form Submission with Visual Feedback
+    document.getElementById('dateFilterForm')?.addEventListener('submit', function(e) {
+      const startDate = document.getElementById('start_date').value;
+      const endDate = document.getElementById('end_date').value;
+      const toggle = document.getElementById('use_date_filter');
+      
+      if (toggle.checked && (!startDate || !endDate)) {
+        e.preventDefault();
+        alert('Please select both start and end dates when filter is enabled.');
+        return;
+      }
+      
+      if (startDate && endDate && new Date(startDate) > new Date(endDate)) {
+        e.preventDefault();
+        alert('Start date cannot be later than end date.');
+        return;
+      }
+      
+      // Add visual feedback
+      const applyBtn = document.getElementById('applyDateFilter');
+      if (applyBtn) {
+        applyBtn.classList.add('btn-loading');
+        applyBtn.disabled = true;
+      }
+    });
+
     // Document Ready
     document.addEventListener("DOMContentLoaded", function() {
       initTheme();
@@ -2002,6 +2241,26 @@ function clearValidationMessage() {
         });
         selector.dispatchEvent(new Event("change"));
       }
+    });
+
+    // Add ripple effect to buttons
+    document.querySelectorAll('.btn').forEach(button => {
+      button.addEventListener('click', function(e) {
+        const ripple = document.createElement('span');
+        const rect = this.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+        const x = e.clientX - rect.left - size / 2;
+        const y = e.clientY - rect.top - size / 2;
+        
+        ripple.style.width = ripple.style.height = size + 'px';
+        ripple.style.left = x + 'px';
+        ripple.style.top = y + 'px';
+        ripple.classList.add('ripple');
+        
+        this.appendChild(ripple);
+        
+        setTimeout(() => ripple.remove(), 600);
+      });
     });
   </script>
 </body>
