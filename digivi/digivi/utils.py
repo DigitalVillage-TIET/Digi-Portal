@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 import io
 import base64
 import matplotlib.pyplot as plt
@@ -9,6 +10,8 @@ import pandas as pd
 import logging
 from django.conf import settings
 from io import BytesIO
+import plotly.graph_objects as go
+import plotly.express as px
 
 logger = logging.getLogger(__name__)
 
@@ -673,7 +676,7 @@ def get_2025plots(raw_df, master_df, selected_farm, meter_list, start_date_enter
         meter_plots = []
 
         # --- Graph 1: m3 per acre per avg day ---
-        fig1, ax1 = plt.subplots(figsize=(10, 5))
+        fig1, ax1 = plt.subplots(figsize=(14, 8))
         ax1.plot(filled_df['Day'], filled_df['m³ per Acre per Avg Day'], label='Daily m³ per Acre per day', color='blue')
         ax1.set(title=f'Daily Avg per Acre | Meter {meter}', xlabel='Days from transplanting', ylabel='Daily Avg m³ per Acre')
         ax1.legend()
@@ -685,7 +688,7 @@ def get_2025plots(raw_df, master_df, selected_farm, meter_list, start_date_enter
         plt.close(fig1)
 
         # --- Graph 2: Moving Averages Comparison ---
-        fig2, ax2 = plt.subplots(figsize=(10, 5))
+        fig2, ax2 = plt.subplots(figsize=(14, 8))
         ax2.plot(filled_df['Day'], filled_df['7-day SMA'], label='7-day SMA', linestyle='--', color='green')
         # ax2.plot(filled_df['Day'], filled_df['Weekly Avg'], label='Weekly Avg', linestyle=':', color='orange')
         ax2.set(title=f'Moving Average | Meter {meter}', xlabel='Days from transplanting', ylabel='7-days SMA m³ per Acre')
@@ -698,7 +701,7 @@ def get_2025plots(raw_df, master_df, selected_farm, meter_list, start_date_enter
         plt.close(fig2)
 
         # --- Graph 3: Delta Analysis ---
-        fig3, ax3 = plt.subplots(figsize=(10, 5))
+        fig3, ax3 = plt.subplots(figsize=(14, 8))
         ax3.plot(filled_df['Day'], filled_df['Delta m³'], marker='o', linestyle='-', color='purple', label='Delta m³')
         ax3.set(title=f'Meter Actual readings of meter | Meter {meter}', xlabel='Days from transplanting', ylabel='Delta of readings (m³)')
         ax3.legend()
@@ -710,7 +713,7 @@ def get_2025plots(raw_df, master_df, selected_farm, meter_list, start_date_enter
         plt.close(fig3)
 
         # --- Graph 4: Delta per Acre ---
-        fig4, ax4 = plt.subplots(figsize=(10, 5))
+        fig4, ax4 = plt.subplots(figsize=(14, 8))
         ax4.plot(filled_df['Day'], filled_df['m³ per Acre'], marker='x', linestyle='-', color='red', label='Delta m³/Acre')
         ax4.set(title=f'Meter readings per Acre | Meter {meter}', xlabel='Days from transplanting', ylabel='Delta of reading per Acre (m³) ')
         ax4.legend()
@@ -821,7 +824,7 @@ def get_2025plots_combined(raw_df, master_df, selected_farm, meter_list, start_d
     meters_label = " + ".join(meter_list)
     
     # Graph 1: Daily avg per acre
-    fig1, ax1 = plt.subplots(figsize=(10, 5))
+    fig1, ax1 = plt.subplots(figsize=(14, 8))
     ax1.plot(filled_df['Day'], filled_df['m³ per Acre per Avg Day'], label='Combined Daily m³ per Acre per day', color='blue', linewidth=2)
     ax1.set(title=f'Combined Daily Avg per Acre | Meters: {meters_label}', 
             xlabel='Days from transplanting', 
@@ -833,7 +836,7 @@ def get_2025plots_combined(raw_df, master_df, selected_farm, meter_list, start_d
     plt.close(fig1)
     
     # Graph 2: 7-day SMA
-    fig2, ax2 = plt.subplots(figsize=(10, 5))
+    fig2, ax2 = plt.subplots(figsize=(14, 8))
     ax2.plot(filled_df['Day'], filled_df['7-day SMA'], label='Combined 7-day SMA', linestyle='--', color='green', linewidth=2)
     ax2.set(title=f'Combined Moving Average | Meters: {meters_label}', 
             xlabel='Days from transplanting', 
@@ -845,7 +848,7 @@ def get_2025plots_combined(raw_df, master_df, selected_farm, meter_list, start_d
     plt.close(fig2)
     
     # Graph 3: Delta Analysis
-    fig3, ax3 = plt.subplots(figsize=(10, 5))
+    fig3, ax3 = plt.subplots(figsize=(14, 8))
     ax3.plot(filled_df['Day'], filled_df['Delta m³'], marker='o', linestyle='-', color='purple', label='Combined Delta m³', linewidth=2)
     ax3.set(title=f'Combined Meter Readings | Meters: {meters_label}', 
             xlabel='Days from transplanting', 
@@ -857,7 +860,7 @@ def get_2025plots_combined(raw_df, master_df, selected_farm, meter_list, start_d
     plt.close(fig3)
     
     # Graph 4: Delta per Acre
-    fig4, ax4 = plt.subplots(figsize=(10, 5))
+    fig4, ax4 = plt.subplots(figsize=(14, 8))
     ax4.plot(filled_df['Day'], filled_df['m³ per Acre'], marker='x', linestyle='-', color='red', label='Combined Delta m³/Acre', linewidth=2)
     ax4.set(title=f'Combined Readings per Acre | Meters: {meters_label}', 
             xlabel='Days from transplanting', 
@@ -947,7 +950,7 @@ def calculate_avg_m3_per_acre(group_type, group_label, farm_ids, raw_df, master2
         tpr_col = "Kharif 25 Paddy transplanting date (TPR)"
         tpr_date = acreage_row[tpr_col].values[0]
         if pd.isna(tpr_date) or tpr_date == "":
-            tpr_date = pd.to_datetime("2025-06-20")
+            tpr_date = pd.to_datetime("2025-07-02")
         else:
             tpr_date = pd.to_datetime(tpr_date)
         
@@ -1007,15 +1010,29 @@ def generate_group_analysis_plot(df, col_name):
     - All other columns are group names, with average m³/acre/day values
     Returns base64-encoded image string
     """
-    plt.figure(figsize=(10, 6))
-    for col in df.columns[1:]:
-        plt.plot(df['Day'], df[col], label=col, linewidth=2)
+    plt.figure(figsize=(16, 10))
     
-    plt.xlabel("Days from transplanting")
-    plt.ylabel(col_name)
-    plt.title("Group-wise Water Usage Comparison")
-    plt.grid(True)
-    plt.legend()
+    # Define distinct markers and colors for better visibility of overlapping points
+    markers = ['o', 's', '^', 'D', 'v', '<', '>', 'p', '*', 'h', 'H', '+', 'x']
+    colors = plt.cm.Set1(np.linspace(0, 1, len(df.columns[1:])))
+    
+    for i, col in enumerate(df.columns[1:]):
+        plt.plot(df['Day'], df[col], 
+                label=col, 
+                linewidth=2.5,
+                marker=markers[i % len(markers)],
+                markersize=8,
+                markerfacecolor=colors[i],
+                markeredgecolor='black',
+                markeredgewidth=1,
+                alpha=0.8)
+    
+    plt.xlabel("Days from Transplanting (TPR)", fontsize=12, fontweight='bold')
+    plt.ylabel(col_name, fontsize=12, fontweight='bold')
+    plt.title("Group-wise Water Usage Comparison", fontsize=14, fontweight='bold')
+    plt.grid(True, alpha=0.3)
+    plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
+    
     # Force axis to start from zero using current axes
     ax = plt.gca()
     ax.set_xlim(left=0)
@@ -1333,18 +1350,33 @@ def get_farm_analysis_data(farm_id, merged_df, daily_df, weekly_df):
     if farm_data.empty:
         return {"error": f"No data found for Farm ID {farm_id}"}
 
-    available_pipes = sorted(farm_data["Pipe code ID of the farm"].dropna().unique())
+    available_pipes = sorted(farm_data["Pipe code ID"].dropna().unique())
 
     # Prepare Graph 1: Daily Water Levels
     fig1 = go.Figure()
-    for pipe in available_pipes:
-        pipe_data = farm_data[farm_data["Pipe code ID of the farm"] == pipe].copy()
+    
+    # Define different marker styles for each pipe to avoid overlap confusion
+    marker_symbols = ['circle', 'square', 'diamond', 'cross', 'x', 'triangle-up', 'triangle-down', 'star']
+    marker_colors = px.colors.qualitative.Set1
+    
+    for i, pipe in enumerate(available_pipes):
+        pipe_data = farm_data[farm_data["Pipe code ID"] == pipe].copy()
         pipe_data = pipe_data.sort_values("Days from TPR")
         fig1.add_trace(go.Scatter(
             x=pipe_data["Days from TPR"],
             y=pipe_data["Water Level (mm)"],
             mode='markers',
-            name=f"Pipe {pipe}"
+            name=f"Pipe {pipe}",
+            marker=dict(
+                size=8,
+                symbol=marker_symbols[i % len(marker_symbols)],
+                color=marker_colors[i % len(marker_colors)],
+                line=dict(width=1, color='DarkSlateGrey')
+            ),
+            hovertemplate="<b>Pipe %{fullData.name}</b><br>" +
+                         "Days from TPR: %{x}<br>" +
+                         "Water Level: %{y} mm<br>" +
+                         "<extra></extra>"
         ))
 
     if not farm_daily_data.empty:
@@ -1354,26 +1386,79 @@ def get_farm_analysis_data(farm_id, merged_df, daily_df, weekly_df):
             y=farm_daily_sorted["Water Level (mm)"],
             mode='lines+markers',
             name="Farm Average",
-            line=dict(width=3, color='black')
+            line=dict(width=3, color='black'),
+            marker=dict(size=6, color='black'),
+            hovertemplate="<b>Farm Average</b><br>" +
+                         "Days from TPR: %{x}<br>" +
+                         "Water Level: %{y} mm<br>" +
+                         "<extra></extra>"
         ))
 
     fig1.update_layout(
         title=f"Daily Water Levels - Farm {farm_id}",
-        xaxis_title="Days from Transplanting",
+        xaxis_title="Days from Transplanting (TPR)",
         yaxis_title="PVC Water Level (mm)",
-        height=400
+        width=1200,
+        height=700,
+        hovermode='closest',
+        legend=dict(
+            orientation="v",
+            yanchor="top",
+            y=1,
+            xanchor="left",
+            x=1.02,
+            # Enable multi-select by clicking legend items
+            itemclick="toggleothers",  # Click to show/hide individual traces
+            itemdoubleclick="toggle"   # Double-click to isolate/show all
+        ),
+        updatemenus=[
+            dict(
+                type="buttons",
+                direction="down",
+                showactive=True,
+                x=0.02,
+                y=1.15,
+                buttons=[
+                    dict(label="Show All Pipes", method="restyle", args=["visible", [True] * len(available_pipes)]),
+                    dict(label="Hide All Pipes", method="restyle", args=["visible", ["legendonly"] * len(available_pipes)]),
+                ]
+            )
+        ],
+        annotations=[
+            dict(
+                text="<b>Tip:</b> Click legend items to show/hide pipes. Use buttons above for quick actions.",
+                showarrow=False,
+                x=0.02,
+                y=1.08,
+                xref="paper",
+                yref="paper",
+                align="left",
+                font=dict(size=10, color="gray")
+            )
+        ]
     )
 
     # Prepare Graph 2: Weekly Water Levels
     fig2 = go.Figure()
-    for pipe in available_pipes:
-        pipe_data = farm_data[farm_data["Pipe code ID of the farm"] == pipe].copy()
+    
+    for i, pipe in enumerate(available_pipes):
+        pipe_data = farm_data[farm_data["Pipe code ID"] == pipe].copy()
         pipe_weekly = pipe_data.groupby("Week from TPR")["Water Level (mm)"].mean().reset_index()
         fig2.add_trace(go.Scatter(
             x=pipe_weekly["Week from TPR"],
             y=pipe_weekly["Water Level (mm)"],
             mode='markers',
-            name=f"Pipe {pipe}"
+            name=f"Pipe {pipe}",
+            marker=dict(
+                size=10,
+                symbol=marker_symbols[i % len(marker_symbols)],
+                color=marker_colors[i % len(marker_colors)],
+                line=dict(width=1, color='DarkSlateGrey')
+            ),
+            hovertemplate="<b>Pipe %{fullData.name}</b><br>" +
+                         "Week from TPR: %{x}<br>" +
+                         "Water Level: %{y} mm<br>" +
+                         "<extra></extra>"
         ))
 
     if not farm_weekly_data.empty:
@@ -1383,20 +1468,62 @@ def get_farm_analysis_data(farm_id, merged_df, daily_df, weekly_df):
             y=farm_weekly_sorted["Water Level (mm)"],
             mode='lines+markers',
             name="Farm Weekly Average",
-            line=dict(width=3, color='black')
+            line=dict(width=3, color='black'),
+            marker=dict(size=8, color='black'),
+            hovertemplate="<b>Farm Weekly Average</b><br>" +
+                         "Week from TPR: %{x}<br>" +
+                         "Water Level: %{y} mm<br>" +
+                         "<extra></extra>"
         ))
 
     fig2.update_layout(
         title=f"Weekly Water Level Trends - Farm {farm_id}",
-        xaxis_title="Weeks from Transplanting",
+        xaxis_title="Weeks from Transplanting (TPR)",
         yaxis_title="PVC Water Level (mm)",
-        height=400
+        width=1200,
+        height=700,
+        hovermode='closest',
+        legend=dict(
+            orientation="v",
+            yanchor="top",
+            y=1,
+            xanchor="left",
+            x=1.02,
+            # Enable multi-select by clicking legend items
+            itemclick="toggleothers",  # Click to show/hide individual traces
+            itemdoubleclick="toggle"   # Double-click to isolate/show all
+        ),
+        updatemenus=[
+            dict(
+                type="buttons",
+                direction="down",
+                showactive=True,
+                x=0.02,
+                y=1.15,
+                buttons=[
+                    dict(label="Show All Pipes", method="restyle", args=["visible", [True] * (len(available_pipes) + 1)]),
+                    dict(label="Hide All Pipes", method="restyle", args=["visible", ["legendonly"] * (len(available_pipes) + 1)]),
+                ]
+            )
+        ],
+        annotations=[
+            dict(
+                text="<b>Tip:</b> Click legend items to show/hide pipes. Use buttons above for quick actions.",
+                showarrow=False,
+                x=0.02,
+                y=1.08,
+                xref="paper",
+                yref="paper",
+                align="left",
+                font=dict(size=10, color="gray")
+            )
+        ]
     )
 
     # Create Table: Pivoted Water Level by Pipe per Day
     pivot_table = farm_data.pivot_table(
         index="Days from TPR",
-        columns="Pipe code ID of the farm",
+        columns="Pipe code ID",
         values="Water Level (mm)",
         aggfunc='mean'
     ).reset_index()
@@ -1452,6 +1579,7 @@ def get_village_level_analysis(merged_df):
     # Plotly chart
     fig = go.Figure()
     colors = px.colors.qualitative.Set3
+    marker_symbols = ['circle', 'square', 'diamond', 'cross', 'x', 'triangle-up', 'triangle-down', 'star']
 
     for i, village in enumerate(available_villages):
         data = village_daily[village_daily['Village'] == village].sort_values("Days from TPR")
@@ -1460,15 +1588,61 @@ def get_village_level_analysis(merged_df):
             y=data["Water Level (mm)"],
             mode="lines+markers",
             name=village,
-            line=dict(color=colors[i % len(colors)], width=3)
+            line=dict(color=colors[i % len(colors)], width=3),
+            marker=dict(
+                size=8,
+                symbol=marker_symbols[i % len(marker_symbols)],
+                color=colors[i % len(colors)],
+                line=dict(width=1, color='DarkSlateGrey')
+            ),
+            hovertemplate="<b>%{fullData.name}</b><br>" +
+                         "Days from TPR: %{x}<br>" +
+                         "Water Level: %{y} mm<br>" +
+                         "<extra></extra>"
         ))
 
     fig.update_layout(
         title=f"Village-level Water Level Trends Comparison ({len(available_villages)} villages)",
-        xaxis_title="Days from Transplanting",
+        xaxis_title="Days from Transplanting (TPR)",
         yaxis_title="Average Water Level (mm)",
-        height=600,
-        hovermode="x unified"
+        width=1200,
+        height=700,
+        hovermode="closest",
+        legend=dict(
+            orientation="v",
+            yanchor="top",
+            y=1,
+            xanchor="left",
+            x=1.02,
+            # Enable multi-select by clicking legend items
+            itemclick="toggleothers",  # Click to show/hide individual traces
+            itemdoubleclick="toggle"   # Double-click to isolate/show all
+        ),
+        updatemenus=[
+            dict(
+                type="buttons",
+                direction="down",
+                showactive=True,
+                x=0.02,
+                y=1.15,
+                buttons=[
+                    dict(label="Show All Villages", method="restyle", args=["visible", [True] * len(available_villages)]),
+                    dict(label="Hide All Villages", method="restyle", args=["visible", ["legendonly"] * len(available_villages)]),
+                ]
+            )
+        ],
+        annotations=[
+            dict(
+                text="<b>Tip:</b> Click legend items to show/hide villages. Use buttons above for quick actions.",
+                showarrow=False,
+                x=0.02,
+                y=1.08,
+                xref="paper",
+                yref="paper",
+                align="left",
+                font=dict(size=10, color="gray")
+            )
+        ]
     )
 
     # Summary table
@@ -1524,15 +1698,28 @@ def get_remote_controllers_analysis(merged_df, kharif_df, selected_groups, mode)
 
     fig = go.Figure()
     summary_data = []
+    colors = px.colors.qualitative.Set1
+    marker_symbols = ['circle', 'square', 'diamond', 'cross']
 
     if mode == "Selected Groups Comparison":
-        for name, df in selected_data.items():
+        for i, (name, df) in enumerate(selected_data.items()):
             avg = df.groupby("Days from TPR")["Water Level (mm)"].mean().reset_index()
             fig.add_trace(go.Scatter(
                 x=avg["Days from TPR"],
                 y=avg["Water Level (mm)"],
                 mode="lines+markers",
-                name=name
+                name=name,
+                line=dict(color=colors[i % len(colors)], width=3),
+                marker=dict(
+                    size=8,
+                    symbol=marker_symbols[i % len(marker_symbols)],
+                    color=colors[i % len(colors)],
+                    line=dict(width=1, color='DarkSlateGrey')
+                ),
+                hovertemplate="<b>%{fullData.name}</b><br>" +
+                             "Days from TPR: %{x}<br>" +
+                             "Water Level: %{y} mm<br>" +
+                             "<extra></extra>"
             ))
 
     elif mode == "Treatment vs Control (Selected Groups)":
@@ -1546,7 +1733,12 @@ def get_remote_controllers_analysis(merged_df, kharif_df, selected_groups, mode)
                 y=avg["Water Level (mm)"],
                 mode="lines+markers",
                 name="Treatment Combined",
-                line=dict(color='blue')
+                line=dict(color='blue', width=3),
+                marker=dict(size=8, symbol='circle', color='blue', line=dict(width=1, color='DarkSlateGrey')),
+                hovertemplate="<b>Treatment Combined</b><br>" +
+                             "Days from TPR: %{x}<br>" +
+                             "Water Level: %{y} mm<br>" +
+                             "<extra></extra>"
             ))
         if not control.empty:
             avg = control.groupby("Days from TPR")["Water Level (mm)"].mean().reset_index()
@@ -1555,7 +1747,12 @@ def get_remote_controllers_analysis(merged_df, kharif_df, selected_groups, mode)
                 y=avg["Water Level (mm)"],
                 mode="lines+markers",
                 name="Control Combined",
-                line=dict(color='red')
+                line=dict(color='red', width=3),
+                marker=dict(size=8, symbol='square', color='red', line=dict(width=1, color='DarkSlateGrey')),
+                hovertemplate="<b>Control Combined</b><br>" +
+                             "Days from TPR: %{x}<br>" +
+                             "Water Level: %{y} mm<br>" +
+                             "<extra></extra>"
             ))
 
     elif mode == "Complied vs Non-Complied (Selected Groups)":
@@ -1569,7 +1766,12 @@ def get_remote_controllers_analysis(merged_df, kharif_df, selected_groups, mode)
                 y=avg["Water Level (mm)"],
                 mode="lines+markers",
                 name="Complied",
-                line=dict(color='green')
+                line=dict(color='green', width=3),
+                marker=dict(size=8, symbol='circle', color='green', line=dict(width=1, color='DarkSlateGrey')),
+                hovertemplate="<b>Complied</b><br>" +
+                             "Days from TPR: %{x}<br>" +
+                             "Water Level: %{y} mm<br>" +
+                             "<extra></extra>"
             ))
         if not noncomp.empty:
             avg = noncomp.groupby("Days from TPR")["Water Level (mm)"].mean().reset_index()
@@ -1578,8 +1780,58 @@ def get_remote_controllers_analysis(merged_df, kharif_df, selected_groups, mode)
                 y=avg["Water Level (mm)"],
                 mode="lines+markers",
                 name="Non-Complied",
-                line=dict(color='orange')
+                line=dict(color='orange', width=3),
+                marker=dict(size=8, symbol='square', color='orange', line=dict(width=1, color='DarkSlateGrey')),
+                hovertemplate="<b>Non-Complied</b><br>" +
+                             "Days from TPR: %{x}<br>" +
+                             "Water Level: %{y} mm<br>" +
+                             "<extra></extra>"
             ))
+
+    # Update layout with proper axis titles and dropdown
+    fig.update_layout(
+        title=f"Remote Controllers Analysis - {mode}",
+        xaxis_title="Days from Transplanting (TPR)",
+        yaxis_title="Average Water Level (mm)",
+        width=1200,
+        height=700,
+        hovermode="closest",
+        legend=dict(
+            orientation="v",
+            yanchor="top",
+            y=1,
+            xanchor="left",
+            x=1.02,
+            # Enable multi-select by clicking legend items
+            itemclick="toggleothers",  # Click to show/hide individual traces
+            itemdoubleclick="toggle"   # Double-click to isolate/show all
+        ),
+        updatemenus=[
+            dict(
+                type="buttons",
+                direction="down",
+                showactive=True,
+                x=0.02,
+                y=1.15,
+                buttons=[
+                    dict(label="Show All Groups", method="restyle", args=["visible", [True] * len(fig.data)]),
+                    dict(label="Hide All Groups", method="restyle", args=["visible", ["legendonly"] * len(fig.data)]),
+                ]
+            )
+        ],
+        annotations=[
+            dict(
+                text="<b>Tip:</b> Click legend items to show/hide groups. Use buttons above for quick actions.",
+                showarrow=False,
+                x=0.02,
+                y=1.08,
+                xref="paper",
+                yref="paper",
+                align="left",
+                font=dict(size=10, color="gray")
+            )
+        ]
+    )
 
     # Summary stats - Fix the nunique() calls
     for name, df in selected_data.items():
@@ -1638,6 +1890,7 @@ def get_awd_groups_analysis(merged_df, kharif_df, selected_groups=None, analysis
 
     fig = go.Figure()
     colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b']
+    marker_symbols = ['circle', 'square', 'diamond', 'cross', 'x', 'triangle-up']
 
     if analysis_option == "Complied vs Non-Complied (Selected Groups Only)":
         complied = pd.concat([v for k, v in selected_groups_data.items() if 'Complied' in k and 'Non-Complied' not in k])
@@ -1645,21 +1898,109 @@ def get_awd_groups_analysis(merged_df, kharif_df, selected_groups=None, analysis
 
         if not complied.empty:
             d1 = complied.groupby("Days from TPR")["Water Level (mm)"].mean().reset_index()
-            fig.add_trace(go.Scatter(x=d1["Days from TPR"], y=d1["Water Level (mm)"], name="Complied", mode="lines+markers", line=dict(color="green")))
+            fig.add_trace(go.Scatter(
+                x=d1["Days from TPR"], 
+                y=d1["Water Level (mm)"], 
+                name="Complied", 
+                mode="lines+markers", 
+                line=dict(color="green", width=3),
+                marker=dict(size=8, symbol='circle', color='green', line=dict(width=1, color='DarkSlateGrey')),
+                hovertemplate="<b>Complied</b><br>" +
+                             "Days from TPR: %{x}<br>" +
+                             "Water Level: %{y} mm<br>" +
+                             "<extra></extra>"
+            ))
 
         if not non_complied.empty:
             d2 = non_complied.groupby("Days from TPR")["Water Level (mm)"].mean().reset_index()
-            fig.add_trace(go.Scatter(x=d2["Days from TPR"], y=d2["Water Level (mm)"], name="Non-Complied", mode="lines+markers", line=dict(color="red")))
+            fig.add_trace(go.Scatter(
+                x=d2["Days from TPR"], 
+                y=d2["Water Level (mm)"], 
+                name="Non-Complied", 
+                mode="lines+markers", 
+                line=dict(color="red", width=3),
+                marker=dict(size=8, symbol='square', color='red', line=dict(width=1, color='DarkSlateGrey')),
+                hovertemplate="<b>Non-Complied</b><br>" +
+                             "Days from TPR: %{x}<br>" +
+                             "Water Level: %{y} mm<br>" +
+                             "<extra></extra>"
+            ))
 
-        fig.update_layout(title="Complied vs Non-Complied (AWD Groups)", height=500)
+        fig.update_layout(
+            title="Complied vs Non-Complied (AWD Groups)", 
+            xaxis_title="Days from Transplanting (TPR)",
+            yaxis_title="Average Water Level (mm)",
+            width=1200,
+            height=700,
+            hovermode="closest",
+            legend=dict(orientation="v", yanchor="top", y=1, xanchor="left", x=1.02)
+        )
 
     else:  # Selected Groups Comparison
         for i, (group, data) in enumerate(selected_groups_data.items()):
             if not data.empty:
                 avg = data.groupby("Days from TPR")["Water Level (mm)"].mean().reset_index()
-                fig.add_trace(go.Scatter(x=avg["Days from TPR"], y=avg["Water Level (mm)"], name=group, mode="lines+markers", line=dict(color=colors[i % len(colors)])))
+                fig.add_trace(go.Scatter(
+                    x=avg["Days from TPR"], 
+                    y=avg["Water Level (mm)"], 
+                    name=group, 
+                    mode="lines+markers", 
+                    line=dict(color=colors[i % len(colors)], width=3),
+                    marker=dict(
+                        size=8, 
+                        symbol=marker_symbols[i % len(marker_symbols)], 
+                        color=colors[i % len(colors)],
+                        line=dict(width=1, color='DarkSlateGrey')
+                    ),
+                    hovertemplate="<b>%{fullData.name}</b><br>" +
+                                 "Days from TPR: %{x}<br>" +
+                                 "Water Level: %{y} mm<br>" +
+                                 "<extra></extra>"
+                ))
 
-        fig.update_layout(title=f"AWD Group Comparison ({len(selected_groups)} groups)", height=600)
+        fig.update_layout(
+            title=f"AWD Group Comparison ({len(selected_groups)} groups)", 
+            xaxis_title="Days from Transplanting (TPR)",
+            yaxis_title="Average Water Level (mm)",
+            width=1200,
+            height=700,
+            hovermode="closest",
+            legend=dict(
+                orientation="v", 
+                yanchor="top", 
+                y=1, 
+                xanchor="left", 
+                x=1.02,
+                # Enable multi-select by clicking legend items
+                itemclick="toggleothers",  # Click to show/hide individual traces
+                itemdoubleclick="toggle"   # Double-click to isolate/show all
+            ),
+            updatemenus=[
+                dict(
+                    type="buttons",
+                    direction="down",
+                    showactive=True,
+                    x=0.02,
+                    y=1.15,
+                    buttons=[
+                        dict(label="Show All Groups", method="restyle", args=["visible", [True] * len(selected_groups_data)]),
+                        dict(label="Hide All Groups", method="restyle", args=["visible", ["legendonly"] * len(selected_groups_data)]),
+                    ]
+                )
+            ],
+            annotations=[
+                dict(
+                    text="<b>Tip:</b> Click legend items to show/hide groups. Use buttons above for quick actions.",
+                    showarrow=False,
+                    x=0.02,
+                    y=1.08,
+                    xref="paper",
+                    yref="paper",
+                    align="left",
+                    font=dict(size=10, color="gray")
+                )
+            ]
+        )
 
     # Summary
     summary_rows = []
@@ -2045,15 +2386,22 @@ def load_and_validate_data(kharif_file, water_file):
         "Kharif 25 Paddy transplanting date (TPR)"
     ]
     required_water_cols = [
-        "Date", "Farm ID", "Pipe code ID of the farm",
+        "Date", "Farm ID", "Pipe code ID",
         "Measure water level inside the PVC pipe - millimeter mm"
     ]
 
-    kharif_df = pd.read_excel(kharif_file)
-    water_df = pd.read_excel(water_file)
+    kharif_df = None
+    water_df = None
+    missing_kharif = []
+    missing_water = []
 
-    missing_kharif = [col for col in required_kharif_cols if col not in kharif_df.columns]
-    missing_water = [col for col in required_water_cols if col not in water_df.columns]
+    if kharif_file is not None:
+        kharif_df = pd.read_excel(kharif_file)
+        missing_kharif = [col for col in required_kharif_cols if col not in kharif_df.columns]
+
+    if water_file is not None:
+        water_df = pd.read_excel(water_file)
+        missing_water = [col for col in required_water_cols if col not in water_df.columns]
 
     return kharif_df, water_df, missing_kharif, missing_water
 
@@ -2075,11 +2423,11 @@ def clean_and_process_data(kharif_df, water_df):
     if 'Village name' in water.columns:
         water['Village_Normalized'] = water['Village name'].apply(normalize_text)
 
-    # Dates
+    # Dates - Use actual TPR date if available, otherwise default to July 2, 2025
     kharif['Kharif 25 Paddy transplanting date (TPR)'] = pd.to_datetime(
         kharif['Kharif 25 Paddy transplanting date (TPR)'], errors='coerce'
     )
-    kharif['Kharif 25 Paddy transplanting date (TPR)'].fillna(pd.Timestamp('2025-06-01'), inplace=True)
+    kharif['Kharif 25 Paddy transplanting date (TPR)'].fillna(pd.Timestamp('2025-07-02'), inplace=True)
 
     water['Date'] = pd.to_datetime(water['Date'], errors='coerce')
     water = water.dropna(subset=['Date'])
@@ -2116,7 +2464,7 @@ def create_merged_dataset(kharif_df, water_df):
     kharif_subset = kharif_df[kharif_cols].copy()
 
     level_col = "Water_Level_Numeric"
-    water_subset = water_df[["Date", "Farm ID", "Village name", "Pipe code ID of the farm", level_col]].copy()
+    water_subset = water_df[["Date", "Farm ID", "Village name", "Pipe code ID", level_col]].copy()
 
     merged = pd.merge(water_subset, kharif_subset, how="inner", left_on="Farm ID", right_on="Kharif 25 Farm ID")
 
@@ -2126,14 +2474,23 @@ def create_merged_dataset(kharif_df, water_df):
         "Kharif 25 Village": "Village"
     }, inplace=True)
 
-    merged["Days from TPR"] = (merged["Date"] - merged["TPR Date"]).dt.days
+    # Ensure both Date and TPR Date are properly converted to datetime
+    merged["Date"] = pd.to_datetime(merged["Date"], errors='coerce')
+    merged["TPR Date"] = pd.to_datetime(merged["TPR Date"], errors='coerce')
+    
+    # Calculate days from TPR, handling NaT values
+    merged["Days from TPR"] = (merged["Date"] - merged["TPR Date"]).dt.days.fillna(0).astype(int)
     merged["Week from TPR"] = (merged["Days from TPR"] / 7).astype(int)
 
     # Farm daily average
     farm_avg = merged.groupby(["Farm ID", "Date"]).agg({
         "Water Level (mm)": "mean", "TPR Date": "first", "Village": "first"
     }).reset_index()
-    farm_avg["Days from TPR"] = (farm_avg["Date"] - farm_avg["TPR Date"]).dt.days
+    
+    # Ensure datetime conversion for farm_avg as well
+    farm_avg["Date"] = pd.to_datetime(farm_avg["Date"], errors='coerce')
+    farm_avg["TPR Date"] = pd.to_datetime(farm_avg["TPR Date"], errors='coerce')
+    farm_avg["Days from TPR"] = (farm_avg["Date"] - farm_avg["TPR Date"]).dt.days.fillna(0).astype(int)
     farm_avg["Week from TPR"] = (farm_avg["Days from TPR"] / 7).astype(int)
 
     # Weekly average

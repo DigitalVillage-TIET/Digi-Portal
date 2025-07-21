@@ -34,5 +34,14 @@ urlpatterns = [
     path('mapping/', views.mapping, name='mapping'),
     path('grouping-25/', views.grouping_25, name='grouping-25'),
     path('home/', views.landing_protected, name='landing_protected'),
+    path('home/', views.landing_protected, name='landing_protected'),
+    path('agriculture/', views.agriculture_view, name='agriculture'),
+    path('crop-residue/', views.crop_view, name='crop_residue'),
+    path('dsr/', views.dsr_view, name='dsr'),
+    path('farmers/', views.farmers_view, name='farmers'),
+    path('stages/', views.stages_view, name='stages'),
+    path('tpr/', views.tpr_view, name='tpr'),
+    path('tubewell/', views.tubewell_view, name='tubewell'),
+    path('i18n/', include('django.conf.urls.i18n')),
 ]
 

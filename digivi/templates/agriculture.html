@@ -1,0 +1,483 @@
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="{{LANGUAGE_CODE}}">
+<head>
+    <meta charset="UTF-8">
+    <title>{% trans "Punjab Agriculture Overview" %}</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+:root {
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);}
+
+        :root[data-theme="dark"] {
+  --bg-light: #1a1a1a;                /* From --bg-tertiary (darkest section background) */
+  --bg-dark: #0a0a0a;                 /* From --bg-primary (main dark background) */
+  --text-light: #d9f7e5;              /* From --text-primary (light greenish text) */
+  --text-dark: #ffffff;               /* From --text-secondary (white text) */
+  --primary: #349a62;                 /* From --accent-primary (main green accent) */
+  --accent: #6fcf97;                  /* From --accent-secondary (lighter green accent) */
+  --glass-bg-light: rgba(20, 40, 30, 0.6);   /* From --glass-bg (semi-transparent dark green) */
+  --glass-bg-dark: rgba(20, 40, 30, 0.6);    /* Same as above for consistency */
+}
+
+:root[data-theme="light"] {
+  --bg-light: #f8fff5;                 /* Lightest section background */
+  --bg-dark: #ffffff;                  /* Main light background */
+  --text-light: #24543a;               /* Deep greenish text for contrast */
+  --text-dark: #0a1a12;                /* Near-black text */
+  --primary: #349a62;                  /* Main green accent (same for consistency) */
+  --accent: #6fcf97;                   /* Lighter green accent */
+  --glass-bg-light: rgba(255, 255, 255, 0.7);   /* Semi-transparent white */
+  --glass-bg-dark: rgba(230, 244, 234, 0.7);    /* Semi-transparent light green */
+}
+
+
+body {
+margin: 0;
+font-family: 'Poppins', sans-serif;
+background: var(--bg-dark);
+color: var(--text-dark);
+transition: background 0.5s ease, color 0.5s ease;
+overflow-x: hidden;
+position: relative;
+ }
+body.light {
+background: var(--bg-light);
+color: var(--text-light);
+ }
+.theme-toggle {
+            background: var(--bg-light);
+            border: 1px solid var(--primary);
+            border-radius: 50px;
+            padding: 4px;
+            cursor: pointer;
+            width: 72px;
+            height: 36px;
+            position: relative;
+            transition: var(--transition);
+        }
+ 
+        .theme-toggle:hover {
+            border-color: var(--accent);
+            box-shadow: 0 0 10px var(--accent, #6fcf97);
+        }
+
+        .theme-toggle-slider {
+            position: absolute;
+            width: 28px;
+            height: 28px;
+            background: var(--primary);
+            border-radius: 50%;
+            top: 3px;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        }
+
+        :root[data-theme="light"] .theme-toggle-slider {
+            left: 3px;
+        }
+
+        :root[data-theme="dark"] .theme-toggle-slider {
+            left: 39px;
+        }
+.background-bubbles {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+pointer-events: none;
+z-index: 0;
+ }
+.bubble {
+position: absolute;
+border-radius: 50%;
+background: rgba(255, 255, 255, 0.05);
+animation: float 12s infinite ease-in-out;
+ }
+@keyframes float {
+ 0% { transform: translateY(0) scale(1); }
+ 50% { transform: translateY(-100px) scale(1.2); }
+ 100% { transform: translateY(0) scale(1); }
+ }
+header {
+text-align: center;
+padding: 60px 20px 60px;
+position: relative;
+z-index: 2;
+ }
+ header h1 {
+  font-size: 3.5rem;
+  /* Use your dark theme green gradient: */
+  background: linear-gradient(90deg, #349a62, #6fcf97, #3cb371, #349a62);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: #d9f7e5;
+  animation: gradient-shift 4s ease-in-out infinite, pulse 3s infinite alternate;
+}
+
+/* Animated gradient movement */
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+
+/* Pulse for slight scale effect (optional, keep if you want the "heartbeat" effect) */
+@keyframes pulse {
+  from { transform: scale(1); }
+  to { transform: scale(1.03); }
+}
+
+header p {
+max-width: 700px;
+margin: 20px auto 0;
+font-size: 1.1rem;
+color: var(--text-dark);
+ }
+body.light header p {
+color: #333;
+ }
+main {
+padding: 40px 20px;
+display: grid;
+gap: 40px;
+z-index: 2;
+position: relative;
+ }
+section.card {
+backdrop-filter: blur(20px);
+background: var(--glass-bg-dark);
+padding: 30px;
+border-radius: 20px;
+box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+transition: transform 0.3s ease;
+ }
+body.light section.card {
+background: var(--glass-bg-light);
+ }
+section.card:hover {
+transform: translateY(-8px) scale(1.01);
+ }
+h3 {
+color: var(--accent);
+margin-bottom: 10px;
+ }
+h4 {
+color: var(--primary);
+margin-bottom: 10px;
+font-size: 1.1rem;
+ }
+ul {
+padding-left: 20px;
+ }
+li {
+margin-bottom: 8px;
+ }
+.media {
+display: flex;
+flex-wrap: wrap;
+justify-content: center;
+gap: 20px;
+margin-top: 20px;
+ }
+.media img,
+.media video {
+width: 800px;
+height: 500px;
+border-radius: 12px;
+box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+transition: transform 0.3s ease;
+object-fit: cover; 
+}
+.media img:hover,
+.media video:hover {
+transform: scale(1.03);
+ }
+.adv-dis-wrapper {
+display: flex;
+gap: 40px;
+flex-wrap: wrap;
+margin-top: 20px;
+ }
+.adv-dis-wrapper .column {
+flex: 1;
+min-width: 280px;
+ }
+@media (max-width: 768px) {
+header h1 { font-size: 2.5rem; }
+.media { flex-direction: column; }
+.adv-dis-wrapper { flex-direction: column; }
+ }
+.card-columns {
+display: flex;
+flex-wrap: wrap;
+gap: 30px;
+margin-top: 20px;
+}
+.crop-card {
+flex: 1;
+min-width: 300px;
+background-color: var(--glass-bg-dark);
+border-radius: 20px;
+padding: 20px;
+box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+display: flex;
+flex-direction: column;
+justify-content: space-between;
+backdrop-filter: blur(10px);
+}
+body.light .crop-card {
+background-color: var(--glass-bg-light);
+}
+.crop-card h4 {
+font-size: 1.2rem;
+color: var(--primary);
+margin-bottom: 10px;
+}
+.crop-card ul {
+padding-left: 20px;
+margin-bottom: 20px;
+}
+.crop-card li {
+margin-bottom: 10px;
+}
+.crop-card img {
+width: 100%;
+height: 500px;
+border-radius: 15px;
+box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+object-fit: cover;
+}
+.image-slider-section {
+text-align: center;
+margin-top: 60px;
+}
+.image-slider-section h3 {
+color: var(--primary);
+margin-bottom: 20px;
+}
+.slider-wrapper {
+width: 800px;
+height: 500px;
+margin: 0 auto;
+overflow: hidden;
+border-radius: 20px;
+box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+position: relative;
+}
+.slider-track {
+display: flex;
+width: calc(800px * 12);
+animation: scrollSlider 60s linear infinite;
+}
+.slider-track img {
+width: 800px;
+height: 500px;
+flex-shrink: 0;
+object-fit: cover;
+border-radius: 20px;
+}
+@keyframes scrollSlider {
+ 0% { transform: translateX(0); }
+ 100% { transform: translateX(-4800px); }
+}
+
+.language-button-container {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    display: flex;
+    gap: 10px; /* space between button and link */
+    align-items: center;
+}
+
+.language-form {
+    margin: 0;
+}
+
+.language-button {
+    background: transparent;
+    color: #6fcf97;
+    border: 2px solid #349a62;
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.language-button:hover {
+    background-color: #349a62;
+    color: black;
+}
+
+.home-btn {
+    text-decoration: none;
+    background: transparent;
+    color: #6fcf97;
+    border: 2px solid #349a62;
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.home-btn:hover {
+    background-color: #349a62;
+    color: black;
+}
+
+    </style>
+</head>
+<body>
+<div class="language-button-container">
+    <form method="post" action="{% url 'set_language' %}">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ request.path }}">
+        <input type="hidden" name="language" value="{% if LANGUAGE_CODE == 'en' %}pa{% else %}en{% endif %}">
+        <button type="submit" class="language-button">
+            {% if LANGUAGE_CODE == 'en' %}
+                Switch to Punjabi
+            {% else %}
+                ਅੰਗਰੇਜ਼ੀ ਵਿੱਚ ਬਦਲੋ
+            {% endif %}
+        </button>
+        <a href="{% url 'landing_protected' %}" class="home-btn">Home</a>
+        
+    </form>
+    <button class="theme-toggle" onclick="toggleTheme()" title="{% trans 'Toggle theme' %}">
+        <div class="theme-toggle-slider">
+            <i class="fas fa-sun" id="theme-icon"></i>
+        </div>
+</button>
+</div>
+    <div class="background-bubbles">
+        <div class="bubble" style="top: 20%; left: 10%; width: 80px; height: 80px;"></div>
+        <div class="bubble" style="top: 70%; left: 80%; width: 100px; height: 100px;"></div>
+        <div class="bubble" style="top: 40%; left: 50%; width: 60px; height: 60px;"></div>
+    </div>
+    <header>
+        <h1>{% trans "Punjab: The Granary of India" %}</h1>
+    </header>
+    <main>
+        <section class="card">
+            <h3>{% trans "Punjab Agriculture Overview" %}</h3>
+            <p>
+                {% blocktrans %}
+                Despite covering only 1.5% of India's land area, Punjab plays a critical role in food grain production due to its wheat-rice cropping system and the impact of the Green Revolution.
+                {% endblocktrans %}
+            </p>
+            <div class="card-columns">
+                <div class="crop-card">
+                    <h4>{% trans "🌾 Agricultural Significance" %}</h4>
+                    <ul>
+                        <li>{% trans "Covers only 1.5% of India's land area" %}</li>
+                        <li>{% trans "Major contributor to national food security" %}</li>
+                        <li>{% trans "Green Revolution success story" %}</li>
+                    </ul>
+                    <img src="https://i.ibb.co/tTQJfZ4g/beautiful-view-green-fields-sunrise-captured-canggu-bali.jpg" alt="{% trans 'Punjab Agriculture' %}">
+                </div>
+            </div>
+        </section>
+
+        <section class="card">
+            <h3>{% trans "The Wheat-Rice Cropping Cycle" %}</h3>
+            <p>
+                {% blocktrans %}
+                This dual-crop system brings productivity but also major environmental concerns.
+                {% endblocktrans %}
+            </p>
+            <div class="card-columns">
+                <!-- RICE CARD -->
+                <div class="crop-card">
+                    <h4>{% trans "🌾 Rice Cultivation (Kharif: June–October)" %}</h4>
+                    <ul>
+                        <li>{% trans "TPR – traditional, water-intensive" %}</li>
+                        <li>{% trans "DSR – emerging, water-saving" %}</li>
+                        <li>{% trans "Basmati exports across the globe" %}</li>
+                    </ul>
+                    <img src="https://i.ibb.co/7J3hvLJQ/20250621-125647.jpg" alt="{% trans 'Rice Field' %}">
+                </div>
+                <!-- WHEAT CARD -->
+                <div class="crop-card">
+                    <h4>{% trans "🌾 Wheat Cultivation (Rabi: Nov–April)" %}</h4>
+                    <ul>
+                        <li>{% trans "Mechanized tools & HYVs" %}</li>
+                        <li>{% trans "Essential to national buffer stocks" %}</li>
+                        <li>{% trans "Ensures food security for millions" %}</li>
+                    </ul>
+                    <img src="https://i.ibb.co/3mzhwjS6/Screenshot-2025-07-07-at-11-24-33-PM.png" alt="{% trans 'Wheat Field' %}">
+                </div>
+            </div>
+        </section>
+
+        <section class="card">
+            <h3>{% trans "MSP – Minimum Support Price" %}</h3>
+            <p>
+                {% blocktrans %}
+                The government ensures a minimum price (₹2,000–₹2,700 per quintal), giving farmers financial security and predictable income.
+                {% endblocktrans %}
+            </p>
+        </section>
+
+        <section class="card">
+            <h3>{% trans "Impact of the Wheat-Rice Cycle" %}</h3>
+            <div class="adv-dis-wrapper">
+                <div class="column">
+                    <h4>{% trans "✅ Advantages" %}</h4>
+                    <ul>
+                        <li>{% trans "High productivity + surplus" %}</li>
+                        <li>{% trans "Government procurement assures income" %}</li>
+                        <li>{% trans "Efficiency through machinery" %}</li>
+                    </ul>
+                </div>
+                <div class="column">
+                    <h4>{% trans "⚠️ Disadvantages" %}</h4>
+                    <ul>
+                        <li>{% trans "Groundwater depletion" %}</li>
+                        <li>{% trans "Soil degradation" %}</li>
+                        <li>{% trans "Air pollution via stubble burning" %}</li>
+                        <li>{% trans "Climate change vulnerability" %}</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+<script>       function setInitialTheme() {
+    // Get theme from localStorage, or default to 'dark'
+    const savedTheme = localStorage.getItem('theme');
+    const theme = savedTheme ? savedTheme : 'dark';
+    document.documentElement.setAttribute('data-theme', theme);
+    updateThemeIcon(theme);
+}
+
+function toggleTheme() {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    updateThemeIcon(newTheme);
+}
+
+function updateThemeIcon(theme) {
+    const icon = document.getElementById('theme-icon');
+    if (icon) {
+        icon.className = theme === 'light' ? 'fas fa-sun' : 'fas fa-moon';
+    }
+}
+
+// Call this on page load
+setInitialTheme();
+</script>
+</body>
+</html>

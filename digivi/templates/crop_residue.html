@@ -1,0 +1,619 @@
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="{{LANGUAGE_CODE}}">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Crop Residue Management – DIGI-VI</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<style>
+:root[data-theme="dark"] {
+  /* Greens */
+  --primary: #349a62;
+  --accent: #6fcf97;
+
+  /* Backgrounds */
+  --bg-main: #0a0a0a;
+  --bg-secondary: #1a1a1a;
+  --bg-card: #0f0f0f;
+  --bg-bubble: rgba(52, 154, 98, 0.08);
+  --bg-crop-card: #1a1a1a;
+  --bg-stage-card: #0f0f0f;
+  --bg-slider: #1a1a1a;
+
+  /* Text */
+  --text-main: #d9f7e5;
+  --text-heading: #d9f7e5;
+  --text-card: #ffffff;
+  --text-step: #d9f7e5;
+
+  /* Borders & Shadows */
+  --border: #349a62;
+  --shadow-card: 0 4px 12px rgba(52, 154, 98, 0.11);
+  --shadow-bubble: 0 4px 12px rgba(52, 154, 98, 0.08);
+  --shadow-circle-img: 0 12px 22px rgba(52, 154, 98, 0.13);
+  --shadow-slider: 0 4px 12px rgba(52, 154, 98, 0.09);
+
+  /* Misc */
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+:root[data-theme="light"] {
+  --primary: #349a62;
+  --accent: #6fcf97;
+
+  --bg-main: #f7f9fc;
+  --bg-secondary: #ffffff;
+  --bg-card: #ffffff;
+  --bg-bubble: rgba(0, 0, 0, 0.03);
+  --bg-crop-card: #ffffff;
+  --bg-stage-card: #ffffff;
+  --bg-slider: #ffffff;
+
+  --text-main: #1e1e1e;
+  --text-heading: #349a62;
+  --text-card: #1e1e1e;
+  --text-step: #1e1e1e;
+
+  --border: #349a62;
+  --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.10);
+  --shadow-bubble: 0 4px 12px rgba(0, 0, 0, 0.05);
+  --shadow-circle-img: 0 8px 18px rgba(0, 0, 0, 0.1);
+  --shadow-slider: 0 4px 12px rgba(0, 0, 0, 0.09);
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: var(--bg-main);
+  color: var(--text-main);
+  transition: var(--transition);
+}
+
+.bubble-box {
+  background: var(--bg-bubble);
+  box-shadow: var(--shadow-bubble);
+}
+
+.circle-img {
+  border-color: var(--primary);
+  box-shadow: var(--shadow-circle-img);
+}
+
+h1,
+.pre-rabi-cycle h3,
+.stage-details h3 {
+  background: linear-gradient(to right, var(--primary), var(--accent), #3cb371, var(--primary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: var(--text-heading);
+}
+
+.stage-card {
+  background: var(--bg-stage-card);
+  box-shadow: var(--shadow-card);
+  color: var(--text-card);
+}
+
+.crop-card {
+  background-color: var(--bg-crop-card);
+  color: var(--text-card);
+}
+
+.theme-toggle {
+  background: var(--bg-secondary);
+  border: 1px solid var(--primary);
+  border-radius: 50px;
+  padding: 4px;
+  cursor: pointer;
+  width: 72px;
+  height: 36px;
+  position: relative;
+  transition: var(--transition);
+}
+
+.theme-toggle:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 10px var(--accent, #6fcf97);
+}
+
+.theme-toggle-slider {
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  background: var(--primary);
+  border-radius: 50%;
+  top: 3px;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 14px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+:root[data-theme="light"] .theme-toggle-slider {
+  left: 3px;
+}
+:root[data-theme="dark"] .theme-toggle-slider {
+  left: 39px;
+}
+
+main.content {
+  padding: 40px 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+.bubble-box {
+  background: rgba(52, 154, 98, 0.08); /* subtle green glass effect */
+  border-radius: 20px;
+  padding: 30px;
+  margin-bottom: 40px;
+  box-shadow: 0 4px 12px rgba(52, 154, 98, 0.08);
+}
+h1 {
+  font-size: 2.5rem;
+  text-align: center;
+  margin-top: 40px;
+  background: linear-gradient(to right, #349a62, #6fcf97, #3cb371, #349a62);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: pulse 3s infinite alternate;
+}
+@keyframes pulse {
+  from { transform: scale(1); }
+  to { transform: scale(1.03); }
+}
+h2 {
+  font-size: 1.5rem;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+p {
+  line-height: 1.7;
+  font-size: 1.05rem;
+}
+.pre-rabi-cycle {
+  text-align: center;
+  margin: 80px 0 40px;
+}
+.pre-rabi-cycle h3 {
+  font-size: 2rem;
+  color: var(--primary);
+  margin-bottom: 40px;
+  animation: pulse 3s infinite alternate;
+}
+.circle-layout {
+  position: relative;
+  width: 750px;
+  height: 750px;
+  margin: 0 auto;
+}
+.step-circle {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.3s ease;
+}
+.step-circle:hover {
+  transform: scale(1.05);
+}
+.circle-img {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 5px solid var(--accent);
+  box-shadow: 0 12px 22px rgba(52, 154, 98, 0.13);
+}
+.circle-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.step-circle p {
+  margin-top: 14px;
+  font-weight: 600;
+  font-size: 1.2rem;
+  color: #d9f7e5;
+}
+.step-circle.top { top: 40px; left: 50%; transform: translateX(-50%); }
+.step-circle.left { bottom: 100px; left: 30px; }
+.step-circle.right { bottom: 100px; right: 30px; }
+@media (max-width: 700px) {
+  .circle-layout {
+    transform: scale(0.85);
+    width: 100%;
+  }
+}
+.background-bubbles {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+.bubble {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(52, 154, 98, 0.07);
+  animation: float 12s infinite ease-in-out;
+}
+@keyframes float {
+  0% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-100px) scale(1.2); }
+  100% { transform: translateY(0) scale(1); }
+}
+.stage-details {
+  text-align: center;
+  margin: 40px auto 80px;
+  padding: 0 40px;
+  max-width: 1200px;
+}
+.stage-details h3 {
+  font-size: 2rem;
+  color: var(--primary);
+  margin-bottom: 30px;
+}
+.stage-cards {
+  display: flex;
+  gap: 32px;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+.stage-card {
+  background: #0f0f0f;
+  padding: 24px;
+  border-radius: 16px;
+  width: 300px;
+  min-height: 280px;
+  box-shadow: 0 4px 12px rgba(52, 154, 98, 0.11);
+  text-align: left;
+  transition: transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.stage-card h4 {
+  color: var(--accent);
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+}
+.card-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.stage-card p {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: white;
+  margin-bottom: 10px;
+}
+.stage-card:hover {
+  transform: translateY(-6px);
+}
+.more-text {
+  margin-top: 10px;
+  font-size: 0.95rem;
+  color: white;
+  transition: all 0.3s ease;
+}
+.more-text.hidden {
+  display: none;
+}
+.toggle-link {
+  display: inline-block;
+  margin-top: auto;
+  padding-top: 10px;
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  text-decoration: none;
+}
+.toggle-link:hover {
+  text-decoration: underline;
+}
+.card-columns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  margin-top: 20px;
+}
+.crop-card {
+  flex: 1;
+  min-width: 300px;
+  background-color: #1a1a1a;
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(52, 154, 98, 0.09);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  backdrop-filter: blur(10px);
+}
+body.light .crop-card {
+  background-color: #ffffff;
+}
+.crop-card h4 {
+  font-size: 1.2rem;
+  color: var(--primary);
+  margin-bottom: 10px;
+}
+.crop-card ul {
+  padding-left: 20px;
+  margin-bottom: 20px;
+}
+.crop-card li {
+  margin-bottom: 10px;
+}
+.crop-card img {
+  width: 100%;
+  height: 500px;
+  border-radius: 15px;
+  box-shadow: 0 2px 8px rgba(52,154,98,0.13);
+  object-fit: cover;
+}
+.image-slider-section {
+  text-align: center;
+  margin-top: 60px;
+}
+.image-slider-section h3 {
+  color: var(--primary);
+  margin-bottom: 20px;
+}
+.slider-wrapper {
+  width: 800px;
+  height: 500px;
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(52, 154, 98, 0.09);
+  position: relative;
+}
+.slider-track {
+  display: flex;
+  width: calc(800px * 12);
+  animation: scrollSlider 60s linear infinite;
+}
+.slider-track img {
+  width: 800px;
+  height: 500px;
+  flex-shrink: 0;
+  object-fit: cover;
+  border-radius: 20px;
+}
+@keyframes scrollSlider {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-4800px); }
+}
+.language-button-container {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    display: flex;
+    gap: 10px; /* space between button and link */
+    align-items: center;
+}
+
+.language-form {
+    margin: 0;
+}
+
+.language-button {
+    background: transparent;
+    color: #6fcf97;
+    border: 2px solid #349a62;
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.language-button:hover {
+    background-color: #349a62;
+    color: black;
+}
+
+.home-btn {
+    text-decoration: none;
+    background: transparent;
+    color: #6fcf97;
+    border: 2px solid #349a62;
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.home-btn:hover {
+    background-color: #349a62;
+    color: black;
+}
+
+
+</style>
+</head>
+<body class="dark">
+<div class="background-bubbles">
+<div class="bubble" style="top: 20%; left: 10%; width: 80px; height: 80px;"></div>
+<div class="bubble" style="top: 70%; left: 80%; width: 100px; height: 100px;"></div>
+<div class="bubble" style="top: 40%; left: 50%; width: 60px; height: 60px;"></div>
+</div>
+<div class="language-button-container">
+    <form method="post" action="{% url 'set_language' %}">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ request.path }}">
+        <input type="hidden" name="language" value="{% if LANGUAGE_CODE == 'en' %}pa{% else %}en{% endif %}">
+        <button type="submit" class="language-button">
+            {% if LANGUAGE_CODE == 'en' %}
+                Switch to Punjabi
+            {% else %}
+                ਅੰਗਰੇਜ਼ੀ ਵਿੱਚ ਬਦਲੋ
+            {% endif %}
+        </button>
+        <a href="{% url 'landing_protected' %}" class="home-btn">Home</a>
+    </form>
+    <button class="theme-toggle" onclick="toggleTheme()" title="{% trans 'Toggle theme' %}">
+      <div class="theme-toggle-slider">
+          <i class="fas fa-sun" id="theme-icon"></i>
+      </div>
+</button>
+</div>
+<main class="content">
+<h1>{% trans "Crop Residue Management and Pre-Rabi Field Preparation" %}</h1>
+<section class="bubble-box">
+<p>
+      {% blocktrans %}
+      At the end of the rice season farmers use the combine to harvest rice, this leaves hard stubbles at the root of the plant projecting 10–15 cm above surface level. Thereafter, farmers will plough the field with a reaper to cut these stubbles leaving behind straw. This straw needs to be cleared so the land can be ready for the next crop's seeding. The most typical way of doing so is by burning it. However, due to its negative externalities the government is imposing a ₹2,500 per acre fine, prompting farmers to look into ways to eschew burning. Moreover, discouraging farmers from admitting the offense of burning.
+      {% endblocktrans %}
+    </p>
+</section>
+</main>
+
+<section class="pre-rabi-cycle">
+<h3>{% trans "Pre-Rabi Crop Preparation" %}</h3>
+<div class="circle-layout">
+    <div class="step-circle top">
+        <div class="circle-img">
+            <img src="https://i.ibb.co/Z6jzVPpT/Screenshot-2025-07-07-at-11-29-31-PM.png" alt="{% trans 'Combine Harvesting' %}">
+        </div>
+        <p>{% trans "Combine Harvesting" %}</p>
+    </div>
+    <div class="step-circle left">
+        <div class="circle-img">
+            <img src="https://i.ibb.co/1fsfpmBJ/Screenshot-2025-07-07-at-11-34-29-PM.png" alt="{% trans 'Sowing' %}">
+        </div>
+        <p>{% trans "Sowing" %}</p>
+    </div>
+    <div class="step-circle right">
+        <div class="circle-img">
+            <img src="https://i.ibb.co/MkqgrhYv/Screenshot-2025-07-07-at-11-32-40-PM.png" alt="{% trans 'Straw Management' %}">
+        </div>
+        <p>{% trans "Straw Management" %}</p>
+    </div>
+</div>
+</section>
+
+<section class="stage-details">
+<h3>{% trans "Detailed Process Overview" %}</h3>
+<div class="stage-cards">
+
+    <div class="stage-card">
+        <h4>🚜 {% trans "Combine Harvesting" %}</h4>
+        <div class="card-content">
+            <p>{% trans "A combine harvester simultaneously cuts, threshes, and cleans paddy..." %}</p>
+            <div class="more-text hidden">
+                <p>
+                {% blocktrans %}
+                During combine harvesting, the machine cuts, threshes, and cleans the rice in a single pass.
+                There are two modes of operation:
+
+                1. Without a chopper: This leaves behind tall stubbles (10–15 cm) and large amounts of straw spread across the field. These stubbles remain firmly rooted and cannot be left unmanaged.
+
+                2. With a chopper attachment: The stubbles are chopped down further, reducing their height to 0–5 cm. While this helps partially manage the residue, a significant layer of straw still remains on the surface.
+
+                In both cases, the field is left with a mixture of straw and standing stubble. If a chopper isn’t used, a follow-up pass with a reaper or cutter attachment is required to clear the land effectively before sowing the next crop.
+                {% endblocktrans %}
+                </p>
+            </div>
+        </div>
+        <a href="#" class="toggle-link" onclick="toggleMore(event, this)">{% trans "Show more" %}</a>
+    </div>
+
+    <div class="stage-card">
+        <h4>🔥 {% trans "Straw Management" %}</h4>
+        <p>{% trans "Traditionally burned, straw is now managed through better alternatives..." %}</p>
+        <div class="more-text hidden">
+            <p>
+            {% blocktrans %}
+            There are multiple ways to manage parali after harvesting:
+
+            1. Burning: Still common, farmers may burn the entire field, partially burn (leaving stubble), or burn straw only and manually remove remaining stubble.
+
+            2. Baling: Implements collect straw into bales for sale or disposal. This requires transport and often incurs rental costs (₹500/acre), making it less viable for many farmers.
+
+            3. Plowing Methods:
+            {% endblocktrans %}
+            <ul style="margin-left: 1em; padding-left: 0.5em; list-style: disc;">
+                <li><strong>{% trans "Mulcher + MB Plough:" %}</strong> {% trans "Cuts straw, then buries it by flipping soil on top." %}</li>
+                <li><strong>{% trans "Rotavator:" %}</strong> {% trans "Mixes straw into the soil; often used with Super Seeder." %}</li>
+                <li><strong>{% trans "Super Seeder:" %}</strong> {% trans "Simultaneously ploughs and sows wheat. Effective for hard soils but requires a high-HP tractor." %}</li>
+            </ul>
+            </p>
+        </div>
+        <a href="#" class="toggle-link" onclick="toggleMore(event, this)">{% trans "Show more" %}</a>
+    </div>
+
+    <div class="stage-card">
+        <h4>🌾 {% trans "Sowing" %}</h4>
+        <p>{% trans "Once the land is cleared of straw, sowing begins using different methods..." %}</p>
+        <div class="more-text hidden">
+            <p>
+            {% blocktrans %}
+            After the field is cleared of straw and stubble, the next step is sowing wheat:
+
+            1. Super Seeder / Happy Seeder: These combine residue management and sowing in a single operation. They place seeds directly into the soil through the straw, saving time and labor.
+
+            2. Seed Drill (Most common): Traditional method used after clearing the field. It creates rows, ensures consistent seed depth, and improves germination.
+
+            In high-residue fields, using a seed drill along with earlier ploughing (rotavator or mulcher) ensures better seed-to-soil contact and uniform crop growth.
+            {% endblocktrans %}
+            </p>
+        </div>
+        <a href="#" class="toggle-link" onclick="toggleMore(event, this)">{% trans "Show more" %}</a>
+    </div>
+</div>
+</section>
+
+  <script>
+    function setInitialTheme() {
+    // Get theme from localStorage, or default to 'dark'
+    const savedTheme = localStorage.getItem('theme');
+    const theme = savedTheme ? savedTheme : 'dark';
+    document.documentElement.setAttribute('data-theme', theme);
+    updateThemeIcon(theme);
+}
+
+function toggleTheme() {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    updateThemeIcon(newTheme);
+}
+
+function updateThemeIcon(theme) {
+    const icon = document.getElementById('theme-icon');
+    if (icon) {
+        icon.className = theme === 'light' ? 'fas fa-sun' : 'fas fa-moon';
+    }
+}
+
+// Call this on page load
+setInitialTheme();
+
+    function toggleMore(event, el) {
+      event.preventDefault();
+      const card = el.closest(".stage-card");
+      const moreText = card.querySelector(".more-text");
+
+      moreText.classList.toggle("hidden");
+      el.textContent = moreText.classList.contains("hidden") ? "Show more" : "Show less";
+    }
+
+  </script>
+</body>
+</html>

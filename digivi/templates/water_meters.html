@@ -1,11 +1,12 @@
+{% load i18n %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ LANGUAGE_CODE }}">
 <head>
-  <meta charset="UTF-8">
-  <title>Water Level Analytics Dashboard - DIGI-VI</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{% trans "Water Meter Analytics" %}</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
   {{ available_farms|json_script:"availableFarmsData" }}
   {{available_villages|json_script:"availableVillagesData"}}
@@ -17,77 +18,75 @@
       box-sizing: border-box;
     }
 
-    :root {
-      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
+   :root {
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
-    /* Light Theme */
-    :root[data-theme="light"] {
-      --bg-primary: #f8fafc;
-      --bg-secondary: #ffffff;
-      --bg-tertiary: #f1f5f9;
-      --text-primary: #0f172a;
-      --text-secondary: #475569;
-      --text-tertiary: #64748b;
-      --border-color: #e2e8f0;
-      --border-hover: #cbd5e1;
-      
-      --accent-primary: #3b82f6;
-      --accent-secondary: #8b5cf6;
-      --accent-tertiary: #06b6d4;
-      --accent-success: #10b981;
-      --accent-warning: #f59e0b;
-      --accent-danger: #ef4444;
-      
-      --gradient-primary: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
-      --gradient-secondary: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
-      --gradient-accent: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
-      --gradient-success: linear-gradient(135deg, #10b981 0%, #059669 100%);
-      
-      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
-      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-      --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-      --shadow-glow: 0 0 20px rgba(59, 130, 246, 0.15);
-      
-      --glass-bg: rgba(255, 255, 255, 0.7);
-      --glass-border: rgba(255, 255, 255, 0.2);
-      --code-bg: #f3f4f6;
-    }
+/* 🌱 Light Theme – Green & White */
+:root[data-theme="light"] {
+    --bg-primary: #f8fff5; /* very light greenish white */
+    --bg-secondary: #ffffff;
+    --bg-tertiary: #e6f4ea; /* light green */
+    
+    --text-primary: #0c4f2a;
+    --text-secondary: #2e7d46;
+    --text-tertiary: #4caf50;
 
-    /* Dark Theme */
-    :root[data-theme="dark"] {
-      --bg-primary: #0a0a0a;
-      --bg-secondary: #111111;
-      --bg-tertiary: #1a1a1a;
-      --text-primary: #f1f5f9;
-      --text-secondary: #cbd5e1;
-      --text-tertiary: #94a3b8;
-      --border-color: #27272a;
-      --border-hover: #3f3f46;
-      
-      --accent-primary: #60a5fa;
-      --accent-secondary: #a78bfa;
-      --accent-tertiary: #22d3ee;
-      --accent-success: #34d399;
-      --accent-warning: #fbbf24;
-      --accent-danger: #f87171;
-      
-      --gradient-primary: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
-      --gradient-secondary: linear-gradient(135deg, #22d3ee 0%, #60a5fa 100%);
-      --gradient-accent: linear-gradient(135deg, #a78bfa 0%, #f472b6 100%);
-      --gradient-success: linear-gradient(135deg, #34d399 0%, #059669 100%);
-      
-      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
-      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
-      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
-      --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-      --shadow-glow: 0 0 30px rgba(96, 165, 250, 0.3);
-      
-      --glass-bg: rgba(30, 30, 30, 0.6);
-      --glass-border: rgba(255, 255, 255, 0.1);
-      --code-bg: #1e1e1e;
-    }
+    --border-color: #cde9d7;
+
+    --accent-primary: #0c4f2a;  /* deep green */
+    --accent-secondary: #349a62; /* lighter green */
+    --accent-tertiary: #6fcf97;
+    --accent-success: #3cb371;
+    --accent-warning: #f59e0b;
+    --accent-danger: #ef4444;
+
+    --gradient-primary: linear-gradient(135deg, #0c4f2a 0%, #349a62 100%);
+    --gradient-secondary: linear-gradient(135deg, #349a62 0%, #6fcf97 100%);
+    --gradient-accent: linear-gradient(135deg, #0c4f2a 0%, #6fcf97 100%);
+    --gradient-hero: linear-gradient(135deg, #e6f4ea 0%, #cde9d7 100%);
+
+    --shadow-sm: 0 1px 3px rgba(12, 79, 42, 0.1);
+    --shadow-md: 0 4px 6px rgba(12, 79, 42, 0.1);
+    --shadow-lg: 0 10px 15px rgba(12, 79, 42, 0.15);
+    --shadow-glow: 0 0 20px rgba(52, 154, 98, 0.2);
+
+    --glass-bg: rgba(255, 255, 255, 0.7);
+    --glass-border: rgba(52, 154, 98, 0.2);
+}
+
+/* 🌿 Dark Theme – Green & Black */
+:root[data-theme="dark"] {
+    --bg-primary: #0a0a0a;
+    --bg-secondary: #0f0f0f;
+    --bg-tertiary: #1a1a1a;
+
+    --text-primary: #d9f7e5;
+    --text-secondary: white;
+    --text-tertiary: #6fcf97;
+
+    --border-color: #1f1f1f;
+
+    --accent-primary: #349a62;
+    --accent-secondary: #6fcf97;
+    --accent-tertiary: #3cb371;
+    --accent-success: #34d399;
+    --accent-warning: #fbbf24;
+    --accent-danger: #f87171;
+
+    --gradient-primary: linear-gradient(135deg, #0c4f2a 0%, #349a62 100%);
+    --gradient-secondary: linear-gradient(135deg, #1f7a47 0%, #6fcf97 100%);
+    --gradient-accent: linear-gradient(135deg, #349a62 0%, #3cb371 100%);
+    --gradient-hero: linear-gradient(135deg, #1a1a1a 0%, Black 100%);
+
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.4);
+    --shadow-glow: 0 0 30px rgba(52, 154, 98, 0.3);
+
+    --glass-bg: rgba(20, 40, 30, 0.6);
+    --glass-border: rgba(255, 255, 255, 0.05);
+}
 
     body {
       font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -884,14 +883,29 @@
   <header class="header">
     <div class="header-content">
       <div class="header-left">
-        <h1>Water Level Analytics Dashboard</h1>
-        <p><span class="code">ENHANCED_2025</span> • Agricultural Data Intelligence Platform</p>
+        <h1>{% trans "Water Level Analytics Dashboard" %}</h1>
+        <p>
+          <span class="code">{% trans "ENHANCED_2025" %}</span>
+          • {% trans "Agricultural Data Intelligence Platform" %}
+        </p>
       </div>
       <div class="header-right">
         <a href="{% url 'index' %}" class="btn-back">
-          <i class="fas fa-arrow-left"></i> Back to Templates
+          <i class="fas fa-arrow-left"></i> {% trans "Back to Templates" %}
         </a>
-        <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
+        <form action="{% url 'set_language' %}" method="post" style="display:inline; margin-right: 10px;">
+          {% csrf_token %}
+          <input name="next" type="hidden" value="{{ request.path }}">
+          <input type="hidden" name="language" value="{% if LANGUAGE_CODE == 'en' %}pa{% else %}en{% endif %}">
+          <button type="submit" class="btn-back">
+            {% if LANGUAGE_CODE == 'en' %}
+              {% trans "Switch to Punjabi" %}
+            {% else %}
+              {% trans "Switch to English" %}
+            {% endif %}
+          </button>
+        </form>
+        <button class="theme-toggle" onclick="toggleTheme()" title="{% trans 'Toggle theme' %}">
           <div class="theme-toggle-slider">
             <i class="fas fa-sun" id="theme-icon"></i>
           </div>
@@ -901,12 +915,12 @@
   </header>
 
   <div class="container">
-    <h1 class="main-header">🌾 Enhanced Agricultural Data Analysis Dashboard</h1>
-    <p class="sub-header">Comprehensive analysis with advanced filtering, comparisons, and enhanced downloads</p>
+    <h1 class="main-header">{% blocktrans %}🌾 Enhanced Agricultural Data Analysis Dashboard{% endblocktrans %}</h1>
+    <p class="sub-header">{% blocktrans %}Comprehensive analysis with advanced filtering, comparisons, and enhanced downloads{% endblocktrans %}</p>
 
     <div class="external-link">
       <a href="https://v45bgthcmmrztmbstkddra.streamlit.app/" target="_blank">
-        <i class="fas fa-external-link-alt"></i> Analyze 2024 Data
+        <i class="fas fa-external-link-alt"></i> {% trans "Analyze 2024 Data" %}
       </a>
     </div>
 
@@ -915,23 +929,23 @@
       {% csrf_token %}
       <div class="glass-card">
         <div class="card-header">
-          <h3><i class="fas fa-cloud-upload-alt icon"></i> File Upload Terminal</h3>
+          <h3><i class="fas fa-cloud-upload-alt icon"></i> {% trans "File Upload Terminal" %}</h3>
         </div>
         <div class="card-body">
           <div class="form-group">
             <label class="form-label" for="kharif_file">
-              <i class="fas fa-file-excel"></i> Kharif Excel File
+              <i class="fas fa-file-excel"></i> {% trans "Kharif Excel File" %}
             </label>
             <input type="file" name="kharif_file" id="kharif_file" class="form-control" required />
           </div>
           <div class="form-group">
             <label class="form-label" for="water_file">
-              <i class="fas fa-tint"></i> Water Level Excel File
+              <i class="fas fa-tint"></i> {% trans "Water Level Excel File" %}
             </label>
             <input type="file" name="water_file" id="water_file" class="form-control" required />
           </div>
           <button type="submit" class="btn btn-primary btn-block">
-            <i class="fas fa-chart-bar"></i> Upload & Analyze
+            <i class="fas fa-chart-bar"></i> {% trans "Upload & Analyze" %}
           </button>
         </div>
       </div>
@@ -946,25 +960,25 @@
 
     {% if summary %}
       <div class="summary">
-        <strong><i class="fas fa-chart-pie"></i> Data Overview</strong><br />
-        Total Records: <span class="code">{{ summary.total_records }}</span><br />
-        Unique Farms: <span class="code">{{ summary.unique_farms }}</span><br />
-        Villages: <span class="code">{{ summary.total_villages }}</span><br />
-        Date Range: <span class="code">{{ summary.date_range }}</span><br />
-        Avg Water Level: <span class="code">{{ summary.avg_level }} mm</span>
+        <strong><i class="fas fa-chart-pie"></i> {% trans "Data Overview" %}</strong><br />
+        {% trans "Total Records" %}: <span class="code">{{ summary.total_records }}</span><br />
+        {% trans "Unique Farms" %}: <span class="code">{{ summary.unique_farms }}</span><br />
+        {% trans "Villages" %}: <span class="code">{{ summary.total_villages }}</span><br />
+        {% trans "Date Range" %}: <span class="code">{{ summary.date_range }}</span><br />
+        {% trans "Avg Water Level" %}: <span class="code">{{ summary.avg_level }} mm</span>
       </div>
     {% endif %}
 
     {% if merged_loaded %}
       <div class="tab-buttons">
         <button id="btn-farm" class="active">
-          <i class="fas fa-seedling"></i> Individual Farm Analysis
+          <i class="fas fa-seedling"></i> {% trans "Individual Farm Analysis" %}
         </button>
         <button id="btn-comp">
-          <i class="fas fa-chart-line"></i> Comparative Analysis
+          <i class="fas fa-chart-line"></i> {% trans "Comparative Analysis" %}
         </button>
         <button id="btn-download">
-          <i class="fas fa-download"></i> Data Downloads
+          <i class="fas fa-download"></i> {% trans "Data Downloads" %}
         </button>
       </div>
 
@@ -972,14 +986,14 @@
       <div id="farm" class="tab-content active">
         <div class="glass-card">
           <div class="card-header">
-            <h3><i class="fas fa-seedling icon"></i> Farm-Level Analysis</h3>
+            <h3><i class="fas fa-seedling icon"></i> {% trans "Farm-Level Analysis" %}</h3>
           </div>
           <div class="card-body">
             <form id="farm-select-form" method="POST" action="{% url 'water_dashboard' %}">
               {% csrf_token %}
               <div class="form-group">
                 <label class="form-label" for="farm-select">
-                  <i class="fas fa-map-marker-alt"></i> Select a Farm
+                  <i class="fas fa-map-marker-alt"></i> {% trans "Select a Farm" %}
                 </label>
                 <select name="selected_farm" id="farm-select" class="form-control">
                   {% for farm in available_farms %}
@@ -992,23 +1006,23 @@
             <div id="farm-analysis-content">
               {% if farm_analysis %}
                 <h4 style="color: var(--accent-primary); margin: 2rem 0 1rem; font-weight: 600;">
-                  <i class="fas fa-chart-area"></i> Daily Water Levels per Pipe + Farm Average
+                  <i class="fas fa-chart-area"></i> {% trans "Daily Water Levels per Pipe + Farm Average" %}
                 </h4>
                 <div class="plot-container">{{ farm_analysis.plot1|safe }}</div>
                 
                 <h4 style="color: var(--accent-primary); margin: 2rem 0 1rem; font-weight: 600;">
-                  <i class="fas fa-chart-line"></i> Weekly Water Levels per Pipe + Farm Average
+                  <i class="fas fa-chart-line"></i> {% trans "Weekly Water Levels per Pipe + Farm Average" %}
                 </h4>
                 <div class="plot-container">{{ farm_analysis.plot2|safe }}</div>
                 
                 <h4 style="color: var(--accent-primary); margin: 2rem 0 1rem; font-weight: 600;">
-                  <i class="fas fa-table"></i> Water Level Data (All Pipes)
+                  <i class="fas fa-table"></i> {% trans "Water Level Data (All Pipes)" %}
                 </h4>
                 <div style="background: var(--bg-tertiary); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
-                  <strong>Average:</strong> <span class="code">{{ farm_analysis.summary.average }} mm</span> |
-                  <strong>Std Dev:</strong> <span class="code">{{ farm_analysis.summary.std_dev }} mm</span> |
-                  <strong>Min:</strong> <span class="code">{{ farm_analysis.summary.min }} mm</span> |
-                  <strong>Max:</strong> <span class="code">{{ farm_analysis.summary.max }} mm</span>
+                  <strong>{% trans "Average" %}:</strong> <span class="code">{{ farm_analysis.summary.average }} mm</span> |
+                  <strong>{% trans "Std Dev" %}:</strong> <span class="code">{{ farm_analysis.summary.std_dev }} mm</span> |
+                  <strong>{% trans "Min" %}:</strong> <span class="code">{{ farm_analysis.summary.min }} mm</span> |
+                  <strong>{% trans "Max" %}:</strong> <span class="code">{{ farm_analysis.summary.max }} mm</span>
                 </div>
                 <div class="table-container">{{ farm_analysis.pivot_table_html|safe }}</div>
               {% endif %}
@@ -1016,7 +1030,7 @@
               {% if per_farm_downloads %}
                 <div style="margin: 2rem 0;">
                   <h4 style="color: var(--accent-primary); margin-bottom: 1rem; font-weight: 600;">
-                    <i class="fas fa-download"></i> Download Data for Selected Farm
+                    <i class="fas fa-download"></i> {% trans "Download Data for Selected Farm" %}
                   </h4>
                   <div class="download-grid">
                     {% for file in per_farm_downloads %}
@@ -1031,30 +1045,30 @@
               {% if farm_summary_stats %}
                 <div class="farm-summary-stats">
                   <div class="stats-title">
-                    <i class="fas fa-chart-bar"></i> Farm Summary Statistics
+                    <i class="fas fa-chart-bar"></i> {% trans "Farm Summary Statistics" %}
                   </div>
                   <div class="stats-grid">
                     <div class="stat-item">
                       <div class="stat-label">
-                        <i class="fas fa-tint"></i> Average Water Level
+                        <i class="fas fa-tint"></i> {% trans "Average Water Level" %}
                       </div>
                       <div class="stat-value">{{ farm_summary_stats.mean }} <span class="stat-unit">mm</span></div>
                     </div>
                     <div class="stat-item">
                       <div class="stat-label">
-                        <i class="fas fa-chart-bar"></i> Standard Deviation
+                        <i class="fas fa-chart-bar"></i> {% trans "Standard Deviation" %}
                       </div>
                       <div class="stat-value">{{ farm_summary_stats.std }} <span class="stat-unit">mm</span></div>
                     </div>
                     <div class="stat-item">
                       <div class="stat-label">
-                        <i class="fas fa-arrow-down"></i> Minimum Level
+                        <i class="fas fa-arrow-down"></i> {% trans "Minimum Level" %}
                       </div>
                       <div class="stat-value">{{ farm_summary_stats.min }} <span class="stat-unit">mm</span></div>
                     </div>
                     <div class="stat-item">
                       <div class="stat-label">
-                        <i class="fas fa-arrow-up"></i> Maximum Level
+                        <i class="fas fa-arrow-up"></i> {% trans "Maximum Level" %}
                       </div>
                       <div class="stat-value">{{ farm_summary_stats.max }} <span class="stat-unit">mm</span></div>
                     </div>
@@ -1070,26 +1084,26 @@
       <div id="comp" class="tab-content">
         <div class="glass-card">
           <div class="card-header">
-            <h3><i class="fas fa-chart-line icon"></i> Comparative Analysis</h3>
+            <h3><i class="fas fa-chart-line icon"></i> {% trans "Comparative Analysis" %}</h3>
           </div>
           <div class="card-body">
             <div class="form-group">
               <label class="form-label" for="sectionSelector">
-                <i class="fas fa-filter"></i> Choose Analysis Section
+                <i class="fas fa-filter"></i> {% trans "Choose Analysis Section" %}
               </label>
               <select id="sectionSelector" class="form-control">
-                <option value="village" selected>📍 Village Comparison</option>
-                <option value="rc">🛰️ Remote Controllers</option>
-                <option value="awd">🚰 AWD Study Groups</option>
-                <option value="dsr_tpr">🌱 DSR vs TPR</option>
-                <option value="compliance">✅ Compliance Summary</option>
-                <option value="custom">🛠️ Custom Group Summary</option>
+                <option value="village" selected>📍 {% trans "Village Comparison" %}</option>
+                <option value="rc">🛰️ {% trans "Remote Controllers" %}</option>
+                <option value="awd">🚰 {% trans "AWD Study Groups" %}</option>
+                <option value="dsr_tpr">🌱 {% trans "DSR vs TPR" %}</option>
+                <option value="compliance">✅ {% trans "Compliance Summary" %}</option>
+                <option value="custom">🛠️ {% trans "Custom Group Summary" %}</option>
               </select>
             </div>
 
             <div id="village" class="content-section">
               <h4 style="color: var(--accent-primary); margin: 1.5rem 0 1rem; font-weight: 600;">
-                <i class="fas fa-map-marked-alt"></i> Village Comparison
+                <i class="fas fa-map-marked-alt"></i> {% trans "Village Comparison" %}
               </h4>
               <div class="plot-container">{{ comparative.village.plot|safe }}</div>
               <div class="table-container">
@@ -1098,7 +1112,7 @@
                   <form method="get">
                     <input type="hidden" name="download_village_analysis" value="1" />
                     <button type="submit" class="btn btn-secondary">
-                      <i class="fas fa-download"></i> Download Analysis (CSV)
+                      <i class="fas fa-download"></i> {% trans "Download Analysis (CSV)" %}
                     </button>
                   </form>
                 </div>
@@ -1107,7 +1121,7 @@
 
             <div id="rc" class="content-section">
               <h4 style="color: var(--accent-primary); margin: 1.5rem 0 1rem; font-weight: 600;">
-                <i class="fas fa-satellite-dish"></i> Remote Controllers
+                <i class="fas fa-satellite-dish"></i> {% trans "Remote Controllers" %}
               </h4>
               <div class="plot-container">{{ comparative.rc.plot|safe }}</div>
               <div class="table-container">
@@ -1116,7 +1130,7 @@
                   <form method="get">
                     <input type="hidden" name="download_rc_analysis" value="1" />
                     <button type="submit" class="btn btn-secondary">
-                      <i class="fas fa-download"></i> Download Analysis (CSV)
+                      <i class="fas fa-download"></i> {% trans "Download Analysis (CSV)" %}
                     </button>
                   </form>
                 </div>
@@ -1125,7 +1139,7 @@
 
             <div id="awd" class="content-section">
               <h4 style="color: var(--accent-primary); margin: 1.5rem 0 1rem; font-weight: 600;">
-                <i class="fas fa-tint"></i> AWD Study Groups
+                <i class="fas fa-tint"></i> {% trans "AWD Study Groups" %}
               </h4>
               <div class="plot-container">{{ comparative.awd.plot|safe }}</div>
               <div class="table-container">
@@ -1134,7 +1148,7 @@
                   <form method="get">
                     <input type="hidden" name="download_awd_analysis" value="1" />
                     <button type="submit" class="btn btn-secondary">
-                      <i class="fas fa-download"></i> Download Analysis (CSV)
+                      <i class="fas fa-download"></i> {% trans "Download Analysis (CSV)" %}
                     </button>
                   </form>
                 </div>
@@ -1143,7 +1157,7 @@
 
             <div id="dsr_tpr" class="content-section">
               <h4 style="color: var(--accent-primary); margin: 1.5rem 0 1rem; font-weight: 600;">
-                <i class="fas fa-seedling"></i> DSR vs TPR
+                <i class="fas fa-seedling"></i> {% trans "DSR vs TPR" %}
               </h4>
               <div class="plot-container">{{ comparative.dsr_tpr.plot|safe }}</div>
               <div class="table-container">
@@ -1152,7 +1166,7 @@
                   <form method="get">
                     <input type="hidden" name="download_dsr_tpr_analysis" value="1" />
                     <button type="submit" class="btn btn-secondary">
-                      <i class="fas fa-download"></i> Download Analysis (CSV)
+                      <i class="fas fa-download"></i> {% trans "Download Analysis (CSV)" %}
                     </button>
                   </form>
                 </div>
@@ -1161,17 +1175,17 @@
 
             <div id="compliance" class="content-section">
               <h4 style="color: var(--accent-primary); margin: 1.5rem 0 1rem; font-weight: 600;">
-                <i class="fas fa-check-circle"></i> Compliance Summary
+                <i class="fas fa-check-circle"></i> {% trans "Compliance Summary" %}
               </h4>
               <div class="table-container">{{ comparative.compliance.df|safe }}</div>
               <div style="background: var(--bg-tertiary); padding: 1rem; border-radius: 8px; margin-top: 1rem;">
-                <strong>Overall Compliance:</strong> <span class="code">{{ comparative.compliance.summary.overall_compliance }}%</span>
+                <strong>{% trans "Overall Compliance" %}:</strong> <span class="code">{{ comparative.compliance.summary.overall_compliance }}%</span>
               </div>
             </div>
 
             <div id="custom" class="content-section">
               <h4 style="color: var(--accent-primary); margin: 1.5rem 0 1rem; font-weight: 600;">
-                <i class="fas fa-cogs"></i> Custom Group Summary
+                <i class="fas fa-cogs"></i> {% trans "Custom Group Summary" %}
               </h4>
               {% if comparative.custom.chart_html %}
                 <div class="plot-container">{{ comparative.custom.chart_html|safe }}</div>
@@ -1183,7 +1197,7 @@
                     <form method="get">
                       <input type="hidden" name="download_custom_group_analysis" value="1" />
                       <button type="submit" class="btn btn-secondary">
-                        <i class="fas fa-download"></i> Download Analysis (CSV)
+                        <i class="fas fa-download"></i> {% trans "Download Analysis (CSV)" %}
                       </button>
                     </form>
                   </div>
@@ -1191,13 +1205,13 @@
               {% else %}
                 <div style="background: var(--bg-tertiary); padding: 1.5rem; border-radius: 8px; text-align: center; color: var(--text-secondary);">
                   <i class="fas fa-info-circle" style="font-size: 2rem; margin-bottom: 0.5rem; opacity: 0.5;"></i>
-                  <p>No custom groups created yet. Use the form below to create custom groups.</p>
+                  <p>{% trans "No custom groups created yet. Use the form below to create custom groups." %}</p>
                 </div>
               {% endif %}
 
               <div id="custom-groups-section" class="custom-groups-section" style="display:none;">
                 <h4 style="color: var(--accent-primary); margin-bottom: 1rem; font-weight: 600;">
-                  <i class="fas fa-plus-circle"></i> Create Custom Groups
+                  <i class="fas fa-plus-circle"></i> {% trans "Create Custom Groups" %}
                 </h4>
                 {% if success_message %}
                   <div class="alert success">
@@ -1211,26 +1225,26 @@
 
                   <div class="form-group">
                     <label class="form-label">
-                      <i class="fas fa-hashtag"></i> How many groups?
+                      <i class="fas fa-hashtag"></i> {% trans "How many groups?" %}
                     </label>
                     <input type="number" id="group-count" name="group_count" min="1" max="10" value="1" class="form-control" onchange="generateGroupSelectors()" />
                   </div>
 
                   <div id="group-inputs">
                     <div class="form-group">
-                      <label class="form-label">Group Name:</label>
-                      <input type="text" name="group_name_1" required placeholder="Enter group name" class="form-control" />
+                      <label class="form-label">{% trans "Group Name:" %}</label>
+                      <input type="text" name="group_name_1" required placeholder="{% trans 'Enter group name' %}" class="form-control" />
                     </div>
                     <div class="form-group">
-                      <label class="form-label">Group Type:</label>
+                      <label class="form-label">{% trans "Group Type:" %}</label>
                       <select name="group_type_1" class="group-type-selector form-control" data-group="1" onchange="toggleGroupType(this)">
-                        <option value="both" selected>Farms & Villages (Mixed)</option>
-                        <option value="farms">Farms Only</option>
-                        <option value="villages">Villages Only</option>
+                        <option value="both" selected>{% trans "Farms & Villages (Mixed)" %}</option>
+                        <option value="farms">{% trans "Farms Only" %}</option>
+                        <option value="villages">{% trans "Villages Only" %}</option>
                       </select>
                     </div>
                     <div class="form-group farms-group" id="farms-group-1" style="max-height:150px; overflow-y:auto; border:1px solid var(--border-color); padding:1rem; border-radius:8px; background:var(--bg-secondary);">
-                      <label style="font-weight: 600; margin-bottom: 0.5rem; display: block;">Select Farms for Group 1:</label>
+                      <label style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{% trans "Select Farms for Group 1:" %}</label>
                       {% for farm in available_farms %}
                         <label style="display:block; margin-bottom:0.25rem; font-size:0.9rem; cursor: pointer;">
                           <input type="checkbox" name="selected_farms_1" value="{{ farm }}" style="margin-right:0.5rem;">{{ farm }}
@@ -1238,7 +1252,7 @@
                       {% endfor %}
                     </div>
                     <div class="form-group villages-group" id="villages-group-1" style="max-height:150px; overflow-y:auto; border:1px solid var(--border-color); padding:1rem; border-radius:8px; background:var(--bg-secondary);">
-                      <label style="font-weight: 600; margin-bottom: 0.5rem; display: block;">Select Villages for Group 1:</label>
+                      <label style="font-weight: 600; margin-bottom: 0.5rem; display: block;">{% trans "Select Villages for Group 1:" %}</label>
                       {% for village in available_villages %}
                         <label style="display:block; margin-bottom:0.25rem; font-size:0.9rem; cursor: pointer;">
                           <input type="checkbox" name="selected_villages_1" value="{{ village }}" style="margin-right:0.5rem;">{{ village }}
@@ -1248,13 +1262,13 @@
                   </div>
 
                   <button type="submit" class="btn btn-success">
-                    <i class="fas fa-save"></i> Save Group(s)
+                    <i class="fas fa-save"></i> {% trans "Save Group(s)" %}
                   </button>
                 </form>
                 
                 {% if custom_groups %}
                   <div class="existing-groups">
-                    <h5><i class="fas fa-list"></i> Existing Custom Groups:</h5>
+                    <h5><i class="fas fa-list"></i> {% trans "Existing Custom Groups:" %}</h5>
                     <ul>
                       {% for group in custom_groups %}
                         <li>
@@ -1264,7 +1278,7 @@
                             <input type="hidden" name="delete_custom_group" value="1" />
                             <input type="hidden" name="group_name" value="{{ group }}" />
                             <button type="submit" class="btn" style="background: var(--accent-danger); color: white; padding: 0.25rem 0.75rem; font-size: 0.8rem;">
-                              <i class="fas fa-trash"></i> Delete
+                              <i class="fas fa-trash"></i> {% trans "Delete" %}
                             </button>
                           </form>
                         </li>
@@ -1282,12 +1296,12 @@
       <div id="download" class="tab-content">
         <div class="glass-card">
           <div class="card-header">
-            <h3><i class="fas fa-download icon"></i> Data Downloads</h3>
+            <h3><i class="fas fa-download icon"></i> {% trans "Data Downloads" %}</h3>
           </div>
           <div class="card-body">
             {% if complete_dataset_files %}
               <h4 style="color: var(--accent-primary); margin: 2rem 0 1rem; font-weight: 600;">
-                <i class="fas fa-database"></i> Complete Dataset
+                <i class="fas fa-database"></i> {% trans "Complete Dataset" %}
               </h4>
               <div class="download-grid">
                 {% for file in complete_dataset_files %}
@@ -1300,7 +1314,7 @@
             
             {% if study_group_files %}
               <h4 style="color: var(--accent-primary); margin: 2rem 0 1rem; font-weight: 600;">
-                <i class="fas fa-flask"></i> Study Group Data
+                <i class="fas fa-flask"></i> {% trans "Study Group Data" %}
               </h4>
               <div class="download-grid">
                 {% for file in study_group_files %}
@@ -1313,7 +1327,7 @@
             
             {% if analysis_report_files %}
               <h4 style="color: var(--accent-primary); margin: 2rem 0 1rem; font-weight: 600;">
-                <i class="fas fa-chart-bar"></i> Analysis Reports
+                <i class="fas fa-chart-bar"></i> {% trans "Analysis Reports" %}
               </h4>
               <div class="download-grid">
                 {% for file in analysis_report_files %}
@@ -1325,13 +1339,13 @@
             {% endif %}
             
             <h4 style="color: var(--accent-primary); margin: 2rem 0 1rem; font-weight: 600;">
-              <i class="fas fa-archive"></i> Complete Data Package
+              <i class="fas fa-archive"></i> {% trans "Complete Data Package" %}
             </h4>
             <form method="POST">
               {% csrf_token %}
               <input type="hidden" name="download_zip" value="1" />
               <button type="submit" class="btn btn-primary">
-                <i class="fas fa-file-archive"></i> Download ZIP
+                <i class="fas fa-file-archive"></i> {% trans "Download ZIP" %}
               </button>
             </form>
           </div>
@@ -1341,77 +1355,77 @@
 
     {% if not merged_loaded %}
     <div class="info-box">
-      <h3><i class="fas fa-info-circle"></i> Required Files</h3>
-      <h4>1. Kharif 25 Excel File:</h4>
+      <h3><i class="fas fa-info-circle"></i> {% trans "Required Files" %}</h3>
+      <h4>{% trans "1. Kharif 25 Excel File:" %}</h4>
       <ul>
-        <li><code>Kharif 25 Farm ID</code> – Unique farm identifier</li>
-        <li><code>Kharif 25 Village</code> – Village name</li>
-        <li><code>Kharif 25 Paddy transplanting date (TPR)</code> – Transplanting date</li>
-        <li>Study group columns (Remote Controllers, AWD, TPR, DSR)</li>
-        <li>PVC Pipe codes (1-5)</li>
-        <li>Compliance indicators (Y/N)</li>
+        <li><code>Kharif 25 Farm ID</code> – {% trans "Unique farm identifier" %}</li>
+        <li><code>Kharif 25 Village</code> – {% trans "Village name" %}</li>
+        <li><code>Kharif 25 Paddy transplanting date (TPR)</code> – {% trans "Transplanting date" %}</li>
+        <li>{% trans "Study group columns (Remote Controllers, AWD, TPR, DSR)" %}</li>
+        <li>{% trans "PVC Pipe codes (1-5)" %}</li>
+        <li>{% trans "Compliance indicators (Y/N)" %}</li>
       </ul>
 
-      <h4>2. Water Level Measurement Excel File:</h4>
+      <h4>{% trans "2. Water Level Measurement Excel File:" %}</h4>
       <ul>
-        <li><code>Date</code> – Measurement date</li>
-        <li><code>Farm ID</code> – Farm identifier (must match Kharif file)</li>
-        <li><code>Pipe code ID of the farm</code> – Pipe identifier</li>
-        <li><code>Measure water level inside the PVC pipe - millimeter mm</code> – Water level reading</li>
-        <li><code>Village name</code> – Village name</li>
+        <li><code>Date</code> – {% trans "Measurement date" %}</li>
+        <li><code>Farm ID</code> – {% trans "Farm identifier (must match Kharif file)" %}</li>
+        <li><code>Pipe code ID of the farm</code> – {% trans "Pipe identifier" %}</li>
+        <li><code>Measure water level inside the PVC pipe - millimeter mm</code> – {% trans "Water level reading" %}</li>
+        <li><code>Village name</code> – {% trans "Village name" %}</li>
       </ul>
 
-      <h3><i class="fas fa-star"></i> Enhanced Features</h3>
+      <h3><i class="fas fa-star"></i> {% trans "Enhanced Features" %}</h3>
 
-      <h4><i class="fas fa-filter"></i> Advanced Filters:</h4>
+      <h4><i class="fas fa-filter"></i> {% trans "Advanced Filters:" %}</h4>
       <ul>
-        <li>📅 Date range selection with validation</li>
-        <li>🏘️ Village-specific filtering with typo handling</li>
-        <li>🔬 Study group filtering (RC, AWD, TPR, DSR)</li>
-        <li>✅ Compliance status filtering</li>
-        <li>🔧 Data quality filters (minimum readings, outlier removal)</li>
+        <li>📅 {% trans "Date range selection with validation" %}</li>
+        <li>🏘️ {% trans "Village-specific filtering with typo handling" %}</li>
+        <li>🔬 {% trans "Study group filtering (RC, AWD, TPR, DSR)" %}</li>
+        <li>✅ {% trans "Compliance status filtering" %}</li>
+        <li>🔧 {% trans "Data quality filters (minimum readings, outlier removal)" %}</li>
       </ul>
 
-      <h4><i class="fas fa-chart-bar"></i> Complete Analysis:</h4>
+      <h4><i class="fas fa-chart-bar"></i> {% trans "Complete Analysis:" %}</h4>
       <ul>
-        <li><strong>Graph 1:</strong> Daily water levels per pipe + farm average (markers only)</li>
-        <li><strong>Graph 2:</strong> Weekly water level trends (markers + farm average line)</li>
-        <li><strong>Table 3:</strong> Water level data with Days from TPR as Column A</li>
-        <li><strong>Comparative Charts:</strong> All required study group comparisons</li>
+        <li><strong>{% trans "Graph 1:" %}</strong> {% trans "Daily water levels per pipe + farm average (markers only)" %}</li>
+        <li><strong>{% trans "Graph 2:" %}</strong> {% trans "Weekly water level trends (markers + farm average line)" %}</li>
+        <li><strong>{% trans "Table 3:" %}</strong> {% trans "Water level data with Days from TPR as Column A" %}</li>
+        <li><strong>{% trans "Comparative Charts:" %}</strong> {% trans "All required study group comparisons" %}</li>
       </ul>
 
-      <h4><i class="fas fa-users"></i> Study Group Comparisons:</h4>
+      <h4><i class="fas fa-users"></i> {% trans "Study Group Comparisons:" %}</h4>
       <ul>
-        <li>Remote Controllers: Treatment vs Control (complied groups)</li>
-        <li>AWD Study: Groups A, B, C (complied and non-complied)</li>
-        <li>DSR vs TPR group comparisons</li>
-        <li>Village-level aggregations</li>
-        <li>Comprehensive compliance analysis</li>
+        <li>{% trans "Remote Controllers: Treatment vs Control (complied groups)" %}</li>
+        <li>{% trans "AWD Study: Groups A, B, C (complied and non-complied)" %}</li>
+        <li>{% trans "DSR vs TPR group comparisons" %}</li>
+        <li>{% trans "Village-level aggregations" %}</li>
+        <li>{% trans "Comprehensive compliance analysis" %}</li>
       </ul>
 
-      <h4><i class="fas fa-download"></i> Enhanced Downloads:</h4>
+      <h4><i class="fas fa-download"></i> {% trans "Enhanced Downloads:" %}</h4>
       <ul>
-        <li>Individual farm reports (detailed + summary)</li>
-        <li>Study group datasets (separate CSV files)</li>
-        <li>Village and farm summary reports</li>
-        <li>Complete data packages (ZIP format)</li>
+        <li>{% trans "Individual farm reports (detailed + summary)" %}</li>
+        <li>{% trans "Study group datasets (separate CSV files)" %}</li>
+        <li>{% trans "Village and farm summary reports" %}</li>
+        <li>{% trans "Complete data packages (ZIP format)" %}</li>
       </ul>
 
-      <h4><i class="fas fa-cog"></i> Data Quality Features:</h4>
+      <h4><i class="fas fa-cog"></i> {% trans "Data Quality Features:" %}</h4>
       <ul>
-        <li>Fuzzy matching for village names (handles typos)</li>
-        <li>Case insensitive comparisons</li>
-        <li>Data normalization and cleaning</li>
-        <li>Outlier detection and removal</li>
-        <li>Missing data handling</li>
+        <li>{% trans "Fuzzy matching for village names (handles typos)" %}</li>
+        <li>{% trans "Case insensitive comparisons" %}</li>
+        <li>{% trans "Data normalization and cleaning" %}</li>
+        <li>{% trans "Outlier detection and removal" %}</li>
+        <li>{% trans "Missing data handling" %}</li>
       </ul>
 
-      <h4><i class="fas fa-chart-line"></i> Advanced Visualizations:</h4>
+      <h4><i class="fas fa-chart-line"></i> {% trans "Advanced Visualizations:" %}</h4>
       <ul>
-        <li>Interactive charts with hover information</li>
-        <li>Color-coded study groups</li>
-        <li>Responsive design for all screen sizes</li>
-        <li>Export-ready chart formats</li>
+        <li>{% trans "Interactive charts with hover information" %}</li>
+        <li>{% trans "Color-coded study groups" %}</li>
+        <li>{% trans "Responsive design for all screen sizes" %}</li>
+        <li>{% trans "Export-ready chart formats" %}</li>
       </ul>
     </div>
     {% endif %}

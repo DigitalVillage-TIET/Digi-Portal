@@ -1,9 +1,10 @@
+{% load i18n %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{LANGUAGE_CODE}}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DIGI-VI | Template Selection</title>
+    <title>{% trans "DIGI-VI" %} | {% trans "Template Selection" %}</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -12,72 +13,75 @@
             padding: 0;
             box-sizing: border-box;
         }
+:root {
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
-        :root {
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+/* 🌱 Light Theme – Green & White */
+:root[data-theme="light"] {
+    --bg-primary: #f8fff5; /* very light greenish white */
+    --bg-secondary: #ffffff;
+    --bg-tertiary: #e6f4ea; /* light green */
+    
+    --text-primary: #0c4f2a;
+    --text-secondary: #2e7d46;
+    --text-tertiary: #4caf50;
 
-        /* Light Theme */
-        :root[data-theme="light"] {
-            --bg-primary: #f8fafc;
-            --bg-secondary: #ffffff;
-            --bg-tertiary: #f1f5f9;
-            --text-primary: #0f172a;
-            --text-secondary: #475569;
-            --text-tertiary: #64748b;
-            --border-color: #e2e8f0;
-            
-            --accent-primary: #3b82f6;
-            --accent-secondary: #8b5cf6;
-            --accent-tertiary: #06b6d4;
-            --accent-success: #10b981;
-            --accent-warning: #f59e0b;
-            --accent-danger: #ef4444;
-            
-            --gradient-primary: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
-            --gradient-secondary: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
-            --gradient-accent: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
-            --gradient-hero: linear-gradient(135deg, #dbeafe 0%, #e9d5ff 100%);
-            
-            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
-            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
-            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
-            --shadow-glow: 0 0 20px rgba(59, 130, 246, 0.15);
-            
-            --glass-bg: rgba(255, 255, 255, 0.7);
-            --glass-border: rgba(255, 255, 255, 0.2);
-        }
+    --border-color: #cde9d7;
 
-        /* Dark Theme */
-        :root[data-theme="dark"] {
-            --bg-primary: #0a0a0a;
-            --bg-secondary: #111111;
-            --bg-tertiary: #1a1a1a;
-            --text-primary: #f1f5f9;
-            --text-secondary: #cbd5e1;
-            --text-tertiary: #94a3b8;
-            --border-color: #27272a;
-            
-            --accent-primary: #60a5fa;
-            --accent-secondary: #a78bfa;
-            --accent-tertiary: #22d3ee;
-            --accent-success: #34d399;
-            --accent-warning: #fbbf24;
-            --accent-danger: #f87171;
-            
-            --gradient-primary: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
-            --gradient-secondary: linear-gradient(135deg, #22d3ee 0%, #60a5fa 100%);
-            --gradient-accent: linear-gradient(135deg, #a78bfa 0%, #f472b6 100%);
-            --gradient-hero: linear-gradient(135deg, #1e293b 0%, #312e81 100%);
-            
-            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
-            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.3);
-            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.4);
-            --shadow-glow: 0 0 30px rgba(96, 165, 250, 0.3);
-            
-            --glass-bg: rgba(30, 30, 30, 0.6);
-            --glass-border: rgba(255, 255, 255, 0.1);
-        }
+    --accent-primary: #0c4f2a;  /* deep green */
+    --accent-secondary: #349a62; /* lighter green */
+    --accent-tertiary: #6fcf97;
+    --accent-success: #3cb371;
+    --accent-warning: #f59e0b;
+    --accent-danger: #ef4444;
+
+    --gradient-primary: linear-gradient(135deg, #0c4f2a 0%, #349a62 100%);
+    --gradient-secondary: linear-gradient(135deg, #349a62 0%, #6fcf97 100%);
+    --gradient-accent: linear-gradient(135deg, #0c4f2a 0%, #6fcf97 100%);
+    --gradient-hero: linear-gradient(135deg, #e6f4ea 0%, #cde9d7 100%);
+
+    --shadow-sm: 0 1px 3px rgba(12, 79, 42, 0.1);
+    --shadow-md: 0 4px 6px rgba(12, 79, 42, 0.1);
+    --shadow-lg: 0 10px 15px rgba(12, 79, 42, 0.15);
+    --shadow-glow: 0 0 20px rgba(52, 154, 98, 0.2);
+
+    --glass-bg: rgba(255, 255, 255, 0.7);
+    --glass-border: rgba(52, 154, 98, 0.2);
+}
+
+/* 🌿 Dark Theme – Green & Black */
+:root[data-theme="dark"] {
+    --bg-primary: #0a0a0a;
+    --bg-secondary: #0f0f0f;
+    --bg-tertiary: #1a1a1a;
+
+    --text-primary: #d9f7e5;
+    --text-secondary: white;
+    --text-tertiary: #6fcf97;
+
+    --border-color: #1f1f1f;
+
+    --accent-primary: #349a62;
+    --accent-secondary: #6fcf97;
+    --accent-tertiary: #3cb371;
+    --accent-success: #34d399;
+    --accent-warning: #fbbf24;
+    --accent-danger: #f87171;
+
+    --gradient-primary: linear-gradient(135deg, #0c4f2a 0%, #349a62 100%);
+    --gradient-secondary: linear-gradient(135deg, #1f7a47 0%, #6fcf97 100%);
+    --gradient-accent: linear-gradient(135deg, #349a62 0%, #3cb371 100%);
+    --gradient-hero: linear-gradient(135deg, #1a1a1a 0%, Black 100%);
+
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.4);
+    --shadow-glow: 0 0 30px rgba(52, 154, 98, 0.3);
+
+    --glass-bg: rgba(20, 40, 30, 0.6);
+    --glass-border: rgba(255, 255, 255, 0.05);
+}
 
         body {
             font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -638,20 +642,32 @@
                 <div class="nav-logo-group">
                     <img src="https://i.ibb.co/BVtQs0rd/logotiet.png" alt="TIET" class="nav-logo">
                     <div>
-                        <div class="nav-brand">DIGI-VI</div>
-                        <div class="nav-subtitle">Template Selection</div>
+                        <div class="nav-brand">{% trans "DIGI-VI" %}</div>
+                        <div class="nav-subtitle">{% trans "Template Selection" %}</div>
                     </div>
                     <img src="https://i.ibb.co/Tq4YXfzn/tel-aviv-university-tau4054.jpg" alt="TAU" class="nav-logo">
                 </div>
             </div>
             <div class="nav-right">
                 <a href="/" class="btn-home">
-                    <i class="fas fa-home"></i> Back to Home
+                    <i class="fas fa-home"></i> {% trans "Back to Home" %}
                 </a>
                 <a href="/logout/" class="btn-home">
-                    <i class="fas fa-sign-out-alt"></i> Logout
+                    <i class="fas fa-sign-out-alt"></i> {% trans "Logout" %}
                 </a>
-                <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
+                <form action="{% url 'set_language' %}" method="post" style="display:inline; margin-right: 10px;">
+                    {% csrf_token %}
+                    <input name="next" type="hidden" value="{{ request.path }}">
+                    <input type="hidden" name="language" value="{% if LANGUAGE_CODE == 'en' %}pa{% else %}en{% endif %}">
+                    <button type="submit" class="btn-home">
+                        {% if LANGUAGE_CODE == 'en' %}
+                            {% trans "Switch to Punjabi" %}
+                        {% else %}
+                            {% trans "Switch to English" %}
+                        {% endif %}
+                    </button>
+                </form>
+                <button class="theme-toggle" onclick="toggleTheme()" title="{% trans 'Toggle theme' %}">
                     <div class="theme-toggle-slider">
                         <i class="fas fa-sun" id="theme-icon"></i>
                     </div>
@@ -665,9 +681,9 @@
         <div class="content-wrapper">
             <!-- Header Section -->
             <div class="header-section">
-                <h1 class="main-title">Choose Your Template</h1>
+                <h1 class="main-title">{% trans "Choose Your Template" %}</h1>
                 <p class="main-subtitle">
-                    Select from our advanced agricultural analysis tools and start optimizing your farming operations with data-driven insights
+                    {% trans "Select from our advanced agricultural analysis tools and start optimizing your farming operations with data-driven insights" %}
                 </p>
             </div>
 
@@ -678,13 +694,13 @@
                     <div class="template-icon">
                         <i class="fas fa-tachometer-alt"></i>
                     </div>
-                    <h3 class="template-title">Meter Reading</h3>
+                    <h3 class="template-title">{% trans "Meter Reading" %}</h3>
                     <p class="template-description">
-                        Advanced sensor data analysis for monitoring water consumption and irrigation efficiency across your agricultural operations.
+                        {% trans "Advanced sensor data analysis for monitoring water consumption and irrigation efficiency across your agricultural operations." %}
                     </p>
                     <div class="template-status status-active">
                         <i class="fas fa-check-circle"></i>
-                        Active
+                        {% trans "Active" %}
                     </div>
                 </a>
 
@@ -693,13 +709,13 @@
                     <div class="template-icon">
                         <i class="fas fa-water"></i>
                     </div>
-                    <h3 class="template-title">Water Level Dashboard</h3>
+                    <h3 class="template-title">{% trans "Water Level Dashboard" %}</h3>
                     <p class="template-description">
-                        Real-time water level monitoring and predictive analytics for optimal irrigation management and water conservation.
+                        {% trans "Real-time water level monitoring and predictive analytics for optimal irrigation management and water conservation." %}
                     </p>
                     <div class="template-status status-external">
                         <i class="fas fa-external-link-alt"></i>
-                        Active
+                        {% trans "Active" %}
                     </div>
                 </a>
 
@@ -708,13 +724,13 @@
                     <div class="template-icon">
                         <i class="fas fa-clipboard-list"></i>
                     </div>
-                    <h3 class="template-title">Farmer Survey</h3>
+                    <h3 class="template-title">{% trans "Farmer Survey" %}</h3>
                     <p class="template-description">
-                        Comprehensive survey analysis tools for gathering and processing farmer feedback, crop performance, and field conditions.
+                        {% trans "Comprehensive survey analysis tools for gathering and processing farmer feedback, crop performance, and field conditions." %}
                     </p>
                     <div class="template-status status-development">
                         <i class="fas fa-tools"></i>
-                        Under Development
+                        {% trans "Under Development" %}
                     </div>
                 </a>
 
@@ -723,13 +739,13 @@
                     <div class="template-icon">
                         <i class="fas fa-cloud-sun"></i>
                     </div>
-                    <h3 class="template-title">Evapotranspiration</h3>
+                    <h3 class="template-title">{% trans "Evapotranspiration" %}</h3>
                     <p class="template-description">
-                        Calculate crop water requirements using advanced ET models, weather data, and soil moisture analytics for precision irrigation.
+                        {% trans "Calculate crop water requirements using advanced ET models, weather data, and soil moisture analytics for precision irrigation." %}
                     </p>
                     <div class="template-status status-development">
                         <i class="fas fa-tools"></i>
-                        Under Development
+                        {% trans "Under Development" %}
                     </div>
                 </a>
 
@@ -738,13 +754,13 @@
                     <div class="template-icon">
                         <i class="fas fa-map-marked-alt"></i>
                     </div>
-                    <h3 class="template-title">Field Mapping</h3>
+                    <h3 class="template-title">{% trans "Field Mapping" %}</h3>
                     <p class="template-description">
-                        Advanced GIS tools for field boundary mapping, crop monitoring, and spatial analysis of agricultural data and satellite imagery.
+                        {% trans "Advanced GIS tools for field boundary mapping, crop monitoring, and spatial analysis of agricultural data and satellite imagery." %}
                     </p>
                     <div class="template-status status-development">
                         <i class="fas fa-tools"></i>
-                        Under Development
+                        {% trans "Under Development" %}
                     </div>
                 </a>
             </div>
@@ -752,20 +768,20 @@
             <!-- Footer Section -->
             <div class="footer-section">
                 <p class="help-text">
-                    Need help getting started? Our technical team is here to assist you.
+                    {% trans "Need help getting started? Our technical team is here to assist you." %}
                 </p>
                 <div class="contact-info">
                     <div class="contact-item">
                         <i class="fas fa-file-upload contact-icon"></i>
-                        Upload correct file formats
+                        {% trans "Upload correct file formats" %}
                     </div>
                     <div class="contact-item">
                         <i class="fas fa-users contact-icon"></i>
-                        Contact Digi-Village Tech Team
+                        {% trans "Contact Digi-Village Tech Team" %}
                     </div>
                     <div class="contact-item">
                         <i class="fas fa-question-circle contact-icon"></i>
-                        Technical support available
+                        {% trans "Technical support available" %}
                     </div>
                 </div>
             </div>

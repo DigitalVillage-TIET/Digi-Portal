@@ -3,15 +3,18 @@
 from django.shortcuts import render, redirect
 from django.core.files.storage import default_storage
 import pandas as pd
-from io import BytesIO
+from io import BytesIO, StringIO
 from django.http import HttpResponse, JsonResponse
 import datetime  # Add this import
-from io import BytesIO
+import io
+import zipfile
+import re
+import jwt
 # In views.py, update the imports section:
 from .utils import (
     kharif2024_farms, get_2024plots,
     kharif2025_farms, get_2025plots, get_2025plots_combined,
-    get_2025plots_plotly, get_2025plots_combined_plotly,  # Add these new imports
+    get_2025plots_plotly, get_2025plots_combined_plotly, 
     encode_plot_to_base64, get_tables,
     calculate_avg_m3_per_acre, generate_group_analysis_plot,
     load_and_validate_data,
@@ -23,7 +26,9 @@ from .utils import (
     create_zip_package,
     prepare_comprehensive_downloads,
     get_per_farm_downloads,
-    get_village_level_analysis
+    get_village_level_analysis,
+    load_master_from_google_sheets,
+    print_status
 )
 from django.urls import reverse
 from functools import wraps
@@ -315,7 +320,17 @@ def water_dashboard_view(request):
         context['available_farms'] = sorted(merged_df["Farm ID"].unique())
         context['available_villages'] = sorted(merged_df["Village"].dropna().unique()) if 'Village' in merged_df.columns else []
         context['selected_farm'] = context['available_farms'][0] if context['available_farms'] else None
-
+        farm = context['selected_farm']
+        context['per_farm_downloads'] = [
+    {
+        'filename': f"farm_{sanitize_filename(farm)}_{suffix}.csv",
+        'display_name': label
+    }
+    for suffix, label in zip(
+        ['detailed', 'summary', 'daily_avg'],
+        [("Detailed Data"), ("Summary Row"), ("Daily Averages")]
+    )
+    ] if farm else []
         # 🔍 Load Valid Custom Groups
         custom_groups_df = {}
         for k, v in session.get('custom_groups', {}).items():
@@ -703,6 +718,7 @@ def water_dashboard_view(request):
     # ----------------------------------
     return render(request, 'water_meters.html', context)
 
+
 # Helper for pretty download names
 def pretty_download_name(filename):
     mapping = {
@@ -845,7 +861,6 @@ def meter_reading_25_view(request):
         
             # Load master data from Google Sheets
             print_status("Loading master data from Google Sheets...", "process")
-            from .utils import load_master_from_google_sheets
             master25 = load_master_from_google_sheets()
             
             if master25:
@@ -1365,4 +1380,25 @@ def api_token(request):
             return JsonResponse({'detail': 'Invalid credentials'}, status=401)
     return JsonResponse({'detail': 'Method not allowed'}, status=405)
 
-    
+#VIEWS FOR KNOWLEDGE BASE SECTION TEMPLATE FILES
+
+def agriculture_view(request):
+    return render(request, 'agriculture.html')
+
+def crop_view(request):
+    return render(request, 'crop_residue.html')
+
+def dsr_view(request):
+    return render(request, 'dsr.html')
+
+def farmers_view(request):
+    return render(request, 'farmers.html')
+
+def stages_view(request):
+    return render(request, 'stages.html')
+
+def tpr_view(request):
+    return render(request, 'tpr.html')
+
+def tubewell_view(request):
+    return render(request, 'tubewell.html')

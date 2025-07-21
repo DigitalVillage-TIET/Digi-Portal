@@ -1,11 +1,15 @@
+{% load i18n %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{LANGUAGE_CODE}}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DIGI-VI | Digital Village Intelligence Platform</title>
+    <title>{% blocktrans %}DIGI-VI | Digital Village Intelligence Platform{% endblocktrans %}</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+    <script src="https://unpkg.com/micromodal/dist/micromodal.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -14,70 +18,78 @@
         }
 
         :root {
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+/* 🌱 Light Theme – Green & White */
+:root[data-theme="light"] {
+    --bg-primary: #f8fff5; /* very light greenish white */
+    --bg-secondary: #ffffff;
+    --bg-tertiary: #e6f4ea; /* light green */
+    
+    --text-primary: #0c4f2a;
+    --text-secondary: #2e7d46;
+    --text-tertiary: #4caf50;
 
-        /* Light Theme */
-        :root[data-theme="light"] {
-            --bg-primary: #f8fafc;
-            --bg-secondary: #ffffff;
-            --bg-tertiary: #f1f5f9;
-            --text-primary: #0f172a;
-            --text-secondary: #475569;
-            --text-tertiary: #64748b;
-            --border-color: #e2e8f0;
-            
-            --accent-primary: #3b82f6;
-            --accent-secondary: #8b5cf6;
-            --accent-tertiary: #06b6d4;
-            --accent-success: #10b981;
-            --accent-warning: #f59e0b;
-            --accent-danger: #ef4444;
-            
-            --gradient-primary: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
-            --gradient-secondary: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
-            --gradient-accent: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
-            --gradient-hero: linear-gradient(135deg, #dbeafe 0%, #e9d5ff 100%);
-            
-            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
-            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
-            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
-            --shadow-glow: 0 0 20px rgba(59, 130, 246, 0.15);
-            
-            --glass-bg: rgba(255, 255, 255, 0.7);
-            --glass-border: rgba(255, 255, 255, 0.2);
-        }
+    --border-color: #cde9d7;
 
-        /* Dark Theme */
-        :root[data-theme="dark"] {
-            --bg-primary: #0a0a0a;
-            --bg-secondary: #111111;
-            --bg-tertiary: #1a1a1a;
-            --text-primary: #f1f5f9;
-            --text-secondary: #cbd5e1;
-            --text-tertiary: #94a3b8;
-            --border-color: #27272a;
-            
-            --accent-primary: #60a5fa;
-            --accent-secondary: #a78bfa;
-            --accent-tertiary: #22d3ee;
-            --accent-success: #34d399;
-            --accent-warning: #fbbf24;
-            --accent-danger: #f87171;
-            
-            --gradient-primary: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
-            --gradient-secondary: linear-gradient(135deg, #22d3ee 0%, #60a5fa 100%);
-            --gradient-accent: linear-gradient(135deg, #a78bfa 0%, #f472b6 100%);
-            --gradient-hero: linear-gradient(135deg, #1e293b 0%, #312e81 100%);
-            
-            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
-            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.3);
-            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.4);
-            --shadow-glow: 0 0 30px rgba(96, 165, 250, 0.3);
-            
-            --glass-bg: rgba(30, 30, 30, 0.6);
-            --glass-border: rgba(255, 255, 255, 0.1);
-        }
+    --accent-primary: #0c4f2a;  /* deep green */
+    --accent-secondary: #349a62; /* lighter green */
+    --accent-tertiary: #6fcf97;
+    --accent-success: #3cb371;
+    --accent-warning: #f59e0b;
+    --accent-danger: #ef4444;
+
+    --gradient-primary: linear-gradient(135deg, #0c4f2a 0%, #349a62 100%);
+    --gradient-secondary: linear-gradient(135deg, #349a62 0%, #6fcf97 100%);
+    --gradient-accent: linear-gradient(135deg, #0c4f2a 0%, #6fcf97 100%);
+    --gradient-hero: linear-gradient(135deg, #e6f4ea 0%, #cde9d7 100%);
+
+    --shadow-sm: 0 1px 3px rgba(12, 79, 42, 0.1);
+    --shadow-md: 0 4px 6px rgba(12, 79, 42, 0.1);
+    --shadow-lg: 0 10px 15px rgba(12, 79, 42, 0.15);
+    --shadow-glow: 0 0 20px rgba(52, 154, 98, 0.2);
+
+    --glass-bg: rgba(255, 255, 255, 0.7);
+    --glass-border: rgba(52, 154, 98, 0.2);
+}
+
+
+
+/* 🌿 Dark Theme – Green & Black */
+:root[data-theme="dark"] {
+    --bg-primary: #0a0a0a;
+    --bg-secondary: #0f0f0f;
+    --bg-tertiary: #1a1a1a;
+
+    --text-primary: #d9f7e5;
+    --text-secondary: white;
+    --text-tertiary: #6fcf97;
+
+    --border-color: #1f1f1f;
+
+    --accent-primary: #349a62;
+    --accent-secondary: #6fcf97;
+    --accent-tertiary: #3cb371;
+    --accent-success: #34d399;
+    --accent-warning: #fbbf24;
+    --accent-danger: #f87171;
+
+    --gradient-primary: linear-gradient(135deg, #0c4f2a 0%, #349a62 100%);
+    --gradient-secondary: linear-gradient(135deg, #1f7a47 0%, #6fcf97 100%);
+    --gradient-accent: linear-gradient(135deg, #349a62 0%, #3cb371 100%);
+    --gradient-hero: linear-gradient(135deg, #1a1a1a 0%, Black 100%);
+
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.4);
+    --shadow-glow: 0 0 30px rgba(52, 154, 98, 0.3);
+
+    --glass-bg: rgba(20, 40, 30, 0.6);
+    --glass-border: rgba(255, 255, 255, 0.05);
+}
+
+
+
 
         body {
             font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -155,7 +167,7 @@
 
         /* Navigation */
         .nav-header {
-            position: fixed;
+            position: relative;
             top: 0;
             left: 0;
             right: 0;
@@ -170,7 +182,7 @@
         .nav-content {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 0 1rem;
+            padding: 0 2rem;
             height: 100%;
             display: flex;
             align-items: center;
@@ -180,18 +192,17 @@
         .nav-left {
             display: flex;
             align-items: center;
-            gap: 2rem;
-            flex: 1;
+            gap: 3rem;
         }
 
         .nav-logo-group {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 2rem;
         }
 
         .nav-logo {
-            height: 35px;
+            height: 45px;
             width: auto;
             filter: brightness(1.1);
             transition: var(--transition);
@@ -203,13 +214,12 @@
         }
 
         .nav-brand {
-            font-size: 1.25rem;
+            font-size: 1.75rem;
             font-weight: 700;
             background: var(--gradient-primary);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            letter-spacing: 0.5px;
-            white-space: nowrap;
+            letter-spacing: 1px;
         }
 
         .nav-links {
@@ -225,7 +235,6 @@
             font-size: 0.95rem;
             transition: var(--transition);
             position: relative;
-            white-space: nowrap;
         }
 
         .nav-link::after {
@@ -250,7 +259,7 @@
         .nav-right {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
+            gap: 0.5rem;
         }
 
         /* Theme Toggle */
@@ -258,13 +267,12 @@
             background: var(--bg-tertiary);
             border: 1px solid var(--border-color);
             border-radius: 50px;
-            padding: 3px;
+            padding: 4px;
             cursor: pointer;
-            width: 60px;
-            height: 30px;
+            width: 72px;
+            height: 36px;
             position: relative;
             transition: var(--transition);
-            min-width: 60px;
         }
 
         .theme-toggle:hover {
@@ -274,294 +282,26 @@
 
         .theme-toggle-slider {
             position: absolute;
-            width: 24px;
-            height: 24px;
+            width: 28px;
+            height: 28px;
             background: var(--gradient-primary);
             border-radius: 50%;
-            top: 2px;
+            top: 3px;
             transition: var(--transition);
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 11px;
-            box-shadow: var(--shadow-sm);
-        }
-
-        :root[data-theme="light"] .theme-toggle-slider {
-            left: 2px;
-        }
-
-        :root[data-theme="dark"] .theme-toggle-slider {
-            left: 32px;
-        }
-
-        /* Mobile Menu */
-        .mobile-menu-toggle {
-            display: none;
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border-color);
-            padding: 0.75rem;
-            border-radius: 12px;
-            cursor: pointer;
-            color: var(--text-primary);
-            transition: var(--transition);
-            min-width: 48px;
-            min-height: 48px;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .mobile-menu-toggle:hover {
-            background: var(--accent-primary);
-            color: white;
-            border-color: var(--accent-primary);
-        }
-
-        .mobile-menu-toggle:active {
-            transform: scale(0.95);
-        }
-
-        .hamburger {
-            display: flex;
-            flex-direction: column;
-            gap: 3px;
-            transition: var(--transition);
-        }
-
-        .hamburger span {
-            width: 20px;
-            height: 2px;
-            background: currentColor;
-            border-radius: 2px;
-            transition: var(--transition);
-        }
-
-        .mobile-menu-toggle.active .hamburger span:nth-child(1) {
-            transform: rotate(45deg) translate(6px, 6px);
-        }
-
-        .mobile-menu-toggle.active .hamburger span:nth-child(2) {
-            opacity: 0;
-        }
-
-        .mobile-menu-toggle.active .hamburger span:nth-child(3) {
-            transform: rotate(-45deg) translate(6px, -6px);
-        }
-
-        .mobile-menu {
-            position: fixed;
-            top: 80px;
-            left: 0;
-            right: 0;
-            background: var(--bg-secondary);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--glass-border);
-            padding: 0;
-            transform: translateY(-100%);
-            transition: var(--transition);
-            z-index: 999;
-            box-shadow: var(--shadow-lg);
-            max-height: calc(100vh - 80px);
-            overflow-y: auto;
-        }
-
-        .mobile-menu.active {
-            transform: translateY(0);
-        }
-
-        .mobile-menu-content {
-            padding: 2rem 1rem;
-        }
-
-        .mobile-menu-links {
-            display: flex;
-            flex-direction: column;
-            gap: 0;
-            margin-bottom: 2rem;
-        }
-
-        .mobile-nav-link {
-            color: var(--text-primary);
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 1.1rem;
-            padding: 1rem 1.5rem;
-            border-radius: 12px;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            position: relative;
-        }
-
-        .mobile-nav-link::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 4px;
-            height: 0;
-            background: var(--gradient-primary);
-            border-radius: 2px;
-            transition: height 0.3s ease;
-        }
-
-        .mobile-nav-link:hover::before,
-        .mobile-nav-link:active::before {
-            height: 60%;
-        }
-
-        .mobile-nav-link:hover,
-        .mobile-nav-link:active {
-            background: var(--glass-bg);
-            color: var(--accent-primary);
-            transform: translateX(8px);
-        }
-
-        .mobile-nav-link i {
-            font-size: 1.2rem;
-            width: 24px;
-        }
-
-        .mobile-menu-actions {
-            border-top: 1px solid var(--border-color);
-            padding-top: 1.5rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .mobile-btn {
-            padding: 1rem 1.5rem;
-            border-radius: 12px;
-            font-weight: 600;
-            font-size: 1rem;
-            text-decoration: none;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            cursor: pointer;
-            border: none;
-            min-height: 48px;
-        }
-
-        .mobile-btn-primary {
-            background: var(--gradient-primary);
-            color: white;
+            font-size: 14px;
             box-shadow: var(--shadow-md);
         }
 
-        .mobile-btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-lg);
+        :root[data-theme="light"] .theme-toggle-slider {
+            left: 3px;
         }
 
-        .mobile-theme-toggle {
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border-color);
-            color: var(--text-primary);
-        }
-
-        .mobile-theme-toggle:hover {
-            background: var(--accent-primary);
-            color: white;
-            border-color: var(--accent-primary);
-        }
-
-        /* Mobile Responsive */
-        @media (max-width: 768px) {
-            .nav-content {
-                padding: 0 1rem;
-            }
-
-            .nav-links {
-                display: none;
-            }
-
-            .mobile-menu-toggle {
-                display: flex;
-            }
-
-            .nav-logo-group {
-                gap: 0.75rem;
-            }
-
-            .nav-logo {
-                height: 30px;
-            }
-
-            .nav-brand {
-                font-size: 1rem;
-            }
-
-            .nav-right .btn {
-                display: none; /* Hide desktop member access button on mobile */
-            }
-
-            .theme-toggle {
-                width: 50px;
-                height: 26px;
-            }
-
-            .theme-toggle-slider {
-                width: 20px;
-                height: 20px;
-                font-size: 10px;
-            }
-
-            :root[data-theme="light"] .theme-toggle-slider {
-                left: 2px;
-            }
-
-            :root[data-theme="dark"] .theme-toggle-slider {
-                left: 26px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .nav-content {
-                padding: 0 0.75rem;
-            }
-
-            .nav-logo {
-                height: 28px;
-            }
-
-            .nav-brand {
-                font-size: 0.9rem;
-            }
-
-            .nav-right {
-                gap: 0.5rem;
-            }
-
-            .theme-toggle {
-                width: 45px;
-                height: 24px;
-            }
-
-            .theme-toggle-slider {
-                width: 18px;
-                height: 18px;
-                font-size: 9px;
-            }
-
-            :root[data-theme="dark"] .theme-toggle-slider {
-                left: 23px;
-            }
-
-            .mobile-menu-content {
-                padding: 1.5rem 0.75rem;
-            }
-
-            .mobile-nav-link {
-                font-size: 1rem;
-                padding: 0.875rem 1rem;
-            }
+        :root[data-theme="dark"] .theme-toggle-slider {
+            left: 39px;
         }
 
         /* Hero Section */
@@ -573,7 +313,10 @@
             position: relative;
             z-index: 2;
             padding: 120px 2rem 80px;
-            background: var(--gradient-hero);
+            background: 
+                    linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+                    url('https://i.ibb.co/t5dcn6Q/hoshiarpur-punjab-india-paddy-growing-fields-agricultural-rice-251580442-jpg.webp') no-repeat center center;
+                    background-size: cover;
         }
 
         .hero-content {
@@ -593,8 +336,219 @@
             }
         }
 
+        /*Knowledge base section*/
+
+        .knowledge-base {
+            padding: 120px 0 80px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .knowledge-base-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .knowledge-base-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .knowledge-base-title {
+            font-size: 3rem;
+            font-weight: 700;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .knowledge-base-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Carousel Container */
+        .carousel-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 24px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .carousel-track {
+            display: flex;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .carousel-item {
+            min-width: 100%;
+            padding: 4rem 3rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .carousel-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+            border-radius: 2px 2px 0 0;
+        }
+
+        .carousel-item h3 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            letter-spacing: -0.01em;
+        }
+
+        .carousel-item p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .carousel-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--accent-primary);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: var(--transition);
+            position: relative;
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+        }
+
+        .carousel-link::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--gradient-primary);
+            border-radius: 12px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .carousel-link:hover::before {
+            opacity: 1;
+        }
+
+        .carousel-link:hover {
+            color: white;
+            border-color: transparent;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .carousel-link span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .carousel-link::after {
+            content: '→';
+            position: relative;
+            z-index: 1;
+            transition: transform 0.3s ease;
+        }
+
+        .carousel-link:hover::after {
+            transform: translateX(4px);
+        }
+
+        /* Navigation */
+        .carousel-nav {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 0.75rem;
+            z-index: 10;
+        }
+
+        .carousel-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--border-color);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .carousel-dot.active {
+            background: var(--accent-primary);
+            transform: scale(1.2);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .carousel-dot:hover {
+            background: var(--accent-primary);
+            transform: scale(1.1);
+        }
+
+        /* Arrow Navigation */
+        .carousel-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            z-index: 10;
+            color: var(--text-primary);
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .carousel-arrow:hover {
+            background: var(--accent-primary);
+            color: white;
+            border-color: var(--accent-primary);
+            transform: translateY(-50%) scale(1.1);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .carousel-arrow.prev {
+            left: 2rem;
+        }
+
+        .carousel-arrow.next {
+            right: 2rem;
+        }
+
+
         .hero-title {
-            font-size: clamp(4rem, 10vw, 8rem);
+            font-size: clamp(2.5rem, 6vw, 5rem);
             font-weight: 800;
             background: var(--gradient-accent);
             -webkit-background-clip: text;
@@ -603,11 +557,18 @@
             letter-spacing: -0.02em;
             animation: glow 3s ease-in-out infinite alternate;
         }
-
         @keyframes glow {
-            from { filter: drop-shadow(0 0 20px rgba(139, 92, 246, 0.3)); }
-            to { filter: drop-shadow(0 0 30px rgba(139, 92, 246, 0.5)); }
-        }
+    from {
+        filter: drop-shadow(0 0 10px rgba(12, 79, 42, 0.4)); /* dark green */
+    }
+    to {
+        filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.7)); /* white */
+    }
+}
+
+
+
+
 
         .hero-subtitle {
             font-size: 1.75rem;
@@ -704,11 +665,13 @@
             padding: 6rem 2rem;
             position: relative;
             z-index: 2;
+            
         }
 
         .section-container {
             max-width: 1200px;
             margin: 0 auto;
+            
         }
 
         .section-header {
@@ -724,6 +687,8 @@
             -webkit-text-fill-color: transparent;
             margin-bottom: 1rem;
         }
+
+        
 
         .section-subtitle {
             font-size: 1.25rem;
@@ -781,84 +746,10 @@
             margin-bottom: 4rem;
         }
 
-        /* Professor Cards - Larger and More Prominent */
         .leaders-grid {
-            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-            gap: 3rem;
-            margin-bottom: 6rem; /* Extra space before research team */
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
         }
 
-        .professor-card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            border: 2px solid var(--glass-border);
-            border-radius: 24px;
-            padding: 4rem 3rem;
-            text-align: center;
-            transition: var(--transition);
-            position: relative;
-            overflow: hidden;
-            min-height: 420px;
-        }
-
-        .professor-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.1), transparent);
-            transition: left 0.8s;
-        }
-
-        .professor-card:hover::before {
-            left: 100%;
-        }
-
-        .professor-card:hover {
-            transform: translateY(-15px) scale(1.02);
-            box-shadow: var(--shadow-lg), 0 0 40px rgba(59, 130, 246, 0.2);
-            border-color: var(--accent-primary);
-        }
-
-        .professor-photo {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin: 0 auto 2rem;
-            border: 4px solid var(--accent-primary);
-            transition: var(--transition);
-            position: relative;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-        }
-
-        .professor-card:hover .professor-photo {
-            transform: scale(1.08);
-            box-shadow: 0 0 40px rgba(59, 130, 246, 0.4);
-            border-color: var(--accent-secondary);
-        }
-
-        .professor-name {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            color: var(--text-primary);
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .professor-role {
-            color: var(--text-secondary);
-            font-size: 1.1rem;
-            line-height: 1.6;
-            margin-bottom: 1.5rem;
-            font-weight: 500;
-        }
-
-        /* Research Team Cards */
         .members-grid {
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
         }
@@ -946,8 +837,575 @@
             transform: translateY(-2px);
         }
 
-        /* Developer Cards - Creative Tech-Inspired Design */
-        .developer-card {
+        /* Modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+
+        .modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: var(--bg-secondary);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 3rem;
+            width: 90%;
+            max-width: 450px;
+            transform: scale(0.9);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .modal.active .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            width: 40px;
+            height: 40px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            color: var(--text-secondary);
+        }
+
+        .modal-close:hover {
+            background: var(--accent-danger);
+            color: white;
+            border-color: var(--accent-danger);
+        }
+
+        .modal-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 1rem;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .error-message {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--accent-danger);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            text-align: center;
+            display: none;
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-toggle {
+            display: none;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            padding: 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            color: var(--text-primary);
+        }
+
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 80px;
+            left: 0;
+            right: 0;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 2rem;
+            transform: translateY(-100%);
+            transition: var(--transition);
+            z-index: 999;
+        }
+
+        .mobile-menu.active {
+            transform: translateY(0);
+        }
+
+        .mobile-menu-links {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--bg-tertiary);
+            padding: 3rem 2rem;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .footer-text {
+            color: var(--text-secondary);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu-toggle {
+                display: flex;
+            }
+
+            .nav-logo-group {
+                gap: 1rem;
+            }
+
+            .nav-brand {
+                font-size: 1.25rem;
+            }
+
+            .hero-title {
+                font-size: clamp(3rem, 8vw, 5rem);
+            }
+
+            .hero-cta {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .leaders-grid,
+            .members-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .team-grid {
+                gap: 1.5rem;
+            }
+        }
+
+        /* Loading Animation */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+            transition: opacity 0.5s, visibility 0.5s;
+        }
+
+        .loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid var(--border-color);
+            border-top-color: var(--accent-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+     /* Research Studies Section */
+.research-section {
+    background: black;
+    padding-top: 0;
+}
+.research-swiper {
+    width: 100vw;
+    max-width: 100vw;
+    margin-left: 50%;
+    transform: translateX(-50%);
+    position: relative;
+    z-index: 2;
+}
+.research-card {
+    min-height: 65vh;
+    height: 65vw;
+    max-height: 80vh;
+    width: 100vw;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: flex-end;
+    position: relative;
+    overflow: hidden;
+    
+}
+.research-glass-panel {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: none;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 2rem 1.5rem 1.5rem 1.5rem;
+    margin: 0;
+    color: #fff;
+    backdrop-filter: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    z-index: 2;
+}
+
+.research-title {
+    font-size: 2rem;
+    font-weight: 700;
+    background: white;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 5px;
+}
+.research-desc {
+    color: white;
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+}
+.research-learn-btn {
+    font-size: 1rem;
+    padding: 0.6rem 1.5rem;
+    border-radius: 8px;
+    width: fit-content;
+    margin: 0 auto;
+    background: var(--gradient-accent);
+    color: #fff;
+    box-shadow: var(--shadow-md);
+    border: none;
+    transition: var(--transition);
+    margin-bottom: 1rem;
+    align-self: flex-start;
+    margin-top: auto;
+}
+.research-learn-btn:hover {
+    background: var(--gradient-primary);
+    transform: translateY(-2px) scale(1.04);
+    box-shadow: var(--shadow-lg), var(--shadow-glow);
+}
+
+/* Swiper navigation custom colors */
+.research-swiper .swiper-button-next,
+.research-swiper .swiper-button-prev {
+    color: var(--accent-primary);
+    filter: drop-shadow(0 2px 8px rgba(59,130,246,0.15));
+}
+.research-swiper .swiper-pagination-bullet {
+    background: var(--accent-primary);
+    opacity: 0.5;
+}
+.research-swiper .swiper-pagination-bullet-active {
+    background: var(--accent-secondary);
+    opacity: 1;
+}
+
+/* Modal Styles */
+.research-modal {
+    display: none;
+    position: fixed;
+    z-index: 3000;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 2rem 0;
+}
+.research-modal.active {
+    display: flex;
+}
+.research-modal-overlay {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    left: 0;
+    top: 0;
+    background: rgba(10, 10, 20, 0.85);
+    z-index: 1;
+    transition: var(--transition);
+}
+.research-modal-content {
+    position: relative;
+    z-index: 2;
+    background: var(--bg-secondary);
+    border-radius: 24px;
+    box-shadow: var(--shadow-lg);
+    padding: 2.5rem 2.5rem 2rem 2.5rem;
+    max-width: 900px;
+    width: 90vw;
+    max-height: 90vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    animation: fadeInUp 0.5s;
+}
+.research-modal-close {
+    position: absolute;
+    top: 1.2rem;
+    right: 1.2rem;
+    background: var(--accent-danger);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 2rem;
+    cursor: pointer;
+    box-shadow: var(--shadow-md);
+    transition: var(--transition);
+    z-index: 3;
+}
+.research-modal-close:hover {
+    background: var(--accent-primary);
+}
+
+/* --- NEW: Gallery, Captions, and Modal Content Layout --- */
+.research-modal-body {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.research-modal-text.intro-text {
+    font-size: 1.1rem;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.research-image-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    justify-content: center;
+    margin: 0.5rem 0 0.5rem 0;
+}
+.research-figure {
+    flex: 1 1 calc(33.33% - 1.5rem);
+    max-width: calc(33.33% - 1.5rem);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+    box-sizing: border-box;
+    text-align: center;
+}
+.research-img {
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    object-fit: cover;
+    box-shadow: var(--shadow-md);
+    display: block;
+}
+.research-figcaption {
+    margin-top: 0.5rem;
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.3;
+}
+
+.research-modal-text.main-content {
+    margin-top: 0.5rem;
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+    color: var(--text-primary);
+}
+.research-modal-text.main-content h3 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.5rem;
+}
+.research-modal-text.main-content p {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.research-modal-video {
+    width: 100%;
+    margin-top: 1rem;
+}
+.research-modal-video iframe {
+    width: 100%;
+    height: 315px;
+    border-radius: 14px;
+    box-shadow: var(--shadow-md);
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+    .research-figure {
+        flex: 1 1 calc(50% - 1.5rem);
+        max-width: calc(50% - 1.5rem);
+    }
+}
+@media (max-width: 600px) {
+    .research-image-gallery {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    .research-figure {
+        flex: 1 1 100%;
+        max-width: 100%;
+    }
+    .research-modal-video iframe {
+        height: 200px;
+    }
+    .research-modal-content {
+        padding: 1.2rem 0.5rem 1rem 0.5rem;
+    }
+    .research-glass-panel {
+        margin: 1rem;
+        padding: 1.2rem 1.2rem 1rem 1.2rem;
+        min-width: 0;
+        max-width: 95vw;
+    }
+}
+
+/* Card image background */
+.research-card-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+   
+}
+.background-1 {
+    background: rgba(20,20,30,0.55);
+    border-radius: 18px;
+    padding: 2rem;
+    display: inline-block;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.research-modal-video-slider {
+  width: 100%;
+  margin-top: 1rem;
+}
+.research-video-swiper {
+  width: 100%;
+}
+.research-video-swiper .swiper-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.research-video-swiper iframe {
+  width: 100%;
+  height: 315px;
+  border-radius: 14px;
+  box-shadow: var(--shadow-md);
+}
+@media (max-width: 600px) {
+  .research-video-swiper iframe {
+    height: 200px;
+  }
+}
+.research-video-swiper .swiper-button-next,
+.research-video-swiper .swiper-button-prev {
+  color: var(--accent-primary);
+  filter: drop-shadow(0 2px 8px rgba(59,130,246,0.15));
+}
+.research-video-swiper .swiper-pagination-bullet {
+  background: var(--accent-primary);
+  opacity: 0.5;
+}
+.research-video-swiper .swiper-pagination-bullet-active {
+  background: var(--accent-secondary);
+  opacity: 1;
+}
+
+.language-button {
+    background: transparent;
+    color: #6fcf97;
+    border: 2px solid #349a62;
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.language-button:hover {
+    background-color: #349a62;
+    color: black;
+}
+
+.developer-card {
             background: var(--bg-secondary);
             border: 1px solid var(--border-color);
             border-radius: 20px;
@@ -1097,504 +1555,22 @@
             z-index: 1;
         }
 
-        /* Section Spacing */
-        .section-divider {
-            height: 4rem;
-        }
 
-        /* Modal */
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(10px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 2000;
-            opacity: 0;
-            visibility: hidden;
-            transition: var(--transition);
-        }
+ 
 
-        .modal.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .modal-content {
-            background: var(--bg-secondary);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            padding: 3rem;
-            width: 90%;
-            max-width: 450px;
-            transform: scale(0.9);
-            transition: var(--transition);
-            position: relative;
-        }
-
-        .modal.active .modal-content {
-            transform: scale(1);
-        }
-
-        .modal-close {
-            position: absolute;
-            top: 1.5rem;
-            right: 1.5rem;
-            width: 40px;
-            height: 40px;
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border-color);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: var(--transition);
-            color: var(--text-secondary);
-        }
-
-        .modal-close:hover {
-            background: var(--accent-danger);
-            color: white;
-            border-color: var(--accent-danger);
-        }
-
-        .modal-title {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 2rem;
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-align: center;
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-            color: var(--text-primary);
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 1rem;
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            color: var(--text-primary);
-            font-size: 1rem;
-            transition: var(--transition);
-        }
-
-        .form-input:focus {
-            outline: none;
-            border-color: var(--accent-primary);
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-        }
-
-        .error-message {
-            background: rgba(239, 68, 68, 0.1);
-            color: var(--accent-danger);
-            padding: 1rem;
-            border-radius: 8px;
-            margin-top: 1rem;
-            text-align: center;
-            display: none;
-        }
-
-        /* Mobile Menu */
-        .mobile-menu-toggle {
-            display: none;
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border-color);
-            padding: 0.75rem;
-            border-radius: 12px;
-            cursor: pointer;
-            color: var(--text-primary);
-            transition: var(--transition);
-            min-width: 48px;
-            min-height: 48px;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .mobile-menu-toggle:hover {
-            background: var(--accent-primary);
-            color: white;
-            border-color: var(--accent-primary);
-        }
-
-        .mobile-menu-toggle:active {
-            transform: scale(0.95);
-        }
-
-        .hamburger {
-            display: flex;
-            flex-direction: column;
-            gap: 3px;
-            transition: var(--transition);
-        }
-
-        .hamburger span {
-            width: 20px;
-            height: 2px;
-            background: currentColor;
-            border-radius: 2px;
-            transition: var(--transition);
-        }
-
-        .mobile-menu-toggle.active .hamburger span:nth-child(1) {
-            transform: rotate(45deg) translate(6px, 6px);
-        }
-
-        .mobile-menu-toggle.active .hamburger span:nth-child(2) {
-            opacity: 0;
-        }
-
-        .mobile-menu-toggle.active .hamburger span:nth-child(3) {
-            transform: rotate(-45deg) translate(6px, -6px);
-        }
-
-        .mobile-menu {
-            position: fixed;
-            top: 80px;
-            left: 0;
-            right: 0;
-            background: var(--bg-secondary);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--glass-border);
-            padding: 0;
-            transform: translateY(-100%);
-            transition: var(--transition);
-            z-index: 999;
-            box-shadow: var(--shadow-lg);
-            max-height: calc(100vh - 80px);
-            overflow-y: auto;
-        }
-
-        .mobile-menu.active {
-            transform: translateY(0);
-        }
-
-        .mobile-menu-content {
-            padding: 2rem 1rem;
-        }
-
-        .mobile-menu-links {
-            display: flex;
-            flex-direction: column;
-            gap: 0;
-            margin-bottom: 2rem;
-        }
-
-        .mobile-nav-link {
-            color: var(--text-primary);
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 1.1rem;
-            padding: 1rem 1.5rem;
-            border-radius: 12px;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            position: relative;
-        }
-
-        .mobile-nav-link::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 4px;
-            height: 0;
-            background: var(--gradient-primary);
-            border-radius: 2px;
-            transition: height 0.3s ease;
-        }
-
-        .mobile-nav-link:hover::before,
-        .mobile-nav-link:active::before {
-            height: 60%;
-        }
-
-        .mobile-nav-link:hover,
-        .mobile-nav-link:active {
-            background: var(--glass-bg);
-            color: var(--accent-primary);
-            transform: translateX(8px);
-        }
-
-        .mobile-nav-link i {
-            font-size: 1.2rem;
-            width: 24px;
-        }
-
-        .mobile-menu-actions {
-            border-top: 1px solid var(--border-color);
-            padding-top: 1.5rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .mobile-btn {
-            padding: 1rem 1.5rem;
-            border-radius: 12px;
-            font-weight: 600;
-            font-size: 1rem;
-            text-decoration: none;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            cursor: pointer;
-            border: none;
-            min-height: 48px;
-        }
-
-        .mobile-btn-primary {
-            background: var(--gradient-primary);
-            color: white;
-            box-shadow: var(--shadow-md);
-        }
-
-        .mobile-btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .mobile-theme-toggle {
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border-color);
-            color: var(--text-primary);
-        }
-
-        .mobile-theme-toggle:hover {
-            background: var(--accent-primary);
-            color: white;
-            border-color: var(--accent-primary);
-        }
-
-        /* Mobile Responsive */
-        @media (max-width: 768px) {
-            .nav-content {
-                padding: 0 1rem;
-            }
-
-            .nav-links {
-                display: none;
-            }
-
-            .mobile-menu-toggle {
-                display: flex;
-            }
-
-            .nav-logo-group {
-                gap: 0.75rem;
-            }
-
-            .nav-logo {
-                height: 30px;
-            }
-
-            .nav-brand {
-                font-size: 1rem;
-            }
-
-            .nav-right .btn {
-                display: none; /* Hide desktop member access button on mobile */
-            }
-
-            .theme-toggle {
-                width: 50px;
-                height: 26px;
-            }
-
-            .theme-toggle-slider {
-                width: 20px;
-                height: 20px;
-                font-size: 10px;
-            }
-
-            :root[data-theme="light"] .theme-toggle-slider {
-                left: 2px;
-            }
-
-            :root[data-theme="dark"] .theme-toggle-slider {
-                left: 26px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .nav-content {
-                padding: 0 0.75rem;
-            }
-
-            .nav-logo {
-                height: 28px;
-            }
-
-            .nav-brand {
-                font-size: 0.9rem;
-            }
-
-            .nav-right {
-                gap: 0.5rem;
-            }
-
-            .theme-toggle {
-                width: 45px;
-                height: 24px;
-            }
-
-            .theme-toggle-slider {
-                width: 18px;
-                height: 18px;
-                font-size: 9px;
-            }
-
-            :root[data-theme="dark"] .theme-toggle-slider {
-                left: 23px;
-            }
-
-            .mobile-menu-content {
-                padding: 1.5rem 0.75rem;
-            }
-
-            .mobile-nav-link {
-                font-size: 1rem;
-                padding: 0.875rem 1rem;
-            }
-        }
-
-        /* Footer */
-        .footer {
-            background: var(--bg-tertiary);
-            padding: 3rem 2rem;
-            text-align: center;
-            border-top: 1px solid var(--border-color);
-        }
-
-        .footer-text {
-            color: var(--text-secondary);
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
-
-            .mobile-menu-toggle {
-                display: flex;
-            }
-
-            .nav-logo-group {
-                gap: 1rem;
-            }
-
-            .nav-brand {
-                font-size: 1.25rem;
-            }
-
-            .hero-title {
-                font-size: clamp(3rem, 8vw, 5rem);
-            }
-
-            .hero-cta {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .section-title {
-                font-size: 2rem;
-            }
-
-            .leaders-grid,
-            .members-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .leaders-grid {
-                margin-bottom: 4rem;
-            }
-
-            .team-grid {
-                gap: 1.5rem;
-            }
-
-            .professor-card {
-                min-height: auto;
-                padding: 3rem 2rem;
-            }
-
-            .professor-photo {
-                width: 130px;
-                height: 130px;
-            }
-
-            .professor-name {
-                font-size: 1.6rem;
-            }
-        }
-
-        /* Loading Animation */
-        .loader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--bg-primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 3000;
-            transition: opacity 0.5s, visibility 0.5s;
-        }
-
-        .loader.hidden {
-            opacity: 0;
-            visibility: hidden;
-        }
-
-        .loader-spinner {
-            width: 50px;
-            height: 50px;
-            border: 3px solid var(--border-color);
-            border-top-color: var(--accent-primary);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
     </style>
 </head>
 <body>
+
     <!-- Loading Screen -->
     <div class="loader" id="loader">
         <div class="loader-spinner"></div>
     </div>
-
+    
     <!-- Background Effects -->
     <div class="bg-animation"></div>
     <div class="particles" id="particles"></div>
-
+    
     <!-- Navigation -->
     <nav class="nav-header">
         <div class="nav-content">
@@ -1605,174 +1581,538 @@
                     <img src="https://i.ibb.co/Tq4YXfzn/tel-aviv-university-tau4054.jpg" alt="TAU" class="nav-logo">
                 </div>
                 <div class="nav-links">
-                    <a href="#home" class="nav-link">Home</a>
-                    <a href="#project" class="nav-link">Project</a>
-                    <a href="#team" class="nav-link">Team</a>
-                    <a href="#developers" class="nav-link">Developers</a>
+                    <a href="#home" class="nav-link">{% trans "Home" %}</a>
+                    <a href="#research-studies" class="nav-link">{% trans "Research Studies" %}</a>
+                    <a href="#knowledge-base" class="nav-link">{% trans "Knowledge Base" %}</a>
+                    <a href="#team" class="nav-link">{% trans "Team" %}</a>
                 </div>
             </div>
             <div class="nav-right">
                 <button class="btn btn-primary" onclick="openModal()">
-                    <i class="fas fa-sign-in-alt"></i> Member Access
+                    <i class="fas fa-sign-in-alt"></i> {% trans "Member Access" %}
                 </button>
-                <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
+                <form action="{% url 'set_language' %}" method="post" style="display:inline; margin-right: 10px;">
+                    {% csrf_token %}
+                    <input name="next" type="hidden" value="{{ request.path }}">
+                    <input type="hidden" name="language" value="{% if LANGUAGE_CODE == 'en' %}pa{% else %}en{% endif %}">
+                    <button type="submit" class="language-button">
+                        {% if LANGUAGE_CODE == 'en' %}
+                            {% trans "Switch to Punjabi" %}
+                        {% else %}
+                            {% trans "Switch to English" %}
+                        {% endif %}
+                    </button>
+                </form>
+                <button class="theme-toggle" onclick="toggleTheme()" title="{% trans 'Toggle theme' %}">
                     <div class="theme-toggle-slider">
                         <i class="fas fa-sun" id="theme-icon"></i>
                     </div>
                 </button>
-                <button class="mobile-menu-toggle" onclick="toggleMobileMenu()" id="mobileToggle">
-                    <div class="hamburger">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </div>
+                <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                    <i class="fas fa-bars"></i>
                 </button>
             </div>
         </div>
     </nav>
-
+    
     <!-- Mobile Menu -->
     <div class="mobile-menu" id="mobileMenu">
-        <div class="mobile-menu-content">
-            <div class="mobile-menu-links">
-                <a href="#home" class="mobile-nav-link" onclick="toggleMobileMenu()">
-                    <i class="fas fa-home"></i> Home
-                </a>
-                <a href="#project" class="mobile-nav-link" onclick="toggleMobileMenu()">
-                    <i class="fas fa-rocket"></i> Project
-                </a>
-                <a href="#team" class="mobile-nav-link" onclick="toggleMobileMenu()">
-                    <i class="fas fa-users"></i> Team
-                </a>
-                <a href="#developers" class="mobile-nav-link" onclick="toggleMobileMenu()">
-                    <i class="fas fa-code"></i> Developers
-                </a>
-            </div>
-            <div class="mobile-menu-actions">
-                <button class="mobile-btn mobile-btn-primary" onclick="openModal(); toggleMobileMenu();">
-                    <i class="fas fa-sign-in-alt"></i> Member Access
-                </button>
-                <button class="mobile-btn mobile-theme-toggle" onclick="toggleTheme()">
-                    <i class="fas fa-adjust"></i> <span id="mobile-theme-text">Switch Theme</span>
-                </button>
-            </div>
+        <div class="mobile-menu-links">
+            <a href="#home" class="nav-link" onclick="toggleMobileMenu()">{% trans "Home" %}</a>
+            <a href="#research-studies" class="nav-link" onclick="toggleMobileMenu()">{% trans "Project" %}</a>
+            <a href="#team" class="nav-link" onclick="toggleMobileMenu()">{% trans "Team" %}</a>
+            <a href="#developers" class="nav-link" onclick="toggleMobileMenu()">{% trans "Developers" %}</a>
         </div>
     </div>
-
+    
     <!-- Hero Section -->
     <section class="hero" id="home">
         <div class="hero-content">
-            <h1 class="hero-title">DIGI-VI</h1>
-            <h2 class="hero-subtitle">Digital Village Intelligence Platform</h2>
+            <h1 class="hero-title">{% trans "WATER SAVING RESEARCH STUDIES" %}</h1>
+            <h2 class="hero-subtitle">{% trans "Digital Village Project" %}</h2>
             <p class="hero-description">
-                Revolutionizing agriculture through cutting-edge data analytics, IoT sensors, and AI-driven insights 
-                for sustainable farming and water management
+                {% blocktrans %}
+                This is a research study conducted by the Thapar Institute of Engineering and Technology in Patiala and Tel-Aviv University from Israel. This study aims to understand the challenges faced by farmers in Punjab, particularly in the areas of irrigation, crop cultivation, and livelihoods. The information gathered from the farmers will help us identify practical solutions to improve farmer incomes and promote water-saving methods for irrigation.
+                {% endblocktrans %}
             </p>
+            <h2 class="hero-subtitle">{% trans "These studies are funded by TIET-TAU Center of Excellence for Food Security (T2CEFS) and Internation Growth Center (IGC) from UK." %}</h2>
             <div class="hero-cta">
                 <a href="#project" class="btn btn-primary">
-                    <i class="fas fa-rocket"></i> Explore Platform
+                    <i class="fas fa-rocket"></i> {% trans "Explore Platform" %}
                 </a>
                 <a href="#team" class="btn btn-secondary">
-                    <i class="fas fa-users"></i> Meet the Team
+                    <i class="fas fa-users"></i> {% trans "Meet the Team" %}
                 </a>
             </div>
         </div>
     </section>
-
-    <!-- Project Section -->
-    <section class="section" id="project">
+    
+    <!-- Research Studies Section -->
+    <section class="section" id="research-studies">
         <div class="section-container">
             <div class="section-header">
-                <h2 class="section-title">Project Overview</h2>
-                <p class="section-subtitle">Transforming Agriculture Through Technology</p>
-            </div>
-            <div class="glass-card">
-                <p class="project-content">
-                    DIGI-VI represents a paradigm shift in agricultural technology, leveraging advanced IoT sensors, 
-                    real-time data analytics, and machine learning algorithms to optimize water usage and crop yields. 
-                    Our platform integrates seamlessly with existing farm infrastructure while providing actionable 
-                    insights that empower farmers to make data-driven decisions. Through the TIET-TAU Center of 
-                    Excellence for Food Security (T2CEFS), we're addressing critical challenges in sustainable 
-                    agriculture and climate resilience, aligned with UN Sustainable Development Goals 2030.
-                </p>
+                <h2 class="section-title">{% trans "Research Studies" %}</h2>
+                <p class="section-subtitle">{% trans "Explore our latest research and innovations" %}</p>
             </div>
         </div>
-    </section>
+        <div class="research-swiper swiper">
+            <div class="swiper-wrapper">
+                <!-- Research Card 1: AWD -->
+                <div class="swiper-slide research-card">
+                    <img src="https://i.ibb.co/BHknz7wm/depositphotos-39435335-stock-photo-rice-plants.webp" alt="AWD" class="research-card-img">
+                    <div class="research-glass-panel">
+                        <h3 class="research-title">{% trans "Alternate Wetting Drying (AWD)" %}</h3>
+                        <p class="research-desc">{% trans "Efficient water-saving irrigation technique for rice cultivation." %}</p>
+                        <button class="btn btn-primary research-learn-btn" data-modal="modal-awd">
+                            <i class="fas fa-search"></i> {% trans "Learn More" %}
+                        </button>
+                    </div>
+                </div>
+                <!-- Research Card 2: Remote Controllers -->
+                <div class="swiper-slide research-card">
+                    <img src="https://i.ibb.co/d0ZMkSfY/photo-1621394988863-117a9fc6e77f.jpg" alt="Remote Controllers" class="research-card-img">
+                    <div class="research-glass-panel">
+                        <h3 class="research-title">{% trans "Remote Controllers" %}</h3>
+                        <p class="research-desc">{% trans "Remote controllers for irrigation and farm systems." %}</p>
+                        <button class="btn btn-primary research-learn-btn" data-modal="modal-rc">
+                            <i class="fas fa-search"></i> {% trans "Learn More" %}
+                        </button>
+                    </div>
+                </div>
+                <!-- Research Card 3: Direct Seeded Rice (DSR) -->
+                <div class="swiper-slide research-card">
+                    <img src="https://i.ibb.co/XNxxXMb/20250514-095557.jpg" alt="DSR" class="research-card-img">
+                    <div class="research-glass-panel">
+                        <h3 class="research-title">{% trans "Direct Seeded Rice (DSR)" %}</h3>
+                        <p class="research-desc">{% trans "Innovative rice planting method for water saving." %}</p>
+                        <button class="btn btn-primary research-learn-btn" data-modal="modal-dsr">
+                            <i class="fas fa-search"></i> {% trans "Learn More" %}
+                        </button>
+                    </div>
+                </div>
+                <!-- Research Card 4: Water Metering -->
+                <div class="swiper-slide research-card">
+                    <img src="https://i.ibb.co/RpcykvDV/360-F-123237023-ACOOa5b-D0m-RRP5-T1-Ss-VUEDvi-Zb-Ca13-L1.jpg" alt="Water Metering" class="research-card-img">
+                    <div class="research-glass-panel">
+                        <h3 class="research-title">{% trans "Water Metering" %}</h3>
+                        <p class="research-desc">{% trans "Real-time water usage monitoring and analytics." %}</p>
+                        <button class="btn btn-primary research-learn-btn" data-modal="modal-metering">
+                            <i class="fas fa-search"></i> {% trans "Learn More" %}
+                        </button>
+                    </div>
+                </div>
+                <!-- Research Card 5: Water Level Monitoring -->
+                <div class="swiper-slide research-card">
+                    <img src="https://i.ibb.co/5gZcYd9B/360-F-506015806-u0a26-Ck-S65-J3i-GJRljc4b-Cf-Je-NOks4-Nj.jpg" alt="Water Level Monitoring" class="research-card-img">
+                    <div class="research-glass-panel">
+                        <h3 class="research-title">{% trans "Water Level Monitoring" %}</h3>
+                        <p class="research-desc">{% trans "Continuous monitoring of field water levels." %}</p>
+                        <button class="btn btn-primary research-learn-btn" data-modal="modal-level">
+                            <i class="fas fa-search"></i> {% trans "Learn More" %}
+                        </button>
+                    </div>
+                </div>
+                <!-- Research Card 6: Remote Sensing -->
+                <div class="swiper-slide research-card">
+                    <img src="https://i.ibb.co/FkXWT3Gb/photo-1602989106211-81de671c23a9.jpg" alt="Remote Sensing" class="research-card-img">
+                    <div class="research-glass-panel">
+                        <h3 class="research-title">{% trans "Remote Sensing" %}</h3>
+                        <p class="research-desc">{% trans "Satellite-based agricultural monitoring." %}</p>
+                        <button class="btn btn-primary research-learn-btn" data-modal="modal-sensing">
+                            <i class="fas fa-search"></i> {% trans "Learn More" %}
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Swiper navigation -->
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-pagination"></div>
+        </div>
 
-    <!-- Team Section -->
+        <!-- Modal: AWD (unchanged) -->
+        <div class="research-modal" id="modal-awd">
+            <div class="research-modal-overlay"></div>
+            <div class="research-modal-content">
+                <button class="research-modal-close" aria-label="{% trans 'Close modal' %}">&times;</button>
+                <div class="research-modal-body">
+                    <div class="research-modal-text main-content">
+                        <h3 class="research-title">{% trans "Alternate Wetting Drying (AWD)" %}</h3>
+                        <p>{% blocktrans %}
+                            Rice is a major crop in Punjab, particularly during the Kharif season, where traditional transplanting methods (TPR) are commonly used. These methods require large quantities of water, typically sourced from groundwater via subsidized electric tubewells, leading to severe aquifer depletion. The transplanted paddy system demands continuous field flooding, especially during the early vegetative and flowering stages, making rice farming highly water-intensive and increasingly unsustainable. Compounding the issue, traditional rice cultivation is also a major contributor to methane emissions, accounting for around 12% of global methane output.
+                        {% endblocktrans %}</p>
+                    </div>
+                    <div class="research-image-gallery">
+                        <figure class="research-figure">
+                            <img src="https://i.ibb.co/cccqzh12/man-awd.png" alt="{% trans 'AWD field technician' %}" class="research-img">
+                            <figcaption class="research-figcaption">
+                                {% trans "A field technician demonstrating AWD pipes during rice cultivation in Punjab." %}
+                            </figcaption>
+                        </figure>
+                        <figure class="research-figure">
+                            <img src="https://i.ibb.co/0VhqZbZz/Screenshot-2025-07-03-202529.png" alt="{% trans 'AWD field close-up' %}" class="research-img">
+                            <figcaption class="research-figcaption">
+                                {% trans "Close-up view of AWD irrigation setup in the field." %}
+                            </figcaption>
+                        </figure>
+                    </div>
+                    <div class="research-modal-text main-content">
+                        <h3>{% trans "Detailed Explanation of the Research" %}</h3>
+                        <p>{% blocktrans %}
+                            In response, the Punjab government has introduced cash incentives to promote water-saving techniques like Direct Seeding of Rice (DSR) and micro-irrigation systems such as drip irrigation, though their adoption remains limited. As a more practical solution, researchers and institutions like the International Rice Research Institute (IRRI) advocate for modifying traditional practices through methods like Alternate Wetting and Drying (AWD).
+                        {% endblocktrans %}</p>
+                        <p>{% blocktrans %}
+                            Under AWD, instead of maintaining continuous flooding, farmers allow water levels to recede up to 5 cm below the soil before re-flooding to a shallow level, repeating this cycle during critical growth stages. This approach can significantly reduce water usage without sacrificing yields. The proposed study aims to evaluate whether payment-for-ecosystem-services (PES) incentives can effectively promote AWD adoption and quantify the actual water savings achieved by participating farmers.
+                        {% endblocktrans %}</p>
+                    </div>
+                    <div class="swiper-slide">
+                        <div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1102792911?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="Consent agreement explained"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>
+                    </div>
+                    <script src="https://player.vimeo.com/api/player.js"></script>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Modal: Remote Controllers -->
+        <div class="research-modal" id="modal-rc">
+            <div class="research-modal-overlay"></div>
+            <div class="research-modal-content">
+                <button class="research-modal-close" aria-label="{% trans 'Close modal' %}">&times;</button>
+                <div class="research-modal-body">
+                    <div class="research-modal-text main-content">
+                        <h3 class="research-title">{% trans "Remote Controllers" %}</h3>
+                        <p>{% blocktrans %}
+                            In Punjab, rice farming heavily depends on groundwater accessed via submersible pumps powered by state-subsidized electricity. However, the unpredictable 8-hour electricity schedule often forces farmers to keep pumps running continuously, especially during nighttime or rainy conditions, leading to over-irrigation and excessive groundwater extraction. Since there's no direct cost associated with water or electricity, there's little incentive for farmers to limit usage, despite the long-term threat to water sustainability.
+                        {% endblocktrans %}</p>
+                    </div>
+                    <div style="padding:56.25% 0 0 0;position:relative;">
+                        <iframe src="https://player.vimeo.com/video/1099583520?badge=0&amp;autopause=0"
+                            frameborder="0"
+                            allow="autoplay; fullscreen; picture-in-picture"
+                            style="position:absolute;top:0;left:0;width:100%;height:100%;"
+                            title="{% trans 'Remote controller' %}">
+                        </iframe>
+                    </div>
+                    <script src="https://player.vimeo.com/api/player.js"></script>
+                    <div class="research-modal-text main-content">
+                        <h3>{% trans "Detailed Explanation of the Research" %}</h3>
+                        <p>{% blocktrans %}
+                            Remote controllers offer a solution by allowing farmers to operate pumps remotely, even during odd hours or adverse weather. These smart systems improve irrigation scheduling, reduce unnecessary power consumption, and enhance convenience by minimizing the need for manual visits. Integrating sensors and automation, they can play a critical role in promoting sustainable water use and boosting farmer satisfaction.
+                        {% endblocktrans %}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Modal: Direct Seeded Rice (DSR) -->
+        <div class="research-modal" id="modal-dsr">
+            <div class="research-modal-overlay"></div>
+            <div class="research-modal-content">
+                <button class="research-modal-close" aria-label="{% trans 'Close modal' %}">&times;</button>
+                <div class="research-modal-body">
+                    <div class="research-modal-text main-content">
+                        <h3 class="research-title">{% trans "Direct Seeded Rice (DSR)" %}</h3>
+                        <p>{% blocktrans %}
+                            Direct Seeding of Rice (DSR) is an innovative planting method that eliminates the need for transplanting seedlings, saving water and labor while maintaining high yields.
+                        {% endblocktrans %}</p>
+                    </div>
+                    <div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1101271771?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="DSR Irrigation corrected"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>
+                    <div class="research-modal-text main-content">
+                        <h3>{% trans "Detailed Explanation of the Research" %}</h3>
+                        <p>{% blocktrans %}
+                            DSR reduces water consumption by avoiding continuous flooding and nursery raising. It shortens the crop cycle and allows timely sowing of subsequent crops. Challenges include weed management and the need for precise field leveling.
+                        {% endblocktrans %}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+
+<!-- Modal: Water Metering -->
+<div class="research-modal" id="modal-metering">
+    <div class="research-modal-overlay"></div>
+    <div class="research-modal-content">
+        <button class="research-modal-close" aria-label="{% trans 'Close modal' %}">&times;</button>
+        <div class="research-modal-body">
+            <div class="research-modal-text main-content">
+                <h3 class="research-title">{% trans "Water Metering" %}</h3>
+                <p>{% blocktrans %}
+                    Water metering provides real-time data on water usage, enabling farmers to optimize irrigation and conserve water resources effectively.
+                {% endblocktrans %}</p>
+            </div>
+            <div class="research-modal-text main-content">
+                <h3>{% trans "Detailed Explanation of the Research" %}</h3>
+                <p>{% blocktrans %}
+                    Accurate water metering helps track consumption, detect leaks, and supports water-saving policies and incentive programs.
+                {% endblocktrans %}</p>
+            </div>
+            <div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1101273247?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="Metering merged"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Water Level Monitoring -->
+<div class="research-modal" id="modal-level">
+    <div class="research-modal-overlay"></div>
+    <div class="research-modal-content">
+        <button class="research-modal-close" aria-label="{% trans 'Close modal' %}">&times;</button>
+        <div class="research-modal-body">
+            <div class="research-modal-text main-content">
+                <h3 class="research-title">{% trans "Water Level Monitoring" %}</h3>
+                <p>{% blocktrans %}
+                    Continuous monitoring of water levels in fields ensures optimal irrigation, preventing waterlogging or drought stress.
+                {% endblocktrans %}</p>
+            </div>
+            <div class="research-modal-text main-content">
+                <h3>{% trans "Detailed Explanation of the Research" %}</h3>
+                <p>{% blocktrans %}
+                    Accurate water level data helps prevent over-irrigation and supports sustainable groundwater management. Integration with automated irrigation systems enhances water use efficiency.
+                {% endblocktrans %}</p>
+            </div>
+            <div class="swiper-slide">
+                <div style="padding:75% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1101269773?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="AWD merged"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Remote Sensing -->
+<div class="research-modal" id="modal-sensing">
+    <div class="research-modal-overlay"></div>
+    <div class="research-modal-content">
+        <button class="research-modal-close" aria-label="{% trans 'Close modal' %}">&times;</button>
+        <div class="research-modal-body">
+            <div class="research-modal-text main-content">
+                <h3 class="research-title">{% trans "Remote Sensing" %}</h3>
+                <p>{% blocktrans %}
+                    Remote sensing uses satellite to monitor crop health, soil conditions, and water use at scale.
+                {% endblocktrans %}</p>
+            </div>
+            <div class="research-image-gallery">
+                <figure class="research-figure">
+                    <img src="https://i.ibb.co/YT4GdpY5/Screenshot-2025-07-14-at-10-18-28-PM.png" alt="{% trans 'Drone crop monitoring' %}" class="research-img">
+                    <figcaption class="research-figcaption">{% trans "Satellite-based remote sensing for crop health assessment." %}</figcaption>
+                </figure>
+            </div>
+            <div class="research-modal-text main-content">
+                <h3>{% trans "Detailed Explanation of the Research" %}</h3>
+                <p>{% blocktrans %}
+                    This technology helps identify water-stressed areas, optimize irrigation schedules, and detect anomalies such as pest infestations or nutrient deficiencies, supporting precision agriculture and large-scale water management.
+                {% endblocktrans %}</p>
+                </div>
+        </div>
+    </div>
+</div>
+</section>
+    <!-- Knowledge Base Section -->
+
+<section class="knowledge-base" id="knowledge-base">
+    <div class="knowledge-base-container">
+        <div class="knowledge-base-header">
+            <h2 class="knowledge-base-title">{% trans "Knowledge Base" %}</h2>
+            <p class="knowledge-base-subtitle">
+                {% blocktrans %}
+                    Explore our comprehensive collection of insights, guides, and resources to enhance your understanding
+                {% endblocktrans %}
+            </p>
+        </div>
+
+        <div class="carousel-container">
+            <div class="carousel-track" id="carouselTrack">
+                <!-- Slide 1 -->
+                <div class="carousel-item">
+                    <h3>{% trans "Agriculture in Punjab" %}</h3>
+                    <p>{% blocktrans %}
+                        Punjab, often referred to as the "Granary of India", is one of the most agriculturally
+                        prosperous states in the country. The state's agricultural success is largely attributed to the
+                        Green Revolution of the 1960s, which introduced high-yielding varieties (HYVs),
+                        mechanization, and chemical fertilizers, transforming Punjab into a leading food producer.
+                    {% endblocktrans %}</p>
+                    <a href="{% url 'agriculture' %}" class="carousel-link">
+                        <span>{% trans "To know more about this topic click here" %}</span>
+                    </a>
+                </div>
+
+                <!-- Slide 2 -->
+                <div class="carousel-item">
+                    <h3>{% trans "Crop residue management" %}</h3>
+                    <p>{% blocktrans %}
+                        At the end of the rice season farmers use the combine to harvest rice, this leaves hard
+                        stubbles at the root of the plant projecting 10-15 cm above surface level. Thereafter, farmers
+                        will plough the field with a reaper to cut these stubbles leaving behind straw.
+                    {% endblocktrans %}</p>
+                    <a href="{% url 'crop_residue' %}" class="carousel-link">
+                        <span>{% trans "To know more about this topic click here" %}</span>
+                    </a>
+                </div>
+
+                <!-- Slide 3 -->
+                <div class="carousel-item">
+                    <h3>{% trans "Direct Seeded Rice" %}</h3>
+                    <p>{% blocktrans %}
+                        The Direct Seeded Rice (DSR) method is an emerging alternative to traditional transplanting.
+                        Unlike the transplanting method, DSR involves sowing rice seeds with a tractor-seeder directly
+                        into the field without a separate nursery or puddling.
+                    {% endblocktrans %}</p>
+                    <a href="{% url 'dsr' %}" class="carousel-link">
+                        <span>{% trans "To know more about this topic click here" %}</span>
+                    </a>
+                </div>
+
+                <!-- Slide 4 -->
+                <div class="carousel-item">
+                    <h3>{% trans "Farm" %}</h3>
+                    <p>{% blocktrans %}
+                        A piece of land with a distinct irrigation source that can be identified. It is cultivated by a main
+                        operator, that is the owner or leaseholder of the farm land.
+                    {% endblocktrans %}</p>
+                    <a href="{% url 'farmers' %}" class="carousel-link">
+                        <span>{% trans "To know more about this topic click here" %}</span>
+                    </a>
+                </div>
+
+                <!-- Slide 5 -->
+                <div class="carousel-item">
+                    <h3>{% trans "Stages of Paddy rice" %}</h3>
+                    <p>{% blocktrans %}
+                        The growth stages of paddy rice (Oryza sativa) can be broadly divided into four key phases.
+                        Click below to learn about these phases in detail.
+                    {% endblocktrans %}</p>
+                    <a href="{% url 'stages' %}" class="carousel-link">
+                        <span>{% trans "To know more about this topic click here" %}</span>
+                    </a>
+                </div>
+
+                <!-- Slide 6 -->
+                <div class="carousel-item">
+                    <h3>{% trans "Transplanting Rice" %}</h3>
+                    <p>{% blocktrans %}
+                        The transplanting rice (TPR) method of rice cultivation has been a traditional and widely
+                        practiced technique in Punjab, India, where rice is the major kharif (monsoon) crop. This
+                        method involves raising seedlings in a separate nursery and then transplanting them into a
+                        puddled, waterlogged field.
+                    {% endblocktrans %}</p>
+                    <a href="{% url 'tpr' %}" class="carousel-link">
+                        <span>{% trans "To know more about this topic click here" %}</span>
+                    </a>
+                </div>
+
+                <!-- Slide 7 -->
+                <div class="carousel-item">
+                    <h3>{% trans "Tube-well" %}</h3>
+                    <p>{% blocktrans %}
+                        Tube-well is by far the most pervasive source of irrigation in the area. It is a bore-well dug
+                        under the surface level the depth of which can vary between areas but it is 100 to 400ft,
+                        mostly around 200ft. The tube-well is called like this as it is a bore in a tube shape. Its
+                        diameter tends to be small, relative to the traditional wells. Diameter is usually 3-6".
+                    {% endblocktrans %}</p>
+                    <a href="{% url 'tubewell' %}" class="carousel-link">
+                        <span>{% trans "To know more about this topic click here" %}</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Navigation Dots -->
+            <div class="carousel-nav" id="carouselNav">
+                <div class="carousel-dot active" onclick="goToSlide(0)"></div>
+                <div class="carousel-dot" onclick="goToSlide(1)"></div>
+                <div class="carousel-dot" onclick="goToSlide(2)"></div>
+                <div class="carousel-dot" onclick="goToSlide(3)"></div>
+                <div class="carousel-dot" onclick="goToSlide(4)"></div>
+                <div class="carousel-dot" onclick="goToSlide(5)"></div>
+                <div class="carousel-dot" onclick="goToSlide(6)"></div>
+            </div>
+
+            <!-- Arrow Navigation -->
+            <div class="carousel-arrow prev" onclick="previousSlide()">‹</div>
+            <div class="carousel-arrow next" onclick="nextSlide()">›</div>
+        </div>
+    </div>
+</section>
+
     <section class="section" id="team" style="background: var(--bg-tertiary);">
         <div class="section-container">
             <div class="section-header">
-                <h2 class="section-title">Leadership & Research Team</h2>
-                <p class="section-subtitle">Pioneering Innovation in Agricultural Technology</p>
+                <h2 class="section-title">{% trans "Leadership & Research Team" %}</h2>
+                <p class="section-subtitle">{% trans "Pioneering Innovation in Agricultural Technology" %}</p>
             </div>
-            
-            <!-- Professor Cards - Larger and More Prominent -->
+    
+            <!-- Leaders -->
             <div class="team-grid leaders-grid">
-                <div class="professor-card">
-                    <img src="https://i.ibb.co/W4YV6FWv/Dr-Karun-Verma.jpg" alt="Prof. Karun Verma" class="professor-photo">
-                    <h3 class="professor-name">Prof. Karun Verma</h3>
-                    <p class="professor-role">Associate Professor at Thapar Institute of Engineering & Technology</p>
-                </div>
-                <div class="professor-card">
-                    <img src="https://i.ibb.co/gLYx5JVq/Dr-Ram.jpg" alt="Prof. Ram Fishman" class="professor-photo">
-                    <h3 class="professor-name">Prof. Ram Fishmen</h3>
-                    <p class="professor-role">Associate Professor of Public Policy, Tel Aviv University, and Director, Nitsan Lab for Sustainable Development</p>
-                </div>
-                <div class="professor-card">
-                    <img src="https://i.ibb.co/Rp56NY8N/Jhilik-mam.jpg" alt="Dr. Jhilik Bhattacharya" class="professor-photo">
-                    <h3 class="professor-name">Dr. Jhilik Bhattacharya</h3>
-                    <p class="professor-role">Associate Professor & Associate Head at TIET</p>
-                </div>
-                <div class="professor-card">
-                    <img src="https://i.ibb.co/N63YNK6t/Amit-sir.jpg" alt="Dr. Amit Mishra" class="professor-photo">
-                    <h3 class="professor-name">Dr. Amit Mishra</h3>
-                    <p class="professor-role">Associate Professor</p>
-                </div>
-            </div>
-
-            <!-- Section Divider -->
-            <div class="section-divider"></div>
-
-            <!-- Research Team -->
-            <div class="team-grid members-grid">
                 <div class="team-card">
-                    <img src="https://i.ibb.co/TM8MQ73F/Dan-sir.jpg" alt="Mr. Dan Etgar" class="team-photo">
-                    <h3 class="team-name">Mr. Dan Etgar</h3>
-                    <p class="team-role">PhD Candidate at Tel Aviv University</p>
+                    <img src="https://i.ibb.co/W4YV6FWv/Dr-Karun-Verma.jpg" alt="{% trans 'Prof. Karun Verma' %}" class="team-photo">
+                    <h3 class="team-name">{% trans "Prof. Karun Verma" %}</h3>
+                    <p class="team-role">{% trans "Associate Professor at Thapar Institute of Engineering & Technology" %}</p>
                 </div>
                 <div class="team-card">
-                    <img src="https://i.ibb.co/VWLCv2kW/Marcello.jpg" alt="Mr. Marcello Liberman" class="team-photo">
-                    <h3 class="team-name">Mr. Marcello Liberman</h3>
-                    <p class="team-role">Research Project Manager at Nitsan Lab @ TAU</p>
+                    <img src="https://i.ibb.co/gLYx5JVq/Dr-Ram.jpg" alt="{% trans 'Prof. Ram Fishmen' %}" class="team-photo">
+                    <h3 class="team-name">{% trans "Prof. Ram Fishman" %}</h3>
+                    <p class="team-role">{% trans "Associate Professor of Public Policy, Tel Aviv University, and Director, Nitsan Lab for Sustainable Development" %}</p>
                 </div>
                 <div class="team-card">
-                    <img src="https://via.placeholder.com/120x120/374151/ffffff?text=T3" alt="Team Member" class="team-photo">
-                    <h3 class="team-name">Research Associate</h3>
-                    <p class="team-role">Contributing to Advanced Agricultural Research</p>
+                   <img src="https://i.ibb.co/Rp56NY8N/Jhilik-mam.jpg" alt="{% trans 'Dr. Jhilik Bhattacharya' %}" class="team-photo">
+                    <h3 class="team-name">{% trans "Dr. Jhilik Bhattacharya" %}</h3>
+                    <p class="team-role">{% trans "Associate Professor & Associate Head at TIET" %}</p>
+                </div>
+                <div class="team-card">
+                   <img src="https://i.ibb.co/N63YNK6t/Amit-sir.jpg" alt="{% trans 'Dr. Amit Mishra' %}" class="team-photo">
+                    <h3 class="team-name">{% trans "Dr. Amit Mishra" %}</h3>
+                    <p class="team-role">{% trans "Associate Professor" %}</p>
                 </div>
             </div>
         </div>
     </section>
-
+    
     <!-- Developers Section -->
     <section class="section" id="developers">
         <div class="section-container">
             <div class="section-header">
-                <h2 class="section-title">Development Team</h2>
-                <p class="section-subtitle">Building the Future of Agricultural Technology</p>
+                <h2 class="section-title">{% trans "Field and Research Team" %}</h2>
+                <p class="section-subtitle">{% trans "The dedicated team driving field operations and research insights on the ground." %}</p>
+            </div>
+    
+            <div class="team-grid members-grid">
+                {% comment "Team member cards" %}
+                {% for name, role in team_members %}
+                <div class="team-card">
+                    <img src="" alt="{% trans name %}" class="team-photo">
+                    <h3 class="team-name">{% trans name %}</h3>
+                    <p class="team-role">{% trans role %}</p>
+                </div>
+                {% endfor %}
+                {% endcomment %}
+    
+                <!-- Hardcoded version -->
+                <div class="team-card"><img src="https://i.ibb.co/ycdP7v0r/Gunteshwar-photo.png" alt="Gunteshwar Singh" class="team-photo"><h3 class="team-name">{% trans "Gunteshwar Singh" %}</h3><p class="team-role">{% trans "Field Manager" %}</p></div>
+                <div class="team-card"><img src="https://i.ibb.co/Swj6vGHC/Satyam-photo.png" alt="Satyam Yadav" class="team-photo"><h3 class="team-name">{% trans "Satyam Yadav" %}</h3><p class="team-role">{% trans "Senior Research Assistant" %}</p></div>
+                <div class="team-card"><img src="https://i.ibb.co/jKcmNpS/Gaurav-photo.png" alt="Gaurav Sharma" class="team-photo"><h3 class="team-name">{% trans "Gaurav Sharma" %}</h3><p class="team-role">{% trans "Senior Research Assistant" %}</p></div>
+                <div class="team-card"><img src="https://i.ibb.co/yn5w2vRb/Napinder-photo.png" alt="Napinder Singh" class="team-photo"><h3 class="team-name">{% trans "Napinder Singh" %}</h3><p class="team-role">{% trans "Senior Research Assistant" %}</p></div>
+                <div class="team-card"><img src="https://i.ibb.co/rRHc63Xj/Kanwar-photo.png" alt="Ajay Kanwar" class="team-photo"><h3 class="team-name">{% trans "Ajay Kanwar" %}</h3><p class="team-role">{% trans "Senior Field Assistant" %}</p></div>
+                <div class="team-card"><img src="https://i.ibb.co/GfPNdnF7/Satnam-photo.png" alt="Satnam Singh" class="team-photo"><h3 class="team-name">{% trans "Satnam Singh" %}</h3><p class="team-role">{% trans "Senior Field Assistant" %}</p></div>
+                <div class="team-card"><img src="https://i.ibb.co/RTHsRHTF/Yogesh-photo.png" alt="Yogesh Sharma" class="team-photo"><h3 class="team-name">{% trans "Yogesh Sharma" %}</h3><p class="team-role">{% trans "Senior Field Assistant" %}</p></div>
+                <div class="team-card"><img src="https://i.ibb.co/sp5ML9zc/Dan-photo.png" alt="Dan Etgar" class="team-photo"><h3 class="team-name">{% trans "Dan Etgar" %}</h3><p class="team-role">{% trans "PhD Candidate at Tel Aviv University" %}</p></div>
+                <div class="team-card"><img src="https://i.ibb.co/rKpSnyLY/Marcello-photo.png" alt="Marcello Liberman" class="team-photo"><h3 class="team-name">{% trans "Marcello Liberman" %}</h3><p class="team-role">{% trans "Research Project Manager at Nitsan Lab @ TAU" %}</p></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="developers">
+        <div class="section-container">
+            <div class="section-header">
+                <h2 class="section-title">{% trans "Development Team" %}</h2>
+                <p class="section-subtitle">{% trans "Building the Future of Agricultural Technology" %}</p>
             </div>
             
             <div class="team-grid members-grid">
                 <div class="developer-card">
                     <div class="code-pattern"></div>
                     <div class="developer-content">
-                        <img src="https://i.ibb.co/bMgn5Zz5/Danish.jpg" alt="Danish Sharma" class="developer-photo">
+                        <img src="https://i.ibb.co/bMgn5Zz5/Danish.jpg" alt="{% trans 'Danish Sharma' %}" class="developer-photo">
                         <div class="developer-info">
-                            <h3 class="developer-name">Danish Sharma</h3>
-                            <p class="developer-role">Final Year B.E. Student at TIET</p>
+                            <h3 class="developer-name">{% trans "Danish Sharma" %}</h3>
+                            <p class="developer-role">{% trans "Final Year B.E. Student at TIET" %}</p>
                             <a href="https://www.linkedin.com/in/danish-workmain/" target="_blank" class="developer-link">
-                                <i class="fab fa-linkedin"></i> Connect
+                                <i class="fab fa-linkedin"></i> {% trans "Connect" %}
                             </a>
                         </div>
                     </div>
@@ -1780,12 +2120,12 @@
                 <div class="developer-card">
                     <div class="code-pattern"></div>
                     <div class="developer-content">
-                        <img src="https://i.ibb.co/j9CXVgF9/Samrath.jpg" alt="Samrath Singh" class="developer-photo">
+                        <img src="https://i.ibb.co/j9CXVgF9/Samrath.jpg" alt="{% trans 'Samrath Singh' %}" class="developer-photo">
                         <div class="developer-info">
-                            <h3 class="developer-name">Samrath Singh Kharbanda</h3>
-                            <p class="developer-role">Final Year B.E. Student at TIET</p>
+                            <h3 class="developer-name">{% trans "Samrath Singh Kharbanda" %}</h3>
+                            <p class="developer-role">{% trans "Final Year B.E. Student at TIET" %}</p>
                             <a href="https://www.linkedin.com/in/samrath-singh-kharbanda-b93283346" target="_blank" class="developer-link">
-                                <i class="fab fa-linkedin"></i> Connect
+                                <i class="fab fa-linkedin"></i> {% trans "Connect" %}
                             </a>
                         </div>
                     </div>
@@ -1793,12 +2133,12 @@
                 <div class="developer-card">
                     <div class="code-pattern"></div>
                     <div class="developer-content">
-                        <img src="https://i.ibb.co/8DGfD0TD/Ashmit.jpg" alt="Ashmit Cajla" class="developer-photo">
+                        <img src="https://i.ibb.co/8DGfD0TD/Ashmit.jpg" alt="{% trans 'Ashmit Cajla' %}" class="developer-photo">
                         <div class="developer-info">
-                            <h3 class="developer-name">Ashmit Cajla</h3>
-                            <p class="developer-role">Pre-Final Year B.E. Student at TIET</p>
+                            <h3 class="developer-name">{% trans "Ashmit Cajla" %}</h3>
+                            <p class="developer-role">{% trans "Pre-Final Year B.E. Student at TIET" %}</p>
                             <a href="https://www.linkedin.com/in/ashmitcajla/" target="_blank" class="developer-link">
-                                <i class="fab fa-linkedin"></i> Connect
+                                <i class="fab fa-linkedin"></i> {% trans "Connect" %}
                             </a>
                         </div>
                     </div>
@@ -1806,44 +2146,50 @@
             </div>
         </div>
     </section>
-
-<!-- Login Modal - Replace the existing modal section in landing.html -->
-<div class="modal" id="loginModal">
-    <div class="modal-content">
-        <button class="modal-close" onclick="closeModal()">
-            <i class="fas fa-times"></i>
-        </button>
-        <h2 class="modal-title">Member Access</h2>
-        <!-- IMPORTANT: Form now submits to Django backend -->
-        <form id="loginForm" method="POST" action="{% url 'login' %}">
-            {% csrf_token %}
-            <div class="form-group">
-                <label class="form-label">Username</label>
-                <input type="text" class="form-input" id="username" name="username" required>
-            </div>
-            <div class="form-group">
-                <label class="form-label">Password</label>
-                <input type="password" class="form-input" id="password" name="password" required>
-            </div>
-            <button type="submit" class="btn btn-primary" style="width: 100%;">
-                <i class="fas fa-lock"></i> Secure Login
+    
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">
+                <i class="fas fa-times"></i>
             </button>
-            <!-- Django error handling -->
-            {% if error %}
-                <div class="error-message" style="display: block;">
+            <h2 class="modal-title">{% trans "Member Access" %}</h2>
+            <form id="loginForm" method="POST" action="/login/">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label class="form-label">{% trans "Username" %}</label>
+                    <input type="text" class="form-input" id="username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">{% trans "Password" %}</label>
+                    <input type="password" class="form-input" id="password" name="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                    <i class="fas fa-lock"></i> {% trans "Secure Login" %}
+                </button>
+                {% if error %}
+                <div class="error-message" id="errorMessage" style="display: block;">
                     {{ error }}
                 </div>
-            {% endif %}
-        </form>
+                {% else %}
+                <div class="error-message" id="errorMessage" style="display: none;">
+                    {% trans "Invalid credentials. Please try again." %}
+                </div>
+                {% endif %}
+            </form>
+        </div>
     </div>
-</div>
+    
     <!-- Footer -->
     <footer class="footer">
-        <p class="footer-text">© 2025 DIGI-VI | Digital Village Intelligence Platform. All rights reserved.</p>
+        <p class="footer-text">
+            {% trans "©️ 2025 DIGI-VI | Digital Village Intelligence Platform. All rights reserved." %}
+        </p>
     </footer>
+    
 
     <script>
-        // Updated JavaScript - Remove client-side login handling
+        // Theme Management
         function initTheme() {
             const savedTheme = localStorage.getItem('theme') || 'dark';
             document.documentElement.setAttribute('data-theme', savedTheme);
@@ -1896,34 +2242,8 @@
         // Mobile Menu
         function toggleMobileMenu() {
             const menu = document.getElementById('mobileMenu');
-            const toggle = document.getElementById('mobileToggle');
-            const isActive = menu.classList.contains('active');
-            
-            if (isActive) {
-                menu.classList.remove('active');
-                toggle.classList.remove('active');
-                document.body.style.overflow = 'auto';
-            } else {
-                menu.classList.add('active');
-                toggle.classList.add('active');
-                document.body.style.overflow = 'hidden';
-            }
+            menu.classList.toggle('active');
         }
-
-        // Close mobile menu when clicking outside
-        document.addEventListener('click', (e) => {
-            const menu = document.getElementById('mobileMenu');
-            const toggle = document.getElementById('mobileToggle');
-            const nav = document.querySelector('.nav-header');
-            
-            if (menu.classList.contains('active') && 
-                !nav.contains(e.target) && 
-                !menu.contains(e.target)) {
-                menu.classList.remove('active');
-                toggle.classList.remove('active');
-                document.body.style.overflow = 'auto';
-            }
-        });
 
         // Modal
         function openModal() {
@@ -1935,11 +2255,7 @@
             const modal = document.getElementById('loginModal');
             modal.classList.remove('active');
             document.getElementById('loginForm').reset();
-            // Clear Django error message if exists
-            const errorMsg = document.querySelector('.error-message');
-            if (errorMsg) {
-                errorMsg.style.display = 'none';
-            }
+            document.getElementById('errorMessage').style.display = 'none';
         }
 
         // Click outside modal to close
@@ -1949,12 +2265,8 @@
             }
         });
 
-        // Show modal if there's a login error from Django
-        {% if show_login_modal %}
-            window.addEventListener('load', () => {
-                openModal();
-            });
-        {% endif %}
+        // Login Form
+        // (Removed JS credential check. Let the form submit to the backend.)
 
         // Scroll Effects
         let lastScroll = 0;
@@ -1999,14 +2311,130 @@
 
         // Observe all cards
         document.addEventListener('DOMContentLoaded', () => {
-            const cards = document.querySelectorAll('.professor-card, .team-card, .developer-card, .glass-card');
+            const cards = document.querySelectorAll('.team-card, .glass-card');
             cards.forEach(card => {
                 card.style.opacity = '0';
                 card.style.transform = 'translateY(20px)';
                 card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
                 observer.observe(card);
             });
-        }); 
+        });
+
+       // Swiper for Research Studies
+       document.addEventListener('DOMContentLoaded', function () {
+            if (window.Swiper) {
+                new Swiper('.research-swiper', {
+                    slidesPerView: 1,
+                    spaceBetween: 0,
+                    loop: true,
+                    navigation: {
+                        nextEl: '.swiper-button-next',
+                        prevEl: '.swiper-button-prev',
+                    },
+                    pagination: {
+                        el: '.swiper-pagination',
+                        clickable: true,
+                    },
+                    effect: 'slide',
+                });
+            }
+        });
+
+        // Research Modal Logic
+        function openResearchModal(modalId) {
+            document.body.style.overflow = 'hidden';
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.add('active');
+                setTimeout(() => {
+                    modal.querySelector('.research-modal-content').focus();
+                }, 100);
+            }
+        }
+        function closeResearchModal() {
+            document.body.style.overflow = '';
+            document.querySelectorAll('.research-modal.active').forEach(modal => {
+                modal.classList.remove('active');
+            });
+        }
+        // Open modal on button click
+        document.querySelectorAll('.research-learn-btn').forEach(btn => {
+            btn.addEventListener('click', function (e) {
+                const modalId = this.getAttribute('data-modal');
+                openResearchModal(modalId);
+            });
+        });
+        // Close modal on overlay or close button
+        document.querySelectorAll('.research-modal').forEach(modal => {
+            modal.querySelector('.research-modal-overlay').addEventListener('click', closeResearchModal);
+            modal.querySelector('.research-modal-close').addEventListener('click', closeResearchModal);
+        });
+        // ESC key closes modal
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') {
+                closeResearchModal();
+            }
+        });
+
+
+
+
+        // Theme toggle functionality
+        function toggleTheme() {
+            const root = document.documentElement;
+            const currentTheme = root.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            const slider = document.querySelector('.theme-toggle-slider');
+            
+            root.setAttribute('data-theme', newTheme);
+            slider.textContent = newTheme === 'light' ? '🌙' : '☀️';
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') {
+                previousSlide();
+            } else if (e.key === 'ArrowRight') {
+                nextSlide();
+            }
+        });
+
+        // Carousel Functionality for Knowledge Base Section
+let currentSlide = 0;
+const carouselTrack = document.getElementById('carouselTrack');
+const slides = document.querySelectorAll('.carousel-item');
+const dots = document.querySelectorAll('.carousel-dot');
+const totalSlides = slides.length;
+
+// Go to a specific slide
+function goToSlide(index) {
+    if (index < 0) index = totalSlides - 1;
+    if (index >= totalSlides) index = 0;
+    currentSlide = index;
+    const offset = -100 * currentSlide;
+    carouselTrack.style.transform = `translateX(${offset}%)`;
+
+    // Update dots
+    dots.forEach((dot, i) => {
+        dot.classList.toggle('active', i === currentSlide);
+    });
+}
+
+// Go to next slide
+function nextSlide() {
+    goToSlide(currentSlide + 1);
+}
+
+// Go to previous slide
+function previousSlide() {
+    goToSlide(currentSlide - 1);
+}
+
+// Initialize carousel on page load
+window.addEventListener('DOMContentLoaded', () => {
+    goToSlide(0);
+});
+
     </script>
 </body>
 </html>
