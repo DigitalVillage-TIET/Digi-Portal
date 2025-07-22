@@ -4063,7 +4063,7 @@ def calculate_avg_m3_per_acre(group_type, group_label, farm_ids, raw_df, master2
         tpr_col = "Kharif 25 Paddy transplanting date (TPR)"
         tpr_date = acreage_row[tpr_col].values[0]
         if pd.isna(tpr_date) or tpr_date == "":
-            tpr_date = pd.to_datetime("2025-07-02")
+            tpr_date = pd.to_datetime("2025-06-20")
         else:
             tpr_date = pd.to_datetime(tpr_date)
         
@@ -4116,48 +4116,205 @@ def calculate_avg_m3_per_acre(group_type, group_label, farm_ids, raw_df, master2
 
     return final_df
 
-def generate_group_analysis_plot(df, col_name):
+# def generate_group_analysis_plot(df, col_name, date_filter, start_date):
+#     """
+#     Takes a DataFrame where:
+#     - The first column is 'Day'
+#     - All other columns are group names, with average m³/acre/day values
+#     Returns base64-encoded image string
+#     """
+#     plt.figure(figsize=(16, 10))
+    
+#     for i, col in enumerate(df.columns[1:]):
+#         plt.plot(df['Day'], df[col], 
+#                 label=col, 
+#                 linewidth=2.5,
+#                 alpha=0.8)
+    
+#     plt.xlabel("Days from Transplanting (TPR)", fontsize=12, fontweight='bold')
+#     plt.ylabel(col_name, fontsize=12, fontweight='bold')
+#     plt.title("Group-wise Water Usage Comparison", fontsize=14, fontweight='bold')
+#     plt.grid(True, alpha=0.3)
+#     plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
+    
+#     # Force axis to start from zero using current axes
+#     ax = plt.gca()
+#     ax.set_xlim(left=0)
+#     ax.set_ylim(bottom=0)
+#     plt.tight_layout()
+    
+#     buf = BytesIO()
+#     plt.savefig(buf, format='png')
+#     buf.seek(0)
+#     plt.close()
+#     encoded = base64.b64encode(buf.read()).decode('utf-8')
+#     return encoded
+
+def apply_7day_sma(df):
+    df_sma = df.copy()
+    
+    # Apply SMA to all columns except the first one ("Day")
+    for col in df.columns[1:]:
+        df_sma[col] = df[col].rolling(window=7, min_periods=1).mean()
+    
+    return df_sma
+
+
+def create_weekly_delta(group_type, group_label, farm_ids, raw_df, master25, column_to_see, start_date_enter = None, end_date_enter = None):
+    """
+    Given a group label (like 'Group-A Complied') and its farm IDs, 
+    returns a dataframe with Days column and average m³ per acre per day.
+    """
+    kharif_sheet = master25.get("Farm details")
+    all_meter_dfs = []
+
+
+    # --- Start of main function logic ---
+
+    for farm_id in farm_ids:
+        # Get acreage
+        acreage_row = kharif_sheet[kharif_sheet["Kharif 25 Farm ID"] == farm_id]
+        if acreage_row.empty:
+            continue
+        acreage = acreage_row["Kharif 25 Acres farm - farmer reporting"].values[0]
+        if pd.isna(acreage) or acreage == 0:
+            acreage = 1
+        # Get transplanting date
+        tpr_col = "Kharif 25 Paddy transplanting date (TPR)"
+        tpr_date = acreage_row[tpr_col].values[0]
+        if pd.isna(tpr_date) or tpr_date == "":
+            tpr_date = pd.to_datetime("2025-06-20")
+        else:
+            tpr_date = pd.to_datetime(tpr_date)
+        
+        if start_date_enter is not None:
+            tpr_date = start_date_enter
+
+        # Get meter serial numbers
+        meters = []
+        for m_col in ["Kharif 25 Meter serial number - 1", "Kharif 25 Meter serial number - 2"]:
+            val = acreage_row[m_col].values[0]
+            if pd.notna(val) and val != "":
+                meters.append(str(val).strip())
+
+        # Clean meter data
+        date_col = 'Date'
+        raw_df[date_col] = pd.to_datetime(raw_df[date_col], dayfirst=False)
+        raw_df = raw_df.sort_values(date_col)
+
+
+        # Process each meter
+        for meter in meters:
+            end_date = pd.to_datetime(datetime.now().date())
+          
+            if end_date_enter is not None:
+                end_date = end_date_enter
+            filled_df = get_filled_delta_weekly(meter, raw_df, date_col, tpr_date, end_date, acreage, column_to_see)
+            if filled_df.empty:
+                continue
+            all_meter_dfs.append(filled_df)
+
+    if not all_meter_dfs:
+        return pd.DataFrame(columns=["Weeks", group_label])
+    
+
+    # Merge on Days
+    merged = pd.DataFrame()
+    from functools import reduce
+
+    # Assuming all DataFrames have the same name for the date column
+    merged = reduce(lambda left, right: pd.merge(left, right, on='Weeks', how='outer'), all_meter_dfs)
+
+    # Average across all meters day-wise
+    avg_series = merged.drop(columns=["Weeks"]).mean(axis=1)
+    final_df = pd.DataFrame({
+        "Weeks": merged["Weeks"],
+        group_label: avg_series
+    })
+
+    return final_df
+
+def get_filled_delta_weekly(meter_name, filtered_data, date_column, start_date, end_date, plot_size, column_to_see):
+    if not meter_name:
+        raise ValueError("Meter name missing.")
+        
+    # Filter for meter
+    df = filtered_data[filtered_data['Meter Serial Number - as shown on meter'] == meter_name].copy()
+    if df.empty:
+        return pd.DataFrame()
+
+    # Keep only relevant columns
+    df = df[[date_column, 'Reading in the meter - in m3']].dropna()
+
+    # Convert and sort by date
+    df[date_column] = pd.to_datetime(df[date_column])
+    df = df.sort_values(date_column).drop_duplicates(subset=[date_column], keep='last')
+
+    # Apply error correction
+    df = error_fix(df)
+
+    # Calculate delta and normalize
+    df['Delta m³'] = df['Reading in the meter - in m3'].diff().fillna(method='bfill').fillna(0)
+
+    if plot_size <= 0:
+        raise ValueError("Invalid plot size.")
+
+    df['m³ per Acre'] = df['Delta m³'] / plot_size
+
+    # Filter within start-end date range
+    df = df[(df[date_column] >= start_date) & (df[date_column] <= end_date)].copy()
+    
+    # Assign week number
+    df['Weeks'] = ((df[date_column] - pd.to_datetime(start_date)).dt.days // 7)
+
+    # Keep only the latest reading in each week
+    df = df.sort_values(date_column).drop_duplicates(subset=['Weeks'], keep='last')
+
+    output_df = df[['Weeks', column_to_see]].copy()
+    output_df.rename(columns={column_to_see: meter_name}, inplace=True)
+
+    return output_df
+
+
+import plotly.graph_objects as go
+
+def generate_group_analysis_plot(df, col_name, group_farms_len, week_or_day,date_filter=False, start_date=None):
     """
     Takes a DataFrame where:
-    - The first column is 'Day'
-    - All other columns are group names, with average m³/acre/day values
-    Returns base64-encoded image string
+    - 'Day' is the x-axis
+    - All other columns are group labels with m³/acre/day values
+    Returns a list containing an HTML string for Plotly plot
     """
-    plt.figure(figsize=(16, 10))
-    
-    # Define distinct markers and colors for better visibility of overlapping points
-    markers = ['o', 's', '^', 'D', 'v', '<', '>', 'p', '*', 'h', 'H', '+', 'x']
-    colors = plt.cm.Set1(np.linspace(0, 1, len(df.columns[1:])))
-    
-    for i, col in enumerate(df.columns[1:]):
-        plt.plot(df['Day'], df[col], 
-                label=col, 
-                linewidth=2.5,
-                marker=markers[i % len(markers)],
-                markersize=8,
-                markerfacecolor=colors[i],
-                markeredgecolor='black',
-                markeredgewidth=1,
-                alpha=0.8)
-    
-    plt.xlabel("Days from Transplanting (TPR)", fontsize=12, fontweight='bold')
-    plt.ylabel(col_name, fontsize=12, fontweight='bold')
-    plt.title("Group-wise Water Usage Comparison", fontsize=14, fontweight='bold')
-    plt.grid(True, alpha=0.3)
-    plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
-    
-    # Force axis to start from zero using current axes
-    ax = plt.gca()
-    ax.set_xlim(left=0)
-    ax.set_ylim(bottom=0)
-    plt.tight_layout()
-    
-    buf = BytesIO()
-    plt.savefig(buf, format='png')
-    buf.seek(0)
-    plt.close()
-    encoded = base64.b64encode(buf.read()).decode('utf-8')
-    return encoded
+    fig = go.Figure()
+
+    for group in df.columns[1:]:  # Skip 'Day'
+        fig.add_trace(go.Scatter(
+            x=df.iloc[:, 0],
+            y=df[group],
+            mode='lines',
+            name=f"{group} N={group_farms_len[group]}",
+            line=dict(width=3),
+            marker=dict(size=6),
+            hovertemplate=f'<b>{week_or_day} %{{x}}</b><br>%{{y:.2f}} m³/acre<extra></extra>'
+        ))
+
+    title = f"{col_name} | {'Filtered' if date_filter else 'Unfiltered'}"
+
+    fig.update_layout(
+        title=title,
+        xaxis_title=f'{week_or_day} from Transplanting (TPR)',
+        yaxis_title=col_name,
+        height=500,
+        margin=dict(l=60, r=60, t=80, b=60),
+        hovermode='x unified',
+        plot_bgcolor='rgba(0,0,0,0)',
+        paper_bgcolor='rgba(0,0,0,0)',
+    )
+
+    fig.update_xaxes(showgrid=True, gridcolor='rgba(200,200,200,0.3)')
+    fig.update_yaxes(showgrid=True, gridcolor='rgba(200,200,200,0.3)', rangemode='tozero')
+
+    return fig.to_html(full_html=False, include_plotlyjs='cdn')
 
 
         

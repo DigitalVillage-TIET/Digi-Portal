@@ -2531,7 +2531,7 @@ def mapping(request):
 from django.shortcuts import render
 import pandas as pd
 
-from .utils import kharif2025_farms, get_2025plots, get_meters_by_village
+from .utils import kharif2025_farms, get_2025plots, get_meters_by_village, apply_7day_sma, create_weekly_delta
 
 
 
@@ -2985,10 +2985,10 @@ def meter_reading_25_view(request):
         'filter_start_date': filter_start_date,
         'filter_end_date': filter_end_date,
     })
+
 @require_auth
 def grouping_25(request):
     if request.method == 'POST':
-        selected_label = request.POST.get('group_type')
         selected_checkboxes = request.POST.getlist('group_category')
 
         raw_df = pd.read_json(request.session['raw25']) if 'raw25' in request.session else None
@@ -2998,126 +2998,142 @@ def grouping_25(request):
         } if 'master25' in request.session else None
         
         # Apply date filter if enabled
-        if raw_df is not None and request.session.get('use_date_filter', False):
-            start_date = request.session.get('filter_start_date')
-            end_date = request.session.get('filter_end_date')
-
-       
+        start_date = request.session.get('filter_start_date')
+        end_date = request.session.get('filter_end_date')
+        use_filter = request.session.get('use_date_filter', False)
 
         # Handle report download
         if request.POST.get('download_group_report') and 'group_plot' in request.session:
             from .utils import generate_group_analysis_report
-            
-            # Retrieve stored data from session
             stored_data = request.session.get('group_analysis_data', {})
-            
+
             docx_buffer = generate_group_analysis_report(
-                stored_data.get('group_type', ''),
+                stored_data.get('group_type', 'Combined'),
                 stored_data.get('selected_groups', []),
                 request.session.get('group_plot', ''),
                 request.session.get('group_plot2', ''),
                 stored_data.get('group_farms', {})
             )
-            
+
             response = HttpResponse(
                 docx_buffer.getvalue(),
                 content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document'
             )
-            response['Content-Disposition'] = f'attachment; filename="group_analysis_report_{datetime.datetime.now().strftime("%Y%m%d_%H%M%S")}.docx"'
+            response['Content-Disposition'] = f'attachment; filename="group_analysis_combined_{datetime.datetime.now().strftime("%Y%m%d_%H%M%S")}.docx"'
             return response
 
-        if selected_label and selected_checkboxes and raw_df is not None and master25:
+        if selected_checkboxes and raw_df is not None and master25:
             kharif_df = master25['Farm details']
-
             group_farms_dict = {}
+            group_farms_len = {}
 
-            # Map checkbox labels to column names in master file
-            group_column_map = {
-                "Remote": {
-                    "Group-A Complied": "Kharif 25 - Remote Controllers Study - Group A - Treatment - complied (Y/N)",
-                    "Group-A Non-Complied": "Kharif 25 - Remote Controllers Study - Group A - Treatment - NON-complied (Y/N)",
-                    "Group-B Complied": "Kharif 25 - Remote Controllers Study - Group B - Control - complied (Y/N)",
-                    "Group-B Non-Complied": "Kharif 25 - Remote Controllers Study - Group B - Control - NON-complied (Y/N)",
-                },
-                "AWD": {
-                    "Group-A Complied": "Kharif 25 - AWD Study - Group A - Treatment - complied (Y/N)",
-                    "Group-A Non-Complied": "Kharif 25 - AWD Study - Group A - Treatment - Non-complied (Y/N)",
-                    "Group-B Complied": "Kharif 25 - AWD Study - Group B - Complied (Y/N)",
-                    "Group-B Non-Complied": "Kharif 25 - AWD Study - Group B - Non-complied (Y/N)",
-                    "Group-C Complied": "Kharif 25 - AWD Study - Group C - Complied (Y/N)",
-                    "Group-C Non-Complied": "Kharif 25 - AWD Study - Group C - non-complied (Y/N)",
-                },
-                "TPR/DSR": {
-                    "TPR": "Kharif 25 - TPR Group Study (Y/N)",
-                    "DSR": "Kharif 25 - DSR farm Study (Y/N)",
-                }
+            # Unified column mapping
+            column_map = {
+                "Remote Group-A Complied": "Kharif 25 - Remote Controllers Study - Group A - Treatment - complied (Y/N)",
+                "Remote Group-A Non-Complied": "Kharif 25 - Remote Controllers Study - Group A - Treatment - NON-complied (Y/N)",
+                "Remote Group-A Whole": [
+                    "Kharif 25 - Remote Controllers Study - Group A - Treatment - complied (Y/N)",
+                    "Kharif 25 - Remote Controllers Study - Group A - Treatment - NON-complied (Y/N)"
+                ],
+                "Remote Group-B Complied": "Kharif 25 - Remote Controllers Study - Group B - Control - complied (Y/N)",
+                "Remote Group-B Non-Complied": "Kharif 25 - Remote Controllers Study - Group B - Control - NON-complied (Y/N)",
+                "Remote Group-B Whole": [
+                    "Kharif 25 - Remote Controllers Study - Group B - Control - complied (Y/N)",
+                    "Kharif 25 - Remote Controllers Study - Group B - Control - NON-complied (Y/N)"
+                ],
+                "AWD Group-A Complied": "Kharif 25 - AWD Study - Group A - Treatment - complied (Y/N)",
+                "AWD Group-A Non-Complied": "Kharif 25 - AWD Study - Group A - Treatment - Non-complied (Y/N)",
+                "AWD Group-A Whole": [
+                    "Kharif 25 - AWD Study - Group A - Treatment - complied (Y/N)",
+                    "Kharif 25 - AWD Study - Group A - Treatment - Non-complied (Y/N)"
+                ],
+                "AWD Group-B Complied": "Kharif 25 - AWD Study - Group B - Complied (Y/N)",
+                "AWD Group-B Non-Complied": "Kharif 25 - AWD Study - Group B - Non-complied (Y/N)",
+                "AWD Group-B Whole": [
+                    "Kharif 25 - AWD Study - Group B - Complied (Y/N)",
+                    "Kharif 25 - AWD Study - Group B - Non-complied (Y/N)"
+                ],
+                "AWD Group-C Complied": "Kharif 25 - AWD Study - Group C - Complied (Y/N)",
+                "AWD Group-C Non-Complied": "Kharif 25 - AWD Study - Group C - non-complied (Y/N)",
+                "AWD Group-C Whole": [
+                    "Kharif 25 - AWD Study - Group C - Complied (Y/N)",
+                    "Kharif 25 - AWD Study - Group C - non-complied (Y/N)"
+                ],
+                "TPR": "Kharif 25 - TPR Group Study (Y/N)",
+                "DSR": "Kharif 25 - DSR farm Study (Y/N)"
             }
 
-            simplified_groups = {}
-            for group in selected_checkboxes:
-                base = group.split()[0] 
-                label = selected_label + " " + base  
-                if label not in simplified_groups:
-                    simplified_groups[label] = []
-                simplified_groups[label].append(group)
+            for label in selected_checkboxes:
+                cols = column_map[label]
+                if isinstance(cols, str):
+                    condition = kharif_df[cols].fillna(0) == 1
+                else:  # it's a list (Whole group)
+                    condition = kharif_df[cols[0]].fillna(0) == 1
+                    for c in cols[1:]:
+                        condition |= kharif_df[c].fillna(0) == 1
 
-            # Build group-wise farm ID lists
-            for label, group_list in simplified_groups.items():
-                cols = [group_column_map[selected_label][g] for g in group_list]
-                condition = (kharif_df[cols[0]].fillna(0) == 1)
-                for c in cols[1:]:
-                    condition |= (kharif_df[c].fillna(0) == 1)
                 farm_ids = kharif_df.loc[condition, "Kharif 25 Farm ID"].tolist()
                 group_farms_dict[label] = farm_ids
+                group_farms_len[label] = len(farm_ids)
 
-            # Calculate and merge averages
-            group_dfs = []
-            group_dfs2 = []
+            group_dfs, group_dfs2, group_dfs4 = [], [], []
+
             for label, farms in group_farms_dict.items():
-                if raw_df is not None and request.session.get('use_date_filter', False):
+                if use_filter:
                     filter_start = pd.to_datetime(start_date)
                     filter_end = pd.to_datetime(end_date)
-                    df = calculate_avg_m3_per_acre(selected_label, label, farms, raw_df, master25, 'm³ per Acre per Avg Day' ,start_date_enter=filter_start, end_date_enter=filter_end)
-                    df2 = calculate_avg_m3_per_acre(selected_label, label, farms, raw_df, master25, "Delta m³" ,start_date_enter=filter_start, end_date_enter=filter_end)
+                    df = calculate_avg_m3_per_acre("Combined", label, farms, raw_df, master25, 'm³ per Acre per Avg Day', start_date_enter=filter_start, end_date_enter=filter_end)
+                    df2 = create_weekly_delta("Combined", label, farms, raw_df, master25, "Delta m³", start_date_enter=filter_start, end_date_enter=filter_end)
+                    df4 = create_weekly_delta("Combined", label, farms, raw_df, master25, "m³ per Acre", start_date_enter=filter_start, end_date_enter=filter_end)
                 else:
-                    df = calculate_avg_m3_per_acre(selected_label, label, farms, raw_df, master25, 'm³ per Acre per Avg Day')
-                    df2 = calculate_avg_m3_per_acre(selected_label, label, farms, raw_df, master25, "Delta m³")
+                    df = calculate_avg_m3_per_acre("Combined", label, farms, raw_df, master25, 'm³ per Acre per Avg Day')
+                    df2 = calculate_avg_m3_per_acre("Combined", label, farms, raw_df, master25, "Delta m³")
+                    df4 = calculate_avg_m3_per_acre("Combined", label, farms, raw_df, master25, "m³ per Acre")
                 group_dfs.append(df)
                 group_dfs2.append(df2)
+                group_dfs4.append(df4)
 
-            # Merge all into one plot
-            if group_dfs:
-                final_df = group_dfs[0]
-                for df in group_dfs[1:]:
-                    final_df = pd.merge(final_df, df, on="Day", how="outer")
-                group_plot = generate_group_analysis_plot(final_df, "Daily Average m3/acre")
-                
-                # Store in session for download
-                request.session['group_plot'] = group_plot
-                request.session['group_analysis_data'] = {
-                    'group_type': selected_label,
-                    'selected_groups': selected_checkboxes,
-                    'group_farms': group_farms_dict
-                }
+            final_df = group_dfs[0]
+            for df in group_dfs[1:]:
+                final_df = pd.merge(final_df, df, on="Day", how="outer")
+
+            sma_df = apply_7day_sma(final_df)
+
+            group_plot3 = generate_group_analysis_plot(sma_df, "7 day SMA for daily average", group_farms_len, "Days")
+            request.session['group_plot3'] = group_plot3
+
             
-            group_plot2 = None
-            if group_dfs2:
-                final_df2 = group_dfs2[0]
-                for df in group_dfs2[1:]:
-                    final_df2 = pd.merge(final_df2, df, on="Day", how="outer")
-                group_plot2 = generate_group_analysis_plot(final_df2, "Delta m3/acre")
-                
-                # Store in session for download
-                request.session['group_plot2'] = group_plot2
-               
+            group_plot = generate_group_analysis_plot(final_df, "Daily Average m3/acre", group_farms_len, "Days")
+            request.session['group_plot'] = group_plot
+
+            final_df2 = group_dfs2[0]
+            for df in group_dfs2[1:]:
+                final_df2 = pd.merge(final_df2, df, on="Weeks", how="outer")
+            group_plot2 = generate_group_analysis_plot(final_df2, "Delta m3", group_farms_len, "Weeks")
+            request.session['group_plot2'] = group_plot2
+
+            final_df4 = group_dfs4[0]
+            for df in group_dfs2[1:]:
+                final_df4 = pd.merge(final_df4, df, on="Weeks", how="outer")
+            group_plot4 = generate_group_analysis_plot(final_df4, "Delta m3/acre", group_farms_len, "Weeks")
+            request.session['group_plot4'] = group_plot4
+
+            request.session['group_analysis_data'] = {
+                'group_type': 'Combined',
+                'selected_groups': selected_checkboxes,
+                'group_farms': group_farms_dict
+            }
+
             return render(request, 'grouping.html', {
                 'group_plot': group_plot,
                 'group_plot2': group_plot2,
+                'group_plot3': group_plot3,
+                'group_plot4': group_plot4,
                 'output': True,
-                'group_type': selected_label,
+                'group_type': 'Combined',
                 'selected_groups': selected_checkboxes,
             })
-    
+
     return render(request, 'grouping.html')
 
 @csrf_exempt
