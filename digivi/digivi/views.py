@@ -3087,8 +3087,8 @@ def grouping_25(request):
                     df4 = create_weekly_delta("Combined", label, farms, raw_df, master25, "m³ per Acre", start_date_enter=filter_start, end_date_enter=filter_end)
                 else:
                     df = calculate_avg_m3_per_acre("Combined", label, farms, raw_df, master25, 'm³ per Acre per Avg Day')
-                    df2 = calculate_avg_m3_per_acre("Combined", label, farms, raw_df, master25, "Delta m³")
-                    df4 = calculate_avg_m3_per_acre("Combined", label, farms, raw_df, master25, "m³ per Acre")
+                    df2 = create_weekly_delta("Combined", label, farms, raw_df, master25, "Delta m³")
+                    df4 = create_weekly_delta("Combined", label, farms, raw_df, master25, "m³ per Acre")
                 group_dfs.append(df)
                 group_dfs2.append(df2)
                 group_dfs4.append(df4)
