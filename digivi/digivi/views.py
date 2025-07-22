@@ -1466,8 +1466,26 @@ API_PASSWORD = 'analyst123'      # Add this line
 def login_view(request):  # LOGIN VIEW
     error = None
     if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
+        # Handle both JSON and form data
+        if request.content_type == 'application/json':
+            try:
+                import json
+                data = json.loads(request.body.decode())
+                username = data.get('username')
+                password = data.get('password')
+            except (json.JSONDecodeError, UnicodeDecodeError):
+                username = None
+                password = None
+        else:
+            username = request.POST.get('username')
+            password = request.POST.get('password')
+        
+        # Debug logging
+        print(f"[DEBUG] Login attempt - Username: '{username}', Password: '{password}'")
+        print(f"[DEBUG] Expected - Username: '{LOGIN_USERNAME}', Password: '{LOGIN_PASSWORD}'")
+        print(f"[DEBUG] Username match: {username == LOGIN_USERNAME}")
+        print(f"[DEBUG] Password match: {password == LOGIN_PASSWORD}")
+        
         if username == LOGIN_USERNAME and password == LOGIN_PASSWORD:
             payload = {
                 'username': username,
@@ -1475,11 +1493,26 @@ def login_view(request):  # LOGIN VIEW
                 'iat': datetime.datetime.utcnow(),
             }
             token = jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
-            response = redirect('index')
-            response.set_cookie(JWT_COOKIE_NAME, token, httponly=True, samesite='Lax')
-            return response
+            print(f"[DEBUG] Login successful, redirecting to index")
+            
+            # Handle JSON response
+            if request.content_type == 'application/json':
+                from django.http import JsonResponse
+                response = JsonResponse({'success': True, 'message': 'Login successful'})
+                response.set_cookie(JWT_COOKIE_NAME, token, httponly=True, samesite='Lax')
+                return response
+            else:
+                response = redirect('index')
+                response.set_cookie(JWT_COOKIE_NAME, token, httponly=True, samesite='Lax')
+                return response
         else:
             error = 'Invalid credentials.'
+            print(f"[DEBUG] Login failed - Invalid credentials")
+            
+            # Handle JSON error response
+            if request.content_type == 'application/json':
+                from django.http import JsonResponse
+                return JsonResponse({'success': False, 'message': 'Invalid credentials'})
     
     # If GET request or invalid credentials, show landing page with modal
     return render(request, 'landing.html', {
@@ -1692,7 +1725,7 @@ def water_dashboard_view(request):
     context['start_date'] = start_date
     context['end_date'] = end_date
 
-    def load_full_context(context, merged_df, kharif_df, farm_daily_avg, weekly_avg, session):
+    def load_full_context(context, merged_df, kharif_df, farm_daily_avg, weekly_avg, session, comparative_results=None):
         """Helper function to load complete context data"""
         # Basic data setup
         context['merged_loaded'] = True
@@ -1715,12 +1748,28 @@ def water_dashboard_view(request):
         
         context['custom_groups'] = list(custom_groups_df.keys())
         
-        # Generate comparative analysis
-        comparative_results = render_comparative_analysis(merged_df, kharif_df, custom_groups_df)
+        # Generate comparative analysis if not provided
+        if comparative_results is None:
+            selected_villages_comparison = session.get('selected_villages_comparison', None)
+            selected_rc_groups = session.get('selected_rc_groups', None)
+            selected_awd_groups = session.get('selected_awd_groups', None)
+            comparative_results = render_comparative_analysis(merged_df, kharif_df, custom_groups_df, selected_villages_comparison, selected_rc_groups, selected_awd_groups)
+        
+        # Handle village analysis with error checking
+        village_plot_html = ""
+        village_summary_html = ""
+        
+        if "error" not in comparative_results['village']:
+            village_plot_html = comparative_results['village']['plot'].to_html(full_html=False)
+            village_summary_html = comparative_results['village']['summary_df'].to_html(index=False, classes="table table-bordered table-sm")
+        else:
+            village_plot_html = f"<div class='alert alert-warning'>{comparative_results['village']['error']}</div>"
+            village_summary_html = "<div class='text-muted'>No village data available.</div>"
+        
         context['comparative'] = {
             'village': {
-                'plot': comparative_results['village']['plot'].to_html(full_html=False),
-                'summary_df': comparative_results['village']['summary_df'].to_html(index=False, classes="table table-bordered table-sm")
+                'plot': village_plot_html,
+                'summary_df': village_summary_html
             },
             'rc': {
                 'plot': comparative_results['rc']['plot'].to_html(full_html=False),
@@ -1784,6 +1833,27 @@ def water_dashboard_view(request):
                 "summary": analysis["summary"],
                 "pivot_table_html": analysis["pivot_table"]
             }
+        
+        # Add selected items for comparison to context
+        context['selected_villages_comparison'] = session.get('selected_villages_comparison', [])
+        context['selected_rc_groups'] = session.get('selected_rc_groups', [])
+        context['selected_awd_groups'] = session.get('selected_awd_groups', [])
+        
+        # Add available RC and AWD groups for the selection forms
+        context['available_rc_groups'] = [
+            "Treatment Group (A) - Complied",
+            "Treatment Group (A) - Non-Complied", 
+            "Control Group (B) - Complied",
+            "Control Group (B) - Non-Complied"
+        ]
+        context['available_awd_groups'] = [
+            "Group A (Treatment) - Complied", 
+            "Group A (Treatment) - Non-Complied",
+            "Group B (Training) - Complied", 
+            "Group B (Training) - Non-Complied",
+            "Group C (Control) - Complied", 
+            "Group C (Control) - Non-Complied"
+        ]
         
         return context
 
@@ -1904,7 +1974,7 @@ def water_dashboard_view(request):
     # ----------------------------------
     # 2️⃣ Handle AJAX Farm Selection & Date Filter Updates
     # ----------------------------------
-    if 'merged_df' in session and request.method == 'POST' and 'download_zip' not in request.POST and 'create_custom_group' not in request.POST and 'delete_custom_group' not in request.POST and 'update_date_filter' not in request.POST:
+    if 'merged_df' in session and request.method == 'POST' and 'download_zip' not in request.POST and 'create_custom_group' not in request.POST and 'delete_custom_group' not in request.POST and 'update_date_filter' not in request.POST and 'update_village_comparison' not in request.POST and 'update_rc_comparison' not in request.POST and 'update_awd_comparison' not in request.POST:
         merged_df = pd.read_json(session['merged_df'], orient='split')
         kharif_df = pd.read_json(session['kharif_df'], orient='split')
         farm_daily_avg = pd.read_json(session['farm_daily_avg'], orient='split')
@@ -1993,9 +2063,9 @@ def water_dashboard_view(request):
             return HttpResponse(b"No data loaded.", status=400)
             
         merged_df = pd.read_json(session['merged_df'], orient='split')
-        selected_villages = request.GET.getlist('villages')
-        filtered_df = merged_df[merged_df['Village'].isin(selected_villages)] if selected_villages else merged_df
-        summary_csv = get_village_level_analysis(filtered_df)['summary_df'].to_csv(index=False)
+        # Use selected villages from session if available
+        selected_villages = session.get('selected_villages_comparison', request.GET.getlist('villages'))
+        summary_csv = get_village_level_analysis(merged_df, selected_villages)['summary_df'].to_csv(index=False)
         return HttpResponse(summary_csv, content_type='text/csv', headers={
             'Content-Disposition': 'attachment; filename=village_summary.csv'
         })
@@ -2008,9 +2078,9 @@ def water_dashboard_view(request):
             return HttpResponse(b"No data loaded.", status=400)
             
         merged_df = pd.read_json(session['merged_df'], orient='split')
-        selected_villages = request.GET.getlist('villages')
-        filtered_df = merged_df[merged_df['Village'].isin(selected_villages)] if selected_villages else merged_df
-        village_result = get_village_level_analysis(filtered_df)
+        # Use selected villages from session if available
+        selected_villages = session.get('selected_villages_comparison', request.GET.getlist('villages'))
+        village_result = get_village_level_analysis(merged_df, selected_villages)
 
         zip_buffer = io.BytesIO()
         with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zf:
@@ -2021,6 +2091,253 @@ def water_dashboard_view(request):
         return HttpResponse(zip_buffer.getvalue(), content_type='application/zip', headers={
             'Content-Disposition': 'attachment; filename=village_analysis.zip'
         })
+
+    # ----------------------------------
+    # 2.7️⃣ Handle Village Comparison Selection
+    # ----------------------------------
+    if request.method == 'POST':
+        print(f"[DEBUG] POST request received. POST data keys: {list(request.POST.keys())}")
+        print(f"[DEBUG] Checking for 'update_village_comparison' in POST: {'update_village_comparison' in request.POST}")
+    
+    if request.method == 'POST' and 'update_village_comparison' in request.POST:
+        print(f"[DEBUG] Village comparison POST handler triggered")
+        if 'merged_df' not in session:
+            context['error'] = "No data loaded. Please upload files first."
+            return render(request, 'water_meters.html', context)
+        
+        merged_df = pd.read_json(session['merged_df'], orient='split')
+        kharif_df = pd.read_json(session['kharif_df'], orient='split')
+        farm_daily_avg = pd.read_json(session['farm_daily_avg'], orient='split')
+        weekly_avg = pd.read_json(session['weekly_avg'], orient='split')
+        
+        # Get selected villages from form
+        selected_villages = request.POST.getlist('selected_villages_comparison')
+        print(f"[DEBUG] Selected villages from form: {selected_villages}")
+        
+        # Store selected villages in session
+        session['selected_villages_comparison'] = selected_villages
+        session.modified = True
+        
+        # Load custom groups
+        custom_groups = session.get('custom_groups', {})
+        custom_groups_df = {}
+        for k, v in custom_groups.items():
+            try:
+                df = pd.read_json(StringIO(v), orient='split')
+                if not df.empty:
+                    required = {"Farm ID", "Village", "Water Level (mm)", "Date", "Days from TPR"}
+                    if required.issubset(df.columns):
+                        custom_groups_df[k] = df
+            except Exception as e:
+                print(f"[ERROR] Failed to parse custom group '{k}':", e)
+        
+        # Generate comparative analysis with selected villages
+        try:
+            comparative_results = render_comparative_analysis(merged_df, kharif_df, custom_groups_df, selected_villages)
+            
+            # Check if village analysis was successful
+            if "error" in comparative_results.get('village', {}):
+                context['error'] = f"Village analysis error: {comparative_results['village']['error']}"
+                context = load_full_context(context, merged_df, kharif_df, farm_daily_avg, weekly_avg, session)
+                return render(request, 'water_meters.html', context)
+            
+        except Exception as e:
+            context['error'] = f"Error generating comparative analysis: {str(e)}"
+            context = load_full_context(context, merged_df, kharif_df, farm_daily_avg, weekly_avg, session)
+            return render(request, 'water_meters.html', context)
+        
+        # Load basic context data without regenerating comparative analysis
+        context['merged_loaded'] = True
+        context['available_farms'] = sorted(merged_df["Farm ID"].unique())
+        context['available_villages'] = sorted(merged_df["Village"].dropna().unique()) if 'Village' in merged_df.columns else []
+        context['selected_farm'] = context.get('selected_farm') or (context['available_farms'][0] if context['available_farms'] else None)
+        
+        # Load custom groups
+        custom_groups = session.get('custom_groups', {})
+        custom_groups_df = {}
+        for k, v in custom_groups.items():
+            try:
+                df = pd.read_json(StringIO(v), orient='split')
+                if not df.empty:
+                    required = {"Farm ID", "Village", "Water Level (mm)", "Date", "Days from TPR"}
+                    if required.issubset(df.columns):
+                        custom_groups_df[k] = df
+            except Exception as e:
+                print(f"[ERROR] Failed to parse custom group '{k}':", e)
+        
+        context['custom_groups'] = list(custom_groups_df.keys())
+        
+        # Use the comparative results we already generated (don't regenerate)
+        context['comparative'] = {}
+        
+        # Village comparison with the new results
+        if 'plot' in comparative_results['village']:
+            context['comparative']['village'] = {
+                'plot': comparative_results['village']['plot'].to_html(full_html=False),
+                'summary_df': comparative_results['village']['summary_df'].to_html(index=False, classes="table table-bordered table-sm")
+            }
+        else:
+            context['error'] = "Failed to generate village comparison plot"
+            return render(request, 'water_meters.html', context)
+        
+        # Add other comparative results (regenerate only the non-village parts)
+        context['comparative']['rc'] = {}
+        context['comparative']['awd'] = {}
+        context['comparative']['dsr_tpr'] = {}
+        context['comparative']['compliance'] = {}
+        context['comparative']['custom'] = {}
+        
+        if "error" not in comparative_results['rc']:
+            context['comparative']['rc'] = {
+                'plot': comparative_results['rc']['plot'].to_html(full_html=False),
+                'summary_df': comparative_results['rc']['summary_df'].to_html(index=False, classes="table table-bordered table-sm")
+            }
+        
+        if "error" not in comparative_results['awd']:
+            context['comparative']['awd'] = {
+                'plot': comparative_results['awd']['plot'].to_html(full_html=False),
+                'summary_df': comparative_results['awd']['summary_df'].to_html(index=False, classes="table table-bordered table-sm")
+            }
+        
+        if "error" not in comparative_results['dsr_tpr']:
+            context['comparative']['dsr_tpr'] = {
+                'plot': comparative_results['dsr_tpr']['plot'].to_html(full_html=False),
+                'summary_df': comparative_results['dsr_tpr']['summary_df'].to_html(index=False, classes="table table-bordered table-sm")
+            }
+        
+        if "error" not in comparative_results['compliance']:
+            context['comparative']['compliance'] = {
+                'df': comparative_results['compliance']['df'].to_html(index=False, classes="table table-bordered table-sm"),
+                'summary': comparative_results['compliance']['summary']
+            }
+        
+        if comparative_results['custom']['chart_html']:
+            context['comparative']['custom'] = {
+                'chart_html': comparative_results['custom']['chart_html'],
+                'summary_df': comparative_results['custom']['summary_df'].to_html(index=False, classes="table table-bordered table-sm")
+            }
+        
+        # Add information about selection
+        if selected_villages:
+            context['village_selection_info'] = f"Showing {len(selected_villages)} selected villages out of {len(comparative_results['village'].get('all_villages', []))}"
+        else:
+            context['village_selection_info'] = f"Showing all {len(comparative_results['village'].get('all_villages', []))} villages"
+        
+        context['selected_villages_comparison'] = selected_villages
+        
+        return render(request, 'water_meters.html', context)
+
+    # ----------------------------------
+    # 2.8️⃣ Handle Remote Controllers Comparison Selection
+    # ----------------------------------
+    if request.method == 'POST' and 'update_rc_comparison' in request.POST:
+        print(f"[DEBUG] RC comparison POST handler triggered")
+        if 'merged_df' not in session:
+            context['error'] = "No data loaded. Please upload files first."
+            return render(request, 'water_meters.html', context)
+        
+        merged_df = pd.read_json(session['merged_df'], orient='split')
+        kharif_df = pd.read_json(session['kharif_df'], orient='split')
+        farm_daily_avg = pd.read_json(session['farm_daily_avg'], orient='split')
+        weekly_avg = pd.read_json(session['weekly_avg'], orient='split')
+        
+        # Get selected RC groups from form
+        selected_rc_groups = request.POST.getlist('selected_rc_groups')
+        print(f"[DEBUG] Selected RC groups from form: {selected_rc_groups}")
+        
+        # Store selected RC groups in session
+        session['selected_rc_groups'] = selected_rc_groups
+        session.modified = True
+        
+        # Load custom groups
+        custom_groups = session.get('custom_groups', {})
+        custom_groups_df = {}
+        for k, v in custom_groups.items():
+            try:
+                df = pd.read_json(StringIO(v), orient='split')
+                if not df.empty:
+                    required = {"Farm ID", "Village", "Water Level (mm)", "Date", "Days from TPR"}
+                    if required.issubset(df.columns):
+                        custom_groups_df[k] = df
+            except Exception as e:
+                print(f"[ERROR] Failed to parse custom group '{k}':", e)
+        
+        # Generate comparative analysis with selected RC groups
+        try:
+            comparative_results = render_comparative_analysis(merged_df, kharif_df, custom_groups_df, selected_rc_groups=selected_rc_groups)
+            
+            # Check if RC analysis was successful
+            if "error" in comparative_results.get('rc', {}):
+                context['error'] = f"RC analysis error: {comparative_results['rc']['error']}"
+                context = load_full_context(context, merged_df, kharif_df, farm_daily_avg, weekly_avg, session)
+                return render(request, 'water_meters.html', context)
+            
+        except Exception as e:
+            context['error'] = f"Error generating RC comparative analysis: {str(e)}"
+            context = load_full_context(context, merged_df, kharif_df, farm_daily_avg, weekly_avg, session)
+            return render(request, 'water_meters.html', context)
+        
+        # Load basic context and render with updated RC results
+        context = load_full_context(context, merged_df, kharif_df, farm_daily_avg, weekly_avg, session, comparative_results)
+        context['selected_rc_groups'] = selected_rc_groups
+        
+        return render(request, 'water_meters.html', context)
+
+    # ----------------------------------
+    # 2.9️⃣ Handle AWD Comparison Selection
+    # ----------------------------------
+    if request.method == 'POST' and 'update_awd_comparison' in request.POST:
+        print(f"[DEBUG] AWD comparison POST handler triggered")
+        if 'merged_df' not in session:
+            context['error'] = "No data loaded. Please upload files first."
+            return render(request, 'water_meters.html', context)
+        
+        merged_df = pd.read_json(session['merged_df'], orient='split')
+        kharif_df = pd.read_json(session['kharif_df'], orient='split')
+        farm_daily_avg = pd.read_json(session['farm_daily_avg'], orient='split')
+        weekly_avg = pd.read_json(session['weekly_avg'], orient='split')
+        
+        # Get selected AWD groups from form
+        selected_awd_groups = request.POST.getlist('selected_awd_groups')
+        print(f"[DEBUG] Selected AWD groups from form: {selected_awd_groups}")
+        
+        # Store selected AWD groups in session
+        session['selected_awd_groups'] = selected_awd_groups
+        session.modified = True
+        
+        # Load custom groups
+        custom_groups = session.get('custom_groups', {})
+        custom_groups_df = {}
+        for k, v in custom_groups.items():
+            try:
+                df = pd.read_json(StringIO(v), orient='split')
+                if not df.empty:
+                    required = {"Farm ID", "Village", "Water Level (mm)", "Date", "Days from TPR"}
+                    if required.issubset(df.columns):
+                        custom_groups_df[k] = df
+            except Exception as e:
+                print(f"[ERROR] Failed to parse custom group '{k}':", e)
+        
+        # Generate comparative analysis with selected AWD groups
+        try:
+            comparative_results = render_comparative_analysis(merged_df, kharif_df, custom_groups_df, selected_awd_groups=selected_awd_groups)
+            
+            # Check if AWD analysis was successful
+            if "error" in comparative_results.get('awd', {}):
+                context['error'] = f"AWD analysis error: {comparative_results['awd']['error']}"
+                context = load_full_context(context, merged_df, kharif_df, farm_daily_avg, weekly_avg, session)
+                return render(request, 'water_meters.html', context)
+            
+        except Exception as e:
+            context['error'] = f"Error generating AWD comparative analysis: {str(e)}"
+            context = load_full_context(context, merged_df, kharif_df, farm_daily_avg, weekly_avg, session)
+            return render(request, 'water_meters.html', context)
+        
+        # Load basic context and render with updated AWD results
+        context = load_full_context(context, merged_df, kharif_df, farm_daily_avg, weekly_avg, session, comparative_results)
+        context['selected_awd_groups'] = selected_awd_groups
+        
+        return render(request, 'water_meters.html', context)
 
     # ----------------------------------
     # 6️⃣ Handle Custom Group Creation

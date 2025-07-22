@@ -1547,6 +1547,50 @@
               <h4 style="color: var(--accent-primary); margin: 1.5rem 0 1rem; font-weight: 600;">
                 <i class="fas fa-map-marked-alt"></i> Village Comparison
               </h4>
+              
+              <!-- Village Selection Form -->
+              <div class="glass-card" style="margin-bottom: 2rem; padding: 1.5rem;">
+                <h5 style="color: var(--accent-primary); margin-bottom: 1rem;">
+                  <i class="fas fa-filter"></i> Select Villages for Comparison
+                </h5>
+                <form method="post" style="margin-bottom: 0;">
+                  {% csrf_token %}
+                  <input type="hidden" name="update_village_comparison" value="1" />
+                  
+                  <div class="form-group" style="margin-bottom: 1rem;">
+                    <div style="display: flex; gap: 1rem; margin-bottom: 0.5rem;">
+                      <button type="button" onclick="selectAllVillages()" class="btn btn-sm btn-outline-primary">
+                        <i class="fas fa-check-square"></i> Select All
+                      </button>
+                      <button type="button" onclick="deselectAllVillages()" class="btn btn-sm btn-outline-secondary">
+                        <i class="fas fa-square"></i> Deselect All
+                      </button>
+                    </div>
+                    
+                    <div id="village-selection-container" style="max-height: 200px; overflow-y: auto; border: 1px solid var(--border-color); padding: 1rem; border-radius: 8px; background: var(--bg-secondary);">
+                      {% for village in available_villages %}
+                        <label style="display: block; margin-bottom: 0.5rem; font-size: 0.9rem; cursor: pointer;">
+                          <input type="checkbox" name="selected_villages_comparison" value="{{ village }}" 
+                                 {% if village in selected_villages_comparison %}checked{% endif %}
+                                 style="margin-right: 0.5rem;" class="village-checkbox">
+                          {{ village }}
+                        </label>
+                      {% endfor %}
+                    </div>
+                    
+                    {% if village_selection_info %}
+                      <div class="alert alert-info" style="margin-top: 1rem; padding: 0.75rem; background: rgba(13, 202, 240, 0.1); border: 1px solid rgba(13, 202, 240, 0.2); border-radius: 6px;">
+                        <i class="fas fa-info-circle"></i> {{ village_selection_info }}
+                      </div>
+                    {% endif %}
+                  </div>
+                  
+                  <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-chart-line"></i> Update Comparison
+                  </button>
+                </form>
+              </div>
+              
               <div class="plot-container">{{ comparative.village.plot|safe }}</div>
               <div class="table-container">
                 {{ comparative.village.summary_df|safe }}
@@ -1565,6 +1609,50 @@
               <h4 style="color: var(--accent-primary); margin: 1.5rem 0 1rem; font-weight: 600;">
                 <i class="fas fa-satellite-dish"></i> Remote Controllers
               </h4>
+              
+              <!-- Remote Controllers Group Selection Form -->
+              <div class="glass-card" style="margin-bottom: 2rem; padding: 1.5rem;">
+                <h5 style="color: var(--accent-primary); margin-bottom: 1rem;">
+                  <i class="fas fa-filter"></i> Select Remote Controllers Groups for Comparison
+                </h5>
+                <form method="post" style="margin-bottom: 0;">
+                  {% csrf_token %}
+                  <input type="hidden" name="update_rc_comparison" value="1" />
+                  
+                  <div class="form-group" style="margin-bottom: 1rem;">
+                    <div style="display: flex; gap: 1rem; margin-bottom: 0.5rem;">
+                      <button type="button" onclick="selectAllRCGroups()" class="btn btn-sm btn-outline-primary">
+                        <i class="fas fa-check-square"></i> Select All
+                      </button>
+                      <button type="button" onclick="deselectAllRCGroups()" class="btn btn-sm btn-outline-secondary">
+                        <i class="fas fa-square"></i> Deselect All
+                      </button>
+                    </div>
+                    
+                    <div id="rc-group-selection-container" style="max-height: 200px; overflow-y: auto; border: 1px solid var(--border-color); padding: 1rem; border-radius: 8px; background: var(--bg-secondary);">
+                      {% for group in available_rc_groups %}
+                        <label style="display: block; margin-bottom: 0.5rem; font-size: 0.9rem; cursor: pointer;">
+                          <input type="checkbox" name="selected_rc_groups" value="{{ group }}" 
+                                 {% if group in selected_rc_groups %}checked{% endif %}
+                                 style="margin-right: 0.5rem;" class="rc-group-checkbox">
+                          {{ group }}
+                        </label>
+                      {% endfor %}
+                    </div>
+                    
+                    {% if rc_selection_info %}
+                      <div class="alert alert-info" style="margin-top: 1rem; padding: 0.75rem; background: rgba(13, 202, 240, 0.1); border: 1px solid rgba(13, 202, 240, 0.2); border-radius: 6px;">
+                        <i class="fas fa-info-circle"></i> {{ rc_selection_info }}
+                      </div>
+                    {% endif %}
+                  </div>
+                  
+                  <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-chart-line"></i> Update RC Comparison
+                  </button>
+                </form>
+              </div>
+              
               <div class="plot-container">{{ comparative.rc.plot|safe }}</div>
               <div class="table-container">
                 {{ comparative.rc.summary_df|safe }}
@@ -1583,6 +1671,50 @@
               <h4 style="color: var(--accent-primary); margin: 1.5rem 0 1rem; font-weight: 600;">
                 <i class="fas fa-tint"></i> AWD Study Groups
               </h4>
+              
+              <!-- AWD Group Selection Form -->
+              <div class="glass-card" style="margin-bottom: 2rem; padding: 1.5rem;">
+                <h5 style="color: var(--accent-primary); margin-bottom: 1rem;">
+                  <i class="fas fa-filter"></i> Select AWD Study Groups for Comparison
+                </h5>
+                <form method="post" style="margin-bottom: 0;">
+                  {% csrf_token %}
+                  <input type="hidden" name="update_awd_comparison" value="1" />
+                  
+                  <div class="form-group" style="margin-bottom: 1rem;">
+                    <div style="display: flex; gap: 1rem; margin-bottom: 0.5rem;">
+                      <button type="button" onclick="selectAllAWDGroups()" class="btn btn-sm btn-outline-primary">
+                        <i class="fas fa-check-square"></i> Select All
+                      </button>
+                      <button type="button" onclick="deselectAllAWDGroups()" class="btn btn-sm btn-outline-secondary">
+                        <i class="fas fa-square"></i> Deselect All
+                      </button>
+                    </div>
+                    
+                    <div id="awd-group-selection-container" style="max-height: 200px; overflow-y: auto; border: 1px solid var(--border-color); padding: 1rem; border-radius: 8px; background: var(--bg-secondary);">
+                      {% for group in available_awd_groups %}
+                        <label style="display: block; margin-bottom: 0.5rem; font-size: 0.9rem; cursor: pointer;">
+                          <input type="checkbox" name="selected_awd_groups" value="{{ group }}" 
+                                 {% if group in selected_awd_groups %}checked{% endif %}
+                                 style="margin-right: 0.5rem;" class="awd-group-checkbox">
+                          {{ group }}
+                        </label>
+                      {% endfor %}
+                    </div>
+                    
+                    {% if awd_selection_info %}
+                      <div class="alert alert-info" style="margin-top: 1rem; padding: 0.75rem; background: rgba(13, 202, 240, 0.1); border: 1px solid rgba(13, 202, 240, 0.2); border-radius: 6px;">
+                        <i class="fas fa-info-circle"></i> {{ awd_selection_info }}
+                      </div>
+                    {% endif %}
+                  </div>
+                  
+                  <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-chart-line"></i> Update AWD Comparison
+                  </button>
+                </form>
+              </div>
+              
               <div class="plot-container">{{ comparative.awd.plot|safe }}</div>
               <div class="table-container">
                 {{ comparative.awd.summary_df|safe }}
@@ -2202,6 +2334,51 @@
         applyBtn.disabled = true;
       }
     });
+
+    // Village comparison selection functions
+    function selectAllVillages() {
+      const checkboxes = document.querySelectorAll('.village-checkbox');
+      checkboxes.forEach(checkbox => {
+        checkbox.checked = true;
+      });
+    }
+
+    function deselectAllVillages() {
+      const checkboxes = document.querySelectorAll('.village-checkbox');
+      checkboxes.forEach(checkbox => {
+        checkbox.checked = false;
+      });
+    }
+
+    // Remote Controllers group selection functions
+    function selectAllRCGroups() {
+      const checkboxes = document.querySelectorAll('.rc-group-checkbox');
+      checkboxes.forEach(checkbox => {
+        checkbox.checked = true;
+      });
+    }
+
+    function deselectAllRCGroups() {
+      const checkboxes = document.querySelectorAll('.rc-group-checkbox');
+      checkboxes.forEach(checkbox => {
+        checkbox.checked = false;
+      });
+    }
+
+    // AWD group selection functions
+    function selectAllAWDGroups() {
+      const checkboxes = document.querySelectorAll('.awd-group-checkbox');
+      checkboxes.forEach(checkbox => {
+        checkbox.checked = true;
+      });
+    }
+
+    function deselectAllAWDGroups() {
+      const checkboxes = document.querySelectorAll('.awd-group-checkbox');
+      checkboxes.forEach(checkbox => {
+        checkbox.checked = false;
+      });
+    }
 
     // Document Ready
     document.addEventListener("DOMContentLoaded", function() {

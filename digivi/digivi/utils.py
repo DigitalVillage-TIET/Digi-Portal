@@ -3358,21 +3358,60 @@ def validate_google_sheets_connection():
     try:
         print_status("Validating Google Sheets connection...", "process")
         
+        # Step 1: Check if credentials file exists
+        credentials_path = getattr(settings, 'GOOGLE_SERVICE_ACCOUNT_KEY_PATH', None)
+        if not credentials_path:
+            error_msg = "GOOGLE_SERVICE_ACCOUNT_KEY_PATH not configured in settings"
+            print_status(error_msg, "error")
+            return False, error_msg
+        
+        import os
+        if not os.path.exists(credentials_path):
+            error_msg = f"Credentials file not found at: {credentials_path}"
+            print_status(error_msg, "error")
+            return False, error_msg
+        
+        print_status(f"Credentials file found at: {credentials_path}", "success")
+        
+        # Step 2: Try to create client
         client = get_google_sheets_client()
         if not client:
-            print_status("Google Sheets client validation failed", "error")
-            return False, "Failed to create Google Sheets client"
+            error_msg = "Failed to create Google Sheets client - check credentials format"
+            print_status(error_msg, "error")
+            return False, error_msg
         
-        # Try to access the master sheet
+        print_status("Google Sheets client created successfully", "success")
+        
+        # Step 3: Check sheet ID
+        sheet_id = getattr(settings, 'MASTER_DATA_SHEET_ID', None)
+        if not sheet_id:
+            error_msg = "MASTER_DATA_SHEET_ID not configured in settings"
+            print_status(error_msg, "error")
+            return False, error_msg
+        
+        print_status(f"Using sheet ID: {sheet_id}", "process")
+        
+        # Step 4: Try to access the master sheet
         print_status("Testing access to master sheet...", "process")
-        spreadsheet = client.open_by_key(settings.MASTER_DATA_SHEET_ID)
-        
-        success_msg = f"Successfully connected to sheet: {spreadsheet.title}"
-        print_status(success_msg, "success")
-        return True, success_msg
+        try:
+            spreadsheet = client.open_by_key(sheet_id)
+            print_status(f"Sheet opened successfully: {spreadsheet.title}", "success")
+            
+            # Step 5: Try to read basic info
+            worksheets = spreadsheet.worksheets()
+            worksheet_names = [ws.title for ws in worksheets]
+            
+            success_msg = f"Successfully connected! Sheet: '{spreadsheet.title}' | Worksheets: {worksheet_names}"
+            print_status(success_msg, "success")
+            return True, success_msg
+            
+        except Exception as sheet_error:
+            error_msg = f"Sheet access failed: {str(sheet_error)}. Common causes: 1) Service account email not shared with sheet, 2) Invalid sheet ID, 3) Sheet permissions"
+            print_status(error_msg, "error")
+            return False, error_msg
     
     except Exception as e:
-        error_msg = f"Connection failed: {str(e)}"
+        error_msg = f"Connection validation failed: {str(e)}"
         print_status(error_msg, "error")
         return False, error_msg
 
@@ -4618,6 +4657,7 @@ def get_farm_analysis_data(farm_id, merged_df, daily_df, weekly_df):
     # Summary Statistics
     summary = {
         "average": round(farm_data["Water Level (mm)"].mean(), 1),
+        "median": round(farm_data["Water Level (mm)"].median(), 1),
         "std_dev": round(farm_data["Water Level (mm)"].std(), 1),
         "min": round(farm_data["Water Level (mm)"].min(), 1),
         "max": round(farm_data["Water Level (mm)"].max(), 1),
@@ -4637,12 +4677,42 @@ def get_farm_analysis_data(farm_id, merged_df, daily_df, weekly_df):
 import plotly.graph_objects as go
 import plotly.express as px
 
-def get_village_level_analysis(merged_df):
+def get_village_level_analysis(merged_df, selected_villages=None):
+    """
+    Get village level analysis with optional sub-grouping.
+    
+    Args:
+        merged_df: The merged dataframe with water level data
+        selected_villages: List of villages to include in analysis. If None, includes all villages.
+    
+    Returns:
+        Dictionary with plot, summary_df, and village information
+    """
     if 'Village' not in merged_df.columns:
         return {"error": "Village column not available in merged dataset."}
 
-    available_villages = sorted(merged_df['Village'].dropna().unique())
+    # Get all available villages
+    all_villages = sorted(merged_df['Village'].dropna().unique())
+    
+    # Debug print
+    print(f"[DEBUG] All villages: {len(all_villages)}, Selected villages: {selected_villages}")
+    
+    # Use selected villages if provided, otherwise use all villages
+    if selected_villages and len(selected_villages) > 0:
+        # Filter to only include villages that exist in the data
+        available_villages = [v for v in selected_villages if v in all_villages]
+        print(f"[DEBUG] Available selected villages: {len(available_villages)}")
+        if not available_villages:
+            return {"error": "None of the selected villages found in the dataset."}
+    else:
+        available_villages = all_villages
+        print(f"[DEBUG] Using all villages: {len(available_villages)}")
+    
+    # Filter dataframe to selected villages
     filtered_df = merged_df[merged_df['Village'].isin(available_villages)]
+    
+    if filtered_df.empty:
+        return {"error": "No data found for the selected villages."}
 
     # Daily averages per village
     village_daily = filtered_df.groupby(['Village', 'Days from TPR']).agg({
@@ -4657,26 +4727,33 @@ def get_village_level_analysis(merged_df):
 
     for i, village in enumerate(available_villages):
         data = village_daily[village_daily['Village'] == village].sort_values("Days from TPR")
-        fig.add_trace(go.Scatter(
-            x=data["Days from TPR"],
-            y=data["Water Level (mm)"],
-            mode="lines+markers",
-            name=village,
-            line=dict(color=colors[i % len(colors)], width=3),
-            marker=dict(
-                size=8,
-                symbol=marker_symbols[i % len(marker_symbols)],
-                color=colors[i % len(colors)],
-                line=dict(width=1, color='DarkSlateGrey')
-            ),
-            hovertemplate="<b>%{fullData.name}</b><br>" +
-                         "Days from TPR: %{x}<br>" +
-                         "Water Level: %{y} mm<br>" +
-                         "<extra></extra>"
-        ))
+        if not data.empty:
+            fig.add_trace(go.Scatter(
+                x=data["Days from TPR"],
+                y=data["Water Level (mm)"],
+                mode="lines+markers",
+                name=village,
+                line=dict(color=colors[i % len(colors)], width=3),
+                marker=dict(
+                    size=8,
+                    symbol=marker_symbols[i % len(marker_symbols)],
+                    color=colors[i % len(colors)],
+                    line=dict(width=1, color='DarkSlateGrey')
+                ),
+                hovertemplate="<b>%{fullData.name}</b><br>" +
+                             "Days from TPR: %{x}<br>" +
+                             "Water Level: %{y} mm<br>" +
+                             "<extra></extra>"
+            ))
+
+    # Dynamic title based on selection
+    if selected_villages and len(selected_villages) != len(all_villages):
+        title = f"Selected Villages Water Level Comparison ({len(available_villages)} of {len(all_villages)} villages)"
+    else:
+        title = f"Village-level Water Level Trends Comparison ({len(available_villages)} villages)"
 
     fig.update_layout(
-        title=f"Village-level Water Level Trends Comparison ({len(available_villages)} villages)",
+        title=title,
         xaxis_title="Days from Transplanting (TPR)",
         yaxis_title="Average Water Level (mm)",
         width=1200,
@@ -4700,8 +4777,8 @@ def get_village_level_analysis(merged_df):
                 x=0.02,
                 y=1.15,
                 buttons=[
-                    dict(label="Show All Villages", method="restyle", args=["visible", [True] * len(available_villages)]),
-                    dict(label="Hide All Villages", method="restyle", args=["visible", ["legendonly"] * len(available_villages)]),
+                    dict(label="Show All Selected", method="restyle", args=["visible", [True] * len(available_villages)]),
+                    dict(label="Hide All Selected", method="restyle", args=["visible", ["legendonly"] * len(available_villages)]),
                 ]
             )
         ],
@@ -4721,20 +4798,21 @@ def get_village_level_analysis(merged_df):
 
     # Summary table
     village_summary = filtered_df.groupby('Village').agg({
-        'Water Level (mm)': ['mean', 'std', 'min', 'max', 'count'],
+        'Water Level (mm)': ['mean', 'median', 'std', 'min', 'max', 'count'],
         'Farm ID': 'nunique',
         'Days from TPR': ['min', 'max']
     }).round(2)
 
     village_summary.columns = [
-        'Avg Water Level (mm)', 'Std Dev (mm)', 'Min Level (mm)',
+        'Avg Water Level (mm)', 'Median Water Level (mm)', 'Std Dev (mm)', 'Min Level (mm)',
         'Max Level (mm)', 'Total Readings', 'Unique Farms',
         'Min Days from TPR', 'Max Days from TPR'
     ]
     village_summary = village_summary.reset_index()
 
     return {
-        "villages": available_villages,
+        "all_villages": all_villages,
+        "selected_villages": available_villages,
         "plot": fig,
         "summary_df": village_summary
     }
@@ -4915,6 +4993,7 @@ def get_remote_controllers_analysis(merged_df, kharif_df, selected_groups, mode)
             'Villages': len(pd.Series(df['Village']).dropna().unique()),
             'Readings': len(df),
             'Avg Water Level': round(df['Water Level (mm)'].mean(), 1),
+            'Median Water Level': round(df['Water Level (mm)'].median(), 1),
             'Std Dev': round(df['Water Level (mm)'].std(), 1)
         })
 
@@ -5085,6 +5164,7 @@ def get_awd_groups_analysis(merged_df, kharif_df, selected_groups=None, analysis
             "Villages": len(pd.Series(data["Village"]).dropna().unique()),
             "Readings": len(data),
             "Avg Level (mm)": round(data["Water Level (mm)"].mean(), 1),
+            "Median Level (mm)": round(data["Water Level (mm)"].median(), 1),
             "Std Dev": round(data["Water Level (mm)"].std(), 1),
         })
 
@@ -5131,6 +5211,7 @@ def get_dsr_tpr_analysis(merged_df, kharif_df):
             "Villages": len(pd.Series(dsr["Village"]).dropna().unique()),
             "Readings": len(dsr),
             "Avg Level (mm)": round(dsr["Water Level (mm)"].mean(), 1),
+            "Median Level (mm)": round(dsr["Water Level (mm)"].median(), 1),
             "Std Dev": round(dsr["Water Level (mm)"].std(), 1),
         })
 
@@ -5141,6 +5222,7 @@ def get_dsr_tpr_analysis(merged_df, kharif_df):
             "Villages": len(pd.Series(tpr["Village"]).dropna().unique()),
             "Readings": len(tpr),
             "Avg Level (mm)": round(tpr["Water Level (mm)"].mean(), 1),
+            "Median Level (mm)": round(tpr["Water Level (mm)"].median(), 1),
             "Std Dev": round(tpr["Water Level (mm)"].std(), 1),
         })
 
@@ -5247,6 +5329,7 @@ def summarize_custom_groups(merged_df, custom_groups: dict):
             "Villages": df["Village"].nunique(),
             "Total Readings": len(df),
             "Avg Water Level (mm)": round(df["Water Level (mm)"].mean(), 1),
+            "Median Water Level (mm)": round(df["Water Level (mm)"].median(), 1),
             "Std Dev (mm)": round(df["Water Level (mm)"].std(), 1),
             "Date Range": f"{df['Date'].min().date()} to {df['Date'].max().date()}"
         })
@@ -5275,29 +5358,49 @@ def summarize_custom_groups(merged_df, custom_groups: dict):
 
 
 
-def render_comparative_analysis(merged_df, kharif_df, custom_groups=None):
+def render_comparative_analysis(merged_df, kharif_df, custom_groups=None, selected_villages=None, selected_rc_groups=None, selected_awd_groups=None):
     """Django-compatible comparative analysis logic for all group types."""
     results = {}
 
-    # 1. Village-level Aggregation
-    results['village'] = get_village_level_analysis(merged_df)
+    # 1. Village-level Aggregation with optional sub-grouping
+    village_result = get_village_level_analysis(merged_df, selected_villages)
+    
+    # Handle error case for village analysis
+    if "error" in village_result:
+        # If there's an error with selected villages, fall back to all villages
+        print(f"[WARN] Village selection error: {village_result['error']}. Falling back to all villages.")
+        village_result = get_village_level_analysis(merged_df, None)
+    
+    results['village'] = village_result
 
     # 2. Remote Controllers: Treatment vs Control (Complied Groups)
-    rc_groups = [
-        "Treatment Group (A) - Complied",
-        "Control Group (B) - Complied"
-    ]
+    # Use selected RC groups if provided, otherwise use default groups
+    if selected_rc_groups:
+        rc_groups = selected_rc_groups
+        rc_mode = f"Selected RC Groups ({len(selected_rc_groups)} groups)"
+    else:
+        rc_groups = [
+            "Treatment Group (A) - Complied",
+            "Control Group (B) - Complied"
+        ]
+        rc_mode = "Treatment vs Control (Selected Groups)"
+    
     rc_result = get_remote_controllers_analysis(
-        merged_df, kharif_df, rc_groups, mode="Treatment vs Control (Selected Groups)"
+        merged_df, kharif_df, rc_groups, mode=rc_mode
     )
     results['rc'] = rc_result
 
     # 3. AWD Study: All Complied & Non-Complied
-    awd_groups = [
-        "Group A (Treatment) - Complied", "Group A (Treatment) - Non-Complied",
-        "Group B (Training) - Complied", "Group B (Training) - Non-Complied",
-        "Group C (Control) - Complied", "Group C (Control) - Non-Complied"
-    ]
+    # Use selected AWD groups if provided, otherwise use default groups
+    if selected_awd_groups:
+        awd_groups = selected_awd_groups
+    else:
+        awd_groups = [
+            "Group A (Treatment) - Complied", "Group A (Treatment) - Non-Complied",
+            "Group B (Training) - Complied", "Group B (Training) - Non-Complied",
+            "Group C (Control) - Complied", "Group C (Control) - Non-Complied"
+        ]
+    
     awd_result = get_awd_groups_analysis(
         merged_df, kharif_df, selected_groups=awd_groups
     )
@@ -5359,18 +5462,18 @@ def prepare_comprehensive_downloads(merged_df, kharif_df, farm_daily_avg, weekly
     # 3. Village summary
     if 'Village' in merged_df.columns:
         village_summary = merged_df.groupby('Village').agg({
-            'Water Level (mm)': ['mean', 'std', 'count'],
+            'Water Level (mm)': ['mean', 'median', 'std', 'count'],
             'Farm ID': 'nunique'
         }).round(2)
-        village_summary.columns = ['Avg Water Level', 'Std Dev', 'Total Readings', 'Unique Farms']
+        village_summary.columns = ['Avg Water Level', 'Median Water Level', 'Std Dev', 'Total Readings', 'Unique Farms']
         downloadables["20_village_summary.csv"] = village_summary.to_csv()
 
     # 4. Farm summary
     farm_summary = merged_df.groupby('Farm ID').agg({
-        'Water Level (mm)': ['mean', 'std', 'count'],
+        'Water Level (mm)': ['mean', 'median', 'std', 'count'],
         'Days from TPR': ['min', 'max']
     }).round(2)
-    farm_summary.columns = ['Avg Water Level', 'Std Dev', 'Total Readings', 'Min Days', 'Max Days']
+    farm_summary.columns = ['Avg Water Level', 'Median Water Level', 'Std Dev', 'Total Readings', 'Min Days', 'Max Days']
     downloadables["21_farm_summary.csv"] = farm_summary.to_csv()
 
     # 5. Study group datasets (individual files)
@@ -5382,23 +5485,23 @@ def prepare_comprehensive_downloads(merged_df, kharif_df, farm_daily_avg, weekly
     # 6. Study Group Summaries
     if 'Remote Controller' in merged_df.columns:
         rc_summary = merged_df.groupby('Remote Controller').agg({
-            'Water Level (mm)': ['mean', 'std', 'count']
+            'Water Level (mm)': ['mean', 'median', 'std', 'count']
         }).round(2)
-        rc_summary.columns = ['Avg Water Level', 'Std Dev', 'Total Readings']
+        rc_summary.columns = ['Avg Water Level', 'Median Water Level', 'Std Dev', 'Total Readings']
         downloadables["30_remote_controller_summary.csv"] = rc_summary.to_csv()
 
     if 'AWD Study' in merged_df.columns:
         awd_summary = merged_df.groupby('AWD Study').agg({
-            'Water Level (mm)': ['mean', 'std', 'count']
+            'Water Level (mm)': ['mean', 'median', 'std', 'count']
         }).round(2)
-        awd_summary.columns = ['Avg Water Level', 'Std Dev', 'Total Readings']
+        awd_summary.columns = ['Avg Water Level', 'Median Water Level', 'Std Dev', 'Total Readings']
         downloadables["31_awd_study_summary.csv"] = awd_summary.to_csv()
 
     if 'Farming Method' in merged_df.columns:
         dsr_summary = merged_df.groupby('Farming Method').agg({
-            'Water Level (mm)': ['mean', 'std', 'count']
+            'Water Level (mm)': ['mean', 'median', 'std', 'count']
         }).round(2)
-        dsr_summary.columns = ['Avg Water Level', 'Std Dev', 'Total Readings']
+        dsr_summary.columns = ['Avg Water Level', 'Median Water Level', 'Std Dev', 'Total Readings']
         downloadables["32_dsr_vs_tpr_summary.csv"] = dsr_summary.to_csv()
 
     
@@ -5497,13 +5600,29 @@ def clean_and_process_data(kharif_df, water_df):
     if 'Village name' in water.columns:
         water['Village_Normalized'] = water['Village name'].apply(normalize_text)
 
-    # Dates - Use actual TPR date if available, otherwise default to July 2, 2025
-    kharif['Kharif 25 Paddy transplanting date (TPR)'] = pd.to_datetime(
-        kharif['Kharif 25 Paddy transplanting date (TPR)'], errors='coerce'
-    )
-    kharif['Kharif 25 Paddy transplanting date (TPR)'].fillna(pd.Timestamp('2025-07-02'), inplace=True)
+    # Dates - Use actual TPR date if available, otherwise default to June 20, 2025
+    # Handle DD/MM/YYYY format explicitly
+    try:
+        kharif['Kharif 25 Paddy transplanting date (TPR)'] = pd.to_datetime(
+            kharif['Kharif 25 Paddy transplanting date (TPR)'], 
+            format='%d/%m/%Y', 
+            errors='coerce'
+        )
+    except:
+        # Fallback to automatic parsing
+        kharif['Kharif 25 Paddy transplanting date (TPR)'] = pd.to_datetime(
+            kharif['Kharif 25 Paddy transplanting date (TPR)'], errors='coerce'
+        )
+    
+    # Fill missing TPR dates with June 20, 2025
+    kharif['Kharif 25 Paddy transplanting date (TPR)'].fillna(pd.Timestamp('2025-06-20'), inplace=True)
 
-    water['Date'] = pd.to_datetime(water['Date'], errors='coerce')
+    # Handle water measurement dates - try DD/MM/YYYY format first
+    try:
+        water['Date'] = pd.to_datetime(water['Date'], format='%d/%m/%Y', errors='coerce')
+    except:
+        # Fallback to automatic parsing
+        water['Date'] = pd.to_datetime(water['Date'], errors='coerce')
     water = water.dropna(subset=['Date'])
 
     # Water level as numeric
@@ -5692,17 +5811,17 @@ def create_zip_package(merged_df, kharif_df, farm_daily_avg, weekly_avg):
         # Summary reports
         if 'Village' in merged_df.columns:
             village_summary = merged_df.groupby('Village').agg({
-                'Water Level (mm)': ['mean', 'std', 'count'],
+                'Water Level (mm)': ['mean', 'median', 'std', 'count'],
                 'Farm ID': 'nunique'
             }).round(2)
-            village_summary.columns = ['Avg Water Level', 'Std Dev', 'Total Readings', 'Unique Farms']
+            village_summary.columns = ['Avg Water Level', 'Median Water Level', 'Std Dev', 'Total Readings', 'Unique Farms']
             write_csv("20_village_summary.csv", village_summary)
 
         farm_summary = merged_df.groupby('Farm ID').agg({
-            'Water Level (mm)': ['mean', 'std', 'count'],
+            'Water Level (mm)': ['mean', 'median', 'std', 'count'],
             'Days from TPR': ['min', 'max']
         }).round(2)
-        farm_summary.columns = ['Avg Water Level', 'Std Dev', 'Total Readings', 'Min Days', 'Max Days']
+        farm_summary.columns = ['Avg Water Level', 'Median Water Level', 'Std Dev', 'Total Readings', 'Min Days', 'Max Days']
         write_csv("21_farm_summary.csv", farm_summary)
 
         # Add README

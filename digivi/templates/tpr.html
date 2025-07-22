@@ -351,9 +351,9 @@ h4 {
         <input type="hidden" name="language" value="{% if LANGUAGE_CODE == 'en' %}pa{% else %}en{% endif %}">
         <button type="submit" class="language-button">
             {% if LANGUAGE_CODE == 'en' %}
-                {% trans "Switch to Punjabi" %}
+                Switch to Punjabi
             {% else %}
-                {% trans "Switch to English" %}
+                Switch to English
             {% endif %}
         </button>
         <a href="{% url 'landing_protected' %}" class="home-btn">Home</a>
