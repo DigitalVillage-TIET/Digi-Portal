@@ -4295,7 +4295,7 @@ def generate_group_analysis_plot(df, col_name, group_farms_len, week_or_day,date
             name=f"{group} N={group_farms_len[group]}",
             line=dict(width=3),
             marker=dict(size=6),
-            hovertemplate=f'<b>{week_or_day} %{{x}}</b><br>%{{y:.2f}} m³/acre<extra></extra>'
+            hovertemplate=f'<b>{week_or_day } %{{x}}</b><br>%{{y:.2f}} m³/acre<extra></extra>'
         ))
 
     title = f"{col_name} | {'Filtered' if date_filter else 'Unfiltered'}"
@@ -6098,6 +6098,7 @@ def get_2025plots_plotly(raw_df, master_df, selected_farm, meter_list, start_dat
         dates_for_reading = get_dates(meter, raw_df, date_col, start_date, end_date, acreage)
 
         marker_points = filled_df[filled_df['Date'].isin(dates_for_reading['Date'])]
+        x_axis_marker = marker_points['Date'] if start_date_enter else marker_points['Day']
         # Graph 1: m³ per Acre per Avg Day
         fig1 = go.Figure()
         fig1.add_trace(go.Scatter(
@@ -6109,7 +6110,7 @@ def get_2025plots_plotly(raw_df, master_df, selected_farm, meter_list, start_dat
             hovertemplate='<b>Day %{x}</b><br>Daily Avg: %{y:.2f} m³/acre<extra></extra>'
         ))
         fig1.add_trace(go.Scatter(
-            x=marker_points['Date'],
+            x=x_axis_marker,
             y=marker_points['m³ per Acre per Avg Day'],
             mode='markers',
             name='Reading Dates',
@@ -6143,7 +6144,7 @@ def get_2025plots_plotly(raw_df, master_df, selected_farm, meter_list, start_dat
             hovertemplate='<b>Day %{x}</b><br>7-day SMA: %{y:.2f} m³/acre<extra></extra>'
         ))
         fig2.add_trace(go.Scatter(
-            x=marker_points['Date'],
+            x=x_axis_marker,
             y=marker_points['7-day SMA'],
             mode='markers',
             name='Reading Dates',
@@ -6176,7 +6177,7 @@ def get_2025plots_plotly(raw_df, master_df, selected_farm, meter_list, start_dat
             hovertemplate='<b>Day %{x}</b><br>Delta: %{y:.2f} m³<extra></extra>'
         ))
         fig3.add_trace(go.Scatter(
-            x=marker_points['Date'],
+            x=x_axis_marker,
             y=marker_points['Delta m³'],
             mode='markers',
             name='Reading Dates',
@@ -6209,7 +6210,7 @@ def get_2025plots_plotly(raw_df, master_df, selected_farm, meter_list, start_dat
             hovertemplate='<b>Day %{x}</b><br>Per Acre: %{y:.2f} m³<extra></extra>'
         ))
         fig4.add_trace(go.Scatter(
-            x=marker_points['Date'],
+            x=x_axis_marker,
             y=marker_points['m³ per Acre'],
             mode='markers',
             name='Reading Dates',
