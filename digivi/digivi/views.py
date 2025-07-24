@@ -2531,7 +2531,7 @@ def mapping(request):
 from django.shortcuts import render
 import pandas as pd
 
-from .utils import kharif2025_farms, get_2025plots, get_meters_by_village, apply_7day_sma, create_weekly_delta
+from .utils import kharif2025_farms, get_2025plots, get_meters_by_village, apply_7day_sma, create_weekly_delta, get_acreage
 
 
 
@@ -2874,6 +2874,9 @@ def meter_reading_25_view(request):
             plotly_htmls = get_2025plots_plotly(raw_df, master25, selected, meters)
             # Also generate matplotlib for potential reports
             encoded_imgs = get_2025plots(raw_df, master25, selected, meters)
+        
+        acreage_of_selected = get_acreage(master25, selected)
+
 
         # Group plots per meter - 4 plotly plots per meter
         for idx, meter in enumerate(meters):
@@ -2881,7 +2884,9 @@ def meter_reading_25_view(request):
                 'meter': meter,
                 'plotly_plots': plotly_htmls[4*idx : 4*idx + 4],  # Plotly for display
                 'plots': encoded_imgs[4*idx : 4*idx + 4],         # Matplotlib for reports
-                'is_combined': False
+                'is_combined': False,
+                'farm': selected,
+                'acre': acreage_of_selected
             }
             results.append(block)
         
@@ -2896,13 +2901,15 @@ def meter_reading_25_view(request):
                 combined_plotly = get_2025plots_combined_plotly(raw_df, master25, selected, meters)
                 combined_imgs = get_2025plots_combined(raw_df, master25, selected, meters)
             
+
             if combined_plotly:
                 combined_block = {
                     'meter': ' + '.join(meters),
                     'plotly_plots': combined_plotly,  # Plotly for display
                     'plots': combined_imgs,           # Matplotlib for reports
                     'is_combined': True,
-                    'farm': selected
+                    'farm': selected,
+                    'acre': acreage_of_selected
                 }
                 results.append(combined_block)
     
@@ -2931,6 +2938,7 @@ def meter_reading_25_view(request):
         
         # Generate plots for each farm in the village
         for farm_id, farm_meters in farm_meters_map.items():
+            acreage_of_selected = get_acreage(master25, farm_id)
             # Individual meter plots
             for meter in farm_meters:
                 if use_date_filter and filter_start_date and filter_end_date:
@@ -2942,13 +2950,15 @@ def meter_reading_25_view(request):
                     meter_plotly = get_2025plots_plotly(raw_df, master25, farm_id, [meter])
                     meter_imgs = get_2025plots(raw_df, master25, farm_id, [meter])
                 
+                
                 for idx in range(0, len(meter_plotly), 4):
                     block = {
                         'meter': meter,
                         'farm': farm_id,
                         'plotly_plots': meter_plotly[idx:idx+4],  # Plotly for display
                         'plots': meter_imgs[idx:idx+4],           # Matplotlib for reports
-                        'is_combined': False
+                        'is_combined': False,
+                        'acre': acreage_of_selected
                     }
                     results.append(block)
             
@@ -2969,7 +2979,8 @@ def meter_reading_25_view(request):
                         'farm': farm_id,
                         'plotly_plots': combined_plotly,  # Plotly for display
                         'plots': combined_imgs,           # Matplotlib for reports
-                        'is_combined': True
+                        'is_combined': True,
+                        'acre': acreage_of_selected
                     }
                     results.append(combined_block)
 

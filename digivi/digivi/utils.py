@@ -2775,8 +2775,8 @@
 #             height=450,
 #             margin=dict(l=60, r=60, t=80, b=60),
 #             hovermode='x unified',
-#             plot_bgcolor='rgba(0,0,0,0)',
-#             paper_bgcolor='rgba(0,0,0,0)'
+#             plot_bgcolor='white',
+#             paper_bgcolor='white'
 #         )
 #         fig1.update_xaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
 #         fig1.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
@@ -2808,8 +2808,8 @@
 #             height=450,
 #             margin=dict(l=60, r=60, t=80, b=60),
 #             hovermode='x unified',
-#             plot_bgcolor='rgba(0,0,0,0)',
-#             paper_bgcolor='rgba(0,0,0,0)'
+#             plot_bgcolor='white',
+#             paper_bgcolor='white'
 #         )
 #         fig2.update_xaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
 #         fig2.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
@@ -2841,8 +2841,8 @@
 #             height=450,
 #             margin=dict(l=60, r=60, t=80, b=60),
 #             hovermode='x unified',
-#             plot_bgcolor='rgba(0,0,0,0)',
-#             paper_bgcolor='rgba(0,0,0,0)'
+#             plot_bgcolor='white',
+#             paper_bgcolor='white'
 #         )
 #         fig3.update_xaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
 #         fig3.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
@@ -2874,8 +2874,8 @@
 #             height=450,
 #             margin=dict(l=60, r=60, t=80, b=60),
 #             hovermode='x unified',
-#             plot_bgcolor='rgba(0,0,0,0)',
-#             paper_bgcolor='rgba(0,0,0,0)'
+#             plot_bgcolor='white',
+#             paper_bgcolor='white'
 #         )
 #         fig4.update_xaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
 #         fig4.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
@@ -2984,8 +2984,8 @@
 #         height=450,
 #         margin=dict(l=60, r=60, t=80, b=60),
 #         hovermode='x unified',
-#         plot_bgcolor='rgba(0,0,0,0)',
-#         paper_bgcolor='rgba(0,0,0,0)'
+#         plot_bgcolor='white',
+#         paper_bgcolor='white'
 #     )
 #     fig1.update_xaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
 #     fig1.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
@@ -3009,8 +3009,8 @@
 #         height=450,
 #         margin=dict(l=60, r=60, t=80, b=60),
 #         hovermode='x unified',
-#         plot_bgcolor='rgba(0,0,0,0)',
-#         paper_bgcolor='rgba(0,0,0,0)'
+#         plot_bgcolor='white',
+#         paper_bgcolor='white'
 #     )
 #     fig2.update_xaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
 #     fig2.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
@@ -3034,8 +3034,8 @@
 #         height=450,
 #         margin=dict(l=60, r=60, t=80, b=60),
 #         hovermode='x unified',
-#         plot_bgcolor='rgba(0,0,0,0)',
-#         paper_bgcolor='rgba(0,0,0,0)'
+#         plot_bgcolor='white',
+#         paper_bgcolor='white'
 #     )
 #     fig3.update_xaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
 #     fig3.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
@@ -3059,8 +3059,8 @@
 #         height=450,
 #         margin=dict(l=60, r=60, t=80, b=60),
 #         hovermode='x unified',
-#         plot_bgcolor='rgba(0,0,0,0)',
-#         paper_bgcolor='rgba(0,0,0,0)'
+#         plot_bgcolor='white',
+#         paper_bgcolor='white'
 #     )
 #     fig4.update_xaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
 #     fig4.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
@@ -4307,8 +4307,8 @@ def generate_group_analysis_plot(df, col_name, group_farms_len, week_or_day,date
         height=500,
         margin=dict(l=60, r=60, t=80, b=60),
         hovermode='x unified',
-        plot_bgcolor='rgba(0,0,0,0)',
-        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='white',
+        paper_bgcolor='white',
     )
 
     fig.update_xaxes(showgrid=True, gridcolor='rgba(200,200,200,0.3)')
@@ -6126,12 +6126,12 @@ def get_2025plots_plotly(raw_df, master_df, selected_farm, meter_list, start_dat
             height=450,
             margin=dict(l=60, r=60, t=80, b=60),
             hovermode='x unified',
-            plot_bgcolor='rgba(0,0,0,0)',
-            paper_bgcolor='rgba(0,0,0,0)'
+            plot_bgcolor='white',
+            paper_bgcolor='white'
         )
         fig1.update_xaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
         fig1.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
-        plots_html.append(fig1.to_html(full_html=False, include_plotlyjs='cdn'))
+        
 
         # Graph 2: Moving Averages
         fig2 = go.Figure()
@@ -6159,31 +6159,30 @@ def get_2025plots_plotly(raw_df, master_df, selected_farm, meter_list, start_dat
             height=450,
             margin=dict(l=60, r=60, t=80, b=60),
             hovermode='x unified',
-            plot_bgcolor='rgba(0,0,0,0)',
-            paper_bgcolor='rgba(0,0,0,0)'
+            plot_bgcolor='white',
+            paper_bgcolor='white'
         )
         fig2.update_xaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
         fig2.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
-        plots_html.append(fig2.to_html(full_html=False, include_plotlyjs='cdn'))
+        
 
         # Graph 3: Delta Analysis
         fig3 = go.Figure()
-        fig3.add_trace(go.Scatter(
-            x=x_axis,
-            y=filled_df['Delta m³'],
-            mode='lines',
-            name='Delta m³',
-            line=dict(color='#8b5cf6', width=2),
-            hovertemplate='<b>Day %{x}</b><br>Delta: %{y:.2f} m³<extra></extra>'
-        ))
-        fig3.add_trace(go.Scatter(
+        # fig3.add_trace(go.Scatter(
+        #     x=x_axis,
+        #     y=filled_df['Delta m³'],
+        #     mode='lines',
+        #     name='Delta m³',
+        #     line=dict(color='#8b5cf6', width=2),
+        #     hovertemplate='<b>Day %{x}</b><br>Delta: %{y:.2f} m³<extra></extra>'
+        # ))
+        fig3.add_trace(go.Bar(
             x=x_axis_marker,
             y=marker_points['Delta m³'],
-            mode='markers',
             name='Reading Dates',
-            marker=dict(color='#3b82f6', size=6),
+            marker=dict(color='#3b82f6'),
             showlegend=False,
-            hovertemplate='<b>Day %{x}</b><br>Daily Avg: %{y:.2f} m³/acre<extra></extra>'
+            hovertemplate='<b>Day %{x}</b><br>Delta: %{y:.2f} m³/acre<extra></extra>'
         ))
         fig3.update_layout(
             title=f'Meter Actual readings | Meter {meter}',
@@ -6192,23 +6191,23 @@ def get_2025plots_plotly(raw_df, master_df, selected_farm, meter_list, start_dat
             height=450,
             margin=dict(l=60, r=60, t=80, b=60),
             hovermode='x unified',
-            plot_bgcolor='rgba(0,0,0,0)',
-            paper_bgcolor='rgba(0,0,0,0)'
+            plot_bgcolor='white',
+            paper_bgcolor='white'
         )
         fig3.update_xaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
         fig3.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
-        plots_html.append(fig3.to_html(full_html=False, include_plotlyjs='cdn'))
+        
 
         # Graph 4: Delta per Acre
         fig4 = go.Figure()
-        fig4.add_trace(go.Scatter(
-            x=x_axis,
-            y=filled_df['m³ per Acre'],
-            mode='lines',
-            name='Delta m³/Acre',
-            line=dict(color='#ef4444', width=2),
-            hovertemplate='<b>Day %{x}</b><br>Per Acre: %{y:.2f} m³<extra></extra>'
-        ))
+        # fig4.add_trace(go.Scatter(
+        #     x=x_axis,
+        #     y=filled_df['m³ per Acre'],
+        #     mode='lines',
+        #     name='Delta m³/Acre',
+        #     line=dict(color='#ef4444', width=2),
+        #     hovertemplate='<b>Day %{x}</b><br>Per Acre: %{y:.2f} m³<extra></extra>'
+        # ))
         fig4.add_trace(go.Scatter(
             x=x_axis_marker,
             y=marker_points['m³ per Acre'],
@@ -6216,7 +6215,7 @@ def get_2025plots_plotly(raw_df, master_df, selected_farm, meter_list, start_dat
             name='Reading Dates',
             marker=dict(color='#3b82f6', size=6),
             showlegend=False,
-            hovertemplate='<b>Day %{x}</b><br>Daily Avg: %{y:.2f} m³/acre<extra></extra>'
+            hovertemplate='<b>Day %{x}</b><br>Delta per Acre: %{y:.2f} m³/acre<extra></extra>'
         ))
         fig4.update_layout(
             title=f'Meter readings per Acre | Meter {meter}',
@@ -6225,14 +6224,30 @@ def get_2025plots_plotly(raw_df, master_df, selected_farm, meter_list, start_dat
             height=450,
             margin=dict(l=60, r=60, t=80, b=60),
             hovermode='x unified',
-            plot_bgcolor='rgba(0,0,0,0)',
-            paper_bgcolor='rgba(0,0,0,0)'
+            plot_bgcolor='white',
+            paper_bgcolor='white'
         )
         fig4.update_xaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
         fig4.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
+        plots_html.append(fig3.to_html(full_html=False, include_plotlyjs='cdn'))
+        plots_html.append(fig2.to_html(full_html=False, include_plotlyjs='cdn'))
         plots_html.append(fig4.to_html(full_html=False, include_plotlyjs='cdn'))
+        plots_html.append(fig1.to_html(full_html=False, include_plotlyjs='cdn'))
 
     return plots_html
+
+def get_acreage(master_df, selected_farm):
+    meta = master_df['Farm details']
+    farm_row = meta[meta['Kharif 25 Farm ID'] == selected_farm]
+    if farm_row.empty:
+        raise ValueError(f"Farm ID {selected_farm} not found in metadata.")
+    farm_row = farm_row.iloc[0]
+
+    acreage = farm_row.get('Kharif 25 Acres farm - farmer reporting') or 1
+    if pd.isna(acreage) or acreage <= 0:
+        acreage = "No acre in master, default 1"
+
+    return acreage
 
 
 def get_2025plots_combined_plotly(raw_df, master_df, selected_farm, meter_list, start_date_enter=None, end_date_enter=None):
@@ -6335,8 +6350,8 @@ def get_2025plots_combined_plotly(raw_df, master_df, selected_farm, meter_list, 
         height=450,
         margin=dict(l=60, r=60, t=80, b=60),
         hovermode='x unified',
-        plot_bgcolor='rgba(0,0,0,0)',
-        paper_bgcolor='rgba(0,0,0,0)'
+        plot_bgcolor='white',
+        paper_bgcolor='white'
     )
     fig1.update_xaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
     fig1.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
@@ -6360,8 +6375,8 @@ def get_2025plots_combined_plotly(raw_df, master_df, selected_farm, meter_list, 
         height=450,
         margin=dict(l=60, r=60, t=80, b=60),
         hovermode='x unified',
-        plot_bgcolor='rgba(0,0,0,0)',
-        paper_bgcolor='rgba(0,0,0,0)'
+        plot_bgcolor='white',
+        paper_bgcolor='white'
     )
     fig2.update_xaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
     fig2.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
@@ -6385,8 +6400,8 @@ def get_2025plots_combined_plotly(raw_df, master_df, selected_farm, meter_list, 
         height=450,
         margin=dict(l=60, r=60, t=80, b=60),
         hovermode='x unified',
-        plot_bgcolor='rgba(0,0,0,0)',
-        paper_bgcolor='rgba(0,0,0,0)'
+        plot_bgcolor='white',
+        paper_bgcolor='white'
     )
     fig3.update_xaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
     fig3.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
@@ -6410,8 +6425,8 @@ def get_2025plots_combined_plotly(raw_df, master_df, selected_farm, meter_list, 
         height=450,
         margin=dict(l=60, r=60, t=80, b=60),
         hovermode='x unified',
-        plot_bgcolor='rgba(0,0,0,0)',
-        paper_bgcolor='rgba(0,0,0,0)'
+        plot_bgcolor='white',
+        paper_bgcolor='white'
     )
     fig4.update_xaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
     fig4.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
