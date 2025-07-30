@@ -1385,10 +1385,25 @@
             <i class="fas fa-download"></i> Export Delta Data table
           </button>
         </form>
+        <form method="post">
+          {% csrf_token %}
+          <input type="hidden" name="download_table" value="dates_reading">
+          <button type="submit" class="btn btn-success btn-block">
+            <i class="fas fa-download"></i> Dates Reading table
+          </button>
+        </form>
+        <form method="post">
+          {% csrf_token %}
+          <input type="hidden" name="download_table" value="days_reading">
+          <button type="submit" class="btn btn-success btn-block">
+            <i class="fas fa-download"></i> Days Reading table
+          </button>
+        </form>
       </div>
     </div>
   </div>
   {% endif %}
+
 
   <!-- Village Filter -->
   {% if village_names %}

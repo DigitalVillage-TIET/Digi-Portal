@@ -2536,7 +2536,7 @@ def mapping(request):
 from django.shortcuts import render
 import pandas as pd
 
-from .utils import kharif2025_farms, get_2025plots, get_meters_by_village, apply_7day_sma, create_weekly_delta, get_acreage, create_delta_vs_days_from_tpr, generate_delta_vs_days_groupwise_plots
+from .utils import kharif2025_farms, get_2025plots, get_meters_by_village, apply_7day_sma, create_weekly_delta, get_acreage, create_delta_vs_days_from_tpr, generate_delta_vs_days_groupwise_plots, get_dates_table
 
 
 
@@ -2775,13 +2775,20 @@ def meter_reading_25_view(request):
         
         download_request = request.POST.get("download_table")
         if download_request and raw_df is not None:
-            col_to_get = "m³ per Acre per Avg Day" if download_request == "avg" else "m³ per Acre"
-            if use_date_filter and filter_start_date and filter_end_date:
-                filter_start = pd.to_datetime(filter_start_date)
-                filter_end = pd.to_datetime(filter_end_date)
-                combined_df = get_tables(raw_df, master25, farm_dict, col_to_get, start_date_enter=filter_start, end_date_enter=filter_end)
+            if download_request in ['dates_reading', 'days_reading']:
+                start_date_for_readings = pd.to_datetime(date_range_info['current_min'])
+                end_date_for_readings = pd.to_datetime(date_range_info['current_max'])
+                combined_df = get_dates_table(raw_df, master25, farm_dict, start_date_for_readings, end_date_for_readings, download_request)
+
+            
             else:
-                combined_df = get_tables(raw_df, master25, farm_dict, col_to_get)
+                col_to_get = "m³ per Acre per Avg Day" if download_request == "avg" else "m³ per Acre"
+                if use_date_filter and filter_start_date and filter_end_date:
+                    filter_start = pd.to_datetime(filter_start_date)
+                    filter_end = pd.to_datetime(filter_end_date)
+                    combined_df = get_tables(raw_df, master25, farm_dict, col_to_get, start_date_enter=filter_start, end_date_enter=filter_end)
+                else:
+                    combined_df = get_tables(raw_df, master25, farm_dict, col_to_get)
 
             # Convert DataFrame to Excel file in memory
             with BytesIO() as buffer:

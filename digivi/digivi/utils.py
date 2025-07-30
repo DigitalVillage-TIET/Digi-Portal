@@ -4038,6 +4038,48 @@ def get_tables(raw_df, master_df, farm_list, col_to_get, start_date_enter = None
 
     return combined_df
 
+def get_dates_table(raw_df, master_df, farm_list, start_date, end_date, days_or_dates):
+    # Clean meter data
+    date_col = 'Date'
+    raw_df[date_col] = pd.to_datetime(raw_df[date_col], dayfirst=False)
+    raw_df = raw_df.sort_values(date_col)
+    dfs = []
+    
+    for farm in farm_list.keys():
+        for meter in farm_list[farm]:
+            if not meter:
+                continue
+        
+            # Filter data for the specific meter
+            df = raw_df[raw_df['Meter Serial Number - as shown on meter'] == meter].copy()
+            df.drop_duplicates(subset=[date_col], keep='last', inplace=True)
+            if not df.empty:
+                # Keep only relevant columns
+                df = df[[date_col, 'Reading in the meter - in m3']].dropna()
+                
+                # Convert date column to datetime
+                df[date_col] = pd.to_datetime(df[date_col])
+
+                df = df[[date_col, 'Reading in the meter - in m3']].rename(columns={'Reading in the meter - in m3': meter})
+            else:
+                df = pd.DataFrame(columns=[date_col, meter])
+            
+            dfs.append(df)
+
+    from functools import reduce
+
+    # Assuming all DataFrames have the same name for the date column
+    combined_df = reduce(lambda left, right: pd.merge(left, right, on='Date', how='outer'), dfs)
+    # Create a full date range and merge it
+    full_date_range = pd.DataFrame({date_col: pd.date_range(start=start_date, end=end_date)})
+    combined_df = pd.merge(full_date_range, combined_df, on='Date', how='left')
+    if days_or_dates == 'days_reading':
+        combined_df['Date'] = (pd.to_datetime(combined_df[date_col]) - start_date).dt.days
+        combined_df.rename(columns={"Date":'Day'})
+
+
+    return combined_df
+
 
 def calculate_avg_m3_per_acre(group_type, group_label, farm_ids, raw_df, master25, column_to_see, start_date_enter = None, end_date_enter = None):
     """
