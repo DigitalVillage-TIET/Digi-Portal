@@ -1,5 +1,3 @@
-<!-- digivi/templates/grouping.html -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -288,113 +286,121 @@
       background: var(--bg-secondary);
     }
 
-    /* Radio Group Styles */
-    .radio-group {
-      display: flex;
-      gap: 1rem;
-      margin-bottom: 2rem;
-      flex-wrap: wrap;
-    }
-
-    .radio-option {
-      position: relative;
-    }
-
-    .radio-option input[type="radio"] {
-      position: absolute;
-      opacity: 0;
-    }
-
-    .radio-label {
-      display: inline-block;
-      padding: 0.75rem 1.5rem;
-      background: var(--bg-tertiary);
-      border: 2px solid var(--border-color);
-      border-radius: 10px;
-      cursor: pointer;
-      font-weight: 500;
-      transition: var(--transition);
-      user-select: none;
-    }
-
-    .radio-option input[type="radio"]:checked + .radio-label {
-      background: var(--gradient-primary);
-      border-color: transparent;
-      color: white;
-      box-shadow: var(--shadow-md);
-    }
-
-    .radio-label:hover {
-      border-color: var(--accent-primary);
-      transform: translateY(-2px);
-    }
-
-    /* Checkbox Group Styles */
-    .checkbox-group {
-      margin-top: 1.5rem;
-      padding: 1.5rem;
+    /* Group Selection Container */
+    .group-selection {
       background: var(--bg-tertiary);
       border-radius: 12px;
+      padding: 1.5rem;
       border: 1px solid var(--border-color);
-      display: none;
-      animation: fadeIn 0.3s ease-in;
+      margin-bottom: 2rem;
     }
 
-    .checkbox-group.active {
-      display: block;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .checkbox-group h3 {
+    .group-selection h3 {
       font-size: 1.1rem;
       font-weight: 600;
       margin-bottom: 1rem;
       color: var(--accent-primary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
     }
 
-    .checkbox-option {
+    /* Search Box */
+    .search-box {
       position: relative;
-      margin-bottom: 0.75rem;
+      margin-bottom: 1.5rem;
     }
 
-    .checkbox-option input[type="checkbox"] {
+    .search-input {
+      width: 100%;
+      padding: 0.875rem 1rem 0.875rem 2.5rem;
+      border: 2px solid var(--border-color);
+      border-radius: 10px;
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      font-size: 0.95rem;
+      transition: var(--transition);
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: var(--accent-primary);
+      box-shadow: var(--shadow-glow);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 0.875rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-tertiary);
+      font-size: 1rem;
+    }
+
+    /* Group Options Grid */
+    .group-options {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 0.75rem;
+      max-height: 400px;
+      overflow-y: auto;
+      padding-right: 0.5rem;
+    }
+
+    .group-options::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .group-options::-webkit-scrollbar-track {
+      background: var(--bg-tertiary);
+      border-radius: 3px;
+    }
+
+    .group-options::-webkit-scrollbar-thumb {
+      background: var(--accent-primary);
+      border-radius: 3px;
+    }
+
+    .group-option {
+      position: relative;
+    }
+
+    .group-option input[type="checkbox"] {
       position: absolute;
       opacity: 0;
     }
 
-    .checkbox-label {
+    .group-label {
       display: flex;
       align-items: center;
-      padding: 0.75rem 1rem;
+      padding: 0.875rem 1rem;
       background: var(--bg-secondary);
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
+      border: 2px solid var(--border-color);
+      border-radius: 10px;
       cursor: pointer;
       transition: var(--transition);
       user-select: none;
+      font-weight: 500;
     }
 
-    .checkbox-label::before {
+    .group-label::before {
       content: '';
       width: 20px;
       height: 20px;
       border: 2px solid var(--border-color);
-      border-radius: 4px;
+      border-radius: 6px;
       margin-right: 0.75rem;
       transition: var(--transition);
       flex-shrink: 0;
     }
 
-    .checkbox-option input[type="checkbox"]:checked + .checkbox-label {
+    .group-option input[type="checkbox"]:checked + .group-label {
       background: var(--bg-tertiary);
       border-color: var(--accent-primary);
+      box-shadow: var(--shadow-glow);
     }
 
-    .checkbox-option input[type="checkbox"]:checked + .checkbox-label::before {
+    .group-option input[type="checkbox"]:checked + .group-label::before {
       background: var(--gradient-primary);
       border-color: transparent;
       content: '✓';
@@ -403,11 +409,104 @@
       justify-content: center;
       color: white;
       font-weight: bold;
+      font-size: 12px;
     }
 
-    .checkbox-label:hover {
+    .group-label:hover {
       border-color: var(--accent-primary);
-      transform: translateX(5px);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    /* Study Type Badges */
+    .study-badge {
+      display: inline-block;
+      padding: 0.25rem 0.5rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      border-radius: 6px;
+      margin-left: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.025em;
+    }
+
+    .study-badge.remote {
+      background: var(--accent-primary);
+      color: white;
+    }
+
+    .study-badge.awd {
+      background: var(--accent-tertiary);
+      color: white;
+    }
+
+    .study-badge.tpr-dsr {
+      background: var(--accent-success);
+      color: white;
+    }
+
+    .study-badge.whole {
+      background: var(--accent-warning);
+      color: white;
+    }
+
+    /* Selected Groups Display */
+    .selected-groups {
+      margin-top: 1.5rem;
+      padding: 1rem;
+      background: var(--bg-secondary);
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+    }
+
+    .selected-groups h4 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      color: var(--text-primary);
+    }
+
+    .selected-items {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .selected-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 0.75rem;
+      background: var(--gradient-primary);
+      color: white;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+
+    .selected-item .remove-btn {
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      color: white;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 12px;
+      transition: var(--transition);
+    }
+
+    .selected-item .remove-btn:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    .no-selection {
+      color: var(--text-tertiary);
+      font-style: italic;
+      font-size: 0.9rem;
     }
 
     /* Button */
@@ -457,9 +556,51 @@
       box-shadow: var(--shadow-lg), var(--shadow-glow);
     }
 
+    .btn-primary:disabled {
+      background: var(--bg-tertiary);
+      color: var(--text-tertiary);
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
     .btn-block {
       width: 100%;
       justify-content: center;
+    }
+
+    /* Action Buttons */
+    .action-buttons {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .btn-secondary {
+      background: var(--bg-tertiary);
+      color: var(--text-primary);
+      border: 1px solid var(--border-color);
+    }
+
+    .btn-secondary:hover {
+      background: var(--accent-secondary);
+      color: white;
+      border-color: var(--accent-secondary);
+    }
+
+    /* Info Box */
+    .info-box {
+      background: var(--bg-tertiary);
+      border-left: 4px solid var(--accent-primary);
+      padding: 1rem 1.5rem;
+      margin-bottom: 1.5rem;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .info-box p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      margin: 0;
     }
 
     /* Results Section */
@@ -479,21 +620,6 @@
       width: 100%;
       height: auto;
       border-radius: 8px;
-    }
-
-    /* Info Box */
-    .info-box {
-      background: var(--bg-tertiary);
-      border-left: 4px solid var(--accent-primary);
-      padding: 1rem 1.5rem;
-      margin-bottom: 1.5rem;
-      border-radius: 0 8px 8px 0;
-    }
-
-    .info-box p {
-      color: var(--text-secondary);
-      font-size: 0.95rem;
-      margin: 0;
     }
 
     /* Tech Grid Background */
@@ -518,12 +644,16 @@
         gap: 1rem;
       }
       
-      .radio-group {
-        flex-direction: column;
-      }
-      
       .container {
         padding: 1rem;
+      }
+
+      .group-options {
+        grid-template-columns: 1fr;
+      }
+
+      .action-buttons {
+        flex-direction: column;
       }
     }
 
@@ -551,7 +681,7 @@
     <div class="header-content">
       <div class="header-left">
         <h1>Group Analysis Dashboard</h1>
-        <p><span style="font-family: 'JetBrains Mono', monospace; color: var(--accent-primary);">KHARIF_2025</span> • Comparative Study Analysis</p>
+        <p><span style="font-family: 'JetBrains Mono', monospace; color: var(--accent-primary);">KHARIF_2025</span> • Universal Comparative Analysis</p>
       </div>
       <div class="nav-actions">
         <a href="{% url 'meter_reading_25' %}" class="back-btn">
@@ -570,132 +700,213 @@
     <!-- Configuration Card -->
     <div class="glass-card">
       <div class="card-header">
-        <h2><i class="fas fa-cogs icon"></i> Study Group Configuration</h2>
+        <h2><i class="fas fa-cogs icon"></i> Universal Group Selection</h2>
       </div>
       <div class="card-body">
+        <div class="info-box">
+          <p><strong>New Flexible Approach:</strong> Select any combination of groups from all studies for comparison. You can mix and match across studies, compare treatment vs control, or analyze compliance patterns - all in one analysis!</p>
+        </div>
+
         <form method="post" id="groupForm">
           {% csrf_token %}
-          
-          <!-- Study Type Selection -->
-          <h3 style="margin-bottom: 1rem; color: var(--text-primary);">1. Select Study Type</h3>
-          <div class="radio-group">
-            <div class="radio-option">
-              <input type="radio" id="remote" name="group_type" value="Remote" onchange="onGroupChange(this.value)" required>
-              <label for="remote" class="radio-label">
-                <i class="fas fa-wifi"></i> Remote Controllers
-              </label>
+          <div class="group-selection">
+            <h3><i class="fas fa-layer-group"></i> Select Groups for Comparison</h3>
+            
+            <!-- Search Box -->
+            <div class="search-box">
+              <i class="fas fa-search search-icon"></i>
+              <input type="text" class="search-input" placeholder="Search groups (e.g., 'Remote Group A', 'AWD', 'Whole')" id="groupSearch">
             </div>
-            <div class="radio-option">
-              <input type="radio" id="awd" name="group_type" value="AWD" onchange="onGroupChange(this.value)">
-              <label for="awd" class="radio-label">
-                <i class="fas fa-tint"></i> AWD Study
-              </label>
+
+            <!-- Group Options -->
+            <div class="group-options" id="groupOptions">
+              <!-- Remote Controller Groups -->
+              <div class="group-option">
+                <input type="checkbox" id="remote-a-complied" name="group_category" value="Remote Group-A Complied">
+                <label for="remote-a-complied" class="group-label">
+                  Remote Group-A Complied <span class="study-badge remote">Remote</span>
+                </label>
+              </div>
+              
+              <div class="group-option">
+                <input type="checkbox" id="remote-a-non" name="group_category" value="Remote Group-A Non-Complied">
+                <label for="remote-a-non" class="group-label">
+                  Remote Group-A Non-Complied <span class="study-badge remote">Remote</span>
+                </label>
+              </div>
+
+              <div class="group-option">
+                <input type="checkbox" id="remote-a-whole" name="group_category" value="Remote Group-A Whole">
+                <label for="remote-a-whole" class="group-label">
+                  Remote Group-A Whole <span class="study-badge whole">Whole</span>
+                </label>
+              </div>
+
+              <div class="group-option">
+                <input type="checkbox" id="remote-b-complied" name="group_category" value="Remote Group-B Complied">
+                <label for="remote-b-complied" class="group-label">
+                  Remote Group-B Complied <span class="study-badge remote">Remote</span>
+                </label>
+              </div>
+
+              <div class="group-option">
+                <input type="checkbox" id="remote-b-non" name="group_category" value="Remote Group-B Non-Complied">
+                <label for="remote-b-non" class="group-label">
+                  Remote Group-B Non-Complied <span class="study-badge remote">Remote</span>
+                </label>
+              </div>
+
+              <div class="group-option">
+                <input type="checkbox" id="remote-b-whole" name="group_category" value="Remote Group-B Whole">
+                <label for="remote-b-whole" class="group-label">
+                  Remote Group-B Whole <span class="study-badge whole">Whole</span>
+                </label>
+              </div>
+
+              <!-- AWD Groups -->
+              <div class="group-option">
+                <input type="checkbox" id="awd-a-complied" name="group_category" value="AWD Group-A Complied">
+                <label for="awd-a-complied" class="group-label">
+                  AWD Group-A Complied <span class="study-badge awd">AWD</span>
+                </label>
+              </div>
+
+              <div class="group-option">
+                <input type="checkbox" id="awd-a-non" name="group_category" value="AWD Group-A Non-Complied">
+                <label for="awd-a-non" class="group-label">
+                  AWD Group-A Non-Complied <span class="study-badge awd">AWD</span>
+                </label>
+              </div>
+
+              <div class="group-option">
+                <input type="checkbox" id="awd-a-whole" name="group_category" value="AWD Group-A Whole">
+                <label for="awd-a-whole" class="group-label">
+                  AWD Group-A Whole <span class="study-badge whole">Whole</span>
+                </label>
+              </div>
+
+              <div class="group-option">
+                <input type="checkbox" id="awd-b-complied" name="group_category" value="AWD Group-B Complied">
+                <label for="awd-b-complied" class="group-label">
+                  AWD Group-B Complied <span class="study-badge awd">AWD</span>
+                </label>
+              </div>
+
+              <div class="group-option">
+                <input type="checkbox" id="awd-b-non" name="group_category" value="AWD Group-B Non-Complied">
+                <label for="awd-b-non" class="group-label">
+                  AWD Group-B Non-Complied <span class="study-badge awd">AWD</span>
+                </label>
+              </div>
+
+              <div class="group-option">
+                <input type="checkbox" id="awd-b-whole" name="group_category" value="AWD Group-B Whole">
+                <label for="awd-b-whole" class="group-label">
+                  AWD Group-B Whole <span class="study-badge whole">Whole</span>
+                </label>
+              </div>
+
+              <div class="group-option">
+                <input type="checkbox" id="awd-c-complied" name="group_category" value="AWD Group-C Complied">
+                <label for="awd-c-complied" class="group-label">
+                  AWD Group-C Complied <span class="study-badge awd">AWD</span>
+                </label>
+              </div>
+
+              <div class="group-option">
+                <input type="checkbox" id="awd-c-non" name="group_category" value="AWD Group-C Non-Complied">
+                <label for="awd-c-non" class="group-label">
+                  AWD Group-C Non-Complied <span class="study-badge awd">AWD</span>
+                </label>
+              </div>
+
+              <div class="group-option">
+                <input type="checkbox" id="awd-c-whole" name="group_category" value="AWD Group-C Whole">
+                <label for="awd-c-whole" class="group-label">
+                  AWD Group-C Whole <span class="study-badge whole">Whole</span>
+                </label>
+              </div>
+
+              <!-- TPR/DSR Groups -->
+              <div class="group-option">
+                <input type="checkbox" id="tpr" name="group_category" value="TPR">
+                <label for="tpr" class="group-label">
+                  TPR - Transplanted Rice <span class="study-badge tpr-dsr">TPR</span>
+                </label>
+              </div>
+
+              <div class="group-option">
+                <input type="checkbox" id="dsr" name="group_category" value="DSR">
+                <label for="dsr" class="group-label">
+                  DSR - Direct Seeded Rice <span class="study-badge tpr-dsr">DSR</span>
+                </label>
+              </div>
             </div>
-            <div class="radio-option">
-              <input type="radio" id="tprdsr" name="group_type" value="TPR/DSR" onchange="onGroupChange(this.value)">
-              <label for="tprdsr" class="radio-label">
-                <i class="fas fa-seedling"></i> TPR/DSR
-              </label>
+
+            <!-- Selected Groups Display -->
+            <div class="selected-groups">
+              <h4><i class="fas fa-check-circle"></i> Selected Groups (<span id="selectedCount">0</span>)</h4>
+              <div class="selected-items" id="selectedItems">
+                <div class="no-selection">No groups selected yet. Choose groups from above to compare.</div>
+              </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+              <button type="button" class="btn btn-secondary" onclick="clearAllSelections()">
+                <i class="fas fa-trash"></i> Clear All
+              </button>
+              <button type="submit" name="proceed_group" class="btn btn-primary btn-block" id="analyzeBtn" disabled>
+                <i class="fas fa-chart-line"></i> Generate Analysis
+              </button>
             </div>
           </div>
-
-          <!-- Remote Options -->
-          <div id="remote-options" class="checkbox-group">
-            <h3>Remote Controller Groups</h3>
-            <div class="info-box">
-              <p>Select groups to compare treatment (with remote controllers) vs control groups, and compliance levels.</p>
-            </div>
-            <div class="checkbox-option">
-              <input type="checkbox" id="remote-a-complied" name="group_category" value="Group-A Complied">
-              <label for="remote-a-complied" class="checkbox-label">Group-A Complied (Treatment)</label>
-            </div>
-            <div class="checkbox-option">
-              <input type="checkbox" id="remote-a-non" name="group_category" value="Group-A Non-Complied">
-              <label for="remote-a-non" class="checkbox-label">Group-A Non-Complied (Treatment)</label>
-            </div>
-            <div class="checkbox-option">
-              <input type="checkbox" id="remote-b-complied" name="group_category" value="Group-B Complied">
-              <label for="remote-b-complied" class="checkbox-label">Group-B Complied (Control)</label>
-            </div>
-            <div class="checkbox-option">
-              <input type="checkbox" id="remote-b-non" name="group_category" value="Group-B Non-Complied">
-              <label for="remote-b-non" class="checkbox-label">Group-B Non-Complied (Control)</label>
-            </div>
-          </div>
-
-          <!-- AWD Options -->
-          <div id="awd-options" class="checkbox-group">
-            <h3>Alternate Wetting & Drying Groups</h3>
-            <div class="info-box">
-              <p>Compare AWD treatment groups with control groups across different compliance levels.</p>
-            </div>
-            <div class="checkbox-option">
-              <input type="checkbox" id="awd-a-complied" name="group_category" value="Group-A Complied">
-              <label for="awd-a-complied" class="checkbox-label">Group-A Complied (AWD Treatment)</label>
-            </div>
-            <div class="checkbox-option">
-              <input type="checkbox" id="awd-a-non" name="group_category" value="Group-A Non-Complied">
-              <label for="awd-a-non" class="checkbox-label">Group-A Non-Complied (AWD Treatment)</label>
-            </div>
-            <div class="checkbox-option">
-              <input type="checkbox" id="awd-b-complied" name="group_category" value="Group-B Complied">
-              <label for="awd-b-complied" class="checkbox-label">Group-B Complied (Control)</label>
-            </div>
-            <div class="checkbox-option">
-              <input type="checkbox" id="awd-b-non" name="group_category" value="Group-B Non-Complied">
-              <label for="awd-b-non" class="checkbox-label">Group-B Non-Complied (Control)</label>
-            </div>
-            <div class="checkbox-option">
-              <input type="checkbox" id="awd-c-complied" name="group_category" value="Group-C Complied">
-              <label for="awd-c-complied" class="checkbox-label">Group-C Complied (Control)</label>
-            </div>
-            <div class="checkbox-option">
-              <input type="checkbox" id="awd-c-non" name="group_category" value="Group-C Non-Complied">
-              <label for="awd-c-non" class="checkbox-label">Group-C Non-Complied (Control)</label>
-            </div>
-          </div>
-
-          <!-- TPR/DSR Options -->
-          <div id="tprdsr-options" class="checkbox-group">
-            <h3>Rice Cultivation Methods</h3>
-            <div class="info-box">
-              <p>Compare traditional Transplanted Rice (TPR) with Direct Seeded Rice (DSR) methods.</p>
-            </div>
-            <div class="checkbox-option">
-              <input type="checkbox" id="tpr" name="group_category" value="TPR">
-              <label for="tpr" class="checkbox-label">TPR - Transplanted Rice</label>
-            </div>
-            <div class="checkbox-option">
-              <input type="checkbox" id="dsr" name="group_category" value="DSR">
-              <label for="dsr" class="checkbox-label">DSR - Direct Seeded Rice</label>
-            </div>
-          </div>
-
-          <!-- Submit Button -->
-          <button type="submit" name="proceed_group" class="btn btn-primary btn-block" style="margin-top: 2rem;">
-            <i class="fas fa-chart-line"></i> Generate Analysis
-          </button>
         </form>
       </div>
     </div>
 
-    <!-- Results Section -->
+    <!-- Results Section (if output exists) -->
     {% if output %}
-    <div class="results-section">
-      <div class="glass-card">
-        <div class="card-header">
-          <h2><i class="fas fa-chart-area icon"></i> Comparative Analysis Results</h2>
+  <div class="results-section">
+    <div class="glass-card">
+      <div class="card-header">
+        <h2><i class="fas fa-chart-area icon"></i> Comparative Analysis Results</h2>
+      </div>
+      <div class="card-body">
+        <div class="info-box">
+          <p><strong>Study Type:</strong> {{ group_type }} | 
+          <strong>Selected Groups:</strong> {{ selected_groups|join:", " }}</p>
         </div>
-        <div class="card-body">
-          <div class="info-box">
-            <p><strong>Study Type:</strong> {{ group_type }} | <strong>Selected Groups:</strong> {{ selected_groups|join:", " }}</p>
-          </div>
-          <div class="graph-container">
-            <img src="data:image/png;base64,{{ group_plot }}" alt="Group Analysis Graph">
-            <img src="data:image/png;base64,{{ group_plot2 }}" alt="Group Analysis Graph">
-          </div>
+        <div class="graph-container">
+          {{ group_plot|safe }}
+          {{ group_plot3|safe }}
+          {{ group_plot2|safe }}
+          {{ group_plot4|safe }}
+          {{ group_plot5|safe }}
         </div>
       </div>
+    </div>
+  </div>
+{% endif %}
+
+{% if groupwise_plots %}
+  <div class="results-section">
+    <div class="glass-card">
+      <div class="card-header">
+        <h2><i class="fas fa-chart-area icon"></i> Delta vs Days from TPR – Per Group</h2>
+      </div>
+      <div class="card-body">
+        {% for group_name, plot_html in groupwise_plots %}
+          <div class="group-plot-section" style="margin-bottom: 2.5rem;">
+            <h3 style="margin-bottom: 1rem;">{{ group_name }}</h3>
+            {{ plot_html|safe }}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+{% endif %}
+
 
       <!-- Download Report -->
       <div class="glass-card">
@@ -704,7 +915,7 @@
         </div>
         <div class="card-body">
           <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
-            Download a detailed Word document with the comparative analysis results
+            Download a comprehensive Word document with the comparative analysis results
           </p>
           <form method="post">
             {% csrf_token %}
@@ -716,7 +927,6 @@
         </div>
       </div>
     </div>
-    {% endif %}
   </div>
 
   <script>
@@ -741,39 +951,110 @@
       icon.className = theme === 'light' ? 'fas fa-sun' : 'fas fa-moon';
     }
 
-    // Group Selection
-    function onGroupChange(value) {
-      // Hide all group sections
-      document.querySelectorAll('.checkbox-group').forEach(div => {
-        div.classList.remove('active');
-      });
+    // Group Selection Management
+    let selectedGroups = [];
 
-      // Uncheck all checkboxes
-      document.querySelectorAll('.checkbox-group input[type="checkbox"]').forEach(cb => {
-        cb.checked = false;
-      });
-
-      // Show selected group section
-      if (value === 'Remote') {
-        document.getElementById('remote-options').classList.add('active');
-      } else if (value === 'AWD') {
-        document.getElementById('awd-options').classList.add('active');
-      } else if (value === 'TPR/DSR') {
-        document.getElementById('tprdsr-options').classList.add('active');
+    function updateSelectedDisplay() {
+      const selectedItems = document.getElementById('selectedItems');
+      const selectedCount = document.getElementById('selectedCount');
+      const analyzeBtn = document.getElementById('analyzeBtn');
+      
+      selectedCount.textContent = selectedGroups.length;
+      
+      if (selectedGroups.length === 0) {
+        selectedItems.innerHTML = '<div class="no-selection">No groups selected yet. Choose groups from above to compare.</div>';
+        analyzeBtn.disabled = true;
+      } else {
+        selectedItems.innerHTML = '';
+        selectedGroups.forEach(group => {
+          const item = document.createElement('div');
+          item.className = 'selected-item';
+          item.innerHTML = `
+            ${group}
+            <button type="button" class="remove-btn" onclick="removeSelection('${group}')">
+              <i class="fas fa-times"></i>
+            </button>
+          `;
+          selectedItems.appendChild(item);
+        });
+        analyzeBtn.disabled = false;
       }
     }
 
-    // Form Validation
-    document.getElementById('groupForm').addEventListener('submit', function(e) {
-      const checkedBoxes = document.querySelectorAll('input[name="group_category"]:checked');
-      if (checkedBoxes.length === 0) {
-        e.preventDefault();
-        alert('Please select at least one group to analyze.');
-      }
-    });
+    function removeSelection(groupValue) {
+      selectedGroups = selectedGroups.filter(group => group !== groupValue);
+      document.querySelector(`input[value="${groupValue}"]`).checked = false;
+      updateSelectedDisplay();
+    }
 
-    // Initialize theme on load
-    initTheme();
+    function clearAllSelections() {
+      selectedGroups = [];
+      document.querySelectorAll('input[name="group_category"]').forEach(checkbox => {
+        checkbox.checked = false;
+      });
+      updateSelectedDisplay();
+    }
+
+    // Search Functionality
+    function setupSearch() {
+      const searchInput = document.getElementById('groupSearch');
+      const groupOptions = document.querySelectorAll('.group-option');
+      
+      searchInput.addEventListener('input', function() {
+        const searchTerm = this.value.toLowerCase();
+        
+        groupOptions.forEach(option => {
+          const label = option.querySelector('.group-label').textContent.toLowerCase();
+          if (label.includes(searchTerm)) {
+            option.style.display = 'block';
+          } else {
+            option.style.display = 'none';
+          }
+        });
+      });
+    }
+
+    // Checkbox Event Listeners
+    function setupCheckboxListeners() {
+      document.querySelectorAll('input[name="group_category"]').forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+          if (this.checked) {
+            if (!selectedGroups.includes(this.value)) {
+              selectedGroups.push(this.value);
+            }
+          } else {
+            selectedGroups = selectedGroups.filter(group => group !== this.value);
+          }
+          updateSelectedDisplay();
+        });
+      });
+    }
+
+    // Form Validation
+    function setupFormValidation() {
+      document.getElementById('groupForm').addEventListener('submit', function(e) {
+        if (selectedGroups.length === 0) {
+          e.preventDefault();
+          alert('Please select at least one group to analyze.');
+          return;
+        }
+        
+        if (selectedGroups.length > 10) {
+          e.preventDefault();
+          alert('Please select no more than 10 groups for optimal analysis performance.');
+          return;
+        }
+      });
+    }
+
+    // Initialize everything
+    document.addEventListener('DOMContentLoaded', function() {
+      initTheme();
+      setupSearch();
+      setupCheckboxListeners();
+      setupFormValidation();
+      updateSelectedDisplay();
+    });
   </script>
 </body>
 </html>

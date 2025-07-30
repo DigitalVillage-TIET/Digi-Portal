@@ -1741,9 +1741,9 @@
                     <input type="hidden" name="language" value="{% if LANGUAGE_CODE == 'en' %}pa{% else %}en{% endif %}">
                     <button type="submit" class="language-button">
                         {% if LANGUAGE_CODE == 'en' %}
-                            {% trans "Switch to Punjabi" %}
+                            Switch to Punjabi
                         {% else %}
-                            {% trans "Switch to English" %}
+                            Switch to English
                         {% endif %}
                     </button>
                 </form>
@@ -2441,6 +2441,7 @@
             <button class="modal-close" onclick="closeModal()">&times;</button>
             <h2 class="modal-title">{% trans "Member Access" %}</h2>
             <form id="loginForm">
+                {% csrf_token %}
                 <div class="form-group">
                     <label for="username" class="form-label">{% trans "Username" %}</label>
                     <input type="text" id="username" class="form-input" required>
@@ -2517,19 +2518,58 @@
         function closeModal() {
             loginModal.classList.remove('active');
         }
+        // Helper function to get CSRF cookie
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            // Dummy login logic
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
             const errorMessage = document.getElementById('errorMessage');
-            if (username === 'admin' && password === 'password') {
-                alert('Login successful!');
-                closeModal();
-            } else {
-                errorMessage.textContent = 'Invalid credentials. Please try again.';
+            
+            // Clear previous error messages
+            errorMessage.style.display = 'none';
+            
+            // Make request to Django login endpoint
+            fetch('/login/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]')?.value || getCookie('csrftoken')
+                },
+                body: JSON.stringify({
+                    username: username,
+                    password: password
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Redirect to the main application
+                    window.location.href = '/index/';
+                } else {
+                    errorMessage.textContent = data.message || 'Invalid credentials. Please try again.';
+                    errorMessage.style.display = 'block';
+                }
+            })
+            .catch(error => {
+                console.error('Login error:', error);
+                errorMessage.textContent = 'Login failed. Please try again.';
                 errorMessage.style.display = 'block';
-            }
+            });
         });
 
         // --- Knowledge Base Carousel --- //

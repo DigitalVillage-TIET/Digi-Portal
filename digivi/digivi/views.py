@@ -28,7 +28,8 @@
 #     get_per_farm_downloads,
 #     get_village_level_analysis,
 #     load_master_from_google_sheets,
-#     print_status
+#     print_status,
+#     generate_delta_vs_days_groupwise_plots
 # )
 # from django.urls import reverse
 # from functools import wraps
@@ -567,21 +568,16 @@
 #                 'chart_html': comparative_results['custom'].get('chart_html', None)
 #             }
 #         }
-        
-#         # Set up other required context
-#         context['merged_loaded'] = True
-#         context['available_farms'] = sorted(merged_df["Farm ID"].unique())
-#         context['available_villages'] = sorted(merged_df["Village"].dropna().unique()) if 'Village' in merged_df.columns else []
 #         context['custom_groups'] = list(custom_groups_df.keys())
-        
-#         # Set up download categories
+
+#         # 📥 Download Links
 #         downloads = prepare_comprehensive_downloads(merged_df, kharif_df, farm_daily_avg, weekly_avg)
 #         ds1, ds2, ds3 = categorize_files(downloads)
 #         context['complete_dataset_files'] = [{'filename': f, 'display_name': pretty_download_name(f)} for f in ds1]
 #         context['study_group_files'] = [{'filename': f, 'display_name': pretty_download_name(f)} for f in ds2]
 #         context['analysis_report_files'] = [{'filename': f, 'display_name': pretty_download_name(f)} for f in ds3]
-        
-#         # Farm summary statistics
+
+#         # 📊 Overall Stats
 #         stats = {
 #             'mean': round(merged_df['Water Level (mm)'].mean(), 2),
 #             'std': round(merged_df['Water Level (mm)'].std(), 2),
@@ -591,9 +587,13 @@
 #             'unique_farms': merged_df['Farm ID'].nunique()
 #         }
 #         context['farm_summary_stats'] = stats
-        
-#         # Reload the page with updated context
-#         return render(request, 'water_meters.html', context)
+
+#         # Selected farm downloads
+#         farm = context['selected_farm']
+#         context['per_farm_downloads'] = [
+#             {'filename': f"farm_{sanitize_filename(farm)}_{suffix}.csv", 'display_name': label}
+#             for suffix, label in zip(['detailed', 'summary', 'daily_avg'], ["Detailed Data", "Summary Row", "Daily Averages"])
+#         ] if farm else []
 
 #     # ----------------------------------
 #     # 7️⃣ Handle Custom Group Deletion
@@ -689,6 +689,10 @@
         
 #         # Reload the page with updated context
 #         return render(request, 'water_meters.html', context)
+
+#     # ----------------------------------
+#     # 8️⃣ Handle Comparative Analysis Downloads
+#     # ----------------------------------
 #     if request.method == 'GET' and any(k in request.GET for k in [
 #     'download_village_analysis', 'download_rc_analysis', 'download_awd_analysis', 'download_dsr_tpr_analysis', 'download_custom_group_analysis'
 #     ]):
@@ -1437,7 +1441,8 @@ from .utils import (
     get_per_farm_downloads,
     get_village_level_analysis,
     load_master_from_google_sheets,
-    print_status
+    print_status,
+    generate_delta_vs_days_groupwise_plots
 )
 from django.urls import reverse
 from functools import wraps
@@ -1466,8 +1471,26 @@ API_PASSWORD = 'analyst123'      # Add this line
 def login_view(request):  # LOGIN VIEW
     error = None
     if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
+        # Handle both JSON and form data
+        if request.content_type == 'application/json':
+            try:
+                import json
+                data = json.loads(request.body.decode())
+                username = data.get('username')
+                password = data.get('password')
+            except (json.JSONDecodeError, UnicodeDecodeError):
+                username = None
+                password = None
+        else:
+            username = request.POST.get('username')
+            password = request.POST.get('password')
+        
+        # Debug logging
+        print(f"[DEBUG] Login attempt - Username: '{username}', Password: '{password}'")
+        print(f"[DEBUG] Expected - Username: '{LOGIN_USERNAME}', Password: '{LOGIN_PASSWORD}'")
+        print(f"[DEBUG] Username match: {username == LOGIN_USERNAME}")
+        print(f"[DEBUG] Password match: {password == LOGIN_PASSWORD}")
+        
         if username == LOGIN_USERNAME and password == LOGIN_PASSWORD:
             payload = {
                 'username': username,
@@ -1475,11 +1498,26 @@ def login_view(request):  # LOGIN VIEW
                 'iat': datetime.datetime.utcnow(),
             }
             token = jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
-            response = redirect('index')
-            response.set_cookie(JWT_COOKIE_NAME, token, httponly=True, samesite='Lax')
-            return response
+            print(f"[DEBUG] Login successful, redirecting to index")
+            
+            # Handle JSON response
+            if request.content_type == 'application/json':
+                from django.http import JsonResponse
+                response = JsonResponse({'success': True, 'message': 'Login successful'})
+                response.set_cookie(JWT_COOKIE_NAME, token, httponly=True, samesite='Lax')
+                return response
+            else:
+                response = redirect('index')
+                response.set_cookie(JWT_COOKIE_NAME, token, httponly=True, samesite='Lax')
+                return response
         else:
             error = 'Invalid credentials.'
+            print(f"[DEBUG] Login failed - Invalid credentials")
+            
+            # Handle JSON error response
+            if request.content_type == 'application/json':
+                from django.http import JsonResponse
+                return JsonResponse({'success': False, 'message': 'Invalid credentials'})
     
     # If GET request or invalid credentials, show landing page with modal
     return render(request, 'landing.html', {
@@ -1692,7 +1730,7 @@ def water_dashboard_view(request):
     context['start_date'] = start_date
     context['end_date'] = end_date
 
-    def load_full_context(context, merged_df, kharif_df, farm_daily_avg, weekly_avg, session):
+    def load_full_context(context, merged_df, kharif_df, farm_daily_avg, weekly_avg, session, comparative_results=None):
         """Helper function to load complete context data"""
         # Basic data setup
         context['merged_loaded'] = True
@@ -1715,12 +1753,28 @@ def water_dashboard_view(request):
         
         context['custom_groups'] = list(custom_groups_df.keys())
         
-        # Generate comparative analysis
-        comparative_results = render_comparative_analysis(merged_df, kharif_df, custom_groups_df)
+        # Generate comparative analysis if not provided
+        if comparative_results is None:
+            selected_villages_comparison = session.get('selected_villages_comparison', None)
+            selected_rc_groups = session.get('selected_rc_groups', None)
+            selected_awd_groups = session.get('selected_awd_groups', None)
+            comparative_results = render_comparative_analysis(merged_df, kharif_df, custom_groups_df, selected_villages_comparison, selected_rc_groups, selected_awd_groups)
+        
+        # Handle village analysis with error checking
+        village_plot_html = ""
+        village_summary_html = ""
+        
+        if "error" not in comparative_results['village']:
+            village_plot_html = comparative_results['village']['plot'].to_html(full_html=False)
+            village_summary_html = comparative_results['village']['summary_df'].to_html(index=False, classes="table table-bordered table-sm")
+        else:
+            village_plot_html = f"<div class='alert alert-warning'>{comparative_results['village']['error']}</div>"
+            village_summary_html = "<div class='text-muted'>No village data available.</div>"
+        
         context['comparative'] = {
             'village': {
-                'plot': comparative_results['village']['plot'].to_html(full_html=False),
-                'summary_df': comparative_results['village']['summary_df'].to_html(index=False, classes="table table-bordered table-sm")
+                'plot': village_plot_html,
+                'summary_df': village_summary_html
             },
             'rc': {
                 'plot': comparative_results['rc']['plot'].to_html(full_html=False),
@@ -1784,6 +1838,27 @@ def water_dashboard_view(request):
                 "summary": analysis["summary"],
                 "pivot_table_html": analysis["pivot_table"]
             }
+        
+        # Add selected items for comparison to context
+        context['selected_villages_comparison'] = session.get('selected_villages_comparison', [])
+        context['selected_rc_groups'] = session.get('selected_rc_groups', [])
+        context['selected_awd_groups'] = session.get('selected_awd_groups', [])
+        
+        # Add available RC and AWD groups for the selection forms
+        context['available_rc_groups'] = [
+            "Treatment Group (A) - Complied",
+            "Treatment Group (A) - Non-Complied", 
+            "Control Group (B) - Complied",
+            "Control Group (B) - Non-Complied"
+        ]
+        context['available_awd_groups'] = [
+            "Group A (Treatment) - Complied", 
+            "Group A (Treatment) - Non-Complied",
+            "Group B (Training) - Complied", 
+            "Group B (Training) - Non-Complied",
+            "Group C (Control) - Complied", 
+            "Group C (Control) - Non-Complied"
+        ]
         
         return context
 
@@ -1904,7 +1979,7 @@ def water_dashboard_view(request):
     # ----------------------------------
     # 2️⃣ Handle AJAX Farm Selection & Date Filter Updates
     # ----------------------------------
-    if 'merged_df' in session and request.method == 'POST' and 'download_zip' not in request.POST and 'create_custom_group' not in request.POST and 'delete_custom_group' not in request.POST and 'update_date_filter' not in request.POST:
+    if 'merged_df' in session and request.method == 'POST' and 'download_zip' not in request.POST and 'create_custom_group' not in request.POST and 'delete_custom_group' not in request.POST and 'update_date_filter' not in request.POST and 'update_village_comparison' not in request.POST and 'update_rc_comparison' not in request.POST and 'update_awd_comparison' not in request.POST:
         merged_df = pd.read_json(session['merged_df'], orient='split')
         kharif_df = pd.read_json(session['kharif_df'], orient='split')
         farm_daily_avg = pd.read_json(session['farm_daily_avg'], orient='split')
@@ -1993,9 +2068,9 @@ def water_dashboard_view(request):
             return HttpResponse(b"No data loaded.", status=400)
             
         merged_df = pd.read_json(session['merged_df'], orient='split')
-        selected_villages = request.GET.getlist('villages')
-        filtered_df = merged_df[merged_df['Village'].isin(selected_villages)] if selected_villages else merged_df
-        summary_csv = get_village_level_analysis(filtered_df)['summary_df'].to_csv(index=False)
+        # Use selected villages from session if available
+        selected_villages = session.get('selected_villages_comparison', request.GET.getlist('villages'))
+        summary_csv = get_village_level_analysis(merged_df, selected_villages)['summary_df'].to_csv(index=False)
         return HttpResponse(summary_csv, content_type='text/csv', headers={
             'Content-Disposition': 'attachment; filename=village_summary.csv'
         })
@@ -2008,9 +2083,9 @@ def water_dashboard_view(request):
             return HttpResponse(b"No data loaded.", status=400)
             
         merged_df = pd.read_json(session['merged_df'], orient='split')
-        selected_villages = request.GET.getlist('villages')
-        filtered_df = merged_df[merged_df['Village'].isin(selected_villages)] if selected_villages else merged_df
-        village_result = get_village_level_analysis(filtered_df)
+        # Use selected villages from session if available
+        selected_villages = session.get('selected_villages_comparison', request.GET.getlist('villages'))
+        village_result = get_village_level_analysis(merged_df, selected_villages)
 
         zip_buffer = io.BytesIO()
         with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zf:
@@ -2021,6 +2096,253 @@ def water_dashboard_view(request):
         return HttpResponse(zip_buffer.getvalue(), content_type='application/zip', headers={
             'Content-Disposition': 'attachment; filename=village_analysis.zip'
         })
+
+    # ----------------------------------
+    # 2.7️⃣ Handle Village Comparison Selection
+    # ----------------------------------
+    if request.method == 'POST':
+        print(f"[DEBUG] POST request received. POST data keys: {list(request.POST.keys())}")
+        print(f"[DEBUG] Checking for 'update_village_comparison' in POST: {'update_village_comparison' in request.POST}")
+    
+    if request.method == 'POST' and 'update_village_comparison' in request.POST:
+        print(f"[DEBUG] Village comparison POST handler triggered")
+        if 'merged_df' not in session:
+            context['error'] = "No data loaded. Please upload files first."
+            return render(request, 'water_meters.html', context)
+        
+        merged_df = pd.read_json(session['merged_df'], orient='split')
+        kharif_df = pd.read_json(session['kharif_df'], orient='split')
+        farm_daily_avg = pd.read_json(session['farm_daily_avg'], orient='split')
+        weekly_avg = pd.read_json(session['weekly_avg'], orient='split')
+        
+        # Get selected villages from form
+        selected_villages = request.POST.getlist('selected_villages_comparison')
+        print(f"[DEBUG] Selected villages from form: {selected_villages}")
+        
+        # Store selected villages in session
+        session['selected_villages_comparison'] = selected_villages
+        session.modified = True
+        
+        # Load custom groups
+        custom_groups = session.get('custom_groups', {})
+        custom_groups_df = {}
+        for k, v in custom_groups.items():
+            try:
+                df = pd.read_json(StringIO(v), orient='split')
+                if not df.empty:
+                    required = {"Farm ID", "Village", "Water Level (mm)", "Date", "Days from TPR"}
+                    if required.issubset(df.columns):
+                        custom_groups_df[k] = df
+            except Exception as e:
+                print(f"[ERROR] Failed to parse custom group '{k}':", e)
+        
+        # Generate comparative analysis with selected villages
+        try:
+            comparative_results = render_comparative_analysis(merged_df, kharif_df, custom_groups_df, selected_villages)
+            
+            # Check if village analysis was successful
+            if "error" in comparative_results.get('village', {}):
+                context['error'] = f"Village analysis error: {comparative_results['village']['error']}"
+                context = load_full_context(context, merged_df, kharif_df, farm_daily_avg, weekly_avg, session)
+                return render(request, 'water_meters.html', context)
+            
+        except Exception as e:
+            context['error'] = f"Error generating comparative analysis: {str(e)}"
+            context = load_full_context(context, merged_df, kharif_df, farm_daily_avg, weekly_avg, session)
+            return render(request, 'water_meters.html', context)
+        
+        # Load basic context data without regenerating comparative analysis
+        context['merged_loaded'] = True
+        context['available_farms'] = sorted(merged_df["Farm ID"].unique())
+        context['available_villages'] = sorted(merged_df["Village"].dropna().unique()) if 'Village' in merged_df.columns else []
+        context['selected_farm'] = context.get('selected_farm') or (context['available_farms'][0] if context['available_farms'] else None)
+        
+        # Load custom groups
+        custom_groups = session.get('custom_groups', {})
+        custom_groups_df = {}
+        for k, v in custom_groups.items():
+            try:
+                df = pd.read_json(StringIO(v), orient='split')
+                if not df.empty:
+                    required = {"Farm ID", "Village", "Water Level (mm)", "Date", "Days from TPR"}
+                    if required.issubset(df.columns):
+                        custom_groups_df[k] = df
+            except Exception as e:
+                print(f"[ERROR] Failed to parse custom group '{k}':", e)
+        
+        context['custom_groups'] = list(custom_groups_df.keys())
+        
+        # Use the comparative results we already generated (don't regenerate)
+        context['comparative'] = {}
+        
+        # Village comparison with the new results
+        if 'plot' in comparative_results['village']:
+            context['comparative']['village'] = {
+                'plot': comparative_results['village']['plot'].to_html(full_html=False),
+                'summary_df': comparative_results['village']['summary_df'].to_html(index=False, classes="table table-bordered table-sm")
+            }
+        else:
+            context['error'] = "Failed to generate village comparison plot"
+            return render(request, 'water_meters.html', context)
+        
+        # Add other comparative results (regenerate only the non-village parts)
+        context['comparative']['rc'] = {}
+        context['comparative']['awd'] = {}
+        context['comparative']['dsr_tpr'] = {}
+        context['comparative']['compliance'] = {}
+        context['comparative']['custom'] = {}
+        
+        if "error" not in comparative_results['rc']:
+            context['comparative']['rc'] = {
+                'plot': comparative_results['rc']['plot'].to_html(full_html=False),
+                'summary_df': comparative_results['rc']['summary_df'].to_html(index=False, classes="table table-bordered table-sm")
+            }
+        
+        if "error" not in comparative_results['awd']:
+            context['comparative']['awd'] = {
+                'plot': comparative_results['awd']['plot'].to_html(full_html=False),
+                'summary_df': comparative_results['awd']['summary_df'].to_html(index=False, classes="table table-bordered table-sm")
+            }
+        
+        if "error" not in comparative_results['dsr_tpr']:
+            context['comparative']['dsr_tpr'] = {
+                'plot': comparative_results['dsr_tpr']['plot'].to_html(full_html=False),
+                'summary_df': comparative_results['dsr_tpr']['summary_df'].to_html(index=False, classes="table table-bordered table-sm")
+            }
+        
+        if "error" not in comparative_results['compliance']:
+            context['comparative']['compliance'] = {
+                'df': comparative_results['compliance']['df'].to_html(index=False, classes="table table-bordered table-sm"),
+                'summary': comparative_results['compliance']['summary']
+            }
+        
+        if comparative_results['custom']['chart_html']:
+            context['comparative']['custom'] = {
+                'chart_html': comparative_results['custom']['chart_html'],
+                'summary_df': comparative_results['custom']['summary_df'].to_html(index=False, classes="table table-bordered table-sm")
+            }
+        
+        # Add information about selection
+        if selected_villages:
+            context['village_selection_info'] = f"Showing {len(selected_villages)} selected villages out of {len(comparative_results['village'].get('all_villages', []))}"
+        else:
+            context['village_selection_info'] = f"Showing all {len(comparative_results['village'].get('all_villages', []))} villages"
+        
+        context['selected_villages_comparison'] = selected_villages
+        
+        return render(request, 'water_meters.html', context)
+
+    # ----------------------------------
+    # 2.8️⃣ Handle Remote Controllers Comparison Selection
+    # ----------------------------------
+    if request.method == 'POST' and 'update_rc_comparison' in request.POST:
+        print(f"[DEBUG] RC comparison POST handler triggered")
+        if 'merged_df' not in session:
+            context['error'] = "No data loaded. Please upload files first."
+            return render(request, 'water_meters.html', context)
+        
+        merged_df = pd.read_json(session['merged_df'], orient='split')
+        kharif_df = pd.read_json(session['kharif_df'], orient='split')
+        farm_daily_avg = pd.read_json(session['farm_daily_avg'], orient='split')
+        weekly_avg = pd.read_json(session['weekly_avg'], orient='split')
+        
+        # Get selected RC groups from form
+        selected_rc_groups = request.POST.getlist('selected_rc_groups')
+        print(f"[DEBUG] Selected RC groups from form: {selected_rc_groups}")
+        
+        # Store selected RC groups in session
+        session['selected_rc_groups'] = selected_rc_groups
+        session.modified = True
+        
+        # Load custom groups
+        custom_groups = session.get('custom_groups', {})
+        custom_groups_df = {}
+        for k, v in custom_groups.items():
+            try:
+                df = pd.read_json(StringIO(v), orient='split')
+                if not df.empty:
+                    required = {"Farm ID", "Village", "Water Level (mm)", "Date", "Days from TPR"}
+                    if required.issubset(df.columns):
+                        custom_groups_df[k] = df
+            except Exception as e:
+                print(f"[ERROR] Failed to parse custom group '{k}':", e)
+        
+        # Generate comparative analysis with selected RC groups
+        try:
+            comparative_results = render_comparative_analysis(merged_df, kharif_df, custom_groups_df, selected_rc_groups=selected_rc_groups)
+            
+            # Check if RC analysis was successful
+            if "error" in comparative_results.get('rc', {}):
+                context['error'] = f"RC analysis error: {comparative_results['rc']['error']}"
+                context = load_full_context(context, merged_df, kharif_df, farm_daily_avg, weekly_avg, session)
+                return render(request, 'water_meters.html', context)
+            
+        except Exception as e:
+            context['error'] = f"Error generating RC comparative analysis: {str(e)}"
+            context = load_full_context(context, merged_df, kharif_df, farm_daily_avg, weekly_avg, session)
+            return render(request, 'water_meters.html', context)
+        
+        # Load basic context and render with updated RC results
+        context = load_full_context(context, merged_df, kharif_df, farm_daily_avg, weekly_avg, session, comparative_results)
+        context['selected_rc_groups'] = selected_rc_groups
+        
+        return render(request, 'water_meters.html', context)
+
+    # ----------------------------------
+    # 2.9️⃣ Handle AWD Comparison Selection
+    # ----------------------------------
+    if request.method == 'POST' and 'update_awd_comparison' in request.POST:
+        print(f"[DEBUG] AWD comparison POST handler triggered")
+        if 'merged_df' not in session:
+            context['error'] = "No data loaded. Please upload files first."
+            return render(request, 'water_meters.html', context)
+        
+        merged_df = pd.read_json(session['merged_df'], orient='split')
+        kharif_df = pd.read_json(session['kharif_df'], orient='split')
+        farm_daily_avg = pd.read_json(session['farm_daily_avg'], orient='split')
+        weekly_avg = pd.read_json(session['weekly_avg'], orient='split')
+        
+        # Get selected AWD groups from form
+        selected_awd_groups = request.POST.getlist('selected_awd_groups')
+        print(f"[DEBUG] Selected AWD groups from form: {selected_awd_groups}")
+        
+        # Store selected AWD groups in session
+        session['selected_awd_groups'] = selected_awd_groups
+        session.modified = True
+        
+        # Load custom groups
+        custom_groups = session.get('custom_groups', {})
+        custom_groups_df = {}
+        for k, v in custom_groups.items():
+            try:
+                df = pd.read_json(StringIO(v), orient='split')
+                if not df.empty:
+                    required = {"Farm ID", "Village", "Water Level (mm)", "Date", "Days from TPR"}
+                    if required.issubset(df.columns):
+                        custom_groups_df[k] = df
+            except Exception as e:
+                print(f"[ERROR] Failed to parse custom group '{k}':", e)
+        
+        # Generate comparative analysis with selected AWD groups
+        try:
+            comparative_results = render_comparative_analysis(merged_df, kharif_df, custom_groups_df, selected_awd_groups=selected_awd_groups)
+            
+            # Check if AWD analysis was successful
+            if "error" in comparative_results.get('awd', {}):
+                context['error'] = f"AWD analysis error: {comparative_results['awd']['error']}"
+                context = load_full_context(context, merged_df, kharif_df, farm_daily_avg, weekly_avg, session)
+                return render(request, 'water_meters.html', context)
+            
+        except Exception as e:
+            context['error'] = f"Error generating AWD comparative analysis: {str(e)}"
+            context = load_full_context(context, merged_df, kharif_df, farm_daily_avg, weekly_avg, session)
+            return render(request, 'water_meters.html', context)
+        
+        # Load basic context and render with updated AWD results
+        context = load_full_context(context, merged_df, kharif_df, farm_daily_avg, weekly_avg, session, comparative_results)
+        context['selected_awd_groups'] = selected_awd_groups
+        
+        return render(request, 'water_meters.html', context)
 
     # ----------------------------------
     # 6️⃣ Handle Custom Group Creation
@@ -2214,7 +2536,7 @@ def mapping(request):
 from django.shortcuts import render
 import pandas as pd
 
-from .utils import kharif2025_farms, get_2025plots, get_meters_by_village
+from .utils import kharif2025_farms, get_2025plots, get_meters_by_village, apply_7day_sma, create_weekly_delta, get_acreage, create_delta_vs_days_from_tpr, generate_delta_vs_days_groupwise_plots
 
 
 
@@ -2557,6 +2879,9 @@ def meter_reading_25_view(request):
             plotly_htmls = get_2025plots_plotly(raw_df, master25, selected, meters)
             # Also generate matplotlib for potential reports
             encoded_imgs = get_2025plots(raw_df, master25, selected, meters)
+        
+        acreage_of_selected = get_acreage(master25, selected)
+
 
         # Group plots per meter - 4 plotly plots per meter
         for idx, meter in enumerate(meters):
@@ -2564,7 +2889,9 @@ def meter_reading_25_view(request):
                 'meter': meter,
                 'plotly_plots': plotly_htmls[4*idx : 4*idx + 4],  # Plotly for display
                 'plots': encoded_imgs[4*idx : 4*idx + 4],         # Matplotlib for reports
-                'is_combined': False
+                'is_combined': False,
+                'farm': selected,
+                'acre': acreage_of_selected
             }
             results.append(block)
         
@@ -2579,13 +2906,15 @@ def meter_reading_25_view(request):
                 combined_plotly = get_2025plots_combined_plotly(raw_df, master25, selected, meters)
                 combined_imgs = get_2025plots_combined(raw_df, master25, selected, meters)
             
+
             if combined_plotly:
                 combined_block = {
                     'meter': ' + '.join(meters),
                     'plotly_plots': combined_plotly,  # Plotly for display
                     'plots': combined_imgs,           # Matplotlib for reports
                     'is_combined': True,
-                    'farm': selected
+                    'farm': selected,
+                    'acre': acreage_of_selected
                 }
                 results.append(combined_block)
     
@@ -2614,6 +2943,7 @@ def meter_reading_25_view(request):
         
         # Generate plots for each farm in the village
         for farm_id, farm_meters in farm_meters_map.items():
+            acreage_of_selected = get_acreage(master25, farm_id)
             # Individual meter plots
             for meter in farm_meters:
                 if use_date_filter and filter_start_date and filter_end_date:
@@ -2625,13 +2955,15 @@ def meter_reading_25_view(request):
                     meter_plotly = get_2025plots_plotly(raw_df, master25, farm_id, [meter])
                     meter_imgs = get_2025plots(raw_df, master25, farm_id, [meter])
                 
+                
                 for idx in range(0, len(meter_plotly), 4):
                     block = {
                         'meter': meter,
                         'farm': farm_id,
                         'plotly_plots': meter_plotly[idx:idx+4],  # Plotly for display
                         'plots': meter_imgs[idx:idx+4],           # Matplotlib for reports
-                        'is_combined': False
+                        'is_combined': False,
+                        'acre': acreage_of_selected
                     }
                     results.append(block)
             
@@ -2652,7 +2984,8 @@ def meter_reading_25_view(request):
                         'farm': farm_id,
                         'plotly_plots': combined_plotly,  # Plotly for display
                         'plots': combined_imgs,           # Matplotlib for reports
-                        'is_combined': True
+                        'is_combined': True,
+                        'acre': acreage_of_selected
                     }
                     results.append(combined_block)
 
@@ -2668,10 +3001,10 @@ def meter_reading_25_view(request):
         'filter_start_date': filter_start_date,
         'filter_end_date': filter_end_date,
     })
+
 @require_auth
 def grouping_25(request):
     if request.method == 'POST':
-        selected_label = request.POST.get('group_type')
         selected_checkboxes = request.POST.getlist('group_category')
 
         raw_df = pd.read_json(request.session['raw25']) if 'raw25' in request.session else None
@@ -2681,126 +3014,154 @@ def grouping_25(request):
         } if 'master25' in request.session else None
         
         # Apply date filter if enabled
-        if raw_df is not None and request.session.get('use_date_filter', False):
-            start_date = request.session.get('filter_start_date')
-            end_date = request.session.get('filter_end_date')
-
-       
+        start_date = request.session.get('filter_start_date')
+        end_date = request.session.get('filter_end_date')
+        use_filter = request.session.get('use_date_filter', False)
 
         # Handle report download
         if request.POST.get('download_group_report') and 'group_plot' in request.session:
             from .utils import generate_group_analysis_report
-            
-            # Retrieve stored data from session
             stored_data = request.session.get('group_analysis_data', {})
-            
+
             docx_buffer = generate_group_analysis_report(
-                stored_data.get('group_type', ''),
+                stored_data.get('group_type', 'Combined'),
                 stored_data.get('selected_groups', []),
                 request.session.get('group_plot', ''),
                 request.session.get('group_plot2', ''),
                 stored_data.get('group_farms', {})
             )
-            
+
             response = HttpResponse(
                 docx_buffer.getvalue(),
                 content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document'
             )
-            response['Content-Disposition'] = f'attachment; filename="group_analysis_report_{datetime.datetime.now().strftime("%Y%m%d_%H%M%S")}.docx"'
+            response['Content-Disposition'] = f'attachment; filename="group_analysis_combined_{datetime.datetime.now().strftime("%Y%m%d_%H%M%S")}.docx"'
             return response
 
-        if selected_label and selected_checkboxes and raw_df is not None and master25:
+        if selected_checkboxes and raw_df is not None and master25:
             kharif_df = master25['Farm details']
-
             group_farms_dict = {}
+            group_farms_len = {}
 
-            # Map checkbox labels to column names in master file
-            group_column_map = {
-                "Remote": {
-                    "Group-A Complied": "Kharif 25 - Remote Controllers Study - Group A - Treatment - complied (Y/N)",
-                    "Group-A Non-Complied": "Kharif 25 - Remote Controllers Study - Group A - Treatment - NON-complied (Y/N)",
-                    "Group-B Complied": "Kharif 25 - Remote Controllers Study - Group B - Control - complied (Y/N)",
-                    "Group-B Non-Complied": "Kharif 25 - Remote Controllers Study - Group B - Control - NON-complied (Y/N)",
-                },
-                "AWD": {
-                    "Group-A Complied": "Kharif 25 - AWD Study - Group A - Treatment - complied (Y/N)",
-                    "Group-A Non-Complied": "Kharif 25 - AWD Study - Group A - Treatment - Non-complied (Y/N)",
-                    "Group-B Complied": "Kharif 25 - AWD Study - Group B - Complied (Y/N)",
-                    "Group-B Non-Complied": "Kharif 25 - AWD Study - Group B - Non-complied (Y/N)",
-                    "Group-C Complied": "Kharif 25 - AWD Study - Group C - Complied (Y/N)",
-                    "Group-C Non-Complied": "Kharif 25 - AWD Study - Group C - non-complied (Y/N)",
-                },
-                "TPR/DSR": {
-                    "TPR": "Kharif 25 - TPR Group Study (Y/N)",
-                    "DSR": "Kharif 25 - DSR farm Study (Y/N)",
-                }
+            # Unified column mapping
+            column_map = {
+                "Remote Group-A Complied": "Kharif 25 - Remote Controllers Study - Group A - Treatment - complied (Y/N)",
+                "Remote Group-A Non-Complied": "Kharif 25 - Remote Controllers Study - Group A - Treatment - NON-complied (Y/N)",
+                "Remote Group-A Whole": [
+                    "Kharif 25 - Remote Controllers Study - Group A - Treatment - complied (Y/N)",
+                    "Kharif 25 - Remote Controllers Study - Group A - Treatment - NON-complied (Y/N)"
+                ],
+                "Remote Group-B Complied": "Kharif 25 - Remote Controllers Study - Group B - Control - complied (Y/N)",
+                "Remote Group-B Non-Complied": "Kharif 25 - Remote Controllers Study - Group B - Control - NON-complied (Y/N)",
+                "Remote Group-B Whole": [
+                    "Kharif 25 - Remote Controllers Study - Group B - Control - complied (Y/N)",
+                    "Kharif 25 - Remote Controllers Study - Group B - Control - NON-complied (Y/N)"
+                ],
+                "AWD Group-A Complied": "Kharif 25 - AWD Study - Group A - Treatment - complied (Y/N)",
+                "AWD Group-A Non-Complied": "Kharif 25 - AWD Study - Group A - Treatment - Non-complied (Y/N)",
+                "AWD Group-A Whole": [
+                    "Kharif 25 - AWD Study - Group A - Treatment - complied (Y/N)",
+                    "Kharif 25 - AWD Study - Group A - Treatment - Non-complied (Y/N)"
+                ],
+                "AWD Group-B Complied": "Kharif 25 - AWD Study - Group B - Complied (Y/N)",
+                "AWD Group-B Non-Complied": "Kharif 25 - AWD Study - Group B - Non-complied (Y/N)",
+                "AWD Group-B Whole": [
+                    "Kharif 25 - AWD Study - Group B - Complied (Y/N)",
+                    "Kharif 25 - AWD Study - Group B - Non-complied (Y/N)"
+                ],
+                "AWD Group-C Complied": "Kharif 25 - AWD Study - Group C - Complied (Y/N)",
+                "AWD Group-C Non-Complied": "Kharif 25 - AWD Study - Group C - non-complied (Y/N)",
+                "AWD Group-C Whole": [
+                    "Kharif 25 - AWD Study - Group C - Complied (Y/N)",
+                    "Kharif 25 - AWD Study - Group C - non-complied (Y/N)"
+                ],
+                "TPR": "Kharif 25 - TPR Group Study (Y/N)",
+                "DSR": "Kharif 25 - DSR farm Study (Y/N)"
             }
 
-            simplified_groups = {}
-            for group in selected_checkboxes:
-                base = group.split()[0] 
-                label = selected_label + " " + base  
-                if label not in simplified_groups:
-                    simplified_groups[label] = []
-                simplified_groups[label].append(group)
+            for label in selected_checkboxes:
+                cols = column_map[label]
+                if isinstance(cols, str):
+                    condition = kharif_df[cols].fillna(0) == 1
+                else:  # it's a list (Whole group)
+                    condition = kharif_df[cols[0]].fillna(0) == 1
+                    for c in cols[1:]:
+                        condition |= kharif_df[c].fillna(0) == 1
 
-            # Build group-wise farm ID lists
-            for label, group_list in simplified_groups.items():
-                cols = [group_column_map[selected_label][g] for g in group_list]
-                condition = (kharif_df[cols[0]].fillna(0) == 1)
-                for c in cols[1:]:
-                    condition |= (kharif_df[c].fillna(0) == 1)
                 farm_ids = kharif_df.loc[condition, "Kharif 25 Farm ID"].tolist()
                 group_farms_dict[label] = farm_ids
+                group_farms_len[label] = len(farm_ids)
 
-            # Calculate and merge averages
-            group_dfs = []
-            group_dfs2 = []
+            group_dfs, group_dfs2, group_dfs4 = [], [], []
+            group_delta_vs_days_data = {}  # Store delta vs days data for each group
+
             for label, farms in group_farms_dict.items():
-                if raw_df is not None and request.session.get('use_date_filter', False):
+                if use_filter:
                     filter_start = pd.to_datetime(start_date)
                     filter_end = pd.to_datetime(end_date)
-                    df = calculate_avg_m3_per_acre(selected_label, label, farms, raw_df, master25, 'm³ per Acre per Avg Day' ,start_date_enter=filter_start, end_date_enter=filter_end)
-                    df2 = calculate_avg_m3_per_acre(selected_label, label, farms, raw_df, master25, "Delta m³" ,start_date_enter=filter_start, end_date_enter=filter_end)
+                    df = calculate_avg_m3_per_acre("Combined", label, farms, raw_df, master25, 'm³ per Acre per Avg Day', start_date_enter=filter_start, end_date_enter=filter_end)
+                    df2 = create_weekly_delta("Combined", label, farms, raw_df, master25, "Delta m³", start_date_enter=filter_start, end_date_enter=filter_end)
+                    df4 = create_weekly_delta("Combined", label, farms, raw_df, master25, "m³ per Acre", start_date_enter=filter_start, end_date_enter=filter_end)
+                    # Get delta vs days from TPR data for this group
+                    delta_vs_days_df = create_delta_vs_days_from_tpr("Combined", label, farms, raw_df, master25, start_date_enter=filter_start, end_date_enter=filter_end)
                 else:
-                    df = calculate_avg_m3_per_acre(selected_label, label, farms, raw_df, master25, 'm³ per Acre per Avg Day')
-                    df2 = calculate_avg_m3_per_acre(selected_label, label, farms, raw_df, master25, "Delta m³")
+                    df = calculate_avg_m3_per_acre("Combined", label, farms, raw_df, master25, 'm³ per Acre per Avg Day')
+                    df2 = create_weekly_delta("Combined", label, farms, raw_df, master25, "Delta m³")
+                    df4 = create_weekly_delta("Combined", label, farms, raw_df, master25, "m³ per Acre")
+                    # Get delta vs days from TPR data for this group
+                    delta_vs_days_df = create_delta_vs_days_from_tpr("Combined", label, farms, raw_df, master25)
+                
                 group_dfs.append(df)
                 group_dfs2.append(df2)
+                group_dfs4.append(df4)
+                group_delta_vs_days_data[label] = delta_vs_days_df
 
-            # Merge all into one plot
-            if group_dfs:
-                final_df = group_dfs[0]
-                for df in group_dfs[1:]:
-                    final_df = pd.merge(final_df, df, on="Day", how="outer")
-                group_plot = generate_group_analysis_plot(final_df, "Daily Average m3/acre")
-                
-                # Store in session for download
-                request.session['group_plot'] = group_plot
-                request.session['group_analysis_data'] = {
-                    'group_type': selected_label,
-                    'selected_groups': selected_checkboxes,
-                    'group_farms': group_farms_dict
-                }
+            final_df = group_dfs[0]
+            for df in group_dfs[1:]:
+                final_df = pd.merge(final_df, df, on="Day", how="outer")
+
+            sma_df = apply_7day_sma(final_df)
+
+            group_plot3 = generate_group_analysis_plot(sma_df, "7 day SMA for daily average", group_farms_len, "Days")
+            request.session['group_plot3'] = group_plot3
+
             
-            group_plot2 = None
-            if group_dfs2:
-                final_df2 = group_dfs2[0]
-                for df in group_dfs2[1:]:
-                    final_df2 = pd.merge(final_df2, df, on="Day", how="outer")
-                group_plot2 = generate_group_analysis_plot(final_df2, "Delta m3/acre")
-                
-                # Store in session for download
-                request.session['group_plot2'] = group_plot2
-               
+            group_plot = generate_group_analysis_plot(final_df, "Daily Average m3/acre", group_farms_len, "Days")
+            request.session['group_plot'] = group_plot
+
+            final_df2 = group_dfs2[0]
+            for df in group_dfs2[1:]:
+                final_df2 = pd.merge(final_df2, df, on="Weeks", how="outer")
+            group_plot2 = generate_group_analysis_plot(final_df2, "Delta m3", group_farms_len, "Weeks")
+            request.session['group_plot2'] = group_plot2
+
+            final_df4 = group_dfs4[0]
+            for df in group_dfs2[1:]:
+                final_df4 = pd.merge(final_df4, df, on="Weeks", how="outer")
+            group_plot4 = generate_group_analysis_plot(final_df4, "Delta m3/acre", group_farms_len, "Weeks")
+            request.session['group_plot4'] = group_plot4
+
+            # Generate the new delta vs days from TPR plots (one per group)
+            from .utils import generate_delta_vs_days_groupwise_plots
+            groupwise_plots = generate_delta_vs_days_groupwise_plots(group_delta_vs_days_data)
+
+            request.session['group_analysis_data'] = {
+                'group_type': 'Combined',
+                'selected_groups': selected_checkboxes,
+                'group_farms': group_farms_dict
+            }
+
             return render(request, 'grouping.html', {
                 'group_plot': group_plot,
                 'group_plot2': group_plot2,
+                'group_plot3': group_plot3,
+                'group_plot4': group_plot4,
                 'output': True,
-                'group_type': selected_label,
+                'group_type': 'Combined',
                 'selected_groups': selected_checkboxes,
+                'groupwise_plots': groupwise_plots,
             })
-    
+
     return render(request, 'grouping.html')
 
 @csrf_exempt

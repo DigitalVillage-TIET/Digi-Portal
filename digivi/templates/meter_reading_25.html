@@ -1,4 +1,3 @@
-{% load i18n %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,75 +13,79 @@
       box-sizing: border-box;
     }
 
-   :root {
-    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
+    :root {
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
 
-/* 🌱 Light Theme – Green & White */
-:root[data-theme="light"] {
-    --bg-primary: #f8fff5; /* very light greenish white */
-    --bg-secondary: #ffffff;
-    --bg-tertiary: #e6f4ea; /* light green */
-    
-    --text-primary: #0c4f2a;
-    --text-secondary: #2e7d46;
-    --text-tertiary: #4caf50;
+    /* Light Theme */
+    :root[data-theme="light"] {
+      --bg-primary: #f8fff5;
+      --bg-secondary: #ffffff;
+      --bg-tertiary: #e6f4ea;
+      --text-primary: #0c4f2a;
+      --text-secondary: #2e7d46;
+      --text-tertiary: #4caf50;
+      --border-color: #d0e7d3;
+      --border-hover: #aed9be;
+      
+      --accent-primary: #3cb371;
+      --accent-secondary: #5ba870;
+      --accent-tertiary: #6fcf97;
+      --accent-success: #3cb371;
+      --accent-warning: #f59e0b;
+      --accent-danger: #ef4444;
+      
+      --gradient-primary: linear-gradient(135deg, #3cb371 0%, #5ba870 100%);
+      --gradient-secondary: linear-gradient(135deg, #6fcf97 0%, #3cb371 100%);
+      --gradient-accent: linear-gradient(135deg, #5ba870 0%, #ec4899 100%);
+      --gradient-success: linear-gradient(135deg, #3cb371 0%, #059669 100%);
+      
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      --shadow-glow: 0 0 20px rgba(59, 130, 246, 0.15);
+      
+      --glass-bg: rgba(255, 255, 255, 0.7);
+      --glass-border: rgba(255, 255, 255, 0.2);
+      --code-bg: #f3f4f6;
+      --calendar-icon-color: #1f2937;
+    }
 
-    --border-color: #cde9d7;
-
-    --accent-primary: #0c4f2a;  /* deep green */
-    --accent-secondary: #349a62; /* lighter green */
-    --accent-tertiary: #6fcf97;
-    --accent-success: #3cb371;
-    --accent-warning: #f59e0b;
-    --accent-danger: #ef4444;
-
-    --gradient-primary: linear-gradient(135deg, #0c4f2a 0%, #349a62 100%);
-    --gradient-secondary: linear-gradient(135deg, #349a62 0%, #6fcf97 100%);
-    --gradient-accent: linear-gradient(135deg, #0c4f2a 0%, #6fcf97 100%);
-    --gradient-hero: linear-gradient(135deg, #e6f4ea 0%, #cde9d7 100%);
-
-    --shadow-sm: 0 1px 3px rgba(12, 79, 42, 0.1);
-    --shadow-md: 0 4px 6px rgba(12, 79, 42, 0.1);
-    --shadow-lg: 0 10px 15px rgba(12, 79, 42, 0.15);
-    --shadow-glow: 0 0 20px rgba(52, 154, 98, 0.2);
-
-    --glass-bg: rgba(255, 255, 255, 0.7);
-    --glass-border: rgba(52, 154, 98, 0.2);
-}
-
-/* 🌿 Dark Theme – Green & Black */
-:root[data-theme="dark"] {
-    --bg-primary: #0a0a0a;
-    --bg-secondary: #0f0f0f;
-    --bg-tertiary: #1a1a1a;
-
-    --text-primary: #d9f7e5;
-    --text-secondary: white;
-    --text-tertiary: #6fcf97;
-
-    --border-color: #1f1f1f;
-
-    --accent-primary: #349a62;
-    --accent-secondary: #6fcf97;
-    --accent-tertiary: #3cb371;
-    --accent-success: #34d399;
-    --accent-warning: #fbbf24;
-    --accent-danger: #f87171;
-
-    --gradient-primary: linear-gradient(135deg, #0c4f2a 0%, #349a62 100%);
-    --gradient-secondary: linear-gradient(135deg, #1f7a47 0%, #6fcf97 100%);
-    --gradient-accent: linear-gradient(135deg, #349a62 0%, #3cb371 100%);
-    --gradient-hero: linear-gradient(135deg, #1a1a1a 0%, Black 100%);
-
-    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
-    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.3);
-    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.4);
-    --shadow-glow: 0 0 30px rgba(52, 154, 98, 0.3);
-
-    --glass-bg: rgba(20, 40, 30, 0.6);
-    --glass-border: rgba(255, 255, 255, 0.05);
-}
+    /* Dark Theme */
+    :root[data-theme="dark"] {
+      --bg-primary: #0a0a0a;
+      --bg-secondary: #111111;
+      --bg-tertiary: #1a1a1a;
+      --text-primary: #e6f4ea;
+      --text-secondary: #aed9be;
+      --text-tertiary: #94a3b8;
+      --border-color: #27272a;
+      --border-hover: #3f3f46;
+      
+      --accent-primary: #3cb371;
+      --accent-secondary: #5ba870;
+      --accent-tertiary: #6fcf97;
+      --accent-success: #3cb371;
+      --accent-warning: #fbbf24;
+      --accent-danger: #f87171;
+      
+      --gradient-primary: linear-gradient(135deg, #3cb371 0%, #5ba870 100%);
+      --gradient-secondary: linear-gradient(135deg, #6fcf97 0%, #3cb371 100%);
+      --gradient-accent: linear-gradient(135deg, #5ba870 0%, #f472b6 100%);
+      --gradient-success: linear-gradient(135deg, #3cb371 0%, #059669 100%);
+      
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+      --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      --shadow-glow: 0 0 30px rgba(96, 165, 250, 0.3);
+      
+      --glass-bg: rgba(30, 30, 30, 0.6);
+      --glass-border: rgba(255, 255, 255, 0.1);
+      --code-bg: #1e1e1e;
+      --calendar-icon-color: #ffffff;
+    }
 
     body {
       font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -930,7 +933,7 @@
       border: 1px solid var(--glass-border);
       border-radius: 16px;
       overflow: hidden;
-      margin-bottom: 2rem;
+      margin-bottom: 3rem;
       transition: var(--transition);
       box-shadow: var(--shadow-md);
     }
@@ -980,115 +983,72 @@
       font-weight: 500;
     }
 
-    /* Graph Grid Layout */
-    .graphs-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-      gap: 1rem;
-      padding: 1rem;
+    /* NEW: Plotly Graph Container Styles */
+    .plotly-graphs-container {
+      padding: 1.5rem;
     }
 
-    /* Graph Container */
-    .graph-container {
+    .plotly-graph-wrapper {
       background: var(--bg-secondary);
       border-radius: 12px;
-      overflow: hidden;
+      margin-bottom: 2rem;
       border: 1px solid var(--border-color);
+      overflow: hidden;
       transition: var(--transition);
-      height: fit-content;
     }
 
-    .graph-container:hover {
+    .plotly-graph-wrapper:hover {
       border-color: var(--accent-primary);
       box-shadow: var(--shadow-md);
     }
 
-    .graph-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0.75rem 1rem;
+    .plotly-graph-header {
       background: var(--bg-tertiary);
+      padding: 0.75rem 1rem;
       border-bottom: 1px solid var(--border-color);
-    }
-
-    .graph-title {
-      font-weight: 500;
-      color: var(--text-primary);
-      font-size: 0.875rem;
       display: flex;
       align-items: center;
       gap: 0.5rem;
     }
 
-    .graph-title i {
+    .plotly-graph-header h4 {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin: 0;
+    }
+
+    .plotly-graph-header i {
       font-size: 0.875rem;
+      color: var(--accent-primary);
     }
 
-    .visibility-toggle {
+    .plotly-graph-content {
+      padding: 0;
       background: var(--bg-secondary);
-      border: 1px solid var(--border-color);
-      color: var(--text-secondary);
-      width: 32px;
-      height: 32px;
-      border-radius: 8px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: var(--transition);
-      font-size: 1rem;
     }
 
-    .visibility-toggle:hover {
-      background: var(--gradient-primary);
-      border-color: transparent;
-      color: white;
-      box-shadow: var(--shadow-glow);
-    }
-
-    .visibility-toggle.hidden {
-      background: var(--bg-tertiary);
-      color: var(--text-tertiary);
-    }
-
-    .graph-content {
-      position: relative;
-      background: var(--bg-secondary);
-      max-height: 350px;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .graph-image {
-      display: block;
+    /* Ensure Plotly graphs are responsive */
+    .plotly-graph-content .plotly-graph-div {
       width: 100%;
-      height: auto;
-      max-height: 350px;
-      object-fit: contain;
+      margin: 0;
     }
 
-    .graph-hidden-message {
-      display: none;
-      padding: 2rem;
-      text-align: center;
-      color: var(--text-tertiary);
+    /* Plotly theme integration */
+    .plotly-graph-content .plotly .modebar {
+      background: var(--bg-tertiary) !important;
+      border: 1px solid var(--border-color) !important;
+      border-radius: 8px !important;
+      padding: 4px !important;
     }
 
-    .graph-hidden-message i {
-      font-size: 2rem;
-      margin-bottom: 0.5rem;
-      opacity: 0.5;
+    .plotly-graph-content .plotly .modebar-btn {
+      color: var(--text-secondary) !important;
     }
 
-    .graph-content.hidden .graph-image {
-      display: none;
-    }
-
-    .graph-content.hidden .graph-hidden-message {
-      display: block;
+    .plotly-graph-content .plotly .modebar-btn:hover {
+      background: var(--accent-primary) !important;
+      color: white !important;
     }
 
     /* Footer */
@@ -1145,45 +1105,22 @@
         flex-direction: column;
       }
 
-      .graphs-grid {
-        grid-template-columns: 1fr;
-        padding: 0.75rem;
-      }
-      
-      .graph-content {
-        max-height: 250px;
-      }
-      
-      .graph-image {
-        max-height: 250px;
+      .plotly-graphs-container {
+        padding: 1rem;
       }
 
-      .sync-details {
-        grid-template-columns: 1fr;
+      .plotly-graph-wrapper {
+        margin-bottom: 1.5rem;
       }
     }
 
     @media (max-width: 480px) {
-      .graph-content {
-        max-height: 200px;
-      }
-      
-      .graph-image {
-        max-height: 200px;
-      }
-      
-      .graph-header {
+      .plotly-graph-header {
         padding: 0.5rem 0.75rem;
       }
       
-      .graph-title {
+      .plotly-graph-header h4 {
         font-size: 0.8rem;
-      }
-      
-      .visibility-toggle {
-        width: 28px;
-        height: 28px;
-        font-size: 0.875rem;
       }
     }
 
@@ -1208,431 +1145,417 @@
   </style>
 </head>
 <body>
-<div class="tech-grid"></div>
+  <div class="tech-grid"></div>
+  
+  <!-- Loading Overlay -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-content">
+      <div class="loading-spinner"></div>
+      <div class="loading-title">Processing Data</div>
+      <div class="loading-description" id="loadingDescription">
+        Uploading and syncing your data from Google Sheets...
+      </div>
+      <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+      <div class="progress-text">
+        <span id="progressText">0%</span> Complete
+      </div>
+    </div>
+  </div>
 
-<!-- Loading Overlay -->
-<div class="loading-overlay" id="loadingOverlay">
-<div class="loading-content">
- <div class="loading-spinner"></div>
- <div class="loading-title">{% trans "Processing Data" %}</div>
- <div class="loading-description" id="loadingDescription">
-   {% trans "Uploading and syncing your data from Google Sheets..." %}
- </div>
- <div class="progress-container">
-   <div class="progress-bar" id="progressBar"></div>
- </div>
- <div class="progress-text">
-   <span id="progressText">0%</span> {% trans "Complete" %}
- </div>
-</div>
-</div>
-
-<!-- Header -->
-<header class="header">
-<div class="header-content">
- <div class="header-left">
-   <h1>{% trans "Water Meter Analytics Platform" %}</h1>
-   <p><span class="code">KHARIF_2025</span> • {% trans "Real-time Irrigation Analytics" %}</p>
- </div>
- <div class="header-right">
-   <a href="{% url 'index' %}" class="btn-back">
-     <i class="fas fa-arrow-left"></i> {% trans "Back to Templates" %}
-   </a>
-         <form action="{% url 'set_language' %}" method="post" style="display:inline; margin-right: 10px;">
-        {% csrf_token %}
-        <input name="next" type="hidden" value="{{ request.path }}">
-        <input type="hidden" name="language" value="{% if LANGUAGE_CODE == 'en' %}pa{% else %}en{% endif %}">
-        <button type="submit" class="btn-back">
-          {% if LANGUAGE_CODE == 'en' %}
-            {% trans "Switch to Punjabi" %}
-          {% else %}
-            {% trans "Switch to English" %}
-          {% endif %}
+  <!-- Header -->
+  <header class="header">
+    <div class="header-content">
+      <div class="header-left">
+        <h1>Water Meter Analytics Platform</h1>
+        <p><span class="code">KHARIF_2025</span> • Real-time Irrigation Analytics</p>
+      </div>
+      <div class="header-right">
+        <a href="{% url 'index' %}" class="btn-back">
+          <i class="fas fa-arrow-left"></i> Back to Templates
+        </a>
+        <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
+          <div class="theme-toggle-slider">
+            <i class="fas fa-sun" id="theme-icon"></i>
+          </div>
         </button>
-      </form>
-   <button class="theme-toggle" onclick="toggleTheme()" title="{% trans 'Toggle theme' %}">
-     <div class="theme-toggle-slider">
-       <i class="fas fa-sun" id="theme-icon"></i>
-     </div>
-   </button>
- </div>
-</div>
-</header>
+      </div>
+    </div>
+  </header>
 
-<!-- Year Toggle -->
+  <!-- Year Toggle -->
 <div class="year-toggle-container">
-<div class="year-toggle">
-<button class="year-option" onclick="location.href='{% url 'meter_reading' %}'">
- <i class="fas fa-database"></i> {% trans "2024 Format" %}
-</button>
-<button class="year-option active" onclick="location.href='{% url 'meter_reading_25' %}'">
- <i class="fas fa-rocket"></i> {% trans "2025 Format" %}
-</button>
-</div>
+  <div class="year-toggle">
+    <button class="year-option" onclick="location.href='{% url 'meter_reading' %}'">
+      <i class="fas fa-database"></i> 2024 Format
+    </button>
+    <button class="year-option active" onclick="location.href='{% url 'meter_reading_25' %}'">
+      <i class="fas fa-rocket"></i> 2025 Format
+    </button>
+  </div>
 </div>
 
 <div class="container">
-<!-- Upload Section -->
-<div class="glass-card">
-<div class="card-header">
- <h2><i class="fas fa-cloud-upload-alt icon"></i> {% trans "Data Upload Terminal" %}</h2>
- <div class="integration-badge">
-   <i class="fab fa-google"></i> {% trans "Google Sheets Auto-Sync Enabled" %}
- </div>
-</div>
-<div class="card-body">
- <form method="post" enctype="multipart/form-data" id="uploadForm">
-   {% csrf_token %}
-   <div class="form-group">
-     <label class="form-label" for="raw_file">
-       <i class="fas fa-file-excel"></i> {% trans "Raw Meter Data Stream" %}
-     </label>
-     <input type="file" name="raw_file" id="raw_file" class="form-control" accept=".xlsx,.xls" required>
-     <small class="form-text">
-       <i class="fas fa-info-circle"></i> {% trans "Master database will auto-sync from Google Sheets when raw data is uploaded" %}
-     </small>
-   </div>
-   
-   <!-- Fallback Option -->
-   <div class="fallback-section">
-     <div class="fallback-toggle">
-       <input type="checkbox" id="manual-upload-toggle" onchange="toggleManualUpload()">
-       <label for="manual-upload-toggle" class="toggle-label">
-         <i class="fas fa-tools"></i> {% trans "Use Manual Master File Upload (Fallback)" %}
-       </label>
-     </div>
-     
-     <div id="manual-upload-section" class="manual-upload" style="display: none;">
-       <div class="form-group">
-         <label class="form-label" for="meters_file">
-           <i class="fas fa-server"></i> {% trans "Master Database File (Optional Override)" %}
-         </label>
-         <input type="file" name="meters_file" id="meters_file" class="form-control" accept=".xlsx,.xls">
-         <small class="form-text warning">
-           <i class="fas fa-exclamation-triangle"></i> {% trans "Only use this if Google Sheets sync fails" %}
-         </small>
-       </div>
-     </div>
-   </div>
-   
-   <button type="submit" class="btn btn-primary btn-block" id="uploadBtn">
-     <i class="fas fa-sync-alt"></i> {% trans "Process Data & Sync Master" %}
-   </button>
- </form>
- 
- {% if error %}
-   <div class="alert">
-     <i class="fas fa-exclamation-triangle"></i> {{ error }}
-   </div>
- {% endif %}
- 
- <!-- Sync Status Section - Only show when data exists -->
- {% if farm_ids or results %}
- <div class="sync-status-section">
-   <div class="sync-status-header">
-     <i class="fas fa-check-circle"></i>
-     <span>{% trans "Data Successfully Synced" %}</span>
-   </div>
-   <div class="sync-details">
-     <div class="sync-item">
-       <span class="sync-label">{% trans "Last Sync:" %}</span>
-       <span class="sync-value">
-         {% now "M d, Y H:i:s" %}
-       </span>
-     </div>
-     <div class="sync-item">
-       <span class="sync-label">{% trans "Source:" %}</span>
-       <span class="sync-value">{% trans "Google Sheets + Raw Data Upload" %}</span>
-     </div>
-     <div class="sync-item">
-       <span class="sync-label">{% trans "Status:" %}</span>
-       <span class="sync-value status-active">
-         <i class="fas fa-circle"></i> {% trans "Active" %}
-       </span>
-     </div>
-     {% if request.FILES.raw_file %}
-     <div class="sync-item">
-       <span class="sync-label">{% trans "Last File:" %}</span>
-       <span class="sync-value">{{ request.FILES.raw_file.name }}</span>
-     </div>
-     {% endif %}
-   </div>
- </div>
- {% endif %}
-</div>
-</div>
+  <!-- Upload Section -->
+  <div class="glass-card">
+    <div class="card-header">
+      <h2><i class="fas fa-cloud-upload-alt icon"></i> Data Upload Terminal</h2>
+      <div class="integration-badge">
+        <i class="fab fa-google"></i> Google Sheets Auto-Sync Enabled
+      </div>
+    </div>
+    <div class="card-body">
+      <form method="post" enctype="multipart/form-data" id="uploadForm">
+        {% csrf_token %}
+        <div class="form-group">
+          <label class="form-label" for="raw_file">
+            <i class="fas fa-file-excel"></i> Raw Meter Data Stream
+          </label>
+          <input type="file" name="raw_file" id="raw_file" class="form-control" accept=".xlsx,.xls" required>
+          <small class="form-text">
+            <i class="fas fa-info-circle"></i> Master database will auto-sync from Google Sheets when raw data is uploaded
+          </small>
+        </div>
+        
+        <!-- Fallback Option -->
+        <div class="fallback-section">
+          <div class="fallback-toggle">
+            <input type="checkbox" id="manual-upload-toggle" onchange="toggleManualUpload()">
+            <label for="manual-upload-toggle" class="toggle-label">
+              <i class="fas fa-tools"></i> Use Manual Master File Upload (Fallback)
+            </label>
+          </div>
+          
+          <div id="manual-upload-section" class="manual-upload" style="display: none;">
+            <div class="form-group">
+              <label class="form-label" for="meters_file">
+                <i class="fas fa-server"></i> Master Database File (Optional Override)
+              </label>
+              <input type="file" name="meters_file" id="meters_file" class="form-control" accept=".xlsx,.xls">
+              <small class="form-text warning">
+                <i class="fas fa-exclamation-triangle"></i> Only use this if Google Sheets sync fails
+              </small>
+            </div>
+          </div>
+        </div>
+        
+        <button type="submit" class="btn btn-primary btn-block" id="uploadBtn">
+          <i class="fas fa-sync-alt"></i> Process Data & Sync Master
+        </button>
+      </form>
+      
+      {% if error %}
+        <div class="alert">
+          <i class="fas fa-exclamation-triangle"></i> {{ error }}
+        </div>
+      {% endif %}
+      
+      <!-- Sync Status Section - Only show when data exists -->
+      {% if farm_ids or results %}
+      <div class="sync-status-section">
+        <div class="sync-status-header">
+          <i class="fas fa-check-circle"></i>
+          <span>Data Successfully Synced</span>
+        </div>
+        <div class="sync-details">
+          <div class="sync-item">
+            <span class="sync-label">Last Sync:</span>
+            <span class="sync-value">
+              {% now "M d, Y H:i:s" %}
+            </span>
+          </div>
+          <div class="sync-item">
+            <span class="sync-label">Source:</span>
+            <span class="sync-value">Google Sheets + Raw Data Upload</span>
+          </div>
+          <div class="sync-item">
+            <span class="sync-label">Status:</span>
+            <span class="sync-value status-active">
+              <i class="fas fa-circle"></i> Active
+            </span>
+          </div>
+          {% if request.FILES.raw_file %}
+          <div class="sync-item">
+            <span class="sync-label">Last File:</span>
+            <span class="sync-value">{{ request.FILES.raw_file.name }}</span>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </div>
 
-<!-- Enhanced Date Filter Section -->
-{% if farm_ids %}
-<div class="glass-card">
-<div class="card-header">
- <h2><i class="fas fa-calendar-alt icon"></i> {% trans "Advanced Date Range Filter" %}</h2>
-</div>
-<div class="card-body">
- <form method="post" id="dateFilterForm">
-   {% csrf_token %}
-   <input type="hidden" name="update_date_filter" value="true">
-   
-   <div class="date-filter-section">
-     <div class="date-filter-header">
-       <label class="date-filter-toggle">
-         <input type="checkbox" name="use_date_filter" id="dateFilterToggle" 
-               {% if use_date_filter %}checked{% endif %}
-               onchange="toggleDateFilter()">
-         <span class="toggle-slider"></span>
-       </label>
-       <div class="date-filter-label">{% trans "Enable Date Range Filter" %}</div>
-     </div>
-     
-     {% if date_range_info %}
-     <div class="date-info">
-       <p><strong>{% trans "Available data range:" %}</strong> <span class="code">{{ date_range_info.min }}</span> {% trans "to" %} <span class="code">{{ date_range_info.max }}</span></p>
-       {% if use_date_filter and filter_start_date and filter_end_date %}
-       <p style="margin-top: 0.5rem; color: var(--accent-success);">
-         <strong>{% trans "Active filter:" %}</strong> <span class="code">{{ filter_start_date }}</span> {% trans "to" %} <span class="code">{{ filter_end_date }}</span>
-       </p>
-       {% endif %}
-     </div>
-     {% endif %}
-     
-     <div class="date-inputs-container {% if use_date_filter %}active{% endif %}" id="dateInputsContainer">
-       <div class="date-input-group">
-         <div class="date-input-label">{% trans "Start Date" %}</div>
-         <input type="date" name="filter_start_date" id="startDate" 
-               class="date-input" 
-               value="{{ filter_start_date|default:date_range_info.min }}"
-               {% if date_range_info %}min="{{ date_range_info.min }}" max="{{ date_range_info.max }}"{% endif %}>
-         <i class="fas fa-calendar-alt calendar-icon"></i>
-       </div>
-       
-       <div class="date-input-group">
-         <div class="date-input-label">{% trans "End Date" %}</div>
-         <input type="date" name="filter_end_date" id="endDate" 
-               class="date-input" 
-               value="{{ filter_end_date|default:date_range_info.max }}"
-               {% if date_range_info %}min="{{ date_range_info.min }}" max="{{ date_range_info.max }}"{% endif %}>
-         <i class="fas fa-calendar-alt calendar-icon"></i>
-       </div>
-     </div>
-     
-     <div class="filter-actions">
-       <button type="submit" class="btn btn-primary" id="applyFilterBtn">
-         <i class="fas fa-filter"></i> {% trans "Apply Filter" %}
-       </button>
-       <button type="button" class="btn btn-secondary" onclick="clearDateFilter()">
-         <i class="fas fa-times"></i> {% trans "Clear Filter" %}
-       </button>
-       <button type="button" class="btn btn-secondary" onclick="setQuickRange('week')">
-         <i class="fas fa-calendar-week"></i> {% trans "Last 7 Days" %}
-       </button>
-       <button type="button" class="btn btn-secondary" onclick="setQuickRange('month')">
-         <i class="fas fa-calendar-alt"></i> {% trans "Last 30 Days" %}
-       </button>
-     </div>
-   </div>
- </form>
-</div>
-</div>
-{% endif %}
+  <!-- Enhanced Date Filter Section -->
+  {% if farm_ids %}
+  <div class="glass-card">
+    <div class="card-header">
+      <h2><i class="fas fa-calendar-alt icon"></i> Advanced Date Range Filter</h2>
+    </div>
+    <div class="card-body">
+      <form method="post" id="dateFilterForm">
+        {% csrf_token %}
+        <input type="hidden" name="update_date_filter" value="true">
+        
+        <div class="date-filter-section">
+          <div class="date-filter-header">
+            <label class="date-filter-toggle">
+              <input type="checkbox" name="use_date_filter" id="dateFilterToggle" 
+                    {% if use_date_filter %}checked{% endif %}
+                    onchange="toggleDateFilter()">
+              <span class="toggle-slider"></span>
+            </label>
+            <div class="date-filter-label">Enable Date Range Filter</div>
+          </div>
+          
+          {% if date_range_info %}
+          <div class="date-info">
+            <p><strong>Available data range:</strong> <span class="code">{{ date_range_info.min }}</span> to <span class="code">{{ date_range_info.max }}</span></p>
+            {% if use_date_filter and filter_start_date and filter_end_date %}
+            <p style="margin-top: 0.5rem; color: var(--accent-success);">
+              <strong>Active filter:</strong> <span class="code">{{ filter_start_date }}</span> to <span class="code">{{ filter_end_date }}</span>
+            </p>
+            {% endif %}
+          </div>
+          {% endif %}
+          
+          <div class="date-inputs-container {% if use_date_filter %}active{% endif %}" id="dateInputsContainer">
+            <div class="date-input-group">
+              <div class="date-input-label">Start Date</div>
+              <input type="date" name="filter_start_date" id="startDate" 
+                    class="date-input" 
+                    value="{{ filter_start_date|default:date_range_info.min }}"
+                    {% if date_range_info %}min="{{ date_range_info.min }}" max="{{ date_range_info.max }}"{% endif %}>
+              <i class="fas fa-calendar-alt calendar-icon"></i>
+            </div>
+            
+            <div class="date-input-group">
+              <div class="date-input-label">End Date</div>
+              <input type="date" name="filter_end_date" id="endDate" 
+                    class="date-input" 
+                    value="{{ filter_end_date|default:date_range_info.max }}"
+                    {% if date_range_info %}min="{{ date_range_info.min }}" max="{{ date_range_info.max }}"{% endif %}>
+              <i class="fas fa-calendar-alt calendar-icon"></i>
+            </div>
+          </div>
+          
+          <div class="filter-actions">
+            <button type="submit" class="btn btn-primary" id="applyFilterBtn">
+              <i class="fas fa-filter"></i> Apply Filter
+            </button>
+            <button type="button" class="btn btn-secondary" onclick="clearDateFilter()">
+              <i class="fas fa-times"></i> Clear Filter
+            </button>
+            <button type="button" class="btn btn-secondary" onclick="setQuickRange('week')">
+              <i class="fas fa-calendar-week"></i> Last 7 Days
+            </button>
+            <button type="button" class="btn btn-secondary" onclick="setQuickRange('month')">
+              <i class="fas fa-calendar-alt"></i> Last 30 Days
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  {% endif %}
 
-{% if farm_ids %}
-<!-- Analysis Control Panel -->
-<div class="glass-card">
-<div class="card-header">
- <h2><i class="fas fa-chart-line icon"></i> {% trans "Group Analysis Control Panel" %}</h2>
-</div>
-<div class="card-body">
- <div class="button-grid">
-   <a href="{% url 'grouping-25' %}" class="btn btn-secondary">
-     <i class="fas fa-layer-group"></i> {% trans "Group Analysis Graph generation" %}
-   </a>
-   <form method="post">
-     {% csrf_token %}
-     <input type="hidden" name="download_table" value="avg">
-     <button type="submit" class="btn btn-success btn-block">
-       <i class="fas fa-download"></i> {% trans "Export Avg Data table" %}
-     </button>
-   </form>
-   <form method="post">
-     {% csrf_token %}
-     <input type="hidden" name="download_table" value="delta">
-     <button type="submit" class="btn btn-success btn-block">
-       <i class="fas fa-download"></i> {% trans "Export Delta Data table" %}
-     </button>
-   </form>
- </div>
-</div>
-</div>
-{% endif %}
+  {% if farm_ids %}
+  <!-- Analysis Control Panel -->
+  <div class="glass-card">
+    <div class="card-header">
+      <h2><i class="fas fa-chart-line icon"></i> Group Analysis Control Panel</h2>
+    </div>
+    <div class="card-body">
+      <div class="button-grid">
+        <a href="{% url 'grouping-25' %}" class="btn btn-secondary">
+          <i class="fas fa-layer-group"></i> Group Analysis Graph generation
+        </a>
+        <form method="post">
+          {% csrf_token %}
+          <input type="hidden" name="download_table" value="avg">
+          <button type="submit" class="btn btn-success btn-block">
+            <i class="fas fa-download"></i> Export Avg Data table
+          </button>
+        </form>
+        <form method="post">
+          {% csrf_token %}
+          <input type="hidden" name="download_table" value="delta">
+          <button type="submit" class="btn btn-success btn-block">
+            <i class="fas fa-download"></i> Export Delta Data table
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+  {% endif %}
 
-<!-- Village Filter -->
-{% if village_names %}
-<div class="glass-card">
-<div class="card-header">
- <h2><i class="fas fa-map-marked-alt icon"></i> {% trans "Village Filter" %}</h2>
-</div>
-<div class="card-body">
- <form method="post">
-   {% csrf_token %}
-   <div class="form-group">
-     <label class="form-label" for="selected_village">
-       <i class="fas fa-location-dot"></i> {% trans "Village Name" %}
-     </label>
-     <select name="selected_village" id="selected_village" class="form-control" required>
-       <option value="">-- {% trans "Select village name" %} --</option>
-       {% for village in village_names %}
-         <option value="{{ village }}" {% if village == selected_village %}selected{% endif %}>
-           {{ village }}
-         </option>
-       {% endfor %}
-     </select>
-   </div>
-   <button type="submit" class="btn btn-primary">
-     <i class="fas fa-satellite-dish"></i> {% trans "Scan Village Meters" %}
-   </button>
- </form>
-</div>
-</div>
-{% endif %}
+  <!-- Village Filter -->
+  {% if village_names %}
+  <div class="glass-card">
+    <div class="card-header">
+      <h2><i class="fas fa-map-marked-alt icon"></i> Village Filter</h2>
+    </div>
+    <div class="card-body">
+      <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+          <label class="form-label" for="selected_village">
+            <i class="fas fa-location-dot"></i> Village Name
+          </label>
+          <input type="text" id="search_village" class="form-control" placeholder="Search village..." style="margin-bottom: 10px;">
+          <select name="selected_village" id="selected_village" class="form-control" required>
+            <option value="">-- Select village name --</option>
+            {% for village in village_names %}
+              <option value="{{ village }}" {% if village == selected_village %}selected{% endif %}>
+                {{ village }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary">
+          <i class="fas fa-satellite-dish"></i> Scan Village Meters
+        </button>
+      </form>
+    </div>
+  </div>
+  {% endif %}
 
-<!-- Farm Filter -->
-{% if farm_ids %}
-<div class="glass-card">
-<div class="card-header">
- <h2><i class="fas fa-microchip icon"></i> {% trans "Unit Farm Filter" %}</h2>
-</div>
-<div class="card-body">
- <form method="post">
-   {% csrf_token %}
-   <div class="form-group">
-     <label class="form-label" for="selected_farm">
-       <i class="fas fa-fingerprint"></i> {% trans "Farm Identifier" %}
-     </label>
-     <select name="selected_farm" id="selected_farm" class="form-control" required>
-       <option value="">-- {% trans "Select farm unit" %} --</option>
-       {% for fid in farm_ids %}
-         <option value="{{ fid }}" {% if fid == selected %}selected{% endif %}>
-           {{ fid }}
-         </option>
-       {% endfor %}
-     </select>
-   </div>
-   <button type="submit" class="btn btn-primary">
-     <i class="fas fa-chart-area"></i> {% trans "Generate Analytics" %}
-   </button>
- </form>
-</div>
-</div>
-{% endif %}
+  <!-- Farm Filter -->
+  {% if farm_ids %}
+  <div class="glass-card">
+    <div class="card-header">
+      <h2><i class="fas fa-microchip icon"></i> Unit Farm Filter</h2>
+    </div>
+    <div class="card-body">
+      <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+          <label class="form-label" for="selected_farm">
+            <i class="fas fa-fingerprint"></i> Farm Identifier
+          </label>
+          <input type="text" id="search_farm" class="form-control" placeholder="Search farm..." style="margin-bottom: 10px;">
+          <select name="selected_farm" id="selected_farm" class="form-control" required>
+            <option value="">-- Select farm unit --</option>
+            {% for fid in farm_ids %}
+              <option value="{{ fid }}" {% if fid == selected %}selected{% endif %}>
+                {{ fid }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary">
+          <i class="fas fa-chart-area"></i> Generate Analytics
+        </button>
+      </form>
+    </div>
+  </div>
+  {% endif %}
 
-<!-- Results -->
-{% if results %}
-<div class="results-section">
-<div class="results-header">
- <h2 class="glow-text">{% trans "Data Visualization Matrix" %}</h2>
- {% if selected_village %}
-   <p>{% trans "Location:" %} <span class="code">{{ selected_village }}</span></p>
- {% endif %}
-</div>
+  <!-- Results with Plotly Graphs -->
+  {% if results %}
+  <div class="results-section">
+    <div class="results-header">
+      <h2 class="glow-text">Interactive Data Visualization Matrix</h2>
+      {% if selected_village %}
+        <p>Location: <span class="code">{{ selected_village }}</span></p>
+      {% endif %}
+    </div>
 
-{% for block in results %}
-<div class="meter-card {% if block.is_combined %}combined-meter{% endif %}">
- <div class="meter-header">
-   <div class="meter-info ">
-     <div class="meter-icon {% if block.is_combined %}combined-icon{% endif %}">
-       {% if block.is_combined %}
-         <i class="fas fa-layer-group"></i>
-       {% else %}
-         <i class="fas fa-water"></i>
-       {% endif %}
-     </div>
-     <div class="meter-details">
-       <h3>
-         {% if block.is_combined %}
-           {% blocktrans with meter=block.meter %}Combined Analysis <span class="code">{{ meter }}</span>{% endblocktrans %}
-         {% else %}
-           {% blocktrans with meter=block.meter %}Meter Unit <span class="code">{{ meter }}</span>{% endblocktrans %}
-         {% endif %}
-       </h3>
-       {% if block.farm %}
-         <span class="meter-badge">{% trans "Farm:" %} {{ block.farm }}</span>
-       {% endif %}
-     </div>
-   </div>
- </div>
- 
- <div class="graphs-grid">
-   {% for img in block.plots %}
-   <div class="graph-container">
-     <div class="graph-header">
-       <span class="graph-title">
-         {% if forloop.counter == 1 %}
-           <i class="fas fa-chart-line" style="color: var(--accent-primary);"></i>
-           {% if block.is_combined %}{% trans "Combined Daily Average per Acre" %}{% else %}{% trans "Daily Average per Acre" %}{% endif %}
-         {% endif %}
-         {% if forloop.counter == 2 %}
-           <i class="fas fa-wave-square" style="color: var(--accent-success);"></i>
-           {% if block.is_combined %}{% trans "Combined 7-Day Moving Average" %}{% else %}{% trans "7-Day Moving Average" %}{% endif %}
-         {% endif %}
-         {% if forloop.counter == 3 %}
-           <i class="fas fa-tachometer-alt" style="color: var(--accent-secondary);"></i>
-           {% if block.is_combined %}{% trans "Combined Actual Readings" %}{% else %}{% trans "Actual Readings" %}{% endif %}
-         {% endif %}
-         {% if forloop.counter == 4 %}
-           <i class="fas fa-chart-bar" style="color: var(--accent-warning);"></i>
-           {% if block.is_combined %}{% trans "Combined Normalized Per Acre" %}{% else %}{% trans "Normalized Per Acre" %}{% endif %}
-         {% endif %}
-       </span>
-       <button class="visibility-toggle" onclick="toggleGraph(this)" title="{% trans 'Toggle visibility' %}">
-         <i class="fas fa-eye"></i>
-       </button>
-     </div>
-     <div class="graph-content">
-       <img src="data:image/png;base64,{{ img }}" alt="{% trans 'Data visualization' %}" class="graph-image">
-       <div class="graph-hidden-message">
-         <i class="fas fa-eye-slash"></i>
-         <p>{% trans "Visualization Hidden" %}</p>
-       </div>
-     </div>
-   </div>
-   {% endfor %}
- </div>
-</div>
-{% endfor %}
-</div>
-{% endif %}
+    {% for block in results %}
+    <div class="meter-card {% if block.is_combined %}combined-meter{% endif %}">
+      <div class="meter-header">
+        <div class="meter-info ">
+          <div class="meter-icon {% if block.is_combined %}combined-icon{% endif %}">
+            {% if block.is_combined %}
+              <i class="fas fa-layer-group"></i>
+            {% else %}
+              <i class="fas fa-water"></i>
+            {% endif %}
+          </div>
+          <div class="meter-details">
+            <h3>
+              {% if block.is_combined %}
+                Combined Analysis <span class="code">{{ block.meter }}</span>
+              {% else %}
+                Meter Unit <span class="code">{{ block.meter }}</span>
+              {% endif %}
+            </h3>
+            {% if block.farm %}
+              <span class="meter-badge">Farm: {{ block.farm }}</span>
+            {% endif %}
+            {% if block.acre %}
+              <span class="meter-badge">Acres: {{ block.acre }}</span>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      
+      <div class="plotly-graphs-container">
+        {% for plotly_html in block.plotly_plots %}
+        <div class="plotly-graph-wrapper">
+          <div class="plotly-graph-header">
+            {% if forloop.counter == 1 %}
+              <i class="fas fa-chart-line"></i>
+              <h4>{% if block.is_combined %}Combined {% endif %}Daily Average per Acre</h4>
+            {% endif %}
+            {% if forloop.counter == 2 %}
+              <i class="fas fa-wave-square"></i>
+              <h4>{% if block.is_combined %}Combined {% endif %}7-Day Moving Average</h4>
+            {% endif %}
+            {% if forloop.counter == 3 %}
+              <i class="fas fa-tachometer-alt"></i>
+              <h4>{% if block.is_combined %}Combined {% endif %}Actual Readings</h4>
+            {% endif %}
+            {% if forloop.counter == 4 %}
+              <i class="fas fa-chart-bar"></i>
+              <h4>{% if block.is_combined %}Combined {% endif %}Normalized Per Acre</h4>
+            {% endif %}
+          </div>
+          <div class="plotly-graph-content">
+            <div class="plotly-graph-div">
+              {{ plotly_html|safe }}
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
 
-<!-- Download Report Section -->
-{% if results %}
-<div class="glass-card" style="margin-top: 2rem;">
-<div class="card-header">
- <h2><i class="fas fa-file-word icon"></i> {% trans "Export Analysis Report" %}</h2>
-</div>
-<div class="card-body">
- <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
-   {% trans "Download a comprehensive Word document containing all graphs and analysis details" %}
- </p>
- <form method="post">
-   {% csrf_token %}
-   <input type="hidden" name="download_report" value="true">
-   {% if selected %}
-     <input type="hidden" name="report_filter_type" value="farm">
-     <input type="hidden" name="report_filter_value" value="{{ selected }}">
-   {% elif selected_village %}
-     <input type="hidden" name="report_filter_type" value="village">
-     <input type="hidden" name="report_filter_value" value="{{ selected_village }}">
-   {% endif %}
-   <button type="submit" class="btn btn-primary btn-block">
-     <i class="fas fa-download"></i> {% trans "Download Word Report (.docx)" %}
-   </button>
- </form>
-</div>
-</div>
-{% endif %}
+  <!-- Download Report Section -->
+  {% if results %}
+  <div class="glass-card" style="margin-top: 2rem;">
+    <div class="card-header">
+      <h2><i class="fas fa-file-word icon"></i> Export Analysis Report</h2>
+    </div>
+    <div class="card-body">
+      <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
+        Download a comprehensive Word document containing all graphs and analysis details
+      </p>
+      <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="download_report" value="true">
+        {% if selected %}
+          <input type="hidden" name="report_filter_type" value="farm">
+          <input type="hidden" name="report_filter_value" value="{{ selected }}">
+        {% elif selected_village %}
+          <input type="hidden" name="report_filter_type" value="village">
+          <input type="hidden" name="report_filter_value" value="{{ selected_village }}">
+        {% endif %}
+        <button type="submit" class="btn btn-primary btn-block">
+          <i class="fas fa-download"></i> Download Word Report (.docx)
+        </button>
+      </form>
+    </div>
+  </div>
+  {% endif %}
 </div>
 
 <footer class="footer">
-<p>&copy; 2025 {% trans "Digi-Village Water meter Analysis Platform" %} • {% trans "Version 2.0" %}</p>
+  <p>&copy; 2025 Digi-Village Water meter Analysis Platform • Version 2.0</p>
 </footer>
 
 <script>
@@ -1823,25 +1746,6 @@
     }
   });
 
-  // Graph Toggle
-  function toggleGraph(button) {
-    const container = button.closest('.graph-container');
-    const content = container.querySelector('.graph-content');
-    const icon = button.querySelector('i');
-    
-    if (content.classList.contains('hidden')) {
-      content.classList.remove('hidden');
-      button.classList.remove('hidden');
-      icon.classList.remove('fa-eye-slash');
-      icon.classList.add('fa-eye');
-    } else {
-      content.classList.add('hidden');
-      button.classList.add('hidden');
-      icon.classList.remove('fa-eye');
-      icon.classList.add('fa-eye-slash');
-    }
-  }
-
   // Date Input Enhancements
   document.addEventListener('DOMContentLoaded', function() {
     const dateInputs = document.querySelectorAll('.date-input');
@@ -1878,6 +1782,16 @@
         }
       });
     });
+
+    // Ensure Plotly graphs are responsive
+    window.addEventListener('resize', function() {
+      const plotlyDivs = document.querySelectorAll('.plotly-graph-div .js-plotly-plot');
+      plotlyDivs.forEach(div => {
+        if (window.Plotly) {
+          window.Plotly.Plots.resize(div);
+        }
+      });
+    });
   });
 
   // Initialize theme on load
@@ -1901,6 +1815,47 @@
       
       setTimeout(() => ripple.remove(), 600);
     });
+  });
+
+  // Function to make dropdowns searchable
+  function setupSearchableDropdown(searchInputId, selectId) {
+    const searchInput = document.getElementById(searchInputId);
+    const selectElement = document.getElementById(selectId);
+    const originalOptions = Array.from(selectElement.options);
+
+    searchInput.addEventListener('input', function() {
+      const searchText = searchInput.value.toLowerCase();
+      selectElement.innerHTML = ''; // Clear current options
+
+      originalOptions.forEach(option => {
+        if (option.value === '' || option.text.toLowerCase().includes(searchText)) {
+          selectElement.appendChild(option);
+        }
+      });
+
+      // If no options match, add a "No results" option (optional)
+      if (selectElement.options.length === 0) {
+        const noResultsOption = document.createElement('option');
+        noResultsOption.value = '';
+        noResultsOption.textContent = 'No results found';
+        noResultsOption.disabled = true;
+        selectElement.appendChild(noResultsOption);
+      }
+    });
+
+    // Restore all options when search input is cleared
+    searchInput.addEventListener('blur', function() {
+      if (searchInput.value === '') {
+        selectElement.innerHTML = '';
+        originalOptions.forEach(option => selectElement.appendChild(option));
+      }
+    });
+  }
+
+  // Initialize searchable dropdowns
+  document.addEventListener('DOMContentLoaded', function() {
+    setupSearchableDropdown('search_village', 'selected_village');
+    setupSearchableDropdown('search_farm', 'selected_farm');
   });
 </script>
 </body>
