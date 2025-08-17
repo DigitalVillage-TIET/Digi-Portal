@@ -2536,7 +2536,7 @@ def mapping(request):
 from django.shortcuts import render
 import pandas as pd
 
-from .utils import kharif2025_farms, get_2025plots, get_meters_by_village, apply_7day_sma, create_weekly_delta, get_acreage, create_delta_vs_days_from_tpr, generate_delta_vs_days_groupwise_plots
+from .utils import kharif2025_farms, get_2025plots, get_meters_by_village, apply_7day_sma, create_weekly_delta, get_acreage, create_delta_vs_days_from_tpr, generate_delta_vs_days_groupwise_plots, get_dates_table, get_days_reading_table
 
 
 
@@ -2775,13 +2775,28 @@ def meter_reading_25_view(request):
         
         download_request = request.POST.get("download_table")
         if download_request and raw_df is not None:
-            col_to_get = "m³ per Acre per Avg Day" if download_request == "avg" else "m³ per Acre"
-            if use_date_filter and filter_start_date and filter_end_date:
-                filter_start = pd.to_datetime(filter_start_date)
-                filter_end = pd.to_datetime(filter_end_date)
-                combined_df = get_tables(raw_df, master25, farm_dict, col_to_get, start_date_enter=filter_start, end_date_enter=filter_end)
+            start_date_for_readings = pd.to_datetime(date_range_info['current_min'])
+            end_date_for_readings = pd.to_datetime(date_range_info['current_max'])
+            if download_request == 'dates_reading':
+                combined_df = get_dates_table(raw_df, master25, farm_dict, start_date_for_readings, end_date_for_readings, download_request)
+            elif download_request == 'days_reading':
+                if use_date_filter and filter_start_date and filter_end_date:
+                    filter_start = pd.to_datetime(filter_start_date)
+                    filter_end = pd.to_datetime(filter_end_date)
+                    combined_df = get_days_reading_table(raw_df, master25, farm_dict, start_date_enter=filter_start, end_date_enter=filter_end)
+                else:
+                    combined_df = get_days_reading_table(raw_df, master25, farm_dict)
+
             else:
-                combined_df = get_tables(raw_df, master25, farm_dict, col_to_get)
+                cols_vs_request = {"days_daily_avg": "m³ per Acre per Avg Day", "days_delta_acre": "m³ per Acre", "days_delta":"Delta m³", "dates_daily_avg": "m³ per Acre per Avg Day", "dates_delta_acre": "m³ per Acre", "dates_delta":"Delta m³"}
+                days_or_date = "Day" if download_request.startswith("days") else "Date"
+                col_to_get = cols_vs_request[download_request]
+                if use_date_filter and filter_start_date and filter_end_date:
+                    filter_start = pd.to_datetime(filter_start_date)
+                    filter_end = pd.to_datetime(filter_end_date)
+                    combined_df = get_tables(raw_df, master25, farm_dict, col_to_get, days_or_date, start_date_for_readings, end_date_for_readings,start_date_enter=filter_start, end_date_enter=filter_end)
+                else:
+                    combined_df = get_tables(raw_df, master25, farm_dict, col_to_get, days_or_date, start_date_for_readings, end_date_for_readings)
 
             # Convert DataFrame to Excel file in memory
             with BytesIO() as buffer:
@@ -3204,3 +3219,6 @@ def tpr_view(request):
 
 def tubewell_view(request):
     return render(request, 'tubewell.html')
+
+def farmer_engagement(request):
+    return render(request, 'farmer-engagement.html')

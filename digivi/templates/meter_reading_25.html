@@ -1373,22 +1373,65 @@
         </a>
         <form method="post">
           {% csrf_token %}
-          <input type="hidden" name="download_table" value="avg">
+          <input type="hidden" name="download_table" value="days_daily_avg">
           <button type="submit" class="btn btn-success btn-block">
-            <i class="fas fa-download"></i> Export Avg Data table
+            <i class="fas fa-download"></i> Days Daily Avg/Acre table
           </button>
         </form>
         <form method="post">
           {% csrf_token %}
-          <input type="hidden" name="download_table" value="delta">
+          <input type="hidden" name="download_table" value="days_delta_acre">
           <button type="submit" class="btn btn-success btn-block">
-            <i class="fas fa-download"></i> Export Delta Data table
+            <i class="fas fa-download"></i> Days Delta/Acre table
+          </button>
+        </form>
+        <form method="post">
+          {% csrf_token %}
+          <input type="hidden" name="download_table" value="days_delta">
+          <button type="submit" class="btn btn-success btn-block">
+            <i class="fas fa-download"></i> Days Delta table
+          </button>
+        </form>
+        <form method="post">
+          {% csrf_token %}
+          <input type="hidden" name="download_table" value="days_reading">
+          <button type="submit" class="btn btn-success btn-block">
+            <i class="fas fa-download"></i> Days Reading table
+          </button>
+        </form>
+        <form method="post">
+          {% csrf_token %}
+          <input type="hidden" name="download_table" value="dates_daily_avg">
+          <button type="submit" class="btn btn-success btn-block">
+            <i class="fas fa-download"></i> Dates Daily Avg/Acre table
+          </button>
+        </form>
+        <form method="post">
+          {% csrf_token %}
+          <input type="hidden" name="download_table" value="dates_delta_acre">
+          <button type="submit" class="btn btn-success btn-block">
+            <i class="fas fa-download"></i> Dates Delta/Acre table
+          </button>
+        </form>
+        <form method="post">
+          {% csrf_token %}
+          <input type="hidden" name="download_table" value="dates_delta">
+          <button type="submit" class="btn btn-success btn-block">
+            <i class="fas fa-download"></i> Dates Delta table
+          </button>
+        </form>
+        <form method="post">
+          {% csrf_token %}
+          <input type="hidden" name="download_table" value="dates_reading">
+          <button type="submit" class="btn btn-success btn-block">
+            <i class="fas fa-download"></i> Dates Reading table
           </button>
         </form>
       </div>
     </div>
   </div>
   {% endif %}
+
 
   <!-- Village Filter -->
   {% if village_names %}

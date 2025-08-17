@@ -43,5 +43,6 @@ urlpatterns = [
     path('tpr/', views.tpr_view, name='tpr'),
     path('tubewell/', views.tubewell_view, name='tubewell'),
     path('i18n/', include('django.conf.urls.i18n')),
+    path('farmer-engagement/', views.farmer_engagement, name='farmer-engagement'),
 ]
 

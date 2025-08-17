@@ -3985,7 +3985,7 @@ def get_2025plots_combined(raw_df, master_df, selected_farm, meter_list, start_d
     
     return plots_base64
 
-def get_tables(raw_df, master_df, farm_list, col_to_get, start_date_enter = None, end_date_enter = None):
+def get_tables(raw_df, master_df, farm_list, col_to_get, days_or_dates, start_date_for_farms, end_date_for_farms ,start_date_enter = None, end_date_enter = None):
     # Clean meter data
     date_col = 'Date'
     raw_df[date_col] = pd.to_datetime(raw_df[date_col], dayfirst=False)
@@ -4024,19 +4024,139 @@ def get_tables(raw_df, master_df, farm_list, col_to_get, start_date_enter = None
                 end_date = end_date_enter
             filled_df = get_filled(meter, raw_df, date_col, start_date, end_date, acreage)
             if filled_df.empty:
-                filled_df = pd.DataFrame(columns=['Day', meter])
+                filled_df = pd.DataFrame(columns=[days_or_dates, meter])
             else:
-                filled_df['Day'] = (pd.to_datetime(filled_df[date_col]) - start_date).dt.days
-                filled_df = filled_df[['Day', col_to_get]].rename(columns={col_to_get: meter})
+                if days_or_dates == "Day":
+                    filled_df['Day'] = (pd.to_datetime(filled_df[date_col]) - start_date).dt.days
+                    filled_df = filled_df[['Day', col_to_get]].rename(columns={col_to_get: meter})
+                else:
+                    filled_df = filled_df[["Date", col_to_get]].rename(columns={col_to_get: meter})
             
             dfs.append(filled_df)
 
     from functools import reduce
 
     # Assuming all DataFrames have the same name for the date column
-    combined_df = reduce(lambda left, right: pd.merge(left, right, on='Day', how='outer'), dfs)
+    combined_df = reduce(lambda left, right: pd.merge(left, right, on=days_or_dates, how='outer'), dfs)
+    if days_or_dates == "Date":
+        full_date_range = pd.DataFrame({date_col: pd.date_range(start=start_date_for_farms, end=end_date_for_farms)})
+        combined_df = pd.merge(full_date_range, combined_df, on='Date', how='left')
 
     return combined_df
+
+def get_dates_table(raw_df, master_df, farm_list, start_date, end_date, days_or_dates):
+    # Clean meter data
+    date_col = 'Date'
+    raw_df[date_col] = pd.to_datetime(raw_df[date_col], dayfirst=False)
+    raw_df = raw_df.sort_values(date_col)
+    dfs = []
+    
+    for farm in farm_list.keys():
+        for meter in farm_list[farm]:
+            if not meter:
+                continue
+        
+            # Filter data for the specific meter
+            df = raw_df[raw_df['Meter Serial Number - as shown on meter'] == meter].copy()
+            df.drop_duplicates(subset=[date_col], keep='last', inplace=True)
+            if not df.empty:
+                # Keep only relevant columns
+                df = df[[date_col, 'Reading in the meter - in m3']].dropna()
+                
+                # Convert date column to datetime
+                df[date_col] = pd.to_datetime(df[date_col])
+
+                df = df[[date_col, 'Reading in the meter - in m3']].rename(columns={'Reading in the meter - in m3': meter})
+            else:
+                df = pd.DataFrame(columns=[date_col, meter])
+            
+            dfs.append(df)
+
+    from functools import reduce
+
+    # Assuming all DataFrames have the same name for the date column
+    combined_df = reduce(lambda left, right: pd.merge(left, right, on='Date', how='outer'), dfs)
+    # Create a full date range and merge it
+    full_date_range = pd.DataFrame({date_col: pd.date_range(start=start_date, end=end_date)})
+    combined_df = pd.merge(full_date_range, combined_df, on='Date', how='left')
+    if days_or_dates == 'days_reading':
+        combined_df['Date'] = (pd.to_datetime(combined_df[date_col]) - start_date).dt.days
+        combined_df.rename(columns={"Date":'Day'})
+
+
+    return combined_df
+
+def get_days_reading(raw_df, master_df, selected_farm, meter_list, start_date_enter=None, end_date_enter=None):
+    meta = master_df['Farm details']
+    farm_row = meta[meta['Kharif 25 Farm ID'] == selected_farm]
+    if farm_row.empty:
+        raise ValueError(f"Farm ID {selected_farm} not found in metadata.")
+    farm_row = farm_row.iloc[0]
+
+    acreage = farm_row.get('Kharif 25 Acres farm - farmer reporting') or 1
+    if pd.isna(acreage) or acreage <= 0:
+        acreage = 1
+
+    if pd.notna(farm_row.get('Kharif 25 Paddy transplanting date (TPR)')):
+        start_date = pd.to_datetime(farm_row['Kharif 25 Paddy transplanting date (TPR)'], dayfirst=True)
+    else:
+        start_date = pd.to_datetime('20/06/2025', dayfirst=True)
+
+    if start_date_enter is not None:
+        start_date = pd.to_datetime(start_date_enter)
+
+    end_date = pd.to_datetime(datetime.now().date())
+    if end_date_enter is not None:
+        end_date = pd.to_datetime(end_date_enter)
+
+    # Clean meter data
+    date_col = 'Date'
+    raw_df[date_col] = pd.to_datetime(raw_df[date_col], dayfirst=False)
+    raw_df = raw_df.sort_values(date_col)
+
+    dfs=[]
+
+    if len(meter_list) == 0:
+        return []
+
+    for meter in meter_list:
+        filled_df = get_filled(meter, raw_df, date_col, start_date, end_date, acreage)
+        if filled_df.empty:
+            continue
+
+        filled_df['Day'] = (pd.to_datetime(filled_df[date_col]) - start_date).dt.days
+
+        dates_for_reading = get_dates(meter, raw_df, date_col, start_date, end_date, acreage)
+        if filled_df.empty:
+            actual_values = pd.DataFrame(columns=['Day', meter])
+            dfs.append(actual_values)
+            continue
+
+        actual_values = filled_df[filled_df['Date'].isin(dates_for_reading['Date'])]
+        actual_values = actual_values[['Day', 'Reading in the meter - in m3']].rename(columns={'Reading in the meter - in m3': meter})
+        dfs.append(actual_values)
+    return dfs
+
+def get_days_reading_table(raw_df, master_df, farm_list, start_date_enter=None, end_date_enter=None):
+    date_col = 'Date'
+    raw_df[date_col] = pd.to_datetime(raw_df[date_col], dayfirst=False)
+    raw_df = raw_df.sort_values(date_col)
+    dfs = []
+    
+    for farm in farm_list.keys():
+        df = get_days_reading(raw_df, master_df, farm, farm_list[farm], start_date_enter, end_date_enter)
+        dfs.extend(df)
+    
+    from functools import reduce
+    
+    # Assuming all DataFrames have the same name for the date column
+    combined_df = reduce(lambda left, right: pd.merge(left, right, on='Day', how='outer'), dfs)
+    max_day = int(combined_df['Day'].max())
+    days_df = pd.DataFrame({'Day': np.arange(max_day + 1)})
+    combined_df = pd.merge(days_df, combined_df, on='Day', how='left')
+
+    return combined_df
+
 
 
 def calculate_avg_m3_per_acre(group_type, group_label, farm_ids, raw_df, master25, column_to_see, start_date_enter = None, end_date_enter = None):

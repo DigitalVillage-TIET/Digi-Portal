@@ -1,0 +1,1028 @@
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="{LANGUAGE_CODE}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% trans "Agricultural Training Gallery" %} – DIGI-VI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root[data-theme="dark"] {
+            --bg: #0a0a0a;
+            --text: #e0e0e0;
+            --accent: #4ade80;
+            --card-bg: #1a1a1a;
+            --overlay: rgba(0,0,0,0.8);
+            --primary: #349a62;
+            --bg-toggle: #1a2e23;
+            --bg-toggle-hover: #24543a;
+            --btn-bg-hover: #349a62;
+            --btn-text-hover: #000;
+            --shadow-toggle: 0 2px 8px rgba(52,154,98,0.18);
+            --toggle-slider-bg: #349a62;
+            --toggle-slider-color: #fff;
+        }
+
+        :root[data-theme="light"] {
+            --bg: #f9fff9;
+            --text: #1a1a1a;
+            --accent: #16a34a;
+            --card-bg: #ffffff;
+            --overlay: rgba(255,255,255,0.95);
+            --primary: #218c5a;
+            --bg-toggle: rgba(255,255,255,0.85);
+            --bg-toggle-hover: #e8f8f1;
+            --btn-bg-hover: #b7eacb;
+            --btn-text-hover: #218c5a;
+            --shadow-toggle: 0 2px 12px rgba(111,207,151,0.16);
+            --toggle-slider-bg: linear-gradient(135deg, #7ee2a3 60%, #e3fcec 100%);
+            --toggle-slider-color: #218c5a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            transition: background 0.5s, color 0.5s;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 15px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 999;
+            backdrop-filter: saturate(180%) blur(10px);
+            background: rgba(0,0,0,0.3);
+            transition: background 0.3s ease;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section - Updated with black background */
+        .hero {
+            height: 100vh;
+            background: var(--bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--text);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.05) 0%, transparent 60%),
+                radial-gradient(circle at 70% 80%, rgba(255,255,255,0.03) 0%, transparent 50%);
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 1000px;
+            padding: 0 2rem;
+            animation: fadeInUp 1.2s ease-out;
+        }
+
+        .hero h1 {
+            font-size: 4.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            line-height: 1.1;
+            background: linear-gradient(45deg, var(--text), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero .subtitle {
+            font-size: 1.4rem;
+            margin-bottom: 2.5rem;
+            opacity: 0.95;
+            font-weight: 400;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero .impact-text {
+            font-size: 1.1rem;
+            margin-bottom: 3rem;
+            opacity: 0.9;
+            font-weight: 300;
+            font-style: italic;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            animation: bounce 2s infinite;
+            opacity: 0.8;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(60px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            40% {
+                transform: translateX(-50%) translateY(-10px);
+            }
+            60% {
+                transform: translateX(-50%) translateY(-5px);
+            }
+        }
+
+        /* Main Content */
+        .main-content {
+            padding-top: 0;
+        }
+
+        .section {
+            padding: 100px 5%;
+            position: relative;
+        }
+
+        .section:nth-child(even) {
+            background: var(--card-bg);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 80px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .section-header.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-header h2 {
+            font-size: 3rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-header h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--accent);
+            border-radius: 2px;
+        }
+
+        .section-header p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+            opacity: 0.8;
+        }
+
+        /* Media Gallery */
+        .media-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .media-item {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: all 0.4s ease;
+            opacity: 0;
+            transform: translateY(50px);
+            cursor: pointer;
+        }
+
+        .media-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .media-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .media-item img,
+        .media-item video {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .media-item:hover img,
+        .media-item:hover video {
+            transform: scale(1.05);
+        }
+
+        .media-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            color: white;
+            padding: 30px 20px 20px;
+            transform: translateY(100%);
+            transition: transform 0.4s ease;
+        }
+
+        .media-item:hover .media-overlay {
+            transform: translateY(0);
+        }
+
+        .media-overlay h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .media-overlay p {
+            font-size: 0.9rem;
+
+            opacity: 0.9;
+        }
+
+        .media-item iframe {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border: none;
+    transition: transform 0.4s ease;
+}
+
+/* Hover effect like images/videos */
+.media-item:hover iframe {
+    transform: scale(1.05);
+}
+
+
+        /* Content Grid - Removed stats sections */
+        .content-grid {
+            gap: 60px;
+            align-items: center;
+            margin-top: 60px;
+        }
+
+        .content-text {
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: all 0.8s ease;
+        }
+
+        .content-text.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .content-text h3 {
+            font-size: 2rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        .content-text p {
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--overlay);
+            z-index: 2000;
+            backdrop-filter: blur(10px);
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+
+        .modal img,
+        .modal video {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: background 0.3s;
+        }
+
+        .modal-close:hover {
+            background: rgba(0,0,0,0.9);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            header {
+                padding: 15px 20px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 3rem;
+            }
+
+            .hero .subtitle {
+                font-size: 1.2rem;
+            }
+
+            .hero .impact-text {
+                font-size: 1rem;
+            }
+
+            .section-header h2 {
+                font-size: 2.2rem;
+            }
+
+            .media-gallery {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .content-text {
+                transform: translateY(30px);
+            }
+
+            .content-text.visible {
+                transform: translateY(0);
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            opacity: 0;
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .header-controls form {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .btn {
+            background: transparent;
+            border: 2px solid var(--accent);
+            color: var(--accent);
+            padding: 6px 14px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            background: var(--accent);
+            color: var(--btn-text-hover);
+        }
+        /* Theme toggle and language buttons */
+.language-button-container {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 1001;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.language-form {
+    margin: 0;
+}
+
+.language-button {
+    background: transparent;
+    color: var(--accent);
+    border: 2px solid var(--primary);
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.language-button:hover {
+    background-color: var(--btn-bg-hover);
+    color: var(--btn-text-hover);
+}
+
+.home-btn {
+    text-decoration: none;
+    background: transparent;
+    color: var(--accent);
+    border: 2px solid var(--primary);
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.home-btn:hover {
+    background-color: var(--btn-bg-hover);
+    color: var(--btn-text-hover);
+}
+
+/* THEME TOGGLE */
+.theme-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    background: var(--bg-toggle);
+    border: 2px solid var(--primary);
+    border-radius: 50px;
+    width: 60px;
+    height: 32px;
+    cursor: pointer;
+    padding: 0 4px;
+    transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
+    position: relative;
+    box-shadow: var(--shadow-toggle);
+}
+
+.theme-toggle:hover {
+    border-color: var(--accent);
+    background: var(--bg-toggle-hover);
+}
+
+.theme-toggle-slider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    background: var(--toggle-slider-bg);
+    border-radius: 50%;
+    color: var(--toggle-slider-color);
+    font-size: 16px;
+    box-shadow: 0 2px 8px rgba(52,154,98,0.13);
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    transition: left 0.3s cubic-bezier(0.4,0,0.2,1), background 0.3s, color 0.3s;
+}
+
+:root[data-theme="light"] .theme-toggle-slider {
+  left: 34px;
+  background: var(--toggle-slider-bg);
+  color: var(--toggle-slider-color);
+}
+:root[data-theme="dark"] .theme-toggle-slider {
+  left: 4px;
+  background: var(--toggle-slider-bg);
+  color: var(--toggle-slider-color);
+}
+
+        /* Update responsive design for mobile */
+        @media (max-width: 768px) {
+            header {
+                padding: 15px 20px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .header-controls form {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .btn {
+                font-size: 0.8rem;
+                padding: 4px 10px;
+            }
+
+            .language-button-container {
+                top: 15px;
+                right: 15px;
+                gap: 8px;
+                position: fixed;
+            }
+
+            .language-button,
+            .home-btn {
+                font-size: 12px;
+                padding: 6px 12px;
+            }
+
+            .theme-toggle {
+                width: 50px;
+                height: 28px;
+            }
+
+            .theme-toggle-slider {
+                width: 20px;
+                height: 20px;
+                font-size: 14px;
+            }
+
+            :root[data-theme="light"] .theme-toggle-slider {
+                left: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="language-button-container">
+        <form method="post" action="{% url 'set_language' %}">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ request.path }}">
+            <input type="hidden" name="language" value="{% if LANGUAGE_CODE == 'en' %}pa{% else %}en{% endif %}">
+            <button type="submit" class="language-button">
+                {% if LANGUAGE_CODE == 'en' %}
+                    {% trans "Switch to Punjabi" %}
+                {% else %}
+                    {% trans "Switch to English" %}
+                {% endif %}
+            </button>
+            <a href="{% url 'landing_protected' %}" class="home-btn">{% trans "Home" %}</a>
+        </form>
+        <button class="theme-toggle" onclick="toggleTheme()" title="{% trans 'Toggle theme' %}">
+            <div class="theme-toggle-slider">
+                <i class="fas fa-sun" id="theme-icon"></i>
+            </div>
+        </button>
+    </div>
+    
+    <section class="hero">
+        <div class="hero-content">
+            <h1>{% trans "Transforming Agriculture Through Innovation" %}</h1>
+            <p class="subtitle">{% trans "Empowering Punjab's farmers with cutting-edge water-smart training programs and sustainable farming techniques" %}</p>
+            <p class="impact-text">{% trans "Where traditional wisdom meets modern technology to create a sustainable future" %}</p>
+        </div>
+        <div class="scroll-indicator">
+            <i class="fas fa-chevron-down fa-2x"></i>
+        </div>
+    </section>
+
+    <main class="main-content">
+         <!--AWD Section -->
+        <section id="awd" class="section">
+            <div class="section-header">
+                <h2>{% trans "Alternate Wetting & Drying (AWD)" %}</h2>
+                <p>{% trans "Revolutionary water management technique that reduces water usage by up to 30% while maintaining rice yields through strategic field drying cycles" %}</p>
+            </div>
+
+            <div class="media-gallery">
+                <div class="media-item" onclick="openModal(this)">
+                    <a href="https://ibb.co/dwbvxh8n"><img src="https://i.ibb.co/S4QgGLFq/Whats-App-Image-2025-08-15-at-21-58-26.jpg" alt="Whats-App-Image-2025-08-15-at-21-58-26" border="0"></a>
+                </div>
+
+                <div class="media-item">
+                    <iframe 
+                        src="https://player.vimeo.com/video/1110390001?badge=0&autopause=0&player_id=0&app_id=58479" 
+                        frameborder="0" 
+                        allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" 
+                        referrerpolicy="strict-origin-when-cross-origin" 
+                        title="WhatsApp Video 2025-08-16 at 01.29.41">
+                    </iframe>
+                </div>
+                <script src="https://player.vimeo.com/api/player.js"></script>
+                
+                <div class="media-item" onclick="openModal(this)">
+                    <a href="https://ibb.co/ZR8PnyL6"><img src="https://i.ibb.co/FkwMSGxb/water-level.jpg" alt="water-level" border="0"></a>
+                </div>
+
+                <div class="media-item" onclick="openModal(this)">
+                    <a href="https://ibb.co/prkv4LmS"><img src="https://i.ibb.co/jZjv3rpS/AWD-PIPE.jpg" alt="AWD-PIPE" border="0"></a>
+                </div>
+
+                <div class="media-item">
+                    <iframe 
+                        src="https://player.vimeo.com/video/1110372816?badge=0&autopause=0&player_id=0&app_id=58479" 
+                        frameborder="0" 
+                        allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" 
+                        referrerpolicy="strict-origin-when-cross-origin" 
+                        title="AWD farmer testimonial1">
+                    </iframe>
+                    <script src="https://player.vimeo.com/api/player.js"></script>
+
+                </div>
+
+                <div class="media-item" onclick="openModal(this)">
+                    <a href="https://ibb.co/tTN0FGmy"><img src="https://i.ibb.co/ksrLv7HY/Screenshot-2025-08-15-at-10-20-36-PM.png" alt="Screenshot-2025-08-15-at-10-20-36-PM" border="0"></a>
+                </div>
+            </div>
+
+            <div class="content-grid">
+                <div class="content-text">
+                    <h3>{% trans "Revolutionizing Water Management" %}</h3>
+                    <p>{% trans "To further promote water-saving practices in rice cultivation, we conducted a training session on Alternate Wetting and Drying (AWD), in collaboration with the International Rice Research Institute (IRRI). AWD is a proven technique that reduces water use by encouraging farmers to intermittently dry their fields rather than keeping them continuously flooded. The training focused on helping farmers understand how to manage water levels effectively—limiting the height of flooding and allowing the soil to partially dry before the next irrigation." %}</p>
+                    <p>{% trans "This method marks a critical shift toward more sustainable rice farming. By reducing the frequency and intensity of irrigation, AWD helps lower groundwater extraction, which is urgently needed in Punjab, where overuse of groundwater poses a serious threat to long-term agricultural viability. Through our partnership with IRRI, we aim to build farmer capacity and awareness, equipping them with tools and knowledge to adapt to more water-efficient and climate-resilient farming systems." %}
+                    </p>
+                </div>
+            </div>
+        </section>
+
+         <!--DSR Section --> 
+        <section id="dsr" class="section">
+            <div class="section-header">
+                <h2>{% trans "Direct Seeded Rice (DSR) Workshop" %}</h2>
+                <p>{% trans "Modern seeding technique that eliminates transplanting, reduces labor costs by 40%, and promotes sustainable farming through efficient resource utilization" %}</p>
+            </div>
+
+            <div class="media-gallery">
+                <div class="media-item" onclick="openModal(this)">
+                    <a href="https://ibb.co/TMRyqPPh"><img src="https://i.ibb.co/XxpHkFFJ/IMG-20240520-WA0024.jpg" alt="IMG-20240520-WA0024" border="0"></a>
+                </div>
+
+                <div class="media-item">
+                    <iframe 
+                        src="https://player.vimeo.com/video/1110387359?badge=0&autopause=0&player_id=0&app_id=58479" 
+                        frameborder="0" 
+                        allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" 
+                        referrerpolicy="strict-origin-when-cross-origin" 
+                        title="VID-20240520-WA0047">
+                    </iframe>
+                </div>
+                <script src="https://player.vimeo.com/api/player.js"></script>
+                
+                <div class="media-item" onclick="openModal(this)">
+                    <img src="https://i.ibb.co/9347km0J/Screenshot-2025-07-07-at-11-43-14-PM.png" alt="Weed Management Training">
+                </div>
+
+                <div class="media-item" onclick="openModal(this)">
+                    <a href="https://ibb.co/CKDy4DNg"><img src="https://i.ibb.co/3mQbVQG2/Whats-App-Image-2025-08-15-at-21-58-25.jpg" alt="Whats-App-Image-2025-08-15-at-21-58-25" border="0"></a>
+                </div>
+
+                <div class="media-item">
+                    <iframe 
+                        src="https://player.vimeo.com/video/1110387327?badge=0&autopause=0&player_id=0&app_id=58479" 
+                        frameborder="0" 
+                        allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" 
+                        referrerpolicy="strict-origin-when-cross-origin" 
+                        title="VID-20240520-WA0045">
+                    </iframe>
+                </div>
+                <script src="https://player.vimeo.com/api/player.js"></script>                          
+
+                <div class="media-item" onclick="openModal(this)">
+                    <a href="https://ibb.co/CKSt40Xm"><img src="https://i.ibb.co/wh2L86bB/IMG-20240520-WA0040.jpg" alt="IMG-20240520-WA0040" border="0"></a>
+                </div>
+            </div>
+
+            <div class="content-grid">
+                <a href="https://ibb.co/rCBwXv6">
+                    <img src="https://i.ibb.co/qtHr2xs/IMG-20240520-WA0025.jpg" 
+                         alt="IMG-20240520-WA0025" 
+                         style="width:100%; height:500px; object-fit:cover;">
+                  </a>
+                  
+                  
+                <div class="content-text">
+                    <h3>{% trans "Pioneering Sustainable Rice Cultivation" %}</h3>
+                    {% blocktrans %}
+                    <p>As part of our ongoing efforts to promote sustainable rice cultivation, we organized a Direct Seeded Rice (DSR) workshop for farmers in Punjab. The workshop introduced farmers to the DSR methodology, including key techniques and best practices for successful implementation. DSR offers a significant advantage over traditional transplanting methods by requiring less water and labor—two critical resources in Punjab’s agricultural landscape.</p>
+                    <p>However, the success of DSR depends on proper execution. One of the main challenges with DSR is the potential for increased weed pressure if not managed carefully. To address this, our training sessions emphasized weed management strategies and timely agronomic practices that ensure the method's effectiveness and long-term benefits.</p>
+                    <p>The workshop was conducted in collaboration with Punjab Agricultural University (PAU), our core partner in this project. As the leading rice research institution in the region, PAU brought critical technical expertise and practical guidance to the training, reinforcing our shared goal of advancing water-efficient and resilient farming practices in Punjab.</p>
+                    {% endblocktrans %}
+                </div>
+            </div>
+        </section>
+
+         <!--Farmer Training Section --> 
+        <section id="farmer" class="section">
+            <div class="section-header">
+                <h2>{% trans "Comprehensive Farmer Training" %}</h2>
+                <p>{% trans "Holistic agricultural education program combining traditional farming wisdom with cutting-edge technology and sustainable practices for 500+ farmers across Patiala District" %}</p>
+            </div>
+
+            <div class="media-gallery">
+                <div class="media-item" onclick="openModal(this)">
+                    <a href="https://ibb.co/PGcs5jdz"><img src="https://i.ibb.co/1GrY9QkJ/Whats-App-Image-2025-08-15-at-21-58-27.jpg" alt="Whats-App-Image-2025-08-15-at-21-58-27" border="0"></a>
+                </div>
+                <div class="media-item">
+                    <iframe 
+                        src="https://player.vimeo.com/video/1110386883?badge=0&autopause=0&player_id=0&app_id=58479" 
+                        frameborder="0" 
+                        allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" 
+                        referrerpolicy="strict-origin-when-cross-origin" 
+                        title="IMG_6714">
+                    </iframe>
+                </div>
+                <script src="https://player.vimeo.com/api/player.js"></script>
+                
+                <div class="media-item" onclick="openModal(this)">
+                    <a href="https://ibb.co/Wv46GnHX"><img src="https://i.ibb.co/Sw4P5N6g/Whats-App-Image-2025-08-15-at-22-08-44.jpg" alt="Whats-App-Image-2025-08-15-at-22-08-44" border="0"></a>
+                </div>
+
+                <div class="media-item" onclick="openModal(this)">
+                    <a href="https://ibb.co/WWZSzw7q"><img src="https://i.ibb.co/fYfmN5ZB/IMG-20240608-WA0045.jpg" alt="IMG-20240608-WA0045" border="0"></a>
+                </div>
+
+                <div class="media-item">
+                    <iframe 
+                        src="https://player.vimeo.com/video/1110386794?badge=0&autopause=0&player_id=0&app_id=58479" 
+                        frameborder="0" 
+                        allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" 
+                        referrerpolicy="strict-origin-when-cross-origin" 
+                        title="IMG_6713">
+                    </iframe>
+                </div>
+                <script src="https://player.vimeo.com/api/player.js"></script>
+                
+                <div class="media-item" onclick="openModal(this)">
+                    <a href="https://ibb.co/60cxcWQx"><img src="https://i.ibb.co/qYLfLr6f/IMG-20240608-WA0056.jpg" alt="IMG-20240608-WA0056" border="0"></a>
+                </div>
+            </div>
+
+            <div class="content-grid">
+                <div class="content-text">
+                    <h3>{% trans "Empowering Agricultural Communities" %}</h3>
+                    <p>{% trans "Our comprehensive farmer training program extends far beyond traditional agricultural education, creating a transformative learning ecosystem that bridges the gap between time-tested farming wisdom and modern agricultural innovation. We work directly with over 500 farmers across Patiala District, providing personalized support and cutting-edge training." %}</p>
+                    <p>{% trans "The program encompasses regular farm visits, detailed data collection on farming practices and irrigation behavior, groundwater monitoring, and innovative incentive-based programs that promote sustainable water use while supporting farmers economically. Each participating farm is precisely geo-mapped, enabling integration with remote sensing technology and hydrological models." %}</p>
+                    <p>{% trans "Through this holistic approach, we combine rigorous scientific measurement with farmer-centered design, ensuring both robust data collection and meaningful participation that leads to improved livelihoods, increased income, and enhanced food security." %}</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+     <!--Modal --> 
+    <div id="modal" class="modal" onclick="closeModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <div id="modal-media"></div>
+        </div>
+    </div>
+
+    <script>
+        // Theme Management
+        function setInitialTheme() {
+            // Get theme from localStorage, or default to 'dark'
+            const savedTheme = localStorage.getItem('theme');
+            const theme = savedTheme ? savedTheme : 'dark';
+            document.documentElement.setAttribute('data-theme', theme);
+            updateThemeIcon(theme);
+        }
+
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+        }
+
+        function updateThemeIcon(theme) {
+            const icon = document.getElementById('theme-icon');
+            if (icon) {
+                icon.className = theme === 'light' ? 'fas fa-sun' : 'fas fa-moon';
+            }
+        }
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Modal functionality
+        function openModal(element) {
+            const modal = document.getElementById('modal');
+            const modalMedia = document.getElementById('modal-media');
+            
+            const img = element.querySelector('img');
+            const video = element.querySelector('video');
+            
+            modalMedia.innerHTML = '';
+            
+            if (img) {
+                const modalImg = img.cloneNode(true);
+                modalImg.style.maxWidth = '100%';
+                modalImg.style.height = 'auto';
+                modalMedia.appendChild(modalImg);
+            } else if (video) {
+                const modalVideo = video.cloneNode(true);
+                modalVideo.style.maxWidth = '100%';
+                modalVideo.style.height = 'auto';
+                modalVideo.controls = true;
+                modalMedia.appendChild(modalVideo);
+            }
+            
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('modal');
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            
+            // Stop any playing videos
+            const videos = modal.querySelectorAll('video');
+            videos.forEach(video => {
+                video.pause();
+                video.currentTime = 0;
+            });
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Staggered animation for media items
+        function animateMediaItems() {
+            const mediaItems = document.querySelectorAll('.media-item');
+            mediaItems.forEach((item, index) => {
+                setTimeout(() => {
+                    observer.observe(item);
+                }, index * 100);
+            });
+        }
+
+        // Initialize everything when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            setInitialTheme();
+            
+            // Observe all animated elements
+            document.querySelectorAll('.section-header, .content-text').forEach(el => {
+                observer.observe(el);
+            });
+            
+            animateMediaItems();
+            
+            // Add loading class to body for smooth initial load
+            document.body.classList.add('loading');
+            
+            // Close modal with Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closeModal();
+                }
+            });
+        });
+
+        // Header background change on scroll
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.style.background = 'rgba(0,0,0,0.9)';
+            } else {
+                header.style.background = 'rgba(0,0,0,0.3)';
+            }
+        });
+
+
+
+    </script>
+</body>
+</html>
