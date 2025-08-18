@@ -28,7 +28,8 @@
 #     get_per_farm_downloads,
 #     get_village_level_analysis,
 #     load_master_from_google_sheets,
-#     print_status
+#     print_status,
+#     generate_delta_vs_days_groupwise_plots
 # )
 # from django.urls import reverse
 # from functools import wraps
@@ -567,21 +568,16 @@
 #                 'chart_html': comparative_results['custom'].get('chart_html', None)
 #             }
 #         }
-        
-#         # Set up other required context
-#         context['merged_loaded'] = True
-#         context['available_farms'] = sorted(merged_df["Farm ID"].unique())
-#         context['available_villages'] = sorted(merged_df["Village"].dropna().unique()) if 'Village' in merged_df.columns else []
 #         context['custom_groups'] = list(custom_groups_df.keys())
-        
-#         # Set up download categories
+
+#         # 📥 Download Links
 #         downloads = prepare_comprehensive_downloads(merged_df, kharif_df, farm_daily_avg, weekly_avg)
 #         ds1, ds2, ds3 = categorize_files(downloads)
 #         context['complete_dataset_files'] = [{'filename': f, 'display_name': pretty_download_name(f)} for f in ds1]
 #         context['study_group_files'] = [{'filename': f, 'display_name': pretty_download_name(f)} for f in ds2]
 #         context['analysis_report_files'] = [{'filename': f, 'display_name': pretty_download_name(f)} for f in ds3]
-        
-#         # Farm summary statistics
+
+#         # 📊 Overall Stats
 #         stats = {
 #             'mean': round(merged_df['Water Level (mm)'].mean(), 2),
 #             'std': round(merged_df['Water Level (mm)'].std(), 2),
@@ -591,9 +587,13 @@
 #             'unique_farms': merged_df['Farm ID'].nunique()
 #         }
 #         context['farm_summary_stats'] = stats
-        
-#         # Reload the page with updated context
-#         return render(request, 'water_meters.html', context)
+
+#         # Selected farm downloads
+#         farm = context['selected_farm']
+#         context['per_farm_downloads'] = [
+#             {'filename': f"farm_{sanitize_filename(farm)}_{suffix}.csv", 'display_name': label}
+#             for suffix, label in zip(['detailed', 'summary', 'daily_avg'], ["Detailed Data", "Summary Row", "Daily Averages"])
+#         ] if farm else []
 
 #     # ----------------------------------
 #     # 7️⃣ Handle Custom Group Deletion
@@ -689,6 +689,10 @@
         
 #         # Reload the page with updated context
 #         return render(request, 'water_meters.html', context)
+
+#     # ----------------------------------
+#     # 8️⃣ Handle Comparative Analysis Downloads
+#     # ----------------------------------
 #     if request.method == 'GET' and any(k in request.GET for k in [
 #     'download_village_analysis', 'download_rc_analysis', 'download_awd_analysis', 'download_dsr_tpr_analysis', 'download_custom_group_analysis'
 #     ]):
@@ -1437,7 +1441,8 @@ from .utils import (
     get_per_farm_downloads,
     get_village_level_analysis,
     load_master_from_google_sheets,
-    print_status
+    print_status,
+    generate_delta_vs_days_groupwise_plots
 )
 from django.urls import reverse
 from functools import wraps
@@ -2531,7 +2536,7 @@ def mapping(request):
 from django.shortcuts import render
 import pandas as pd
 
-from .utils import kharif2025_farms, get_2025plots, get_meters_by_village
+from .utils import kharif2025_farms, get_2025plots, get_meters_by_village, apply_7day_sma, create_weekly_delta, get_acreage, create_delta_vs_days_from_tpr, generate_delta_vs_days_groupwise_plots, get_dates_table, get_days_reading_table
 
 
 
@@ -2770,13 +2775,28 @@ def meter_reading_25_view(request):
         
         download_request = request.POST.get("download_table")
         if download_request and raw_df is not None:
-            col_to_get = "m³ per Acre per Avg Day" if download_request == "avg" else "m³ per Acre"
-            if use_date_filter and filter_start_date and filter_end_date:
-                filter_start = pd.to_datetime(filter_start_date)
-                filter_end = pd.to_datetime(filter_end_date)
-                combined_df = get_tables(raw_df, master25, farm_dict, col_to_get, start_date_enter=filter_start, end_date_enter=filter_end)
+            start_date_for_readings = pd.to_datetime(date_range_info['current_min'])
+            end_date_for_readings = pd.to_datetime(date_range_info['current_max'])
+            if download_request == 'dates_reading':
+                combined_df = get_dates_table(raw_df, master25, farm_dict, start_date_for_readings, end_date_for_readings, download_request)
+            elif download_request == 'days_reading':
+                if use_date_filter and filter_start_date and filter_end_date:
+                    filter_start = pd.to_datetime(filter_start_date)
+                    filter_end = pd.to_datetime(filter_end_date)
+                    combined_df = get_days_reading_table(raw_df, master25, farm_dict, start_date_enter=filter_start, end_date_enter=filter_end)
+                else:
+                    combined_df = get_days_reading_table(raw_df, master25, farm_dict)
+
             else:
-                combined_df = get_tables(raw_df, master25, farm_dict, col_to_get)
+                cols_vs_request = {"days_daily_avg": "m³ per Acre per Avg Day", "days_delta_acre": "m³ per Acre", "days_delta":"Delta m³", "dates_daily_avg": "m³ per Acre per Avg Day", "dates_delta_acre": "m³ per Acre", "dates_delta":"Delta m³"}
+                days_or_date = "Day" if download_request.startswith("days") else "Date"
+                col_to_get = cols_vs_request[download_request]
+                if use_date_filter and filter_start_date and filter_end_date:
+                    filter_start = pd.to_datetime(filter_start_date)
+                    filter_end = pd.to_datetime(filter_end_date)
+                    combined_df = get_tables(raw_df, master25, farm_dict, col_to_get, days_or_date, start_date_for_readings, end_date_for_readings,start_date_enter=filter_start, end_date_enter=filter_end)
+                else:
+                    combined_df = get_tables(raw_df, master25, farm_dict, col_to_get, days_or_date, start_date_for_readings, end_date_for_readings)
 
             # Convert DataFrame to Excel file in memory
             with BytesIO() as buffer:
@@ -2874,6 +2894,9 @@ def meter_reading_25_view(request):
             plotly_htmls = get_2025plots_plotly(raw_df, master25, selected, meters)
             # Also generate matplotlib for potential reports
             encoded_imgs = get_2025plots(raw_df, master25, selected, meters)
+        
+        acreage_of_selected = get_acreage(master25, selected)
+
 
         # Group plots per meter - 4 plotly plots per meter
         for idx, meter in enumerate(meters):
@@ -2881,7 +2904,9 @@ def meter_reading_25_view(request):
                 'meter': meter,
                 'plotly_plots': plotly_htmls[4*idx : 4*idx + 4],  # Plotly for display
                 'plots': encoded_imgs[4*idx : 4*idx + 4],         # Matplotlib for reports
-                'is_combined': False
+                'is_combined': False,
+                'farm': selected,
+                'acre': acreage_of_selected
             }
             results.append(block)
         
@@ -2896,13 +2921,15 @@ def meter_reading_25_view(request):
                 combined_plotly = get_2025plots_combined_plotly(raw_df, master25, selected, meters)
                 combined_imgs = get_2025plots_combined(raw_df, master25, selected, meters)
             
+
             if combined_plotly:
                 combined_block = {
                     'meter': ' + '.join(meters),
                     'plotly_plots': combined_plotly,  # Plotly for display
                     'plots': combined_imgs,           # Matplotlib for reports
                     'is_combined': True,
-                    'farm': selected
+                    'farm': selected,
+                    'acre': acreage_of_selected
                 }
                 results.append(combined_block)
     
@@ -2931,6 +2958,7 @@ def meter_reading_25_view(request):
         
         # Generate plots for each farm in the village
         for farm_id, farm_meters in farm_meters_map.items():
+            acreage_of_selected = get_acreage(master25, farm_id)
             # Individual meter plots
             for meter in farm_meters:
                 if use_date_filter and filter_start_date and filter_end_date:
@@ -2942,13 +2970,15 @@ def meter_reading_25_view(request):
                     meter_plotly = get_2025plots_plotly(raw_df, master25, farm_id, [meter])
                     meter_imgs = get_2025plots(raw_df, master25, farm_id, [meter])
                 
+                
                 for idx in range(0, len(meter_plotly), 4):
                     block = {
                         'meter': meter,
                         'farm': farm_id,
                         'plotly_plots': meter_plotly[idx:idx+4],  # Plotly for display
                         'plots': meter_imgs[idx:idx+4],           # Matplotlib for reports
-                        'is_combined': False
+                        'is_combined': False,
+                        'acre': acreage_of_selected
                     }
                     results.append(block)
             
@@ -2969,7 +2999,8 @@ def meter_reading_25_view(request):
                         'farm': farm_id,
                         'plotly_plots': combined_plotly,  # Plotly for display
                         'plots': combined_imgs,           # Matplotlib for reports
-                        'is_combined': True
+                        'is_combined': True,
+                        'acre': acreage_of_selected
                     }
                     results.append(combined_block)
 
@@ -2985,10 +3016,10 @@ def meter_reading_25_view(request):
         'filter_start_date': filter_start_date,
         'filter_end_date': filter_end_date,
     })
+
 @require_auth
 def grouping_25(request):
     if request.method == 'POST':
-        selected_label = request.POST.get('group_type')
         selected_checkboxes = request.POST.getlist('group_category')
 
         raw_df = pd.read_json(request.session['raw25']) if 'raw25' in request.session else None
@@ -2998,126 +3029,154 @@ def grouping_25(request):
         } if 'master25' in request.session else None
         
         # Apply date filter if enabled
-        if raw_df is not None and request.session.get('use_date_filter', False):
-            start_date = request.session.get('filter_start_date')
-            end_date = request.session.get('filter_end_date')
-
-       
+        start_date = request.session.get('filter_start_date')
+        end_date = request.session.get('filter_end_date')
+        use_filter = request.session.get('use_date_filter', False)
 
         # Handle report download
         if request.POST.get('download_group_report') and 'group_plot' in request.session:
             from .utils import generate_group_analysis_report
-            
-            # Retrieve stored data from session
             stored_data = request.session.get('group_analysis_data', {})
-            
+
             docx_buffer = generate_group_analysis_report(
-                stored_data.get('group_type', ''),
+                stored_data.get('group_type', 'Combined'),
                 stored_data.get('selected_groups', []),
                 request.session.get('group_plot', ''),
                 request.session.get('group_plot2', ''),
                 stored_data.get('group_farms', {})
             )
-            
+
             response = HttpResponse(
                 docx_buffer.getvalue(),
                 content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document'
             )
-            response['Content-Disposition'] = f'attachment; filename="group_analysis_report_{datetime.datetime.now().strftime("%Y%m%d_%H%M%S")}.docx"'
+            response['Content-Disposition'] = f'attachment; filename="group_analysis_combined_{datetime.datetime.now().strftime("%Y%m%d_%H%M%S")}.docx"'
             return response
 
-        if selected_label and selected_checkboxes and raw_df is not None and master25:
+        if selected_checkboxes and raw_df is not None and master25:
             kharif_df = master25['Farm details']
-
             group_farms_dict = {}
+            group_farms_len = {}
 
-            # Map checkbox labels to column names in master file
-            group_column_map = {
-                "Remote": {
-                    "Group-A Complied": "Kharif 25 - Remote Controllers Study - Group A - Treatment - complied (Y/N)",
-                    "Group-A Non-Complied": "Kharif 25 - Remote Controllers Study - Group A - Treatment - NON-complied (Y/N)",
-                    "Group-B Complied": "Kharif 25 - Remote Controllers Study - Group B - Control - complied (Y/N)",
-                    "Group-B Non-Complied": "Kharif 25 - Remote Controllers Study - Group B - Control - NON-complied (Y/N)",
-                },
-                "AWD": {
-                    "Group-A Complied": "Kharif 25 - AWD Study - Group A - Treatment - complied (Y/N)",
-                    "Group-A Non-Complied": "Kharif 25 - AWD Study - Group A - Treatment - Non-complied (Y/N)",
-                    "Group-B Complied": "Kharif 25 - AWD Study - Group B - Complied (Y/N)",
-                    "Group-B Non-Complied": "Kharif 25 - AWD Study - Group B - Non-complied (Y/N)",
-                    "Group-C Complied": "Kharif 25 - AWD Study - Group C - Complied (Y/N)",
-                    "Group-C Non-Complied": "Kharif 25 - AWD Study - Group C - non-complied (Y/N)",
-                },
-                "TPR/DSR": {
-                    "TPR": "Kharif 25 - TPR Group Study (Y/N)",
-                    "DSR": "Kharif 25 - DSR farm Study (Y/N)",
-                }
+            # Unified column mapping
+            column_map = {
+                "Remote Group-A Complied": "Kharif 25 - Remote Controllers Study - Group A - Treatment - complied (Y/N)",
+                "Remote Group-A Non-Complied": "Kharif 25 - Remote Controllers Study - Group A - Treatment - NON-complied (Y/N)",
+                "Remote Group-A Whole": [
+                    "Kharif 25 - Remote Controllers Study - Group A - Treatment - complied (Y/N)",
+                    "Kharif 25 - Remote Controllers Study - Group A - Treatment - NON-complied (Y/N)"
+                ],
+                "Remote Group-B Complied": "Kharif 25 - Remote Controllers Study - Group B - Control - complied (Y/N)",
+                "Remote Group-B Non-Complied": "Kharif 25 - Remote Controllers Study - Group B - Control - NON-complied (Y/N)",
+                "Remote Group-B Whole": [
+                    "Kharif 25 - Remote Controllers Study - Group B - Control - complied (Y/N)",
+                    "Kharif 25 - Remote Controllers Study - Group B - Control - NON-complied (Y/N)"
+                ],
+                "AWD Group-A Complied": "Kharif 25 - AWD Study - Group A - Treatment - complied (Y/N)",
+                "AWD Group-A Non-Complied": "Kharif 25 - AWD Study - Group A - Treatment - Non-complied (Y/N)",
+                "AWD Group-A Whole": [
+                    "Kharif 25 - AWD Study - Group A - Treatment - complied (Y/N)",
+                    "Kharif 25 - AWD Study - Group A - Treatment - Non-complied (Y/N)"
+                ],
+                "AWD Group-B Complied": "Kharif 25 - AWD Study - Group B - Complied (Y/N)",
+                "AWD Group-B Non-Complied": "Kharif 25 - AWD Study - Group B - Non-complied (Y/N)",
+                "AWD Group-B Whole": [
+                    "Kharif 25 - AWD Study - Group B - Complied (Y/N)",
+                    "Kharif 25 - AWD Study - Group B - Non-complied (Y/N)"
+                ],
+                "AWD Group-C Complied": "Kharif 25 - AWD Study - Group C - Complied (Y/N)",
+                "AWD Group-C Non-Complied": "Kharif 25 - AWD Study - Group C - non-complied (Y/N)",
+                "AWD Group-C Whole": [
+                    "Kharif 25 - AWD Study - Group C - Complied (Y/N)",
+                    "Kharif 25 - AWD Study - Group C - non-complied (Y/N)"
+                ],
+                "TPR": "Kharif 25 - TPR Group Study (Y/N)",
+                "DSR": "Kharif 25 - DSR farm Study (Y/N)"
             }
 
-            simplified_groups = {}
-            for group in selected_checkboxes:
-                base = group.split()[0] 
-                label = selected_label + " " + base  
-                if label not in simplified_groups:
-                    simplified_groups[label] = []
-                simplified_groups[label].append(group)
+            for label in selected_checkboxes:
+                cols = column_map[label]
+                if isinstance(cols, str):
+                    condition = kharif_df[cols].fillna(0) == 1
+                else:  # it's a list (Whole group)
+                    condition = kharif_df[cols[0]].fillna(0) == 1
+                    for c in cols[1:]:
+                        condition |= kharif_df[c].fillna(0) == 1
 
-            # Build group-wise farm ID lists
-            for label, group_list in simplified_groups.items():
-                cols = [group_column_map[selected_label][g] for g in group_list]
-                condition = (kharif_df[cols[0]].fillna(0) == 1)
-                for c in cols[1:]:
-                    condition |= (kharif_df[c].fillna(0) == 1)
                 farm_ids = kharif_df.loc[condition, "Kharif 25 Farm ID"].tolist()
                 group_farms_dict[label] = farm_ids
+                group_farms_len[label] = len(farm_ids)
 
-            # Calculate and merge averages
-            group_dfs = []
-            group_dfs2 = []
+            group_dfs, group_dfs2, group_dfs4 = [], [], []
+            group_delta_vs_days_data = {}  # Store delta vs days data for each group
+
             for label, farms in group_farms_dict.items():
-                if raw_df is not None and request.session.get('use_date_filter', False):
+                if use_filter:
                     filter_start = pd.to_datetime(start_date)
                     filter_end = pd.to_datetime(end_date)
-                    df = calculate_avg_m3_per_acre(selected_label, label, farms, raw_df, master25, 'm³ per Acre per Avg Day' ,start_date_enter=filter_start, end_date_enter=filter_end)
-                    df2 = calculate_avg_m3_per_acre(selected_label, label, farms, raw_df, master25, "Delta m³" ,start_date_enter=filter_start, end_date_enter=filter_end)
+                    df = calculate_avg_m3_per_acre("Combined", label, farms, raw_df, master25, 'm³ per Acre per Avg Day', start_date_enter=filter_start, end_date_enter=filter_end)
+                    df2 = create_weekly_delta("Combined", label, farms, raw_df, master25, "Delta m³", start_date_enter=filter_start, end_date_enter=filter_end)
+                    df4 = create_weekly_delta("Combined", label, farms, raw_df, master25, "m³ per Acre", start_date_enter=filter_start, end_date_enter=filter_end)
+                    # Get delta vs days from TPR data for this group
+                    delta_vs_days_df = create_delta_vs_days_from_tpr("Combined", label, farms, raw_df, master25, start_date_enter=filter_start, end_date_enter=filter_end)
                 else:
-                    df = calculate_avg_m3_per_acre(selected_label, label, farms, raw_df, master25, 'm³ per Acre per Avg Day')
-                    df2 = calculate_avg_m3_per_acre(selected_label, label, farms, raw_df, master25, "Delta m³")
+                    df = calculate_avg_m3_per_acre("Combined", label, farms, raw_df, master25, 'm³ per Acre per Avg Day')
+                    df2 = create_weekly_delta("Combined", label, farms, raw_df, master25, "Delta m³")
+                    df4 = create_weekly_delta("Combined", label, farms, raw_df, master25, "m³ per Acre")
+                    # Get delta vs days from TPR data for this group
+                    delta_vs_days_df = create_delta_vs_days_from_tpr("Combined", label, farms, raw_df, master25)
+                
                 group_dfs.append(df)
                 group_dfs2.append(df2)
+                group_dfs4.append(df4)
+                group_delta_vs_days_data[label] = delta_vs_days_df
 
-            # Merge all into one plot
-            if group_dfs:
-                final_df = group_dfs[0]
-                for df in group_dfs[1:]:
-                    final_df = pd.merge(final_df, df, on="Day", how="outer")
-                group_plot = generate_group_analysis_plot(final_df, "Daily Average m3/acre")
-                
-                # Store in session for download
-                request.session['group_plot'] = group_plot
-                request.session['group_analysis_data'] = {
-                    'group_type': selected_label,
-                    'selected_groups': selected_checkboxes,
-                    'group_farms': group_farms_dict
-                }
+            final_df = group_dfs[0]
+            for df in group_dfs[1:]:
+                final_df = pd.merge(final_df, df, on="Day", how="outer")
+
+            sma_df = apply_7day_sma(final_df)
+
+            group_plot3 = generate_group_analysis_plot(sma_df, "7 day SMA for daily average", group_farms_len, "Days")
+            request.session['group_plot3'] = group_plot3
+
             
-            group_plot2 = None
-            if group_dfs2:
-                final_df2 = group_dfs2[0]
-                for df in group_dfs2[1:]:
-                    final_df2 = pd.merge(final_df2, df, on="Day", how="outer")
-                group_plot2 = generate_group_analysis_plot(final_df2, "Delta m3/acre")
-                
-                # Store in session for download
-                request.session['group_plot2'] = group_plot2
-               
+            group_plot = generate_group_analysis_plot(final_df, "Daily Average m3/acre", group_farms_len, "Days")
+            request.session['group_plot'] = group_plot
+
+            final_df2 = group_dfs2[0]
+            for df in group_dfs2[1:]:
+                final_df2 = pd.merge(final_df2, df, on="Weeks", how="outer")
+            group_plot2 = generate_group_analysis_plot(final_df2, "Delta m3", group_farms_len, "Weeks")
+            request.session['group_plot2'] = group_plot2
+
+            final_df4 = group_dfs4[0]
+            for df in group_dfs2[1:]:
+                final_df4 = pd.merge(final_df4, df, on="Weeks", how="outer")
+            group_plot4 = generate_group_analysis_plot(final_df4, "Delta m3/acre", group_farms_len, "Weeks")
+            request.session['group_plot4'] = group_plot4
+
+            # Generate the new delta vs days from TPR plots (one per group)
+            from .utils import generate_delta_vs_days_groupwise_plots
+            groupwise_plots = generate_delta_vs_days_groupwise_plots(group_delta_vs_days_data)
+
+            request.session['group_analysis_data'] = {
+                'group_type': 'Combined',
+                'selected_groups': selected_checkboxes,
+                'group_farms': group_farms_dict
+            }
+
             return render(request, 'grouping.html', {
                 'group_plot': group_plot,
                 'group_plot2': group_plot2,
+                'group_plot3': group_plot3,
+                'group_plot4': group_plot4,
                 'output': True,
-                'group_type': selected_label,
+                'group_type': 'Combined',
                 'selected_groups': selected_checkboxes,
+                'groupwise_plots': groupwise_plots,
             })
-    
+
     return render(request, 'grouping.html')
 
 @csrf_exempt
@@ -3160,3 +3219,6 @@ def tpr_view(request):
 
 def tubewell_view(request):
     return render(request, 'tubewell.html')
+
+def farmer_engagement(request):
+    return render(request, 'farmer-engagement.html')

@@ -143,7 +143,6 @@
 #         print_status(f"Found {len(worksheets)} worksheets", "success")
         
 #         master_data = {}
-        
 #         for worksheet in worksheets:
 #             try:
 #                 print_status(f"Processing worksheet: {worksheet.title}", "process")
@@ -616,7 +615,7 @@
 # def kharif2025_farms(master_df):
 #     sheet = master_df.get('Farm details')
 #     if sheet is None:
-#         raise ValueError("‘Kharif 25’ sheet not found.")
+#         raise ValueError("'Kharif 25' sheet not found.")
 #     mapping = {}
 #     for _, row in sheet.iterrows():
 #         farm = row.get('Kharif 25 Farm ID')
@@ -2775,8 +2774,8 @@
 #             height=450,
 #             margin=dict(l=60, r=60, t=80, b=60),
 #             hovermode='x unified',
-#             plot_bgcolor='rgba(0,0,0,0)',
-#             paper_bgcolor='rgba(0,0,0,0)'
+#             plot_bgcolor='white',
+#             paper_bgcolor='white'
 #         )
 #         fig1.update_xaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
 #         fig1.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
@@ -2808,8 +2807,8 @@
 #             height=450,
 #             margin=dict(l=60, r=60, t=80, b=60),
 #             hovermode='x unified',
-#             plot_bgcolor='rgba(0,0,0,0)',
-#             paper_bgcolor='rgba(0,0,0,0)'
+#             plot_bgcolor='white',
+#             paper_bgcolor='white'
 #         )
 #         fig2.update_xaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
 #         fig2.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
@@ -2841,8 +2840,8 @@
 #             height=450,
 #             margin=dict(l=60, r=60, t=80, b=60),
 #             hovermode='x unified',
-#             plot_bgcolor='rgba(0,0,0,0)',
-#             paper_bgcolor='rgba(0,0,0,0)'
+#             plot_bgcolor='white',
+#             paper_bgcolor='white'
 #         )
 #         fig3.update_xaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
 #         fig3.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
@@ -2874,8 +2873,8 @@
 #             height=450,
 #             margin=dict(l=60, r=60, t=80, b=60),
 #             hovermode='x unified',
-#             plot_bgcolor='rgba(0,0,0,0)',
-#             paper_bgcolor='rgba(0,0,0,0)'
+#             plot_bgcolor='white',
+#             paper_bgcolor='white'
 #         )
 #         fig4.update_xaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
 #         fig4.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
@@ -2984,8 +2983,8 @@
 #         height=450,
 #         margin=dict(l=60, r=60, t=80, b=60),
 #         hovermode='x unified',
-#         plot_bgcolor='rgba(0,0,0,0)',
-#         paper_bgcolor='rgba(0,0,0,0)'
+#         plot_bgcolor='white',
+#         paper_bgcolor='white'
 #     )
 #     fig1.update_xaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
 #     fig1.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
@@ -3009,8 +3008,8 @@
 #         height=450,
 #         margin=dict(l=60, r=60, t=80, b=60),
 #         hovermode='x unified',
-#         plot_bgcolor='rgba(0,0,0,0)',
-#         paper_bgcolor='rgba(0,0,0,0)'
+#         plot_bgcolor='white',
+#         paper_bgcolor='white'
 #     )
 #     fig2.update_xaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
 #     fig2.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
@@ -3034,8 +3033,8 @@
 #         height=450,
 #         margin=dict(l=60, r=60, t=80, b=60),
 #         hovermode='x unified',
-#         plot_bgcolor='rgba(0,0,0,0)',
-#         paper_bgcolor='rgba(0,0,0,0)'
+#         plot_bgcolor='white',
+#         paper_bgcolor='white'
 #     )
 #     fig3.update_xaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
 #     fig3.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
@@ -3059,8 +3058,8 @@
 #         height=450,
 #         margin=dict(l=60, r=60, t=80, b=60),
 #         hovermode='x unified',
-#         plot_bgcolor='rgba(0,0,0,0)',
-#         paper_bgcolor='rgba(0,0,0,0)'
+#         plot_bgcolor='white',
+#         paper_bgcolor='white'
 #     )
 #     fig4.update_xaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
 #     fig4.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
@@ -3729,7 +3728,7 @@ def get_filled_2024(meter_name, filtered_data, date_column, start_date, end_date
 def kharif2025_farms(master_df):
     sheet = master_df.get('Farm details')
     if sheet is None:
-        raise ValueError("‘Kharif 25’ sheet not found.")
+        raise ValueError("'Kharif 25' sheet not found.")
     mapping = {}
     for _, row in sheet.iterrows():
         farm = row.get('Kharif 25 Farm ID')
@@ -3986,7 +3985,7 @@ def get_2025plots_combined(raw_df, master_df, selected_farm, meter_list, start_d
     
     return plots_base64
 
-def get_tables(raw_df, master_df, farm_list, col_to_get, start_date_enter = None, end_date_enter = None):
+def get_tables(raw_df, master_df, farm_list, col_to_get, days_or_dates, start_date_for_farms, end_date_for_farms ,start_date_enter = None, end_date_enter = None):
     # Clean meter data
     date_col = 'Date'
     raw_df[date_col] = pd.to_datetime(raw_df[date_col], dayfirst=False)
@@ -4025,19 +4024,139 @@ def get_tables(raw_df, master_df, farm_list, col_to_get, start_date_enter = None
                 end_date = end_date_enter
             filled_df = get_filled(meter, raw_df, date_col, start_date, end_date, acreage)
             if filled_df.empty:
-                filled_df = pd.DataFrame(columns=['Day', meter])
+                filled_df = pd.DataFrame(columns=[days_or_dates, meter])
             else:
-                filled_df['Day'] = (pd.to_datetime(filled_df[date_col]) - start_date).dt.days
-                filled_df = filled_df[['Day', col_to_get]].rename(columns={col_to_get: meter})
+                if days_or_dates == "Day":
+                    filled_df['Day'] = (pd.to_datetime(filled_df[date_col]) - start_date).dt.days
+                    filled_df = filled_df[['Day', col_to_get]].rename(columns={col_to_get: meter})
+                else:
+                    filled_df = filled_df[["Date", col_to_get]].rename(columns={col_to_get: meter})
             
             dfs.append(filled_df)
 
     from functools import reduce
 
     # Assuming all DataFrames have the same name for the date column
-    combined_df = reduce(lambda left, right: pd.merge(left, right, on='Day', how='outer'), dfs)
+    combined_df = reduce(lambda left, right: pd.merge(left, right, on=days_or_dates, how='outer'), dfs)
+    if days_or_dates == "Date":
+        full_date_range = pd.DataFrame({date_col: pd.date_range(start=start_date_for_farms, end=end_date_for_farms)})
+        combined_df = pd.merge(full_date_range, combined_df, on='Date', how='left')
 
     return combined_df
+
+def get_dates_table(raw_df, master_df, farm_list, start_date, end_date, days_or_dates):
+    # Clean meter data
+    date_col = 'Date'
+    raw_df[date_col] = pd.to_datetime(raw_df[date_col], dayfirst=False)
+    raw_df = raw_df.sort_values(date_col)
+    dfs = []
+    
+    for farm in farm_list.keys():
+        for meter in farm_list[farm]:
+            if not meter:
+                continue
+        
+            # Filter data for the specific meter
+            df = raw_df[raw_df['Meter Serial Number - as shown on meter'] == meter].copy()
+            df.drop_duplicates(subset=[date_col], keep='last', inplace=True)
+            if not df.empty:
+                # Keep only relevant columns
+                df = df[[date_col, 'Reading in the meter - in m3']].dropna()
+                
+                # Convert date column to datetime
+                df[date_col] = pd.to_datetime(df[date_col])
+
+                df = df[[date_col, 'Reading in the meter - in m3']].rename(columns={'Reading in the meter - in m3': meter})
+            else:
+                df = pd.DataFrame(columns=[date_col, meter])
+            
+            dfs.append(df)
+
+    from functools import reduce
+
+    # Assuming all DataFrames have the same name for the date column
+    combined_df = reduce(lambda left, right: pd.merge(left, right, on='Date', how='outer'), dfs)
+    # Create a full date range and merge it
+    full_date_range = pd.DataFrame({date_col: pd.date_range(start=start_date, end=end_date)})
+    combined_df = pd.merge(full_date_range, combined_df, on='Date', how='left')
+    if days_or_dates == 'days_reading':
+        combined_df['Date'] = (pd.to_datetime(combined_df[date_col]) - start_date).dt.days
+        combined_df.rename(columns={"Date":'Day'})
+
+
+    return combined_df
+
+def get_days_reading(raw_df, master_df, selected_farm, meter_list, start_date_enter=None, end_date_enter=None):
+    meta = master_df['Farm details']
+    farm_row = meta[meta['Kharif 25 Farm ID'] == selected_farm]
+    if farm_row.empty:
+        raise ValueError(f"Farm ID {selected_farm} not found in metadata.")
+    farm_row = farm_row.iloc[0]
+
+    acreage = farm_row.get('Kharif 25 Acres farm - farmer reporting') or 1
+    if pd.isna(acreage) or acreage <= 0:
+        acreage = 1
+
+    if pd.notna(farm_row.get('Kharif 25 Paddy transplanting date (TPR)')):
+        start_date = pd.to_datetime(farm_row['Kharif 25 Paddy transplanting date (TPR)'], dayfirst=True)
+    else:
+        start_date = pd.to_datetime('20/06/2025', dayfirst=True)
+
+    if start_date_enter is not None:
+        start_date = pd.to_datetime(start_date_enter)
+
+    end_date = pd.to_datetime(datetime.now().date())
+    if end_date_enter is not None:
+        end_date = pd.to_datetime(end_date_enter)
+
+    # Clean meter data
+    date_col = 'Date'
+    raw_df[date_col] = pd.to_datetime(raw_df[date_col], dayfirst=False)
+    raw_df = raw_df.sort_values(date_col)
+
+    dfs=[]
+
+    if len(meter_list) == 0:
+        return []
+
+    for meter in meter_list:
+        filled_df = get_filled(meter, raw_df, date_col, start_date, end_date, acreage)
+        if filled_df.empty:
+            continue
+
+        filled_df['Day'] = (pd.to_datetime(filled_df[date_col]) - start_date).dt.days
+
+        dates_for_reading = get_dates(meter, raw_df, date_col, start_date, end_date, acreage)
+        if filled_df.empty:
+            actual_values = pd.DataFrame(columns=['Day', meter])
+            dfs.append(actual_values)
+            continue
+
+        actual_values = filled_df[filled_df['Date'].isin(dates_for_reading['Date'])]
+        actual_values = actual_values[['Day', 'Reading in the meter - in m3']].rename(columns={'Reading in the meter - in m3': meter})
+        dfs.append(actual_values)
+    return dfs
+
+def get_days_reading_table(raw_df, master_df, farm_list, start_date_enter=None, end_date_enter=None):
+    date_col = 'Date'
+    raw_df[date_col] = pd.to_datetime(raw_df[date_col], dayfirst=False)
+    raw_df = raw_df.sort_values(date_col)
+    dfs = []
+    
+    for farm in farm_list.keys():
+        df = get_days_reading(raw_df, master_df, farm, farm_list[farm], start_date_enter, end_date_enter)
+        dfs.extend(df)
+    
+    from functools import reduce
+    
+    # Assuming all DataFrames have the same name for the date column
+    combined_df = reduce(lambda left, right: pd.merge(left, right, on='Day', how='outer'), dfs)
+    max_day = int(combined_df['Day'].max())
+    days_df = pd.DataFrame({'Day': np.arange(max_day + 1)})
+    combined_df = pd.merge(days_df, combined_df, on='Day', how='left')
+
+    return combined_df
+
 
 
 def calculate_avg_m3_per_acre(group_type, group_label, farm_ids, raw_df, master25, column_to_see, start_date_enter = None, end_date_enter = None):
@@ -4063,7 +4182,7 @@ def calculate_avg_m3_per_acre(group_type, group_label, farm_ids, raw_df, master2
         tpr_col = "Kharif 25 Paddy transplanting date (TPR)"
         tpr_date = acreage_row[tpr_col].values[0]
         if pd.isna(tpr_date) or tpr_date == "":
-            tpr_date = pd.to_datetime("2025-07-02")
+            tpr_date = pd.to_datetime("2025-06-20")
         else:
             tpr_date = pd.to_datetime(tpr_date)
         
@@ -4116,48 +4235,205 @@ def calculate_avg_m3_per_acre(group_type, group_label, farm_ids, raw_df, master2
 
     return final_df
 
-def generate_group_analysis_plot(df, col_name):
+# def generate_group_analysis_plot(df, col_name, date_filter, start_date):
+#     """
+#     Takes a DataFrame where:
+#     - The first column is 'Day'
+#     - All other columns are group names, with average m³/acre/day values
+#     Returns base64-encoded image string
+#     """
+#     plt.figure(figsize=(16, 10))
+    
+#     for i, col in enumerate(df.columns[1:]):
+#         plt.plot(df['Day'], df[col], 
+#                 label=col, 
+#                 linewidth=2.5,
+#                 alpha=0.8)
+    
+#     plt.xlabel("Days from Transplanting (TPR)", fontsize=12, fontweight='bold')
+#     plt.ylabel(col_name, fontsize=12, fontweight='bold')
+#     plt.title("Group-wise Water Usage Comparison", fontsize=14, fontweight='bold')
+#     plt.grid(True, alpha=0.3)
+#     plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
+    
+#     # Force axis to start from zero using current axes
+#     ax = plt.gca()
+#     ax.set_xlim(left=0)
+#     ax.set_ylim(bottom=0)
+#     plt.tight_layout()
+    
+#     buf = BytesIO()
+#     plt.savefig(buf, format='png')
+#     buf.seek(0)
+#     plt.close()
+#     encoded = base64.b64encode(buf.read()).decode('utf-8')
+#     return encoded
+
+def apply_7day_sma(df):
+    df_sma = df.copy()
+    
+    # Apply SMA to all columns except the first one ("Day")
+    for col in df.columns[1:]:
+        df_sma[col] = df[col].rolling(window=7, min_periods=1).mean()
+    
+    return df_sma
+
+
+def create_weekly_delta(group_type, group_label, farm_ids, raw_df, master25, column_to_see, start_date_enter = None, end_date_enter = None):
+    """
+    Given a group label (like 'Group-A Complied') and its farm IDs, 
+    returns a dataframe with Days column and average m³ per acre per day.
+    """
+    kharif_sheet = master25.get("Farm details")
+    all_meter_dfs = []
+
+
+    # --- Start of main function logic ---
+
+    for farm_id in farm_ids:
+        # Get acreage
+        acreage_row = kharif_sheet[kharif_sheet["Kharif 25 Farm ID"] == farm_id]
+        if acreage_row.empty:
+            continue
+        acreage = acreage_row["Kharif 25 Acres farm - farmer reporting"].values[0]
+        if pd.isna(acreage) or acreage == 0:
+            acreage = 1
+        # Get transplanting date
+        tpr_col = "Kharif 25 Paddy transplanting date (TPR)"
+        tpr_date = acreage_row[tpr_col].values[0]
+        if pd.isna(tpr_date) or tpr_date == "":
+            tpr_date = pd.to_datetime("2025-06-20")
+        else:
+            tpr_date = pd.to_datetime(tpr_date)
+        
+        if start_date_enter is not None:
+            tpr_date = start_date_enter
+
+        # Get meter serial numbers
+        meters = []
+        for m_col in ["Kharif 25 Meter serial number - 1", "Kharif 25 Meter serial number - 2"]:
+            val = acreage_row[m_col].values[0]
+            if pd.notna(val) and val != "":
+                meters.append(str(val).strip())
+
+        # Clean meter data
+        date_col = 'Date'
+        raw_df[date_col] = pd.to_datetime(raw_df[date_col], dayfirst=False)
+        raw_df = raw_df.sort_values(date_col)
+
+
+        # Process each meter
+        for meter in meters:
+            end_date = pd.to_datetime(datetime.now().date())
+          
+            if end_date_enter is not None:
+                end_date = end_date_enter
+            filled_df = get_filled_delta_weekly(meter, raw_df, date_col, tpr_date, end_date, acreage, column_to_see)
+            if filled_df.empty:
+                continue
+            all_meter_dfs.append(filled_df)
+
+    if not all_meter_dfs:
+        return pd.DataFrame(columns=["Weeks", group_label])
+    
+
+    # Merge on Days
+    merged = pd.DataFrame()
+    from functools import reduce
+
+    # Assuming all DataFrames have the same name for the date column
+    merged = reduce(lambda left, right: pd.merge(left, right, on='Weeks', how='outer'), all_meter_dfs)
+
+    # Average across all meters day-wise
+    avg_series = merged.drop(columns=["Weeks"]).mean(axis=1)
+    final_df = pd.DataFrame({
+        "Weeks": merged["Weeks"],
+        group_label: avg_series
+    })
+
+    return final_df
+
+def get_filled_delta_weekly(meter_name, filtered_data, date_column, start_date, end_date, plot_size, column_to_see):
+    if not meter_name:
+        raise ValueError("Meter name missing.")
+        
+    # Filter for meter
+    df = filtered_data[filtered_data['Meter Serial Number - as shown on meter'] == meter_name].copy()
+    if df.empty:
+        return pd.DataFrame()
+
+    # Keep only relevant columns
+    df = df[[date_column, 'Reading in the meter - in m3']].dropna()
+
+    # Convert and sort by date
+    df[date_column] = pd.to_datetime(df[date_column])
+    df = df.sort_values(date_column).drop_duplicates(subset=[date_column], keep='last')
+
+    # Apply error correction
+    df = error_fix(df)
+
+    # Calculate delta and normalize
+    df['Delta m³'] = df['Reading in the meter - in m3'].diff().fillna(method='bfill').fillna(0)
+
+    if plot_size <= 0:
+        raise ValueError("Invalid plot size.")
+
+    df['m³ per Acre'] = df['Delta m³'] / plot_size
+
+    # Filter within start-end date range
+    df = df[(df[date_column] >= start_date) & (df[date_column] <= end_date)].copy()
+    
+    # Assign week number
+    df['Weeks'] = ((df[date_column] - pd.to_datetime(start_date)).dt.days // 7)
+
+    # Keep only the latest reading in each week
+    df = df.sort_values(date_column).drop_duplicates(subset=['Weeks'], keep='last')
+
+    output_df = df[['Weeks', column_to_see]].copy()
+    output_df.rename(columns={column_to_see: meter_name}, inplace=True)
+
+    return output_df
+
+
+import plotly.graph_objects as go
+
+def generate_group_analysis_plot(df, col_name, group_farms_len, week_or_day,date_filter=False, start_date=None):
     """
     Takes a DataFrame where:
-    - The first column is 'Day'
-    - All other columns are group names, with average m³/acre/day values
-    Returns base64-encoded image string
+    - 'Day' is the x-axis
+    - All other columns are group labels with m³/acre/day values
+    Returns a list containing an HTML string for Plotly plot
     """
-    plt.figure(figsize=(16, 10))
-    
-    # Define distinct markers and colors for better visibility of overlapping points
-    markers = ['o', 's', '^', 'D', 'v', '<', '>', 'p', '*', 'h', 'H', '+', 'x']
-    colors = plt.cm.Set1(np.linspace(0, 1, len(df.columns[1:])))
-    
-    for i, col in enumerate(df.columns[1:]):
-        plt.plot(df['Day'], df[col], 
-                label=col, 
-                linewidth=2.5,
-                marker=markers[i % len(markers)],
-                markersize=8,
-                markerfacecolor=colors[i],
-                markeredgecolor='black',
-                markeredgewidth=1,
-                alpha=0.8)
-    
-    plt.xlabel("Days from Transplanting (TPR)", fontsize=12, fontweight='bold')
-    plt.ylabel(col_name, fontsize=12, fontweight='bold')
-    plt.title("Group-wise Water Usage Comparison", fontsize=14, fontweight='bold')
-    plt.grid(True, alpha=0.3)
-    plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
-    
-    # Force axis to start from zero using current axes
-    ax = plt.gca()
-    ax.set_xlim(left=0)
-    ax.set_ylim(bottom=0)
-    plt.tight_layout()
-    
-    buf = BytesIO()
-    plt.savefig(buf, format='png')
-    buf.seek(0)
-    plt.close()
-    encoded = base64.b64encode(buf.read()).decode('utf-8')
-    return encoded
+    fig = go.Figure()
+
+    for group in df.columns[1:]:  # Skip 'Day'
+        fig.add_trace(go.Scatter(
+            x=df.iloc[:, 0],
+            y=df[group],
+            mode='lines',
+            name=f"{group} N={group_farms_len[group]}",
+            line=dict(width=3),
+            marker=dict(size=6),
+            hovertemplate=f'<b>{week_or_day } %{{x}}</b><br>%{{y:.2f}} m³/acre<extra></extra>'
+        ))
+
+    title = f"{col_name} | {'Filtered' if date_filter else 'Unfiltered'}"
+
+    fig.update_layout(
+        title=title,
+        xaxis_title=f'{week_or_day} from Transplanting (TPR)',
+        yaxis_title=col_name,
+        height=500,
+        margin=dict(l=60, r=60, t=80, b=60),
+        hovermode='x unified',
+        plot_bgcolor='white',
+        paper_bgcolor='white',
+    )
+
+    fig.update_xaxes(showgrid=True, gridcolor='rgba(200,200,200,0.3)')
+    fig.update_yaxes(showgrid=True, gridcolor='rgba(200,200,200,0.3)', rangemode='tozero')
+
+    return fig.to_html(full_html=False, include_plotlyjs='cdn')
 
 
         
@@ -5941,6 +6217,7 @@ def get_2025plots_plotly(raw_df, master_df, selected_farm, meter_list, start_dat
         dates_for_reading = get_dates(meter, raw_df, date_col, start_date, end_date, acreage)
 
         marker_points = filled_df[filled_df['Date'].isin(dates_for_reading['Date'])]
+        x_axis_marker = marker_points['Date'] if start_date_enter else marker_points['Day']
         # Graph 1: m³ per Acre per Avg Day
         fig1 = go.Figure()
         fig1.add_trace(go.Scatter(
@@ -5952,7 +6229,7 @@ def get_2025plots_plotly(raw_df, master_df, selected_farm, meter_list, start_dat
             hovertemplate='<b>Day %{x}</b><br>Daily Avg: %{y:.2f} m³/acre<extra></extra>'
         ))
         fig1.add_trace(go.Scatter(
-            x=marker_points['Date'],
+            x=x_axis_marker,
             y=marker_points['m³ per Acre per Avg Day'],
             mode='markers',
             name='Reading Dates',
@@ -5968,12 +6245,12 @@ def get_2025plots_plotly(raw_df, master_df, selected_farm, meter_list, start_dat
             height=450,
             margin=dict(l=60, r=60, t=80, b=60),
             hovermode='x unified',
-            plot_bgcolor='rgba(0,0,0,0)',
-            paper_bgcolor='rgba(0,0,0,0)'
+            plot_bgcolor='white',
+            paper_bgcolor='white'
         )
         fig1.update_xaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
         fig1.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
-        plots_html.append(fig1.to_html(full_html=False, include_plotlyjs='cdn'))
+        
 
         # Graph 2: Moving Averages
         fig2 = go.Figure()
@@ -5986,7 +6263,7 @@ def get_2025plots_plotly(raw_df, master_df, selected_farm, meter_list, start_dat
             hovertemplate='<b>Day %{x}</b><br>7-day SMA: %{y:.2f} m³/acre<extra></extra>'
         ))
         fig2.add_trace(go.Scatter(
-            x=marker_points['Date'],
+            x=x_axis_marker,
             y=marker_points['7-day SMA'],
             mode='markers',
             name='Reading Dates',
@@ -6001,31 +6278,30 @@ def get_2025plots_plotly(raw_df, master_df, selected_farm, meter_list, start_dat
             height=450,
             margin=dict(l=60, r=60, t=80, b=60),
             hovermode='x unified',
-            plot_bgcolor='rgba(0,0,0,0)',
-            paper_bgcolor='rgba(0,0,0,0)'
+            plot_bgcolor='white',
+            paper_bgcolor='white'
         )
         fig2.update_xaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
         fig2.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
-        plots_html.append(fig2.to_html(full_html=False, include_plotlyjs='cdn'))
+        
 
         # Graph 3: Delta Analysis
         fig3 = go.Figure()
-        fig3.add_trace(go.Scatter(
-            x=x_axis,
-            y=filled_df['Delta m³'],
-            mode='lines',
-            name='Delta m³',
-            line=dict(color='#8b5cf6', width=2),
-            hovertemplate='<b>Day %{x}</b><br>Delta: %{y:.2f} m³<extra></extra>'
-        ))
-        fig3.add_trace(go.Scatter(
-            x=marker_points['Date'],
+        # fig3.add_trace(go.Scatter(
+        #     x=x_axis,
+        #     y=filled_df['Delta m³'],
+        #     mode='lines',
+        #     name='Delta m³',
+        #     line=dict(color='#8b5cf6', width=2),
+        #     hovertemplate='<b>Day %{x}</b><br>Delta: %{y:.2f} m³<extra></extra>'
+        # ))
+        fig3.add_trace(go.Bar(
+            x=x_axis_marker,
             y=marker_points['Delta m³'],
-            mode='markers',
             name='Reading Dates',
-            marker=dict(color='#3b82f6', size=6),
+            marker=dict(color='#3b82f6'),
             showlegend=False,
-            hovertemplate='<b>Day %{x}</b><br>Daily Avg: %{y:.2f} m³/acre<extra></extra>'
+            hovertemplate='<b>Day %{x}</b><br>Delta: %{y:.2f} m³/acre<extra></extra>'
         ))
         fig3.update_layout(
             title=f'Meter Actual readings | Meter {meter}',
@@ -6034,31 +6310,31 @@ def get_2025plots_plotly(raw_df, master_df, selected_farm, meter_list, start_dat
             height=450,
             margin=dict(l=60, r=60, t=80, b=60),
             hovermode='x unified',
-            plot_bgcolor='rgba(0,0,0,0)',
-            paper_bgcolor='rgba(0,0,0,0)'
+            plot_bgcolor='white',
+            paper_bgcolor='white'
         )
         fig3.update_xaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
         fig3.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
-        plots_html.append(fig3.to_html(full_html=False, include_plotlyjs='cdn'))
+        
 
         # Graph 4: Delta per Acre
         fig4 = go.Figure()
+        # fig4.add_trace(go.Scatter(
+        #     x=x_axis,
+        #     y=filled_df['m³ per Acre'],
+        #     mode='lines',
+        #     name='Delta m³/Acre',
+        #     line=dict(color='#ef4444', width=2),
+        #     hovertemplate='<b>Day %{x}</b><br>Per Acre: %{y:.2f} m³<extra></extra>'
+        # ))
         fig4.add_trace(go.Scatter(
-            x=x_axis,
-            y=filled_df['m³ per Acre'],
-            mode='lines',
-            name='Delta m³/Acre',
-            line=dict(color='#ef4444', width=2),
-            hovertemplate='<b>Day %{x}</b><br>Per Acre: %{y:.2f} m³<extra></extra>'
-        ))
-        fig4.add_trace(go.Scatter(
-            x=marker_points['Date'],
+            x=x_axis_marker,
             y=marker_points['m³ per Acre'],
             mode='markers',
             name='Reading Dates',
             marker=dict(color='#3b82f6', size=6),
             showlegend=False,
-            hovertemplate='<b>Day %{x}</b><br>Daily Avg: %{y:.2f} m³/acre<extra></extra>'
+            hovertemplate='<b>Day %{x}</b><br>Delta per Acre: %{y:.2f} m³/acre<extra></extra>'
         ))
         fig4.update_layout(
             title=f'Meter readings per Acre | Meter {meter}',
@@ -6067,14 +6343,30 @@ def get_2025plots_plotly(raw_df, master_df, selected_farm, meter_list, start_dat
             height=450,
             margin=dict(l=60, r=60, t=80, b=60),
             hovermode='x unified',
-            plot_bgcolor='rgba(0,0,0,0)',
-            paper_bgcolor='rgba(0,0,0,0)'
+            plot_bgcolor='white',
+            paper_bgcolor='white'
         )
         fig4.update_xaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
         fig4.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
+        plots_html.append(fig3.to_html(full_html=False, include_plotlyjs='cdn'))
+        plots_html.append(fig2.to_html(full_html=False, include_plotlyjs='cdn'))
         plots_html.append(fig4.to_html(full_html=False, include_plotlyjs='cdn'))
+        plots_html.append(fig1.to_html(full_html=False, include_plotlyjs='cdn'))
 
     return plots_html
+
+def get_acreage(master_df, selected_farm):
+    meta = master_df['Farm details']
+    farm_row = meta[meta['Kharif 25 Farm ID'] == selected_farm]
+    if farm_row.empty:
+        raise ValueError(f"Farm ID {selected_farm} not found in metadata.")
+    farm_row = farm_row.iloc[0]
+
+    acreage = farm_row.get('Kharif 25 Acres farm - farmer reporting') or 1
+    if pd.isna(acreage) or acreage <= 0:
+        acreage = "No acre in master, default 1"
+
+    return acreage
 
 
 def get_2025plots_combined_plotly(raw_df, master_df, selected_farm, meter_list, start_date_enter=None, end_date_enter=None):
@@ -6177,8 +6469,8 @@ def get_2025plots_combined_plotly(raw_df, master_df, selected_farm, meter_list, 
         height=450,
         margin=dict(l=60, r=60, t=80, b=60),
         hovermode='x unified',
-        plot_bgcolor='rgba(0,0,0,0)',
-        paper_bgcolor='rgba(0,0,0,0)'
+        plot_bgcolor='white',
+        paper_bgcolor='white'
     )
     fig1.update_xaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
     fig1.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
@@ -6202,8 +6494,8 @@ def get_2025plots_combined_plotly(raw_df, master_df, selected_farm, meter_list, 
         height=450,
         margin=dict(l=60, r=60, t=80, b=60),
         hovermode='x unified',
-        plot_bgcolor='rgba(0,0,0,0)',
-        paper_bgcolor='rgba(0,0,0,0)'
+        plot_bgcolor='white',
+        paper_bgcolor='white'
     )
     fig2.update_xaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
     fig2.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
@@ -6227,8 +6519,8 @@ def get_2025plots_combined_plotly(raw_df, master_df, selected_farm, meter_list, 
         height=450,
         margin=dict(l=60, r=60, t=80, b=60),
         hovermode='x unified',
-        plot_bgcolor='rgba(0,0,0,0)',
-        paper_bgcolor='rgba(0,0,0,0)'
+        plot_bgcolor='white',
+        paper_bgcolor='white'
     )
     fig3.update_xaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
     fig3.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
@@ -6252,11 +6544,170 @@ def get_2025plots_combined_plotly(raw_df, master_df, selected_farm, meter_list, 
         height=450,
         margin=dict(l=60, r=60, t=80, b=60),
         hovermode='x unified',
-        plot_bgcolor='rgba(0,0,0,0)',
-        paper_bgcolor='rgba(0,0,0,0)'
+        plot_bgcolor='white',
+        paper_bgcolor='white'
     )
     fig4.update_xaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
     fig4.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
     plots_html.append(fig4.to_html(full_html=False, include_plotlyjs='cdn'))
 
     return plots_html
+
+
+def create_delta_vs_days_from_tpr(group_type, group_label, farm_ids, raw_df, master25, start_date_enter=None, end_date_enter=None):
+    """
+    Creates a DataFrame with delta values vs days from TPR for each farm in a group.
+    Returns data suitable for plotting individual farm trajectories within groups.
+    """
+    kharif_sheet = master25.get("Farm details")
+    all_farm_dfs = []
+    farms_with_data = 0
+    total_farms_processed = 0
+
+    for farm_id in farm_ids:
+        total_farms_processed += 1
+        # Get farm details
+        farm_row = kharif_sheet[kharif_sheet["Kharif 25 Farm ID"] == farm_id]
+        if farm_row.empty:
+            continue
+            
+        acreage = farm_row["Kharif 25 Acres farm - farmer reporting"].values[0]
+        if pd.isna(acreage) or acreage == 0:
+            acreage = 1
+            
+        # Get transplanting date
+        tpr_col = "Kharif 25 Paddy transplanting date (TPR)"
+        tpr_date = farm_row[tpr_col].values[0]
+        if pd.isna(tpr_date) or tpr_date == "":
+            tpr_date = pd.to_datetime("2025-06-20")
+        else:
+            tpr_date = pd.to_datetime(tpr_date)
+        
+        if start_date_enter is not None:
+            tpr_date = start_date_enter
+
+        # Get meter serial numbers
+        meters = []
+        for m_col in ["Kharif 25 Meter serial number - 1", "Kharif 25 Meter serial number - 2"]:
+            val = farm_row[m_col].values[0]
+            if pd.notna(val) and val != "":
+                meters.append(str(val).strip())
+
+        # Clean meter data
+        date_col = 'Date'
+        raw_df[date_col] = pd.to_datetime(raw_df[date_col], dayfirst=False)
+        raw_df = raw_df.sort_values(date_col)
+
+        farm_has_data = False
+        # Process each meter for this farm
+        for meter in meters:
+            end_date = pd.to_datetime(datetime.now().date())
+            if end_date_enter is not None:
+                end_date = end_date_enter
+                
+            # Get meter data
+            meter_df = raw_df[raw_df['Meter Serial Number - as shown on meter'] == meter].copy()
+            if meter_df.empty:
+                continue
+                
+            # Keep only relevant columns
+            meter_df = meter_df[[date_col, 'Reading in the meter - in m3']].dropna()
+            meter_df[date_col] = pd.to_datetime(meter_df[date_col])
+            meter_df = meter_df.sort_values(date_col).drop_duplicates(subset=[date_col], keep='last')
+            
+            # Apply error correction
+            meter_df = error_fix(meter_df)
+            
+            # Calculate delta
+            meter_df['Delta m³'] = meter_df['Reading in the meter - in m3'].diff().fillna(method='bfill').fillna(0)
+            meter_df['m³ per Acre'] = meter_df['Delta m³'] / acreage
+            
+            # Calculate days from TPR
+            meter_df['Days from TPR'] = (meter_df[date_col] - tpr_date).dt.days
+            
+            # Filter by date range if specified
+            if start_date_enter is not None:
+                meter_df = meter_df[meter_df[date_col] >= start_date_enter]
+            if end_date_enter is not None:
+                meter_df = meter_df[meter_df[date_col] <= end_date_enter]
+            
+            # Add farm identifier
+            meter_df['Farm ID'] = farm_id
+            meter_df['Meter'] = meter
+            
+            # Keep only relevant columns for plotting
+            plot_df = meter_df[['Days from TPR', 'm³ per Acre', 'Farm ID', 'Meter']].copy()
+            plot_df = plot_df[plot_df['Days from TPR'] >= 0]  # Only positive days from TPR
+            
+            if not plot_df.empty:
+                all_farm_dfs.append(plot_df)
+                farm_has_data = True
+        
+        if farm_has_data:
+            farms_with_data += 1
+
+    if not all_farm_dfs:
+        return pd.DataFrame(columns=["Days from TPR", "m³ per Acre", "Farm ID", "Meter"])
+
+    # Combine all farm data
+    combined_df = pd.concat(all_farm_dfs, ignore_index=True)
+    combined_df = combined_df.sort_values('Days from TPR')
+    
+    # Add metadata about farms with data
+    combined_df.attrs['farms_with_data'] = farms_with_data
+    combined_df.attrs['total_farms'] = total_farms_processed
+    
+    return combined_df
+
+
+def generate_delta_vs_days_groupwise_plots(group_data_dict):
+    import plotly.graph_objects as go
+    import plotly.express as px
+    plots = []
+    colors = px.colors.qualitative.Set3
+    marker_symbols = ['circle', 'square', 'diamond', 'cross', 'x', 'triangle-up', 'triangle-down', 'star']
+
+    for idx, (group_name, group_df) in enumerate(group_data_dict.items()):
+        if group_df.empty:
+            continue
+        fig = go.Figure()
+        unique_farms = group_df['Farm ID'].unique()
+        for farm_idx, farm_id in enumerate(unique_farms):
+            farm_data = group_df[group_df['Farm ID'] == farm_id]
+            color = colors[farm_idx % len(colors)]
+            symbol = marker_symbols[farm_idx % len(marker_symbols)]
+            fig.add_trace(
+                go.Scatter(
+                    x=farm_data['Days from TPR'],
+                    y=farm_data['m³ per Acre'],
+                    mode='lines+markers',
+                    name=f"Farm {farm_id}",
+                    line=dict(color=color, width=2),
+                    marker=dict(size=6, symbol=symbol, color=color, line=dict(width=1, color='DarkSlateGrey')),
+                    hovertemplate=f'<b>Farm {farm_id}</b><br>Days from TPR: %{{x}}<br>Delta: %{{y:.2f}} m³/acre<extra></extra>',
+                    showlegend=True
+                )
+            )
+        fig.update_layout(
+            title=f"{group_name} – Individual Farm Trajectories",
+            xaxis_title="Days from TPR",
+            yaxis_title="Delta m³ per Acre",
+            height=400,
+            margin=dict(l=60, r=200, t=100, b=60),
+            plot_bgcolor='white',
+            paper_bgcolor='white',
+            showlegend=True,
+            legend=dict(
+                x=1.02,
+                y=1,
+                xanchor='left',
+                yanchor='top',
+                bgcolor='rgba(255,255,255,0.8)',
+                bordercolor='rgba(0,0,0,0.2)',
+                borderwidth=1,
+                itemclick="toggleothers",
+                itemdoubleclick="toggle"
+            )
+        )
+        plots.append((group_name, fig.to_html(full_html=False, include_plotlyjs='cdn')))
+    return plots
