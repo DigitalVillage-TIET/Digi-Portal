@@ -1897,7 +1897,7 @@
                     <input type="hidden" name="language" value="{% if LANGUAGE_CODE == 'en' %}pa{% else %}en{% endif %}">
                     <button type="submit" class="language-button">
                         {% if LANGUAGE_CODE == 'en' %}
-                            Switch to Punjabi
+                            ਪੰਜਾਬੀ ਵਿੱਚ ਬਦਲੋ
                         {% else %}
                             Switch to English
                         {% endif %}
@@ -1935,7 +1935,7 @@
                 This is a research study conducted by the Thapar Institute of Engineering and Technology in Patiala and Tel-Aviv University from Israel. This study aims to understand the challenges faced by farmers in Punjab, particularly in the areas of irrigation, crop cultivation, and livelihoods. The information gathered from the farmers will help us identify practical solutions to improve farmer incomes and promote water-saving methods for irrigation.
                 {% endblocktrans %}
             </p>
-            <h2 class="hero-subtitle">{% trans "These studies are funded by TIET-TAU Center of Excellence for Food Security (T2CEFS) and Internation Growth Center (IGC) from UK." %}</h2>
+            <h2 class="hero-subtitle">{% trans "These studies are funded by TIET-TAU Center of Excellence for Food Security (T2CEFS) and International Growth Center (IGC) from UK." %}</h2>
             <div class="hero-cta">
                 <a href="#project" class="btn btn-primary">
                     <i class="fas fa-rocket"></i> {% trans "Explore Platform" %}
@@ -2336,7 +2336,7 @@
       We are actively engaging with a cohort of 500 farmers across Patiala District as part of a comprehensive field research initiative aimed at improving irrigation practices and understanding on-farm water use in the aim to alleviate farmers' livelihoods and increase their income while maintaining food security in India. Our team conducts regular visits to each farm, where we carry out structured surveys to capture detailed information on farming practices, irrigation behavior, and crop decisions. At the same time, we are systematically measuring groundwater levels and installing water meters to monitor actual water use at the plot level. Each farm is geo-mapped to ensure spatial precision and enable integration with remote sensing and hydrological models.
       {% endblocktrans %}
     </p>
-      <a href="{% url 'farmer-engagement' %}" class="farmer-card-btn">See more &rarr;</a>
+      <a href="{% url 'farmer-engagement' %}" class="farmer-card-btn">{% trans "See more" %} &rarr;</a>
     </div>
   </div>
   
@@ -2390,16 +2390,19 @@
                     <img src="https://i.ibb.co/Vp2GvM2d/Liron.png" alt="Liron Dana" class="team-photo">
                     <h4 class="team-name">{% trans "Liron Dana" %}</h4>
                     <p class="team-role">{% trans "Field Researcher" %}</p>
+                    <p class="team-role">{% trans "M.A. in Sustainable Development" %}</p>
                 </div>
                 <div class="team-card">
                     <img src="https://i.ibb.co/rKpSnyLY/Marcello-photo.png" alt="Marcello Liberman" class="team-photo">
                     <h4 class="team-name">{% trans "Marcello Liberman" %}</h4>
                     <p class="team-role">{% trans "Field Researcher" %}</p>
+                    <p class="team-role">{% trans "M.A. in Sustainable Development" %}</p>
                 </div>
                 <div class="team-card">
                     <img src="https://i.ibb.co/1Jm6tW4w/Shir-Choen.png" alt="Shir Choen" class="team-photo">
                     <h4 class="team-name">{% trans "Shir Choen" %}</h4>
                     <p class="team-role">{% trans "Field Researcher" %}</p>
+                    <p class="team-role">{% trans "M.A. in Sustainable Development" %}</p>
                 </div>
             </div>
         </div>
@@ -2543,47 +2546,56 @@
                 <img src="https://i.ibb.co/Vp2GvM2d/Liron.png" alt="Liron Dana" class="team-photo">
                 <h4 class="team-name">{% trans "Liron Dana" %}</h4>
                 <p class="team-role">{% trans "Field Researcher" %}</p>
+                <p class="team-role">{% trans "M.A. in Sustainable Development" %}</p>
             </div>
             <div class="team-card">
                 <img src="https://i.ibb.co/rKpSnyLY/Marcello-photo.png" alt="Marcello Liberman" class="team-photo">
                 <h4 class="team-name">{% trans "Marcello Liberman" %}</h4>
                 <p class="team-role">{% trans "Field Researcher" %}</p>
+                <p class="team-role">{% trans "M.A. in Sustainable Development" %}</p>
             </div>
             <div class="team-card">
                 <img src="https://i.ibb.co/1Jm6tW4w/Shir-Choen.png" alt="Shir Choen" class="team-photo">
                 <h4 class="team-name">{% trans "Shir Choen" %}</h4>
                 <p class="team-role">{% trans "Field Researcher" %}</p>
+                <p class="team-role">{% trans "M.A. in Sustainable Development" %}</p>
             </div>
             <div class="team-card">
                 <img src="https://i.ibb.co/j1568x2/Rinat.png" alt="Rinat Kaplan" class="team-photo">
                 <h4 class="team-name">{% trans "Rinat Kaplan" %}</h4>
                 <p class="team-role">{% trans "Field Researcher" %}</p>
+                <p class="team-role">{% trans "B.Sc in Agriculture" %}</p>
             </div>
             <div class="team-card">
                 <img src="https://i.ibb.co/cjk9P5g/Yotam.png" alt="Yotam golan" class="team-photo">
                 <h4 class="team-name">{% trans "Yotam golan" %}</h4>
                 <p class="team-role">{% trans "Field Researcher" %}</p>
+                <p class="team-role">{% trans "B.Sc in Agriculture" %}</p>
             </div>
             <div class="team-card">
                 <img src="https://i.ibb.co/fdJQ3SbZ/Briana.png" alt="Briana Wiser" class="team-photo">
                 <h4 class="team-name">{% trans "Briana Wiser" %}</h4>
                 <p class="team-role">{% trans "Field Researcher" %}</p>
+                <p class="team-role">{% trans "M.A. in Sustainable Development" %}</p>
             </div>
             <div class="team-card">
                 <img src="https://i.ibb.co/1YYsXzFX/RotemM.png" alt="Rotem Mayer" class="team-photo">
                 <h4 class="team-name">{% trans "Rotem Mayer" %}</h4>
                 <p class="team-role">{% trans "Field Researcher" %}</p>
+                <p class="team-role">{% trans "B.Sc in Agriculture" %}</p>
             </div>
             <div class="team-card">
                 <img src="https://i.ibb.co/xSJ2Fr66/RotemH.png" alt="Rotem Hanan" class="team-photo">
                 <h4 class="team-name">{% trans "Rotem Hanan" %}</h4>
                 <p class="team-role">{% trans "Field Researcher" %}</p>
+                <p class="team-role">{% trans "B.Sc in Agriculture" %}</p>
             </div>
             <div class="team-card">
                 <img src="https://i.ibb.co/XZXJ9vqX/Ziv-Hilel.png" alt="Ziv Hilel" class="team-photo">
                 <h4 class="team-name">{% trans "Ziv Hilel" %}</h4>
                 <p class="team-role">{% trans "Field Researcher" %}</p>
-            </div>
+                <p class="team-role">{% trans "B.A. in Philosopy, Politics, Economics" %}</p>
+            </div> 
         </div>
     </div>
 </div>
@@ -2728,7 +2740,7 @@
               <i class="bi bi-linkedin" aria-hidden="true"></i>
             </a>
             <a 
-              href="https://www.youtube.com/" 
+              href="https://youtube.com/@digitalvillagetiet?si=Gsg1fradRBs2yjWX" 
               target="_blank" 
               aria-label="YouTube" 
               class="footer-icon-link"

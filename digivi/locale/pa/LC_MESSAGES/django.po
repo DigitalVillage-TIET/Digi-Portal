@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-16 04:38+0530\n"
+"POT-Creation-Date: 2025-08-16 12:32+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -560,14 +560,6 @@ msgstr "ਡਿਜੀ-ਵੀ ਵਿਅਪੋਟ੍ਰਾਂਸਪਿਰੇਸ਼�
 #| msgid "🌾 Agricultural Significance"
 msgid "Agricultural Training Gallery"
 msgstr "ਖੇਤੀਬਾੜੀ ਟ੍ਰੇਨਿੰਗ ਗੈਲਰੀ"
-
-#: .\templates\farmer-engagement.html:674
-msgid "Switch to Punjabi"
-msgstr "ਪੰਜਾਬੀ ਵਿੱਚ ਬਦਲੋ"
-
-#: .\templates\farmer-engagement.html:676
-msgid "Switch to English"
-msgstr "ਅੰਗਰੇਜ਼ੀ ਵਿੱਚ ਬਦਲੋ"
 
 #: .\templates\farmer-engagement.html:679 .\templates\landing.html:1884
 #: .\templates\landing.html:1921
@@ -1201,7 +1193,7 @@ msgstr "ਗਿਆਨ ਅਧਾਰ"
 msgid "Team"
 msgstr "ਟੀਮ"
 
-#: .\templates\landing.html:1892 .\templates\landing.html:2701
+#: .\templates\landing.html:1892 .\templates\landing.html:2713
 msgid "Member Access"
 msgstr "ਮੈਂਬਰ ਐਕਸੈਸ"
 
@@ -1239,7 +1231,7 @@ msgstr ""
 #: .\templates\landing.html:1938
 msgid ""
 "These studies are funded by TIET-TAU Center of Excellence for Food Security "
-"(T2CEFS) and Internation Growth Center (IGC) from UK."
+"(T2CEFS) and International Growth Center (IGC) from UK."
 msgstr ""
 "ਇਹ ਅਧਿਐਨ TIET-TAU ਫੂਡ ਸੁਰੱਖਿਆ ਲਈ ਸੈਂਟਰ ਆਫ ਐਕਸੀਲੈਂਸ (T2CEFS) ਅਤੇ ਯੂਕੇ ਦੇ ਇੰਟਰਨੈਸ਼ਨਲ ਗ੍ਰੋਥ ਸੈਂਟਰ "
 "(IGC) ਵੱਲੋਂ ਵਿੱਤੀ ਸਹਾਇਤਾ ਪ੍ਰਾਪਤ ਹਨ।"
@@ -1707,7 +1699,6 @@ msgstr ""
 msgid "Empowering Farmers, Sustaining Punjab"
 msgstr "ਕਿਸਾਨਾਂ ਨੂੰ ਸਸ਼ਕਤ ਕਰਨਾ, ਪੰਜਾਬ ਨੂੰ ਟਿਕਾਊ ਬਣਾਉਣਾ"
 
-
 #: .\templates\landing.html:2335
 msgid ""
 "\n"
@@ -1736,6 +1727,11 @@ msgstr ""
 "ਹੋ ਸਕੇ।\n"
 "      "
 
+#: .\templates\landing.html:2339
+#| msgid "Show more"
+msgid "See more"
+msgstr "ਹੋਰ ਵੇਖੋ"
+
 #: .\templates\landing.html:2348
 msgid "Meet Our Team"
 msgstr "ਟੀਮ ਨੂੰ ਮਿਲੋ"
@@ -1744,7 +1740,7 @@ msgstr "ਟੀਮ ਨੂੰ ਮਿਲੋ"
 msgid "The minds behind the innovation"
 msgstr "ਨਵੀਨਤਾ ਦੇ ਪਿੱਛੇ ਦਿਮਾਗ"
 
-#: .\templates\landing.html:2354 .\templates\landing.html:2500
+#: .\templates\landing.html:2354 .\templates\landing.html:2503
 msgid "Principal Investigators"
 msgstr "ਮੁੱਖ ਖੋਜਕਾਰ"
 
@@ -1752,21 +1748,21 @@ msgstr "ਮੁੱਖ ਖੋਜਕਾਰ"
 msgid "Prof. Karun Verma"
 msgstr "ਪ੍ਰੋ. ਕਰੁਣ ਵਰਮਾ"
 
-#: .\templates\landing.html:2359 .\templates\landing.html:2505
-#: .\templates\landing.html:2511
+#: .\templates\landing.html:2359 .\templates\landing.html:2508
+#: .\templates\landing.html:2514
 msgid "Associate Professor at Thapar Institute of Engineering & Technology"
 msgstr "ਥਾਪਰ ਇੰਸਟੀਚਿਊਟ ਆਫ ਇੰਜੀਨੀਅਰਿੰਗ ਐਂਡ ਟੈਕਨੋਲੋਜੀ ਵਿੱਚ ਐਸੋਸੀਏਟ ਪ੍ਰੋਫੈਸਰ"
 
 #: .\templates\landing.html:2360 .\templates\landing.html:2366
-#: .\templates\landing.html:2380 .\templates\landing.html:2463
-#: .\templates\landing.html:2474 .\templates\landing.html:2485
-#: .\templates\landing.html:2506 .\templates\landing.html:2512
-#: .\templates\landing.html:2518 .\templates\landing.html:2524
-#: .\templates\landing.html:2530
+#: .\templates\landing.html:2380 .\templates\landing.html:2466
+#: .\templates\landing.html:2477 .\templates\landing.html:2488
+#: .\templates\landing.html:2509 .\templates\landing.html:2515
+#: .\templates\landing.html:2521 .\templates\landing.html:2527
+#: .\templates\landing.html:2533
 msgid "View Profile"
 msgstr "ਪ੍ਰੋਫਾਈਲ ਵੇਖੋ"
 
-#: .\templates\landing.html:2364 .\templates\landing.html:2510
+#: .\templates\landing.html:2364 .\templates\landing.html:2513
 msgid "Prof. Amit Mishra"
 msgstr "ਪ੍ਰੋ. ਅਮਿਤ ਮਿਸ਼ਰਾ"
 
@@ -1786,117 +1782,124 @@ msgstr "ਡੈਨ ਐਟਗਾਰ"
 msgid "Lead Researcher, PhD Candidate at Tel Aviv University"
 msgstr "ਮੁੱਖ ਖੋਜਕਾਰ, ਟੈਲ-ਅਵੀਵ ਯੂਨੀਵਰਸਿਟੀ ਵਿੱਚ ਪੀਐਚਡੀ ਉਮੀਦਵਾਰ"
 
-#: .\templates\landing.html:2387 .\templates\landing.html:2540
+#: .\templates\landing.html:2387 .\templates\landing.html:2543
 msgid "Field Researchers"
 msgstr "ਖੇਤ ਖੋਜਕਾਰ"
 
-#: .\templates\landing.html:2391 .\templates\landing.html:2544
+#: .\templates\landing.html:2391 .\templates\landing.html:2547
 msgid "Liron Dana"
 msgstr "ਲੀਰੋਨ ਡਾਨਾ"
 
-#: .\templates\landing.html:2392 .\templates\landing.html:2397
-#: .\templates\landing.html:2402 .\templates\landing.html:2545
-#: .\templates\landing.html:2550 .\templates\landing.html:2555
-#: .\templates\landing.html:2560 .\templates\landing.html:2565
-#: .\templates\landing.html:2570 .\templates\landing.html:2575
-#: .\templates\landing.html:2580 .\templates\landing.html:2585
+#: .\templates\landing.html:2392 .\templates\landing.html:2398
+#: .\templates\landing.html:2404 .\templates\landing.html:2548
+#: .\templates\landing.html:2554 .\templates\landing.html:2560
+#: .\templates\landing.html:2566 .\templates\landing.html:2572
+#: .\templates\landing.html:2578 .\templates\landing.html:2584
+#: .\templates\landing.html:2590 .\templates\landing.html:2596
 msgid "Field Researcher"
 msgstr "ਖੇਤ ਖੋਜਕਾਰ"
 
-#: .\templates\landing.html:2396 .\templates\landing.html:2549
+#: .\templates\landing.html:2393 .\templates\landing.html:2399
+#: .\templates\landing.html:2405 .\templates\landing.html:2549
+#: .\templates\landing.html:2555 .\templates\landing.html:2561
+#: .\templates\landing.html:2579
+msgid "M.A. in Sustainable Development"
+msgstr "ਟਿਕਾਊ ਵਿਕਾਸ ਵਿੱਚ M.A."
+
+#: .\templates\landing.html:2397 .\templates\landing.html:2553
 msgid "Marcello Liberman"
 msgstr "ਮਾਰਸੈਲੋ ਲੀਬਰਮੈਨ"
 
-#: .\templates\landing.html:2401 .\templates\landing.html:2554
+#: .\templates\landing.html:2403 .\templates\landing.html:2559
 msgid "Shir Choen"
 msgstr "ਸ਼ਿਰ ਕੋਹਨ"
 
-#: .\templates\landing.html:2409 .\templates\landing.html:2655
+#: .\templates\landing.html:2412 .\templates\landing.html:2667
 msgid "Research Field Team"
 msgstr "ਖੋਜ ਖੇਤ ਟੀਮ"
 
-#: .\templates\landing.html:2413 .\templates\landing.html:2659
+#: .\templates\landing.html:2416 .\templates\landing.html:2671
 msgid "Gunteshwar Singh"
 msgstr "ਗੁੰਤੇਸ਼ਵਰ ਸਿੰਘ"
 
-#: .\templates\landing.html:2414 .\templates\landing.html:2660
+#: .\templates\landing.html:2417 .\templates\landing.html:2672
 msgid "Field Manager"
 msgstr "ਖੇਤ ਮੈਨੇਜਰ"
 
-#: .\templates\landing.html:2418 .\templates\landing.html:2664
+#: .\templates\landing.html:2421 .\templates\landing.html:2676
 msgid "Satyam Yadav"
 msgstr "ਸਤਿਆਮ ਯਾਦਵ"
 
-#: .\templates\landing.html:2419 .\templates\landing.html:2424
-#: .\templates\landing.html:2665 .\templates\landing.html:2670
-#: .\templates\landing.html:2675
+#: .\templates\landing.html:2422 .\templates\landing.html:2427
+#: .\templates\landing.html:2677 .\templates\landing.html:2682
+#: .\templates\landing.html:2687
 msgid "Lead Research Assistant"
 msgstr "ਮੁੱਖ ਖੋਜ ਸਹਾਇਕ"
 
-#: .\templates\landing.html:2423 .\templates\landing.html:2669
+#: .\templates\landing.html:2426 .\templates\landing.html:2681
 msgid "Gaurav Sharma"
 msgstr "ਗੌਰਵ ਸ਼ਰਮਾ"
 
-#: .\templates\landing.html:2431 .\templates\landing.html:2595
+#: .\templates\landing.html:2434 .\templates\landing.html:2607
 msgid "Student Interns"
 msgstr "ਵਿਦਿਆਰਥੀ ਇੰਟਰਨ"
 
-#: .\templates\landing.html:2435 .\templates\landing.html:2461
-#: .\templates\landing.html:2599
+#: .\templates\landing.html:2438 .\templates\landing.html:2464
+#: .\templates\landing.html:2611
 msgid "Danish Sharma"
 msgstr "ਦਾਨਿਸ਼ ਸ਼ਰਮਾ"
 
-#: .\templates\landing.html:2436 .\templates\landing.html:2441
-#: .\templates\landing.html:2462 .\templates\landing.html:2473
-#: .\templates\landing.html:2600 .\templates\landing.html:2605
+#: .\templates\landing.html:2439 .\templates\landing.html:2444
+#: .\templates\landing.html:2465 .\templates\landing.html:2476
+#: .\templates\landing.html:2612 .\templates\landing.html:2617
 msgid "Final Year B.E. Student at TIET, Senior Data Sci. and SDE intern"
 msgstr "TIET ਵਿੱਚ ਆਖਰੀ ਸਾਲ ਦਾ B.E. ਵਿਦਿਆਰਥੀ, ਸੀਨੀਅਰ ਡਾਟਾ ਵਿਗਿਆਨ ਅਤੇ SDE ਇੰਟਰਨ"
 
-#: .\templates\landing.html:2440 .\templates\landing.html:2472
-#: .\templates\landing.html:2604
+#: .\templates\landing.html:2443 .\templates\landing.html:2475
+#: .\templates\landing.html:2616
 msgid "Samrath Singh Kharbanda"
 msgstr "ਸਮਰਥ ਸਿੰਘ ਖਰਬੰਦਾ"
 
-#: .\templates\landing.html:2445 .\templates\landing.html:2483
-#: .\templates\landing.html:2609
+#: .\templates\landing.html:2448 .\templates\landing.html:2486
+#: .\templates\landing.html:2621
 msgid "Ashmit Cajla"
 msgstr "ਅਸ਼ਮਿਤ ਕਾਜਲਾ"
 
-#: .\templates\landing.html:2446 .\templates\landing.html:2484
+#: .\templates\landing.html:2449 .\templates\landing.html:2487
 msgid "Pre-Final Year B.E. Student at TIET, Junior Data Sci. and SDE intern"
 msgstr "TIET ਵਿੱਚ ਪ੍ਰੀ-ਫਾਈਨਲ ਸਾਲ ਦਾ B.E. ਵਿਦਿਆਰਥੀ, ਜੂਨੀਅਰ ਡਾਟਾ ਵਿਗਿਆਨ ਅਤੇ SDE ਇੰਟਰਨ"
 
-#: .\templates\landing.html:2455
+#: .\templates\landing.html:2458
 msgid "Development Team"
 msgstr "ਡਿਵੈਲਪਮੈਂਟ ਟੀਮ"
 
-#: .\templates\landing.html:2504
+#: .\templates\landing.html:2507
 msgid "Prof. Karun"
 msgstr "ਪ੍ਰੋ. ਕਰੁਣ"
 
-#: .\templates\landing.html:2516
+#: .\templates\landing.html:2519
 msgid "Prof. Jhilik Bhattacharya"
 msgstr "ਪ੍ਰੋ. ਝਿਲਿਕ ਭਟਾਚਾਰਿਆ"
 
-#: .\templates\landing.html:2517
+#: .\templates\landing.html:2520
 msgid ""
 "Associate Professor & Associate Head at Thapar Institute of Engineering & "
 "Technology"
 msgstr "ਥਾਪਰ ਇੰਸਟੀਚਿਊਟ ਆਫ ਇੰਜੀਨੀਅਰਿੰਗ ਐਂਡ ਟੈਕਨੋਲੋਜੀ ਵਿੱਚ ਐਸੋਸੀਏਟ ਪ੍ਰੋਫੈਸਰ ਅਤੇ ਐਸੋਸੀਏਟ ਹੈੱਡ"
 
-#: .\templates\landing.html:2522
+#: .\templates\landing.html:2525
 msgid "Prof. Hadas Mamane"
 msgstr "ਪ੍ਰੋ. ਹਾਦਾਸ ਮਾਮਾਨੇ"
 
-#: .\templates\landing.html:2523
+#: .\templates\landing.html:2526
 msgid "Professor of Water Technologies at Tel Aviv University"
 msgstr "ਟੈਲ-ਅਵੀਵ ਯੂਨੀਵਰਸਿਟੀ ਵਿੱਚ ਪਾਣੀ ਤਕਨੀਕਾਂ ਦੇ ਪ੍ਰੋਫੈਸਰ"
 
-#: .\templates\landing.html:2528
+#: .\templates\landing.html:2531
 msgid "Prof. Ram"
 msgstr "ਪ੍ਰੋ. ਰਾਮ"
 
-#: .\templates\landing.html:2529
+#: .\templates\landing.html:2532
 msgid ""
 "Associate Professor of Public Policy, Tel Aviv University, and Director, "
 "Nitsan Lab for Sustainable Development"
@@ -1904,113 +1907,122 @@ msgstr ""
 "ਟੈਲ-ਅਵੀਵ ਯੂਨੀਵਰਸਿਟੀ ਵਿੱਚ ਪਬਲਿਕ ਪਾਲਿਸੀ ਦੇ ਐਸੋਸੀਏਟ ਪ੍ਰੋਫੈਸਰ ਅਤੇ ਨਿਤਸਨ ਲੈਬ (ਟਿਕਾਊ ਵਿਕਾਸ "
 "ਲਈ) ਦੇ ਡਾਇਰੈਕਟਰ"
 
-#: .\templates\landing.html:2559
+#: .\templates\landing.html:2565
 msgid "Rinat Kaplan"
 msgstr "ਰੀਨਾਤ ਕਪਲਾਨ"
 
-#: .\templates\landing.html:2564
+#: .\templates\landing.html:2567 .\templates\landing.html:2573
+#: .\templates\landing.html:2585 .\templates\landing.html:2591
+msgid "B.Sc in Agriculture"
+msgstr "ਖੇਤੀਬਾੜੀ ਵਿੱਚ ਬੀ.ਐਸਸੀ"
+
+#: .\templates\landing.html:2571
 msgid "Yotam golan"
 msgstr "ਯੋਤਾਮ ਗੋਲਾਨ"
 
-#: .\templates\landing.html:2569
+#: .\templates\landing.html:2577
 msgid "Briana Wiser"
 msgstr "ਬਰੀਆਨਾ ਵਾਈਜ਼ਰ"
 
-#: .\templates\landing.html:2574
+#: .\templates\landing.html:2583
 msgid "Rotem Mayer"
 msgstr "ਰੋਟਮ ਮਾਇਰ"
 
-#: .\templates\landing.html:2579
+#: .\templates\landing.html:2589
 msgid "Rotem Hanan"
 msgstr "ਰੋਟਮ ਹਨਾਨ"
 
-#: .\templates\landing.html:2584
+#: .\templates\landing.html:2595
 msgid "Ziv Hilel"
 msgstr "ਜ਼ਿਵ ਹਿਲੇਲ"
 
-#: .\templates\landing.html:2610
+#: .\templates\landing.html:2597
+msgid "B.A. in Philosopy, Politics, Economics"
+msgstr "ਫਿਲਾਸਫੀ, ਰਾਜਨੀਤੀ, ਅਰਥਸ਼ਾਸਤਰ ਵਿੱਚ ਬੀ.ਏ."
+
+#: .\templates\landing.html:2622
 msgid "Pre-Final Year B.E. Student at TIET, Senior Data Sci. and SDE intern"
 msgstr ""
 "TIET ਵਿੱਚ ਪ੍ਰੀ-ਫਾਈਨਲ ਸਾਲ ਦਾ B.E. ਵਿਦਿਆਰਥੀ, ਸੀਨੀਅਰ ਡਾਟਾ ਵਿਗਿਆਨ ਅਤੇ SDE ਇੰਟਰਨ"
 
-#: .\templates\landing.html:2614
+#: .\templates\landing.html:2626
 msgid "Mehakpreet Kaur"
 msgstr "ਮਹਕਪ੍ਰੀਤ ਕੌਰ"
 
-#: .\templates\landing.html:2615 .\templates\landing.html:2620
-#: .\templates\landing.html:2625
+#: .\templates\landing.html:2627 .\templates\landing.html:2632
+#: .\templates\landing.html:2637
 msgid "Pre-Final Year B.E. Student at TIET and Web Portal Development Intern"
 msgstr "TIET ਵਿੱਚ ਪ੍ਰੀ-ਫਾਈਨਲ ਸਾਲ ਦਾ B.E. ਵਿਦਿਆਰਥੀ ਅਤੇ ਵੈੱਬ ਪੋਰਟਲ ਡਿਵੈਲਪਮੈਂਟ ਇੰਟਰਨ"
 
-#: .\templates\landing.html:2619
+#: .\templates\landing.html:2631
 msgid "Alysha Mahajan"
 msgstr "ਅਲੀਸ਼ਾ ਮਹਾਜਨ"
 
-#: .\templates\landing.html:2624
+#: .\templates\landing.html:2636
 msgid "Aakash Chandra"
 msgstr "ਆਕਾਸ਼ ਚੰਦਰ"
 
-#: .\templates\landing.html:2629
+#: .\templates\landing.html:2641
 msgid "Kismat Gill"
 msgstr "ਕਿਸਮਤ ਗਿੱਲ"
 
-#: .\templates\landing.html:2630
+#: .\templates\landing.html:2642
 msgid "Final Year B.E. Student at TIET and Data Science intern"
 msgstr "TIET ਵਿੱਚ ਆਖਰੀ ਸਾਲ ਦਾ B.E. ਵਿਦਿਆਰਥੀ ਅਤੇ ਡਾਟਾ ਵਿਗਿਆਨ ਇੰਟਰਨ"
 
-#: .\templates\landing.html:2634
+#: .\templates\landing.html:2646
 msgid "Hardik Garg"
 msgstr "ਹਾਰਦਿਕ ਗਰਗ"
 
-#: .\templates\landing.html:2635 .\templates\landing.html:2645
+#: .\templates\landing.html:2647 .\templates\landing.html:2657
 msgid "Final Year B.E. Student at TIET and Remote Sensing intern"
 msgstr "TIET ਵਿੱਚ ਆਖਰੀ ਸਾਲ ਦਾ B.E. ਵਿਦਿਆਰਥੀ ਅਤੇ ਰਿਮੋਟ ਸੈਂਸਿੰਗ ਇੰਟਰਨ"
 
-#: .\templates\landing.html:2639
+#: .\templates\landing.html:2651
 msgid "Shubham Rajdev"
 msgstr "ਸ਼ੁਭਮ ਰਾਜਦੇਵ"
 
-#: .\templates\landing.html:2640
+#: .\templates\landing.html:2652
 msgid "Pre-Final Year B.E. Student at TIET and IoT Systemts Intern"
 msgstr "TIET ਵਿੱਚ ਪ੍ਰੀ-ਫਾਈਨਲ ਸਾਲ ਦਾ B.E. ਵਿਦਿਆਰਥੀ ਅਤੇ IoT ਪ੍ਰਣਾਲੀ ਇੰਟਰਨ"
 
-#: .\templates\landing.html:2644
+#: .\templates\landing.html:2656
 msgid "Asmi Gaurav"
 msgstr "ਅਸਮੀ ਗੌਰਵ"
 
-#: .\templates\landing.html:2674
+#: .\templates\landing.html:2686
 msgid "Napinder Singh"
 msgstr "ਨਪਿੰਦਰ ਸਿੰਘ"
 
-#: .\templates\landing.html:2679
+#: .\templates\landing.html:2691
 msgid "Kanwar Ajay Singh"
 msgstr "ਕਨਵਰ ਅਜੈ ਸਿੰਘ"
 
-#: .\templates\landing.html:2680 .\templates\landing.html:2685
+#: .\templates\landing.html:2692 .\templates\landing.html:2697
 msgid "Senior Field Assistant"
 msgstr "ਸੀਨੀਅਰ ਖੇਤ ਸਹਾਇਕ"
 
-#: .\templates\landing.html:2684
+#: .\templates\landing.html:2696
 msgid "Satnam Singh"
 msgstr "ਸਤਨਾਮ ਸਿੰਘ"
 
-#: .\templates\landing.html:2689
+#: .\templates\landing.html:2701
 msgid "Yogesh Sharma"
 msgstr "ਯੋਗੇਸ਼ ਸ਼ਰਮਾ"
 
-#: .\templates\landing.html:2690
+#: .\templates\landing.html:2702
 msgid "Skilled Field Assistant"
 msgstr "ਮਾਹਿਰ ਖੇਤ ਸਹਾਇਕ"
 
-#: .\templates\landing.html:2705
+#: .\templates\landing.html:2717
 msgid "Username"
 msgstr "ਯੂਜ਼ਰਨਾਮ"
 
-#: .\templates\landing.html:2709
+#: .\templates\landing.html:2721
 msgid "Password"
 msgstr "ਪਾਸਵਰਡ"
 
-#: .\templates\landing.html:2712
+#: .\templates\landing.html:2724
 msgid "Login"
 msgstr "ਲੌਗਇਨ"
 
@@ -2560,6 +2572,12 @@ msgstr ""
 #: .\templates\tubewell.html:437
 msgid "Next"
 msgstr "ਅੱਗੇ"
+
+#~ msgid "Switch to Punjabi"
+#~ msgstr "ਪੰਜਾਬੀ ਵਿੱਚ ਬਦਲੋ"
+
+#~ msgid "Switch to English"
+#~ msgstr "ਅੰਗਰੇਜ਼ੀ ਵਿੱਚ ਬਦਲੋ"
 
 #~ msgid "Detailed Data"
 #~ msgstr "ਤਫਸੀਲ ਡੇਟਾ"
