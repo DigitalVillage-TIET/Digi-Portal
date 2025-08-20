@@ -1,0 +1,2444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Water Level Analytics Dashboard - DIGI-VI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  {{ available_farms|json_script:"availableFarmsData" }}
+  {{available_villages|json_script:"availableVillagesData"}}
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* 🌱 Light Theme – Green & White */
+    :root[data-theme="light"] {
+      --bg-primary: #f8fff5; /* very light greenish white */
+      --bg-secondary: #ffffff;
+      --bg-tertiary: #e6f4ea; /* light green */
+      
+      --text-primary: #0c4f2a;
+      --text-secondary: #2e7d46;
+      --text-tertiary: #4caf50;
+
+      --border-color: #cde9d7;
+
+      --accent-primary: #0c4f2a;  /* deep green */
+      --accent-secondary: #349a62; /* lighter green */
+      --accent-tertiary: #6fcf97;
+      --accent-success: #3cb371;
+      --accent-warning: #f59e0b;
+      --accent-danger: #ef4444;
+
+      --gradient-primary: linear-gradient(135deg, #0c4f2a 0%, #349a62 100%);
+      --gradient-secondary: linear-gradient(135deg, #349a62 0%, #6fcf97 100%);
+      --gradient-accent: linear-gradient(135deg, #0c4f2a 0%, #6fcf97 100%);
+      --gradient-hero: linear-gradient(135deg, #e6f4ea 0%, #cde9d7 100%);
+
+      --shadow-sm: 0 1px 3px rgba(12, 79, 42, 0.1);
+      --shadow-md: 0 4px 6px rgba(12, 79, 42, 0.1);
+      --shadow-lg: 0 10px 15px rgba(12, 79, 42, 0.15);
+      --shadow-glow: 0 0 20px rgba(52, 154, 98, 0.2);
+
+      --glass-bg: rgba(255, 255, 255, 0.7);
+      --glass-border: rgba(52, 154, 98, 0.2);
+      --code-bg: #f3f4f6;
+    }
+
+    /* 🌿 Dark Theme – Green & Black */
+    :root[data-theme="dark"] {
+      --bg-primary: #0a0a0a;
+      --bg-secondary: #0f0f0f;
+      --bg-tertiary: #1a1a1a;
+
+      --text-primary: #d9f7e5;
+      --text-secondary: white;
+      --text-tertiary: #6fcf97;
+
+      --border-color: #1f1f1f;
+
+      --accent-primary: #349a62;
+      --accent-secondary: #6fcf97;
+      --accent-tertiary: #3cb371;
+      --accent-success: #34d399;
+      --accent-warning: #fbbf24;
+      --accent-danger: #f87171;
+
+      --gradient-primary: linear-gradient(135deg, #0c4f2a 0%, #349a62 100%);
+      --gradient-secondary: linear-gradient(135deg, #1f7a47 0%, #6fcf97 100%);
+      --gradient-accent: linear-gradient(135deg, #349a62 0%, #3cb371 100%);
+      --gradient-hero: linear-gradient(135deg, #1a1a1a 0%, Black 100%);
+
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+      --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.3);
+      --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.4);
+      --shadow-glow: 0 0 30px rgba(52, 154, 98, 0.3);
+
+      --glass-bg: rgba(20, 40, 30, 0.6);
+      --glass-border: rgba(255, 255, 255, 0.05);
+      --code-bg: #1e1e1e;
+    }
+
+    body {
+      font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      font-size: 15px;
+      transition: var(--transition);
+      position: relative;
+      min-height: 100vh;
+    }
+
+    /* Background Pattern */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: 
+        radial-gradient(circle at 20% 80%, var(--accent-primary) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, var(--accent-secondary) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, var(--accent-tertiary) 0%, transparent 50%);
+      opacity: 0.05;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Loading Overlay */
+    .loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(10px);
+      z-index: 9999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .loading-overlay.show {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .loading-content {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 3rem 2rem;
+      text-align: center;
+      max-width: 400px;
+      width: 90%;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .loading-spinner {
+      width: 60px;
+      height: 60px;
+      border: 4px solid var(--border-color);
+      border-top: 4px solid var(--accent-primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 1.5rem;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .loading-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .loading-description {
+      color: var(--text-secondary);
+      margin-bottom: 1.5rem;
+      font-size: 0.95rem;
+    }
+
+    .progress-container {
+      background: var(--bg-tertiary);
+      border-radius: 10px;
+      height: 8px;
+      overflow: hidden;
+      margin-bottom: 1rem;
+    }
+
+    .progress-bar {
+      background: var(--gradient-primary);
+      height: 100%;
+      width: 0%;
+      transition: width 0.3s ease;
+      position: relative;
+    }
+
+    .progress-bar::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+      animation: shimmer 2s infinite;
+    }
+
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    .progress-text {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    /* Tech Grid Background */
+    .tech-grid {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: 
+        linear-gradient(rgba(52, 154, 98, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(52, 154, 98, 0.03) 1px, transparent 1px);
+      background-size: 50px 50px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Header */
+    .header {
+      background: var(--bg-secondary);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: var(--shadow-md);
+    }
+
+    .header-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 1.5rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header-left h1 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.025em;
+      margin-bottom: 0.25rem;
+    }
+
+    .header-left p {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      font-weight: 400;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    /* Back to Templates Button */
+    .btn-back {
+      background: var(--glass-bg);
+      color: var(--accent-primary);
+      border: 2px solid var(--accent-primary);
+      backdrop-filter: blur(10px);
+      padding: 0.75rem 1.5rem;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      transition: var(--transition);
+      white-space: nowrap;
+    }
+
+    .btn-back:hover {
+      background: var(--accent-primary);
+      color: white;
+      border-color: var(--accent-primary);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    /* Theme Toggle */
+    .theme-toggle {
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-color);
+      border-radius: 50px;
+      padding: 4px;
+      cursor: pointer;
+      width: 72px;
+      height: 36px;
+      position: relative;
+      transition: var(--transition);
+    }
+
+    .theme-toggle:hover {
+      border-color: var(--accent-primary);
+      box-shadow: var(--shadow-glow);
+    }
+
+    .theme-toggle-slider {
+      position: absolute;
+      width: 28px;
+      height: 28px;
+      background: var(--gradient-primary);
+      border-radius: 50%;
+      top: 3px;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 14px;
+      box-shadow: var(--shadow-md);
+    }
+
+    :root[data-theme="light"] .theme-toggle-slider {
+      left: 3px;
+    }
+
+    :root[data-theme="dark"] .theme-toggle-slider {
+      left: 39px;
+    }
+
+    /* Container */
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Main Title */
+    .main-header {
+      font-size: clamp(2rem, 6vw, 3.5rem);
+      font-weight: 800;
+      text-align: center;
+      margin: 2rem 0 1rem;
+      background: var(--gradient-accent);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.02em;
+      animation: glow 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes glow {
+      from { filter: drop-shadow(0 0 20px rgba(52, 154, 98, 0.3)); }
+      to { filter: drop-shadow(0 0 30px rgba(52, 154, 98, 0.5)); }
+    }
+
+    .sub-header {
+      text-align: center;
+      font-size: 1.125rem;
+      color: var(--text-secondary);
+      margin-bottom: 2rem;
+      font-weight: 500;
+    }
+
+    /* External Link */
+    .external-link {
+      text-align: center;
+      margin: 2rem 0;
+    }
+
+    .external-link a {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--gradient-secondary);
+      color: white;
+      padding: 0.875rem 1.75rem;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: var(--transition);
+      box-shadow: var(--shadow-md);
+    }
+
+    .external-link a:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg), var(--shadow-glow);
+    }
+
+    /* Glass Cards */
+    .glass-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 2rem;
+      transition: var(--transition);
+      box-shadow: var(--shadow-md);
+      position: relative;
+    }
+
+    .glass-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--accent-primary);
+    }
+
+    .card-header {
+      padding: 1.5rem 2rem;
+      background: var(--gradient-primary);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .card-header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+      animation: pulse 4s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 0.5; }
+      50% { transform: scale(1.1); opacity: 0.8; }
+    }
+
+    .card-header h2, .card-header h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: white;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      position: relative;
+      z-index: 1;
+      margin: 0;
+    }
+
+    .card-header .icon {
+      font-size: 1.125rem;
+      opacity: 0.9;
+    }
+
+    /* Integration Badge */
+    .integration-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #4285f4, #34a853);
+      color: white;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.85em;
+      font-weight: 500;
+      box-shadow: 0 2px 8px rgba(66, 133, 244, 0.3);
+      position: relative;
+      z-index: 1;
+    }
+
+    .card-body {
+      padding: 2rem;
+      background: var(--bg-secondary);
+    }
+
+    /* Forms */
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+      display: block;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 0.875rem 1.25rem;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      font-size: 0.95rem;
+      color: var(--text-primary);
+      transition: var(--transition);
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--accent-primary);
+      background: var(--bg-secondary);
+      box-shadow: 0 0 0 3px rgba(52, 154, 98, 0.1), var(--shadow-glow);
+    }
+
+    .form-text {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+
+    .form-text.warning {
+      color: var(--accent-warning);
+    }
+
+    /* Button */
+    .btn {
+      padding: 0.875rem 1.75rem;
+      border: none;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.95rem;
+      text-decoration: none;
+      position: relative;
+      overflow: hidden;
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+
+    .btn:hover::before {
+      width: 300px;
+      height: 300px;
+    }
+
+    .btn-primary {
+      background: var(--gradient-primary);
+      color: white;
+      box-shadow: var(--shadow-md);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg), var(--shadow-glow);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-secondary {
+      background: var(--bg-tertiary);
+      color: var(--accent-primary);
+      border: 1px solid var(--accent-primary);
+    }
+
+    .btn-secondary:hover {
+      background: var(--accent-primary);
+      color: white;
+      border-color: var(--accent-primary);
+      box-shadow: var(--shadow-glow);
+    }
+
+    .btn-success {
+      background: var(--accent-success);
+      color: white;
+    }
+
+    .btn-success:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg), 0 0 20px rgba(52, 211, 153, 0.3);
+    }
+
+    .btn-block {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .btn-loading {
+      position: relative;
+      color: transparent !important;
+    }
+
+    .btn-loading::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      top: 50%;
+      left: 50%;
+      margin-left: -10px;
+      margin-top: -10px;
+      border: 2px solid transparent;
+      border-top-color: #ffffff;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    /* Alert Messages */
+    .alert {
+      padding: 1rem 1.5rem;
+      border-radius: 10px;
+      margin: 1rem 0;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .alert.error {
+      background: rgba(239, 68, 68, 0.1);
+      color: var(--accent-danger);
+      border: 1px solid var(--accent-danger);
+    }
+
+    .alert.success {
+      background: rgba(52, 211, 153, 0.1);
+      color: var(--accent-success);
+      border: 1px solid var(--accent-success);
+    }
+
+    /* Summary Box */
+    .summary {
+      background: var(--bg-tertiary);
+      padding: 1.5rem;
+      border-left: 4px solid var(--accent-primary);
+      margin: 2rem 0;
+      border-radius: 12px;
+      line-height: 1.8;
+    }
+
+    .summary strong {
+      color: var(--accent-primary);
+      font-weight: 600;
+    }
+
+    /* Tab Navigation */
+    .tab-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin: 2rem 0;
+      background: var(--bg-secondary);
+      padding: 1rem;
+      border-radius: 16px;
+      border: 1px solid var(--border-color);
+      box-shadow: var(--shadow-md);
+    }
+
+    .tab-buttons button {
+      background: var(--bg-tertiary);
+      color: var(--text-secondary);
+      padding: 0.875rem 1.75rem;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .tab-buttons button:hover {
+      background: var(--accent-primary);
+      color: white;
+      border-color: var(--accent-primary);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .tab-buttons button.active {
+      background: var(--gradient-primary);
+      color: white;
+      border-color: transparent;
+      box-shadow: var(--shadow-md);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* Plot Container */
+    .plot-container {
+      margin: 1.5rem 0;
+      background: var(--bg-secondary);
+      border-radius: 12px;
+      padding: 1rem;
+      border: 1px solid var(--border-color);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* Table Styling */
+    .table-container {
+      overflow-x: auto;
+      margin: 1rem 0;
+      background: var(--bg-secondary);
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      box-shadow: var(--shadow-sm);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      color: var(--text-primary);
+      background: var(--bg-secondary);
+    }
+
+    th, td {
+      border: 1px solid var(--border-color);
+      padding: 0.75rem;
+      text-align: center;
+      font-size: 0.9rem;
+    }
+
+    th {
+      background: var(--bg-tertiary);
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    tr:nth-child(even) {
+      background: var(--bg-tertiary);
+    }
+
+    /* Info Box */
+    .info-box {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      padding: 2rem;
+      margin: 2rem 0;
+      border-radius: 16px;
+      box-shadow: var(--shadow-md);
+    }
+
+    .info-box h3, .info-box h4 {
+      color: var(--accent-primary);
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+
+    .info-box ul {
+      padding-left: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .info-box li {
+      margin-bottom: 0.5rem;
+      color: var(--text-secondary);
+    }
+
+    .code {
+      font-family: 'JetBrains Mono', monospace;
+      background: var(--code-bg);
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.875rem;
+      color: var(--accent-primary);
+    }
+
+    /* Content Sections */
+    .content-section {
+      display: none;
+      margin-top: 1rem;
+    }
+
+    .content-section:first-of-type {
+      display: block;
+    }
+
+    /* Custom Groups */
+    .custom-groups-section {
+      background: var(--bg-tertiary);
+      padding: 1.5rem;
+      border-radius: 12px;
+      margin-bottom: 2rem;
+      border: 1px solid var(--border-color);
+    }
+
+    .custom-group-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .existing-groups {
+      margin-top: 1.5rem;
+      padding: 1rem;
+      background: var(--bg-secondary);
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+    }
+
+    .existing-groups h5 {
+      color: var(--accent-primary);
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+
+    .existing-groups ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .existing-groups li {
+      padding: 0.5rem 0;
+      color: var(--text-secondary);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .existing-groups li:last-child {
+      border-bottom: none;
+    }
+
+    /* Farm Summary Stats */
+    .farm-summary-stats {
+      margin: 2rem 0;
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      border-radius: 16px;
+      padding: 2rem;
+      border: 1px solid var(--glass-border);
+      box-shadow: var(--shadow-md);
+    }
+
+    .stats-title {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      gap: 0.75rem;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-label {
+      font-size: 1rem;
+      color: var(--text-secondary);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .stat-unit {
+      font-size: 1rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    /* Download Links */
+    .download-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+
+    .download-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.875rem 1.25rem;
+      background: var(--bg-tertiary);
+      color: var(--accent-primary);
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+      text-decoration: none;
+      font-weight: 600;
+      transition: var(--transition);
+      font-size: 0.9rem;
+    }
+
+    .download-link:hover {
+      background: var(--accent-primary);
+      color: white;
+      border-color: var(--accent-primary);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    /* Sync Sections */
+    .sync-info-section {
+      margin-bottom: 2rem;
+      padding: 1.5rem;
+      background: linear-gradient(135deg, rgba(52, 154, 98, 0.1), rgba(111, 207, 151, 0.1));
+      border: 1px solid rgba(52, 154, 98, 0.3);
+      border-radius: 8px;
+    }
+
+    .sync-info-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--accent-primary);
+      font-weight: 600;
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+    }
+
+    .sync-info-content p {
+      margin: 0 0 1rem 0;
+      color: var(--text-secondary);
+    }
+
+    .sync-status-indicator {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--accent-success);
+      font-weight: 500;
+    }
+
+    .sync-active {
+      color: var(--accent-success);
+      animation: pulse-dot 2s infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    .fallback-section {
+      margin: 1.5rem 0;
+      padding: 1rem;
+      border: 1px dashed var(--border-color);
+      border-radius: 8px;
+      background: rgba(245, 158, 11, 0.05);
+      border-left: 4px solid var(--accent-warning);
+    }
+
+    .fallback-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .toggle-label {
+      color: var(--accent-warning);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 500;
+    }
+
+    .manual-upload {
+      transition: all 0.3s ease;
+      overflow: hidden;
+    }
+
+    .sync-status-section {
+      margin-top: 2rem;
+      padding: 1.5rem;
+      background: var(--bg-tertiary);
+      border-radius: 8px;
+      border-left: 4px solid var(--accent-success);
+    }
+
+    .sync-status-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--accent-success);
+      font-weight: 600;
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+    }
+
+    .sync-details {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+
+    .sync-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .sync-label {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-weight: 500;
+    }
+
+    .sync-value {
+      font-weight: 600;
+      color: var(--text-primary);
+      font-size: 0.9rem;
+    }
+
+    .status-active {
+      color: var(--accent-success);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .status-active i {
+      font-size: 0.6rem;
+      animation: pulse-dot 2s infinite;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .header-content {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+      }
+      
+      .header-right {
+        flex-direction: column;
+        gap: 1rem;
+        width: 100%;
+      }
+      
+      .container {
+        padding: 1rem;
+      }
+      
+      .card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+      }
+      
+      .integration-badge {
+        margin-left: 0;
+      }
+      
+      .card-body {
+        padding: 1.5rem;
+      }
+      
+      .tab-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .tab-buttons button {
+        width: 100%;
+        max-width: 300px;
+      }
+      
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+      
+      .download-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .stats-grid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 1rem;
+      }
+      
+      .stat-value {
+        font-size: 1.5rem;
+      }
+
+      .sync-details {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .main-header {
+        font-size: 2rem;
+      }
+      
+      .sub-header {
+        font-size: 1rem;
+      }
+      
+      .card-body {
+        padding: 1rem;
+      }
+      
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="tech-grid"></div>
+  
+  <!-- Loading Overlay -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-content">
+      <div class="loading-spinner"></div>
+      <div class="loading-title">Processing Data</div>
+      <div class="loading-description" id="loadingDescription">
+        Uploading and syncing your water level data...
+      </div>
+      <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+      <div class="progress-text">
+        <span id="progressText">0%</span> Complete
+      </div>
+    </div>
+  </div>
+  
+  <!-- Header -->
+  <header class="header">
+    <div class="header-content">
+      <div class="header-left">
+        <h1>Water Level Analytics Dashboard</h1>
+        <p><span class="code">ENHANCED_2025</span> • Agricultural Data Intelligence Platform</p>
+      </div>
+      <div class="header-right">
+        <a href="{% url 'index' %}" class="btn-back">
+          <i class="fas fa-arrow-left"></i> Back to Templates
+        </a>
+        <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
+          <div class="theme-toggle-slider">
+            <i class="fas fa-sun" id="theme-icon"></i>
+          </div>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <h1 class="main-header">🌾 Enhanced Agricultural Data Analysis Dashboard</h1>
+    <p class="sub-header">Comprehensive analysis with advanced filtering, comparisons, and enhanced downloads</p>
+
+    <!-- Updated Upload Section -->
+    <div class="glass-card">
+      <div class="card-header">
+        <h2><i class="fas fa-cloud-upload-alt icon"></i> Data Upload Terminal</h2>
+        <div class="integration-badge">
+          <i class="fab fa-google"></i> Google Sheets Auto-Sync Enabled
+        </div>
+      </div>
+      <div class="card-body">
+        <form method="POST" enctype="multipart/form-data" id="uploadForm">
+          {% csrf_token %}
+          
+          <!-- Master Database Auto-Sync Info -->
+          <div class="sync-info-section">
+            <div class="sync-info-header">
+              <i class="fas fa-cloud-sync-alt"></i>
+              <span>Master Database Auto-Sync</span>
+            </div>
+            <div class="sync-info-content">
+              <p><i class="fas fa-info-circle"></i> Master database automatically syncs from Google Sheets. No manual upload required.</p>
+              <div class="sync-status-indicator">
+                <i class="fas fa-circle sync-active"></i>
+                <span>Google Sheets Connection: Active</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label" for="water_file">
+              <i class="fas fa-tint"></i> Water Level Excel File
+            </label>
+            <input type="file" name="water_file" id="water_file" class="form-control" accept=".xlsx,.xls" required />
+            <small class="form-text">
+              <i class="fas fa-info-circle"></i> Upload your water level measurement data file
+            </small>
+          </div>
+         
+          <!-- Fallback Option -->
+          <div class="fallback-section">
+            <div class="fallback-toggle">
+              <input type="checkbox" id="manual-upload-toggle" onchange="toggleManualUpload()">
+              <label for="manual-upload-toggle" class="toggle-label">
+                <i class="fas fa-tools"></i> Use Manual Master File Upload (Fallback)
+              </label>
+            </div>
+           
+            <div id="manual-upload-section" class="manual-upload" style="display: none;">
+              <div class="form-group">
+                <label class="form-label" for="kharif_file">
+                  <i class="fas fa-server"></i> Master Database File (Optional Override)
+                </label>
+                <input type="file" name="kharif_file" id="kharif_file" class="form-control" accept=".xlsx,.xls">
+                <small class="form-text warning">
+                  <i class="fas fa-exclamation-triangle"></i> Only use this if Google Sheets sync fails
+                </small>
+              </div>
+            </div>
+          </div>
+         
+          <button type="submit" class="btn btn-primary btn-block" id="uploadBtn">
+            <i class="fas fa-chart-bar"></i> Upload & Analyze
+          </button>
+        </form>
+       
+        {% if error %}
+          <div class="alert error">
+            <i class="fas fa-exclamation-triangle"></i>
+            <p>{{ error }}</p>
+          </div>
+        {% endif %}
+       
+        <!-- Sync Status Section - Only show when data exists -->
+        {% if summary %}
+        <div class="sync-status-section">
+          <div class="sync-status-header">
+            <i class="fas fa-check-circle"></i>
+            <span>Data Successfully Synced</span>
+          </div>
+          <div class="sync-details">
+            <div class="sync-item">
+              <span class="sync-label">Last Sync:</span>
+              <span class="sync-value">
+                {% now "M d, Y H:i:s" %}
+              </span>
+            </div>
+            <div class="sync-item">
+              <span class="sync-label">Source:</span>
+              <span class="sync-value">Google Sheets + Raw Data Upload</span>
+            </div>
+            <div class="sync-item">
+              <span class="sync-label">Status:</span>
+              <span class="sync-value status-active">
+                <i class="fas fa-circle"></i> Active
+              </span>
+            </div>
+            {% if request.FILES.water_file %}
+            <div class="sync-item">
+              <span class="sync-label">Last File:</span>
+              <span class="sync-value">{{ request.FILES.water_file.name }}</span>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+
+    {% if summary %}
+      <div class="summary">
+        <strong><i class="fas fa-chart-pie"></i> Data Overview</strong><br />
+        Total Records: <span class="code">{{ summary.total_records }}</span><br />
+        Unique Farms: <span class="code">{{ summary.unique_farms }}</span><br />
+        Villages: <span class="code">{{ summary.total_villages }}</span><br />
+        Date Range: <span class="code">{{ summary.date_range }}</span><br />
+        Avg Water Level: <span class="code">{{ summary.avg_level }} mm</span>
+      </div>
+    {% endif %}
+
+    <!-- Date Range Filter Section -->
+    {% if merged_loaded %}
+      <div class="glass-card filter-section">
+        <div class="card-header">
+          <h2><i class="fas fa-calendar-alt icon"></i> Date Range Filter</h2>
+          <div class="integration-badge">
+            <i class="fas fa-filter"></i> Analysis Period Control
+          </div>
+        </div>
+        <div class="card-body">
+          <form id="dateFilterForm" method="POST" action="{% url 'water_dashboard' %}">
+            {% csrf_token %}
+            <input type="hidden" name="update_date_filter" value="1">
+            
+            <div class="form-group">
+              <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                <input type="checkbox" id="use_date_filter" name="use_date_filter" 
+                       {% if use_date_filter %}checked{% endif %}
+                       onchange="toggleDateFilter()">
+                <label for="use_date_filter" style="margin-left: 0.5rem; font-weight: 600;">
+                  <i class="fas fa-calendar-check"></i> Enable Date Range Filtering
+                </label>
+              </div>
+            </div>
+            
+            <div id="date-range-inputs" style="{% if not use_date_filter %}display: none;{% endif %}">
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div class="form-group">
+                  <label class="form-label" for="start_date">
+                    <i class="fas fa-calendar-day"></i> Start Date
+                  </label>
+                  <input type="date" name="start_date" id="start_date" class="form-control" 
+                         value="{{ start_date }}" 
+                         onchange="validateDateRange()">
+                </div>
+                
+                <div class="form-group">
+                  <label class="form-label" for="end_date">
+                    <i class="fas fa-calendar-day"></i> End Date
+                  </label>
+                  <input type="date" name="end_date" id="end_date" class="form-control" 
+                         value="{{ end_date }}"
+                         onchange="validateDateRange()">
+                </div>
+              </div>
+              
+              <div class="form-group" style="margin-top: 1rem;">
+                <button type="submit" class="btn btn-primary" id="applyDateFilter">
+                  <i class="fas fa-filter"></i> Apply Date Filter
+                </button>
+                <button type="button" class="btn btn-secondary" onclick="clearDateFilter()" style="margin-left: 0.5rem;">
+                  <i class="fas fa-times"></i> Clear Filter
+                </button>
+              </div>
+              
+              <div id="date-validation-message" style="margin-top: 0.5rem; color: var(--accent-danger); font-size: 0.875rem; display: none;">
+                <i class="fas fa-exclamation-triangle"></i> End date must be after start date
+              </div>
+            </div>
+            
+            {% if use_date_filter and start_date and end_date %}
+              <div class="alert success" style="margin-top: 1rem;">
+                <i class="fas fa-info-circle"></i>
+                <p><strong>Active Filter:</strong> Showing data from {{ start_date }} to {{ end_date }}</p>
+              </div>
+            {% endif %}
+          </form>
+        </div>
+      </div>
+    {% endif %}
+
+    <div class="external-link">
+      <a href="https://v45bgthcmmrztmbstkddra.streamlit.app/" target="_blank">
+        <i class="fas fa-external-link-alt"></i> Analyze 2024 Data
+      </a>
+    </div>
+
+    <!-- Rest of the template continues with tabs... -->
+    {% if merged_loaded %}
+      <div class="tab-buttons">
+        <button id="btn-farm" class="active">
+          <i class="fas fa-seedling"></i> Individual Farm Analysis
+        </button>
+        <button id="btn-comp">
+          <i class="fas fa-chart-line"></i> Comparative Analysis
+        </button>
+        <button id="btn-download">
+          <i class="fas fa-download"></i> Data Downloads
+        </button>
+      </div>
+
+      <!-- Tab 1: Farm Analysis -->
+      <div id="farm" class="tab-content active">
+        <div class="glass-card">
+          <div class="card-header">
+            <h3><i class="fas fa-seedling icon"></i> Farm-Level Analysis</h3>
+          </div>
+          <div class="card-body">
+            <form id="farm-select-form" method="POST" action="{% url 'water_dashboard' %}">
+              {% csrf_token %}
+              <div class="form-group">
+                <label class="form-label" for="farm-select">
+                  <i class="fas fa-map-marker-alt"></i> Select a Farm
+                </label>
+                <select name="selected_farm" id="farm-select" class="form-control">
+                  {% for farm in available_farms %}
+                    <option value="{{ farm }}" {% if selected_farm == farm %}selected{% endif %}>{{ farm }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </form>
+
+            <div id="farm-analysis-content">
+              {% if farm_analysis %}
+                <h4 style="color: var(--accent-primary); margin: 2rem 0 1rem; font-weight: 600;">
+                  <i class="fas fa-chart-area"></i> Daily Water Levels per Pipe + Farm Average
+                </h4>
+                <div class="plot-container">{{ farm_analysis.plot1|safe }}</div>
+                
+                <h4 style="color: var(--accent-primary); margin: 2rem 0 1rem; font-weight: 600;">
+                  <i class="fas fa-chart-line"></i> Weekly Water Levels per Pipe + Farm Average
+                </h4>
+                <div class="plot-container">{{ farm_analysis.plot2|safe }}</div>
+                
+                <h4 style="color: var(--accent-primary); margin: 2rem 0 1rem; font-weight: 600;">
+                  <i class="fas fa-table"></i> Water Level Data (All Pipes)
+                </h4>
+                <div style="background: var(--bg-tertiary); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                  <strong>Average:</strong> <span class="code">{{ farm_analysis.summary.average }} mm</span> |
+                  <strong>Std Dev:</strong> <span class="code">{{ farm_analysis.summary.std_dev }} mm</span> |
+                  <strong>Min:</strong> <span class="code">{{ farm_analysis.summary.min }} mm</span> |
+                  <strong>Max:</strong> <span class="code">{{ farm_analysis.summary.max }} mm</span>
+                </div>
+                <div class="table-container">{{ farm_analysis.pivot_table_html|safe }}</div>
+              {% endif %}
+              
+              {% if per_farm_downloads %}
+                <div style="margin: 2rem 0;">
+                  <h4 style="color: var(--accent-primary); margin-bottom: 1rem; font-weight: 600;">
+                    <i class="fas fa-download"></i> Download Data for Selected Farm
+                  </h4>
+                  <div class="download-grid">
+                    {% for file in per_farm_downloads %}
+                      <a href="?download={{ file.filename }}" class="download-link">
+                        <i class="fas fa-file-download"></i>{{ file.display_name }}
+                      </a>
+                    {% endfor %}
+                  </div>
+                </div>
+              {% endif %}
+              
+              {% if farm_summary_stats %}
+                <div class="farm-summary-stats">
+                  <div class="stats-title">
+                    <i class="fas fa-chart-bar"></i> Farm Summary Statistics
+                  </div>
+                  <div class="stats-grid">
+                    <div class="stat-item">
+                      <div class="stat-label">
+                        <i class="fas fa-tint"></i> Average Water Level
+                      </div>
+                      <div class="stat-value">{{ farm_summary_stats.mean }} <span class="stat-unit">mm</span></div>
+                    </div>
+                    <div class="stat-item">
+                      <div class="stat-label">
+                        <i class="fas fa-chart-bar"></i> Standard Deviation
+                      </div>
+                      <div class="stat-value">{{ farm_summary_stats.std }} <span class="stat-unit">mm</span></div>
+                    </div>
+                    <div class="stat-item">
+                      <div class="stat-label">
+                        <i class="fas fa-arrow-down"></i> Minimum Level
+                      </div>
+                      <div class="stat-value">{{ farm_summary_stats.min }} <span class="stat-unit">mm</span></div>
+                    </div>
+                    <div class="stat-item">
+                      <div class="stat-label">
+                        <i class="fas fa-arrow-up"></i> Maximum Level
+                      </div>
+                      <div class="stat-value">{{ farm_summary_stats.max }} <span class="stat-unit">mm</span></div>
+                    </div>
+                  </div>
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab 2: Comparative Analysis -->
+      <div id="comp" class="tab-content">
+        <div class="glass-card">
+          <div class="card-header">
+            <h3><i class="fas fa-chart-line icon"></i> Comparative Analysis</h3>
+          </div>
+          <div class="card-body">
+            <div class="form-group">
+              <label class="form-label" for="sectionSelector">
+                <i class="fas fa-filter"></i> Choose Analysis Section
+              </label>
+              <select id="sectionSelector" class="form-control">
+                <option value="village" selected>📍 Village Comparison</option>
+                <option value="rc">🛰️ Remote Controllers</option>
+                <option value="awd">🚰 AWD Study Groups</option>
+                <option value="dsr_tpr">🌱 DSR vs TPR</option>
+                <option value="compliance">✅ Compliance Summary</option>
+                <option value="custom">🛠️ Custom Group Summary</option>
+              </select>
+            </div>
+
+            <div id="village" class="content-section">
+              <h4 style="color: var(--accent-primary); margin: 1.5rem 0 1rem; font-weight: 600;">
+                <i class="fas fa-map-marked-alt"></i> Village Comparison
+              </h4>
+              
+              <!-- Village Selection Form -->
+              <div class="glass-card" style="margin-bottom: 2rem; padding: 1.5rem;">
+                <h5 style="color: var(--accent-primary); margin-bottom: 1rem;">
+                  <i class="fas fa-filter"></i> Select Villages for Comparison
+                </h5>
+                <form method="post" style="margin-bottom: 0;">
+                  {% csrf_token %}
+                  <input type="hidden" name="update_village_comparison" value="1" />
+                  
+                  <div class="form-group" style="margin-bottom: 1rem;">
+                    <div style="display: flex; gap: 1rem; margin-bottom: 0.5rem;">
+                      <button type="button" onclick="selectAllVillages()" class="btn btn-sm btn-outline-primary">
+                        <i class="fas fa-check-square"></i> Select All
+                      </button>
+                      <button type="button" onclick="deselectAllVillages()" class="btn btn-sm btn-outline-secondary">
+                        <i class="fas fa-square"></i> Deselect All
+                      </button>
+                    </div>
+                    
+                    <div id="village-selection-container" style="max-height: 200px; overflow-y: auto; border: 1px solid var(--border-color); padding: 1rem; border-radius: 8px; background: var(--bg-secondary);">
+                      {% for village in available_villages %}
+                        <label style="display: block; margin-bottom: 0.5rem; font-size: 0.9rem; cursor: pointer;">
+                          <input type="checkbox" name="selected_villages_comparison" value="{{ village }}" 
+                                 {% if village in selected_villages_comparison %}checked{% endif %}
+                                 style="margin-right: 0.5rem;" class="village-checkbox">
+                          {{ village }}
+                        </label>
+                      {% endfor %}
+                    </div>
+                    
+                    {% if village_selection_info %}
+                      <div class="alert alert-info" style="margin-top: 1rem; padding: 0.75rem; background: rgba(13, 202, 240, 0.1); border: 1px solid rgba(13, 202, 240, 0.2); border-radius: 6px;">
+                        <i class="fas fa-info-circle"></i> {{ village_selection_info }}
+                      </div>
+                    {% endif %}
+                  </div>
+                  
+                  <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-chart-line"></i> Update Comparison
+                  </button>
+                </form>
+              </div>
+              
+              <div class="plot-container">{{ comparative.village.plot|safe }}</div>
+              <div class="table-container">
+                {{ comparative.village.summary_df|safe }}
+                <div style="padding: 1rem;">
+                  <form method="get">
+                    <input type="hidden" name="download_village_analysis" value="1" />
+                    <button type="submit" class="btn btn-secondary">
+                      <i class="fas fa-download"></i> Download Analysis (CSV)
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+
+            <div id="rc" class="content-section">
+              <h4 style="color: var(--accent-primary); margin: 1.5rem 0 1rem; font-weight: 600;">
+                <i class="fas fa-satellite-dish"></i> Remote Controllers
+              </h4>
+              
+              <!-- Remote Controllers Group Selection Form -->
+              <div class="glass-card" style="margin-bottom: 2rem; padding: 1.5rem;">
+                <h5 style="color: var(--accent-primary); margin-bottom: 1rem;">
+                  <i class="fas fa-filter"></i> Select Remote Controllers Groups for Comparison
+                </h5>
+                <form method="post" style="margin-bottom: 0;">
+                  {% csrf_token %}
+                  <input type="hidden" name="update_rc_comparison" value="1" />
+                  
+                  <div class="form-group" style="margin-bottom: 1rem;">
+                    <div style="display: flex; gap: 1rem; margin-bottom: 0.5rem;">
+                      <button type="button" onclick="selectAllRCGroups()" class="btn btn-sm btn-outline-primary">
+                        <i class="fas fa-check-square"></i> Select All
+                      </button>
+                      <button type="button" onclick="deselectAllRCGroups()" class="btn btn-sm btn-outline-secondary">
+                        <i class="fas fa-square"></i> Deselect All
+                      </button>
+                    </div>
+                    
+                    <div id="rc-group-selection-container" style="max-height: 200px; overflow-y: auto; border: 1px solid var(--border-color); padding: 1rem; border-radius: 8px; background: var(--bg-secondary);">
+                      {% for group in available_rc_groups %}
+                        <label style="display: block; margin-bottom: 0.5rem; font-size: 0.9rem; cursor: pointer;">
+                          <input type="checkbox" name="selected_rc_groups" value="{{ group }}" 
+                                 {% if group in selected_rc_groups %}checked{% endif %}
+                                 style="margin-right: 0.5rem;" class="rc-group-checkbox">
+                          {{ group }}
+                        </label>
+                      {% endfor %}
+                    </div>
+                    
+                    {% if rc_selection_info %}
+                      <div class="alert alert-info" style="margin-top: 1rem; padding: 0.75rem; background: rgba(13, 202, 240, 0.1); border: 1px solid rgba(13, 202, 240, 0.2); border-radius: 6px;">
+                        <i class="fas fa-info-circle"></i> {{ rc_selection_info }}
+                      </div>
+                    {% endif %}
+                  </div>
+                  
+                  <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-chart-line"></i> Update RC Comparison
+                  </button>
+                </form>
+              </div>
+              
+              <div class="plot-container">{{ comparative.rc.plot|safe }}</div>
+              <div class="table-container">
+                {{ comparative.rc.summary_df|safe }}
+                <div style="padding: 1rem;">
+                  <form method="get">
+                    <input type="hidden" name="download_rc_analysis" value="1" />
+                    <button type="submit" class="btn btn-secondary">
+                      <i class="fas fa-download"></i> Download Analysis (CSV)
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+
+            <div id="awd" class="content-section">
+              <h4 style="color: var(--accent-primary); margin: 1.5rem 0 1rem; font-weight: 600;">
+                <i class="fas fa-tint"></i> AWD Study Groups
+              </h4>
+              
+              <!-- AWD Group Selection Form -->
+              <div class="glass-card" style="margin-bottom: 2rem; padding: 1.5rem;">
+                <h5 style="color: var(--accent-primary); margin-bottom: 1rem;">
+                  <i class="fas fa-filter"></i> Select AWD Study Groups for Comparison
+                </h5>
+                <form method="post" style="margin-bottom: 0;">
+                  {% csrf_token %}
+                  <input type="hidden" name="update_awd_comparison" value="1" />
+                  
+                  <div class="form-group" style="margin-bottom: 1rem;">
+                    <div style="display: flex; gap: 1rem; margin-bottom: 0.5rem;">
+                      <button type="button" onclick="selectAllAWDGroups()" class="btn btn-sm btn-outline-primary">
+                        <i class="fas fa-check-square"></i> Select All
+                      </button>
+                      <button type="button" onclick="deselectAllAWDGroups()" class="btn btn-sm btn-outline-secondary">
+                        <i class="fas fa-square"></i> Deselect All
+                      </button>
+                    </div>
+                    
+                    <div id="awd-group-selection-container" style="max-height: 200px; overflow-y: auto; border: 1px solid var(--border-color); padding: 1rem; border-radius: 8px; background: var(--bg-secondary);">
+                      {% for group in available_awd_groups %}
+                        <label style="display: block; margin-bottom: 0.5rem; font-size: 0.9rem; cursor: pointer;">
+                          <input type="checkbox" name="selected_awd_groups" value="{{ group }}" 
+                                 {% if group in selected_awd_groups %}checked{% endif %}
+                                 style="margin-right: 0.5rem;" class="awd-group-checkbox">
+                          {{ group }}
+                        </label>
+                      {% endfor %}
+                    </div>
+                    
+                    {% if awd_selection_info %}
+                      <div class="alert alert-info" style="margin-top: 1rem; padding: 0.75rem; background: rgba(13, 202, 240, 0.1); border: 1px solid rgba(13, 202, 240, 0.2); border-radius: 6px;">
+                        <i class="fas fa-info-circle"></i> {{ awd_selection_info }}
+                      </div>
+                    {% endif %}
+                  </div>
+                  
+                  <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-chart-line"></i> Update AWD Comparison
+                  </button>
+                </form>
+              </div>
+              
+              <div class="plot-container">{{ comparative.awd.plot|safe }}</div>
+              <div class="table-container">
+                {{ comparative.awd.summary_df|safe }}
+                <div style="padding: 1rem;">
+                  <form method="get">
+                    <input type="hidden" name="download_awd_analysis" value="1" />
+                    <button type="submit" class="btn btn-secondary">
+                      <i class="fas fa-download"></i> Download Analysis (CSV)
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+
+            <div id="dsr_tpr" class="content-section">
+              <h4 style="color: var(--accent-primary); margin: 1.5rem 0 1rem; font-weight: 600;">
+                <i class="fas fa-seedling"></i> DSR vs TPR
+              </h4>
+              <div class="plot-container">{{ comparative.dsr_tpr.plot|safe }}</div>
+              <div class="table-container">
+                {{ comparative.dsr_tpr.summary_df|safe }}
+                <div style="padding: 1rem;">
+                  <form method="get">
+                    <input type="hidden" name="download_dsr_tpr_analysis" value="1" />
+                    <button type="submit" class="btn btn-secondary">
+                      <i class="fas fa-download"></i> Download Analysis (CSV)
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+
+            <div id="compliance" class="content-section">
+              <h4 style="color: var(--accent-primary); margin: 1.5rem 0 1rem; font-weight: 600;">
+                <i class="fas fa-check-circle"></i> Compliance Summary
+              </h4>
+              <div class="table-container">{{ comparative.compliance.df|safe }}</div>
+              <div style="background: var(--bg-tertiary); padding: 1rem; border-radius: 8px; margin-top: 1rem;">
+                <strong>Overall Compliance:</strong> <span class="code">{{ comparative.compliance.summary.overall_compliance }}%</span>
+              </div>
+            </div>
+
+            <div id="custom" class="content-section">
+              <h4 style="color: var(--accent-primary); margin: 1.5rem 0 1rem; font-weight: 600;">
+                <i class="fas fa-cogs"></i> Custom Group Summary
+              </h4>
+              {% if comparative.custom.chart_html %}
+                <div class="plot-container">{{ comparative.custom.chart_html|safe }}</div>
+              {% endif %}
+              {% if comparative.custom.summary_df %}
+                <div class="table-container">
+                  {{ comparative.custom.summary_df|safe }}
+                  <div style="padding: 1rem;">
+                    <form method="get">
+                      <input type="hidden" name="download_custom_group_analysis" value="1" />
+                      <button type="submit" class="btn btn-secondary">
+                        <i class="fas fa-download"></i> Download Analysis (CSV)
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              {% else %}
+                <div style="background: var(--bg-tertiary); padding: 1.5rem; border-radius: 8px; text-align: center; color: var(--text-secondary);">
+                  <i class="fas fa-info-circle" style="font-size: 2rem; margin-bottom: 0.5rem; opacity: 0.5;"></i>
+                  <p>No custom groups created yet. Use the form below to create custom groups.</p>
+                </div>
+              {% endif %}
+
+              <div id="custom-groups-section" class="custom-groups-section" style="display:none;">
+                <h4 style="color: var(--accent-primary); margin-bottom: 1rem; font-weight: 600;">
+                  <i class="fas fa-plus-circle"></i> Create Custom Groups
+                </h4>
+                {% if success_message %}
+                  <div class="alert success">
+                    <i class="fas fa-check-circle"></i>
+                    <p>{{ success_message }}</p>
+                  </div>
+                {% endif %}
+                <form method="POST" class="custom-group-form">
+                  {% csrf_token %}
+                  <input type="hidden" name="create_custom_group" value="1" />
+
+                  <div class="form-group">
+                    <label class="form-label">
+                      <i class="fas fa-hashtag"></i> How many groups?
+                    </label>
+                    <input type="number" id="group-count" name="group_count" min="1" max="10" value="1" class="form-control" onchange="generateGroupSelectors()" />
+                  </div>
+
+                  <div id="group-inputs">
+                    <div class="form-group">
+                      <label class="form-label">Group Name:</label>
+                      <input type="text" name="group_name_1" required placeholder="Enter group name" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label">Group Type:</label>
+                      <select name="group_type_1" class="group-type-selector form-control" data-group="1" onchange="toggleGroupType(this)">
+                        <option value="both" selected>Farms & Villages (Mixed)</option>
+                        <option value="farms">Farms Only</option>
+                        <option value="villages">Villages Only</option>
+                      </select>
+                    </div>
+                    <div class="form-group farms-group" id="farms-group-1" style="max-height:150px; overflow-y:auto; border:1px solid var(--border-color); padding:1rem; border-radius:8px; background:var(--bg-secondary);">
+                      <label style="font-weight: 600; margin-bottom: 0.5rem; display: block;">Select Farms for Group 1:</label>
+                      {% for farm in available_farms %}
+                        <label style="display:block; margin-bottom:0.25rem; font-size:0.9rem; cursor: pointer;">
+                          <input type="checkbox" name="selected_farms_1" value="{{ farm }}" style="margin-right:0.5rem;">{{ farm }}
+                        </label>
+                      {% endfor %}
+                    </div>
+                    <div class="form-group villages-group" id="villages-group-1" style="max-height:150px; overflow-y:auto; border:1px solid var(--border-color); padding:1rem; border-radius:8px; background:var(--bg-secondary);">
+                      <label style="font-weight: 600; margin-bottom: 0.5rem; display: block;">Select Villages for Group 1:</label>
+                      {% for village in available_villages %}
+                        <label style="display:block; margin-bottom:0.25rem; font-size:0.9rem; cursor: pointer;">
+                          <input type="checkbox" name="selected_villages_1" value="{{ village }}" style="margin-right:0.5rem;">{{ village }}
+                        </label>
+                      {% endfor %}
+                    </div>
+                  </div>
+
+                  <button type="submit" class="btn btn-success">
+                    <i class="fas fa-save"></i> Save Group(s)
+                  </button>
+                </form>
+                
+                {% if custom_groups %}
+                  <div class="existing-groups">
+                    <h5><i class="fas fa-list"></i> Existing Custom Groups:</h5>
+                    <ul>
+                      {% for group in custom_groups %}
+                        <li>
+                          <span>{{ group }}</span>
+                          <form method="POST" style="display: inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="delete_custom_group" value="1" />
+                            <input type="hidden" name="group_name" value="{{ group }}" />
+                            <button type="submit" class="btn" style="background: var(--accent-danger); color: white; padding: 0.25rem 0.75rem; font-size: 0.8rem;">
+                              <i class="fas fa-trash"></i> Delete
+                            </button>
+                          </form>
+                        </li>
+                      {% endfor %}
+                    </ul>
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab 3: Downloads -->
+      <div id="download" class="tab-content">
+        <div class="glass-card">
+          <div class="card-header">
+            <h3><i class="fas fa-download icon"></i> Data Downloads</h3>
+          </div>
+          <div class="card-body">
+            {% if complete_dataset_files %}
+              <h4 style="color: var(--accent-primary); margin: 2rem 0 1rem; font-weight: 600;">
+                <i class="fas fa-database"></i> Complete Dataset
+              </h4>
+              <div class="download-grid">
+                {% for file in complete_dataset_files %}
+                  <a href="?download={{ file.filename }}" class="download-link">
+                    <i class="fas fa-file-download"></i>{{ file.display_name }}
+                  </a>
+                {% endfor %}
+              </div>
+            {% endif %}
+            
+            {% if study_group_files %}
+              <h4 style="color: var(--accent-primary); margin: 2rem 0 1rem; font-weight: 600;">
+                <i class="fas fa-flask"></i> Study Group Data
+              </h4>
+              <div class="download-grid">
+                {% for file in study_group_files %}
+                  <a href="?download={{ file.filename }}" class="download-link">
+                    <i class="fas fa-file-download"></i>{{ file.display_name }}
+                  </a>
+                {% endfor %}
+              </div>
+            {% endif %}
+            
+            {% if analysis_report_files %}
+              <h4 style="color: var(--accent-primary); margin: 2rem 0 1rem; font-weight: 600;">
+                <i class="fas fa-chart-bar"></i> Analysis Reports
+              </h4>
+              <div class="download-grid">
+                {% for file in analysis_report_files %}
+                  <a href="?download={{ file.filename }}" class="download-link">
+                    <i class="fas fa-file-download"></i>{{ file.display_name }}
+                  </a>
+                {% endfor %}
+              </div>
+            {% endif %}
+            
+            <h4 style="color: var(--accent-primary); margin: 2rem 0 1rem; font-weight: 600;">
+              <i class="fas fa-archive"></i> Complete Data Package
+            </h4>
+            <form method="POST">
+              {% csrf_token %}
+              <input type="hidden" name="download_zip" value="1" />
+              <button type="submit" class="btn btn-primary">
+                <i class="fas fa-file-archive"></i> Download ZIP
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+
+    {% if not merged_loaded %}
+    <div class="info-box">
+      <h3><i class="fas fa-info-circle"></i> Required Files</h3>
+      <h4>1. Kharif 25 Excel File:</h4>
+      <ul>
+        <li><code>Kharif 25 Farm ID</code> – Unique farm identifier</li>
+        <li><code>Kharif 25 Village</code> – Village name</li>
+        <li><code>Kharif 25 Paddy transplanting date (TPR)</code> – Transplanting date</li>
+        <li>Study group columns (Remote Controllers, AWD, TPR, DSR)</li>
+        <li>PVC Pipe codes (1-5)</li>
+        <li>Compliance indicators (Y/N)</li>
+      </ul>
+
+      <h4>2. Water Level Measurement Excel File:</h4>
+      <ul>
+        <li><code>Date</code> – Measurement date</li>
+        <li><code>Farm ID</code> – Farm identifier (must match Kharif file)</li>
+        <li><code>Pipe code ID of the farm</code> – Pipe identifier</li>
+        <li><code>Measure water level inside the PVC pipe - millimeter mm</code> – Water level reading</li>
+        <li><code>Village name</code> – Village name</li>
+      </ul>
+
+      <h3><i class="fas fa-star"></i> Enhanced Features</h3>
+
+      <h4><i class="fas fa-filter"></i> Advanced Filters:</h4>
+      <ul>
+        <li>📅 Date range selection with validation</li>
+        <li>🏘️ Village-specific filtering with typo handling</li>
+        <li>🔬 Study group filtering (RC, AWD, TPR, DSR)</li>
+        <li>✅ Compliance status filtering</li>
+        <li>🔧 Data quality filters (minimum readings, outlier removal)</li>
+      </ul>
+
+      <h4><i class="fas fa-chart-bar"></i> Complete Analysis:</h4>
+      <ul>
+        <li><strong>Graph 1:</strong> Daily water levels per pipe + farm average (markers only)</li>
+        <li><strong>Graph 2:</strong> Weekly water level trends (markers + farm average line)</li>
+        <li><strong>Table 3:</strong> Water level data with Days from TPR as Column A</li>
+        <li><strong>Comparative Charts:</strong> All required study group comparisons</li>
+      </ul>
+
+      <h4><i class="fas fa-users"></i> Study Group Comparisons:</h4>
+      <ul>
+        <li>Remote Controllers: Treatment vs Control (complied groups)</li>
+        <li>AWD Study: Groups A, B, C (complied and non-complied)</li>
+        <li>DSR vs TPR group comparisons</li>
+        <li>Village-level aggregations</li>
+        <li>Comprehensive compliance analysis</li>
+      </ul>
+
+      <h4><i class="fas fa-download"></i> Enhanced Downloads:</h4>
+      <ul>
+        <li>Individual farm reports (detailed + summary)</li>
+        <li>Study group datasets (separate CSV files)</li>
+        <li>Village and farm summary reports</li>
+        <li>Complete data packages (ZIP format)</li>
+      </ul>
+
+      <h4><i class="fas fa-cog"></i> Data Quality Features:</h4>
+      <ul>
+        <li>Fuzzy matching for village names (handles typos)</li>
+        <li>Case insensitive comparisons</li>
+        <li>Data normalization and cleaning</li>
+        <li>Outlier detection and removal</li>
+        <li>Missing data handling</li>
+      </ul>
+
+      <h4><i class="fas fa-chart-line"></i> Advanced Visualizations:</h4>
+      <ul>
+        <li>Interactive charts with hover information</li>
+        <li>Color-coded study groups</li>
+        <li>Responsive design for all screen sizes</li>
+        <li>Export-ready chart formats</li>
+      </ul>
+    </div>
+    {% endif %}
+  </div>
+
+  <script>
+    // Theme Toggle
+    function initTheme() {
+      const savedTheme = localStorage.getItem('theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      updateThemeIcon(savedTheme);
+    }
+
+    function toggleTheme() {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+      
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      updateThemeIcon(newTheme);
+    }
+
+    function updateThemeIcon(theme) {
+      const icon = document.getElementById('theme-icon');
+      icon.className = theme === 'light' ? 'fas fa-sun' : 'fas fa-moon';
+    }
+
+    // Manual Upload Toggle
+    function toggleManualUpload() {
+      const toggle = document.getElementById('manual-upload-toggle');
+      const section = document.getElementById('manual-upload-section');
+      const kharifFile = document.getElementById('kharif_file');
+      
+      if (toggle.checked) {
+        section.style.display = 'block';
+        section.style.opacity = '0';
+        setTimeout(() => {
+          section.style.opacity = '1';
+        }, 10);
+        kharifFile.required = true;
+      } else {
+        section.style.opacity = '0';
+        setTimeout(() => {
+          section.style.display = 'none';
+          kharifFile.value = '';
+        }, 300);
+        kharifFile.required = false;
+      }
+    }
+
+    // Enhanced Loading System
+    function showLoading() {
+      const overlay = document.getElementById('loadingOverlay');
+      const progressBar = document.getElementById('progressBar');
+      const progressText = document.getElementById('progressText');
+      const description = document.getElementById('loadingDescription');
+      
+      overlay.classList.add('show');
+      
+      // Simulate realistic loading progression
+      const steps = [
+        { progress: 0, text: "Initializing upload...", duration: 500 },
+        { progress: 15, text: "Uploading water level data...", duration: 1000 },
+        { progress: 35, text: "Validating data format...", duration: 800 },
+        { progress: 50, text: "Connecting to Google Sheets...", duration: 1200 },
+        { progress: 70, text: "Syncing master database...", duration: 1000 },
+        { progress: 85, text: "Processing farm analysis...", duration: 800 },
+        { progress: 95, text: "Generating visualizations...", duration: 600 },
+        { progress: 100, text: "Complete!", duration: 300 }
+      ];
+      
+      let currentStep = 0;
+      
+      function updateProgress() {
+        if (currentStep < steps.length) {
+          const step = steps[currentStep];
+          progressBar.style.width = step.progress + '%';
+          progressText.textContent = step.progress + '%';
+          description.textContent = step.text;
+          
+          setTimeout(() => {
+            currentStep++;
+            updateProgress();
+          }, step.duration);
+        } else {
+          // Hide loading after completion
+          setTimeout(() => {
+            hideLoading();
+          }, 1000);
+        }
+      }
+      
+      updateProgress();
+    }
+
+    function hideLoading() {
+      const overlay = document.getElementById('loadingOverlay');
+      overlay.classList.remove('show');
+    }
+
+    // Form Submission with Loading
+    document.getElementById('uploadForm').addEventListener('submit', function(e) {
+      const fileInput = document.getElementById('water_file');
+      if (!fileInput.files.length) {
+        e.preventDefault();
+        alert('Please select a water level file to upload.');
+        return;
+      }
+      
+      const uploadBtn = document.getElementById('uploadBtn');
+      uploadBtn.classList.add('btn-loading');
+      uploadBtn.disabled = true;
+      
+      showLoading();
+      
+      // The form will submit normally, but with visual feedback
+    });
+
+    // Date Filter Functions
+    function toggleDateFilter() {
+      const toggle = document.getElementById('use_date_filter');
+      const inputs = document.getElementById('date-range-inputs');
+      const startDate = document.getElementById('start_date');
+      const endDate = document.getElementById('end_date');
+      
+      if (toggle.checked) {
+        inputs.style.display = 'block';
+        startDate.required = true;
+        endDate.required = true;
+        // Set default dates if empty
+        if (!startDate.value || !endDate.value) {
+          const today = new Date();
+          const oneMonthAgo = new Date(today.getFullYear(), today.getMonth() - 1, today.getDate());
+          if (!startDate.value) {
+            startDate.value = oneMonthAgo.toISOString().split('T')[0];
+          }
+          if (!endDate.value) {
+            endDate.value = today.toISOString().split('T')[0];
+          }
+        }
+      } else {
+        inputs.style.display = 'none';
+        startDate.required = false;
+        endDate.required = false;
+        clearValidationMessage();
+      }
+    }
+
+    function validateDateRange() {
+      const startDate = document.getElementById('start_date');
+      const endDate = document.getElementById('end_date');
+      const messageDiv = document.getElementById('date-validation-message');
+      const submitButton = document.getElementById('applyDateFilter');
+      
+      if (startDate.value && endDate.value) {
+        const start = new Date(startDate.value);
+        const end = new Date(endDate.value);
+        
+        if (start >= end) {
+          messageDiv.style.display = 'block';
+          submitButton.disabled = true;
+          submitButton.style.opacity = '0.5';
+        } else {
+          messageDiv.style.display = 'none';
+          submitButton.disabled = false;
+          submitButton.style.opacity = '1';
+        }
+      } else {
+        messageDiv.style.display = 'none';
+        submitButton.disabled = false;
+        submitButton.style.opacity = '1';
+      }
+    }
+
+    function clearDateFilter() {
+      const toggle = document.getElementById('use_date_filter');
+      const startDate = document.getElementById('start_date');
+      const endDate = document.getElementById('end_date');
+      const form = document.getElementById('dateFilterForm');
+      
+      toggle.checked = false;
+      startDate.value = '';
+      endDate.value = '';
+      toggleDateFilter();
+      
+      // Submit the form to clear the filter
+      form.submit();
+    }
+
+    function clearValidationMessage() {
+      const messageDiv = document.getElementById('date-validation-message');
+      const submitButton = document.getElementById('applyDateFilter');
+      messageDiv.style.display = 'none';
+      submitButton.disabled = false;
+      submitButton.style.opacity = '1';
+    }
+
+    // Tab Functions
+    function switchTab(tabName) {
+      document.querySelectorAll(".tab-content").forEach(function(t) {
+        t.classList.remove("active");
+      });
+      document.querySelectorAll(".tab-buttons button").forEach(function(b) {
+        b.classList.remove("active");
+      });
+      var tab = document.getElementById(tabName);
+      var btn = document.getElementById("btn-" + tabName);
+      if (tab && btn) {
+        tab.classList.add("active");
+        btn.classList.add("active");
+      }
+    }
+
+    function attachTabListeners() {
+      document.querySelectorAll('.tab-buttons button').forEach(function(btn) {
+        btn.onclick = function() {
+          switchTab(this.id.replace('btn-', ''));
+        };
+      });
+    }
+
+    // Farm Analysis Update
+    async function updateFarmAnalysis() {
+      const select = document.getElementById('farm-select');
+      const farm = select.value;
+      const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+      const formData = new FormData();
+      formData.append('selected_farm', farm);
+      formData.append('farm_select', '1');
+      formData.append('csrfmiddlewaretoken', csrfToken);
+
+      try {
+        const response = await fetch("{% url 'water_dashboard' %}", {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (!response.ok) {
+          const errText = await response.text();
+          console.error("AJAX error response:", errText);
+          throw new Error('Network response was not ok');
+        }
+
+        const html = await response.text();
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+        const newFarmAnalysis = doc.getElementById('farm-analysis-content');
+
+        if (newFarmAnalysis) {
+          const container = document.getElementById('farm-analysis-content');
+          container.innerHTML = newFarmAnalysis.innerHTML;
+
+          // Re-execute Plotly scripts
+          const scripts = container.querySelectorAll('script');
+          scripts.forEach(oldScript => {
+            const newScript = document.createElement('script');
+            if (oldScript.src) {
+              newScript.src = oldScript.src;
+            } else {
+              newScript.textContent = oldScript.textContent;
+            }
+            document.body.appendChild(newScript);
+            newScript.remove();
+          });
+        }
+      } catch (error) {
+        alert("Failed to update farm analysis: " + error.message);
+      }
+    }
+
+    // Custom Groups Functions
+    const availableFarms = JSON.parse(document.getElementById('availableFarmsData').textContent);
+    const availableVillages = JSON.parse(document.getElementById('availableVillagesData').textContent);
+
+    function toggleGroupType(select) {
+      const group = select.getAttribute('data-group');
+      const type = select.value;
+      document.getElementById('farms-group-' + group).style.display = (type === 'farms' || type === 'both') ? 'block' : 'none';
+      document.getElementById('villages-group-' + group).style.display = (type === 'villages' || type === 'both') ? 'block' : 'none';
+    }
+
+    function generateGroupSelectors() {
+      const groupCount = parseInt(document.getElementById('group-count').value) || 1;
+      const groupInputs = document.getElementById('group-inputs');
+      groupInputs.innerHTML = '';
+      
+      for (let i = 1; i <= groupCount; i++) {
+        let html = `<div class='form-group'><label class='form-label'>Group Name:</label><input type='text' name='group_name_${i}' required placeholder='Enter group name' class='form-control' /></div>`;
+        html += `<div class='form-group'><label class='form-label'>Group Type:</label><select name='group_type_${i}' class='group-type-selector form-control' data-group='${i}' onchange='toggleGroupType(this)'><option value='both' selected>Farms & Villages (Mixed)</option><option value='farms'>Farms Only</option><option value='villages'>Villages Only</option></select></div>`;
+        
+        html += `<div class='form-group farms-group' id='farms-group-${i}' style='max-height:150px; overflow-y:auto; border:1px solid var(--border-color); padding:1rem; border-radius:8px; background:var(--bg-secondary);'><label style='font-weight: 600; margin-bottom: 0.5rem; display: block;'>Select Farms for Group ${i}:</label>`;
+        availableFarms.forEach(farm => {
+          html += `<label style='display:block; margin-bottom:0.25rem; font-size:0.9rem; cursor: pointer;'><input type='checkbox' name='selected_farms_${i}' value='${farm}' style='margin-right:0.5rem;'>${farm}</label>`;
+        });
+        html += `</div>`;
+
+        html += `<div class='form-group villages-group' id='villages-group-${i}' style='max-height:150px; overflow-y:auto; border:1px solid var(--border-color); padding:1rem; border-radius:8px; background:var(--bg-secondary);'><label style='font-weight: 600; margin-bottom: 0.5rem; display: block;'>Select Villages for Group ${i}:</label>`;
+        availableVillages.forEach(village => {
+          html += `<label style='display:block; margin-bottom:0.25rem; font-size:0.9rem; cursor: pointer;'><input type='checkbox' name='selected_villages_${i}' value='${village}' style='margin-right:0.5rem;'>${village}</label>`;
+        });
+        html += `</div>`;
+
+        groupInputs.innerHTML += html;
+      }
+
+      document.getElementById('custom-groups-section').style.display = 'block';
+    }
+
+    // Date Filter Form Submission with Visual Feedback
+    document.getElementById('dateFilterForm')?.addEventListener('submit', function(e) {
+      const startDate = document.getElementById('start_date').value;
+      const endDate = document.getElementById('end_date').value;
+      const toggle = document.getElementById('use_date_filter');
+      
+      if (toggle.checked && (!startDate || !endDate)) {
+        e.preventDefault();
+        alert('Please select both start and end dates when filter is enabled.');
+        return;
+      }
+      
+      if (startDate && endDate && new Date(startDate) > new Date(endDate)) {
+        e.preventDefault();
+        alert('Start date cannot be later than end date.');
+        return;
+      }
+      
+      // Add visual feedback
+      const applyBtn = document.getElementById('applyDateFilter');
+      if (applyBtn) {
+        applyBtn.classList.add('btn-loading');
+        applyBtn.disabled = true;
+      }
+    });
+
+    // Village comparison selection functions
+    function selectAllVillages() {
+      const checkboxes = document.querySelectorAll('.village-checkbox');
+      checkboxes.forEach(checkbox => {
+        checkbox.checked = true;
+      });
+    }
+
+    function deselectAllVillages() {
+      const checkboxes = document.querySelectorAll('.village-checkbox');
+      checkboxes.forEach(checkbox => {
+        checkbox.checked = false;
+      });
+    }
+
+    // Remote Controllers group selection functions
+    function selectAllRCGroups() {
+      const checkboxes = document.querySelectorAll('.rc-group-checkbox');
+      checkboxes.forEach(checkbox => {
+        checkbox.checked = true;
+      });
+    }
+
+    function deselectAllRCGroups() {
+      const checkboxes = document.querySelectorAll('.rc-group-checkbox');
+      checkboxes.forEach(checkbox => {
+        checkbox.checked = false;
+      });
+    }
+
+    // AWD group selection functions
+    function selectAllAWDGroups() {
+      const checkboxes = document.querySelectorAll('.awd-group-checkbox');
+      checkboxes.forEach(checkbox => {
+        checkbox.checked = true;
+      });
+    }
+
+    function deselectAllAWDGroups() {
+      const checkboxes = document.querySelectorAll('.awd-group-checkbox');
+      checkboxes.forEach(checkbox => {
+        checkbox.checked = false;
+      });
+    }
+
+    // Document Ready
+    document.addEventListener("DOMContentLoaded", function() {
+      initTheme();
+      attachTabListeners();
+      switchTab("farm");
+
+      // Farm select change logic
+      const farmSelect = document.getElementById('farm-select');
+      if (farmSelect) {
+        farmSelect.addEventListener('change', updateFarmAnalysis);
+      }
+      const farmForm = document.getElementById('farm-select-form');
+      if (farmForm) {
+        farmForm.addEventListener('submit', function(e) {
+          e.preventDefault();
+          updateFarmAnalysis();
+        });
+      }
+
+      // Comparative section selector logic
+      var selector = document.getElementById("sectionSelector");
+      var sections = document.querySelectorAll(".content-section");
+      var customGroupsSection = document.getElementById("custom-groups-section");
+      if (selector) {
+        selector.addEventListener("change", function() {
+          sections.forEach(function(section) {
+            section.style.display = "none";
+          });
+          var selected = document.getElementById(selector.value);
+          if (selected) selected.style.display = "block";
+          if (selector.value === "custom") {
+            if (customGroupsSection) customGroupsSection.style.display = "block";
+          } else {
+            if (customGroupsSection) customGroupsSection.style.display = "none";
+          }
+        });
+        selector.dispatchEvent(new Event("change"));
+      }
+    });
+
+    // Add ripple effect to buttons
+    document.querySelectorAll('.btn').forEach(button => {
+      button.addEventListener('click', function(e) {
+        const ripple = document.createElement('span');
+        const rect = this.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+        const x = e.clientX - rect.left - size / 2;
+        const y = e.clientY - rect.top - size / 2;
+        
+        ripple.style.width = ripple.style.height = size + 'px';
+        ripple.style.left = x + 'px';
+        ripple.style.top = y + 'px';
+        ripple.classList.add('ripple');
+        
+        this.appendChild(ripple);
+        
+        setTimeout(() => ripple.remove(), 600);
+      });
+    });
+  </script>
+</body>
+</html>

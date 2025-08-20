@@ -1,0 +1,3334 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-08-16 04:38+0530\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: .\templates\agriculture.html:6 .\templates\agriculture.html:374
+msgid "Punjab Agriculture Overview"
+msgstr "ਪੰਜਾਬ ਖੇਤੀਬਾੜੀ ਦਾ ਸਰਵੇਖਣ"
+
+#: .\templates\agriculture.html:358 .\templates\crop_residue.html:469
+#: .\templates\dsr.html:420 .\templates\evapotranspiration.html:559
+#: .\templates\farmer-engagement.html:681 .\templates\farmer_survey.html:652
+#: .\templates\farmers.html:252 .\templates\index.html:670
+#: .\templates\landing.html:1906 .\templates\mapping.html:628
+#: .\templates\meter_reading.html:1091 .\templates\stages.html:468
+#: .\templates\tpr.html:362 .\templates\tubewell.html:357
+msgid "Toggle theme"
+msgstr "ਥੀਮ ਬਦਲੋ"
+
+#: .\templates\agriculture.html:370
+msgid "Punjab: The Granary of India"
+msgstr "ਪੰਜਾਬ: ਭਾਰਤ ਦਾ ਅੰਨ ਭੰਡਾਰ"
+
+#: .\templates\agriculture.html:376
+#, python-format
+msgid ""
+"\n"
+"                Despite covering only 1.5%% of India's land area, Punjab "
+"plays a critical role in food grain production due to its wheat-rice "
+"cropping system and the impact of the Green Revolution.\n"
+"                "
+msgstr ""
+"\n"
+"ਭਾਵੇਂ ਪੰਜਾਬ ਭਾਰਤ ਦੀ ਜ਼ਮੀਨ ਦੇ ਕੇਵਲ 1.5%% ਹਿੱਸੇ 'ਤੇ ਫੈਲਿਆ ਹੋਇਆ ਹੈ, ਪਰ ਇਹ ਆਪਣੇ ਗੰਢਮ-ਚੌਲ ਦੀ ਫਸਲ "
+"ਚੱਕਰ ਅਤੇ ਹਰੀ ਕ੍ਰਾਂਤੀ ਦੇ ਪ੍ਰਭਾਵ ਕਾਰਨ ਅਨਾਜ ਉਤਪਾਦਨ ਵਿੱਚ ਅਹੰਕਾਰਪੂਰਕ ਭੂਮਿਕਾ ਨਿਭਾਉਂਦਾ ਹੈ।"
+
+#: .\templates\agriculture.html:382
+msgid "🌾 Agricultural Significance"
+msgstr "🌾 ਖੇਤੀਬਾੜੀ ਦੀ ਮਹੱਤਤਾ"
+
+#: .\templates\agriculture.html:384
+#, python-format
+msgid "Covers only 1.5%% of India's land area"
+msgstr "ਭਾਰਤ ਦੀ ਜ਼ਮੀਨ ਦੇ ਕੇਵਲ 1.5%% ਹਿੱਸੇ 'ਤੇ ਫੈਲਿਆ"
+
+#: .\templates\agriculture.html:385
+msgid "Major contributor to national food security"
+msgstr "ਦੇਸ਼ ਦੀ ਖਾਦ ਸੁਰੱਖਿਆ ਵਿੱਚ ਮੁੱਖ ਯੋਗਦਾਨੀ"
+
+#: .\templates\agriculture.html:386
+msgid "Green Revolution success story"
+msgstr "ਹਰੀ ਕ੍ਰਾਂਤੀ ਦੀ ਸਫਲਤਾ ਕਹਾਣੀ"
+
+#: .\templates\agriculture.html:388
+msgid "Punjab Agriculture"
+msgstr "ਪੰਜਾਬ ਖੇਤੀਬਾੜੀ"
+
+#: .\templates\agriculture.html:394
+msgid "The Wheat-Rice Cropping Cycle"
+msgstr "ਗੰਢਮ-ਚੌਲ ਦੀ ਫਸਲ ਚੱਕਰ"
+
+#: .\templates\agriculture.html:396
+msgid ""
+"\n"
+"                This dual-crop system brings productivity but also major "
+"environmental concerns.\n"
+"                "
+msgstr ""
+"\n"
+"ਇਹ ਦੋਹਰੀ ਫਸਲ ਪ੍ਰਣਾਲੀ ਉਤਪਾਦਕਤਾ ਲਿਆਉਂਦੀ ਹੈ ਪਰ ਨਾਲ ਹੀ ਵੱਡੀਆਂ ਵਾਤਾਵਰਣੀ ਚੁਣੌਤੀਆਂ ਵੀ ਲਿਆਉਂਦੀ "
+"ਹੈ।"
+
+#: .\templates\agriculture.html:403
+msgid "🌾 Rice Cultivation (Kharif: June–October)"
+msgstr "🌾 ਚੌਲ ਦੀ ਖੇਤੀ (ਖਰੀਫ਼: ਜੂਨ–ਅਕਤੂਬਰ)"
+
+#: .\templates\agriculture.html:405
+msgid "TPR – traditional, water-intensive"
+msgstr "ਟੀਪੀਆਰ – ਪਾਰੰਪਰਿਕ, ਪਾਣੀ-ਵਧੀਕ"
+
+#: .\templates\agriculture.html:406
+msgid "DSR – emerging, water-saving"
+msgstr "ਡੀਐਸਆਰ – ਨਵੀਂ, ਪਾਣੀ-ਬਚਾਉਣ ਵਾਲੀ"
+
+#: .\templates\agriculture.html:407
+msgid "Basmati exports across the globe"
+msgstr "ਬਾਸਮਤੀ ਚੌਲ ਦੀ ਦੁਨੀਆ ਭਰ ਵਿੱਚ ਨਿਰਯਾਤ"
+
+#: .\templates\agriculture.html:409
+msgid "Rice Field"
+msgstr "ਚੌਲ ਦਾ ਖੇਤ"
+
+#: .\templates\agriculture.html:413
+msgid "🌾 Wheat Cultivation (Rabi: Nov–April)"
+msgstr "🌾 ਕਣਕ ਦੀ ਖੇਤੀ (ਰਬੀ: ਨਵੰਬਰ–ਅਪ੍ਰੈਲ)"
+
+#: .\templates\agriculture.html:415
+msgid "Mechanized tools & HYVs"
+msgstr "ਮਕੈਨੀਕਲ ਸਾਧਨ ਤੇ ਉੱਚ ਉਪਜ ਵਾਲੀਆਂ ਕਿਸਮਾਂ"
+
+#: .\templates\agriculture.html:416
+msgid "Essential to national buffer stocks"
+msgstr "ਦੇਸ਼ ਦੇ ਬਫਰ ਸਟਾਕ ਲਈ ਜ਼ਰੂਰੀ"
+
+#: .\templates\agriculture.html:417
+msgid "Ensures food security for millions"
+msgstr "ਲੱਖਾਂ ਲੋਕਾਂ ਲਈ ਖਾਦ ਸੁਰੱਖਿਆ ਯਕੀਨੀ ਬਣਾਉਂਦੀ ਹੈ"
+
+#: .\templates\agriculture.html:419
+msgid "Wheat Field"
+msgstr "ਕਣਕ ਦਾ ਖੇਤ"
+
+#: .\templates\agriculture.html:425
+msgid "MSP – Minimum Support Price"
+msgstr "ਦੇਸ਼ ਦੇ ਬਫਰ ਸਟਾਕ ਲਈ ਜ਼ਰੂਰੀ"
+
+#: .\templates\agriculture.html:427
+msgid ""
+"\n"
+"                The government ensures a minimum price (₹2,000–₹2,700 per "
+"quintal), giving farmers financial security and predictable income.\n"
+"                "
+msgstr ""
+"\n"
+"ਸਰਕਾਰ ਘੱਟੋ-ਘੱਟ ਮੁੱਲ (₹2,000–₹2,700 ਪ੍ਰਤੀ ਕੁਇੰਟਲ) ਯਕੀਨੀ ਬਣਾਉਂਦੀ ਹੈ, ਜਿਸ ਨਾਲ ਕਿਸਾਨਾਂ ਨੂੰ "
+"ਆਰਥਿਕ ਸੁਰੱਖਿਆ ਅਤੇ ਨਿਸ਼ਚਿਤ ਆਮਦਨ ਮਿਲਦੀ ਹੈ।"
+
+#: .\templates\agriculture.html:434
+msgid "Impact of the Wheat-Rice Cycle"
+msgstr "ਗੰਢਮ-ਚੌਲ ਚੱਕਰ ਦਾ ਪ੍ਰਭਾਵ"
+
+#: .\templates\agriculture.html:437
+msgid "✅ Advantages"
+msgstr "✅ ਫਾਇਦੇ"
+
+#: .\templates\agriculture.html:439
+msgid "High productivity + surplus"
+msgstr "ਉੱਚ ਉਤਪਾਦਨ ਅਤੇ ਵਾਧੂ ਉਤਪਾਦਨ"
+
+#: .\templates\agriculture.html:440
+msgid "Government procurement assures income"
+msgstr "ਸਰਕਾਰੀ ਖਰੀਦ ਆਮਦਨ ਦੀ ਗਾਰੰਟੀ ਦਿੰਦੀ ਹੈ"
+
+#: .\templates\agriculture.html:441
+msgid "Efficiency through machinery"
+msgstr "ਮਸ਼ੀਨਰੀ ਰਾਹੀਂ ਕਾਰਗੁਜ਼ਾਰੀ"
+
+#: .\templates\agriculture.html:445
+msgid "⚠️ Disadvantages"
+msgstr "⚠️ ਨੁਕਸਾਨ"
+
+#: .\templates\agriculture.html:447
+msgid "Groundwater depletion"
+msgstr "ਭੂਜਲ ਦੀ ਘਟਾਓ"
+
+#: .\templates\agriculture.html:448
+msgid "Soil degradation"
+msgstr "ਮਿੱਟੀ ਦੀ ਗੁਣਵੱਤਾ ਵਿੱਚ ਕਮੀ"
+
+#: .\templates\agriculture.html:449
+msgid "Air pollution via stubble burning"
+msgstr "ਪਰਾਲੀ ਸਾੜਨ ਕਾਰਨ ਹਵਾ ਪ੍ਰਦੂਸ਼ਣ"
+
+#: .\templates\agriculture.html:450
+msgid "Climate change vulnerability"
+msgstr "ਮੌਸਮੀ ਤਬਦੀਲੀ ਦੀ ਸੰਵੇਦਨਸ਼ੀਲਤਾ"
+
+#: .\templates\crop_residue.html:476
+msgid "Crop Residue Management and Pre-Rabi Field Preparation"
+msgstr "ਫਸਲ ਦੇ ਬਚੇ ਹੋਏ ਅੰਗਾਂ ਦੀ ਸੰਭਾਲ ਅਤੇ ਰਬੀ ਤੋਂ ਪਹਿਲਾਂ ਖੇਤ ਦੀ ਤਿਆਰੀ"
+
+#: .\templates\crop_residue.html:479
+msgid ""
+"\n"
+"      At the end of the rice season farmers use the combine to harvest rice, "
+"this leaves hard stubbles at the root of the plant projecting 10–15 cm above "
+"surface level. Thereafter, farmers will plough the field with a reaper to "
+"cut these stubbles leaving behind straw. This straw needs to be cleared so "
+"the land can be ready for the next crop's seeding. The most typical way of "
+"doing so is by burning it. However, due to its negative externalities the "
+"government is imposing a ₹2,500 per acre fine, prompting farmers to look "
+"into ways to eschew burning. Moreover, discouraging farmers from admitting "
+"the offense of burning.\n"
+"      "
+msgstr ""
+"\n"
+"ਚੌਲ ਦੇ ਮੌਸਮ ਦੇ ਅੰਤ 'ਤੇ ਕਿਸਾਨ ਕਾਂਬਾਈਨ ਨਾਲ ਚੌਲ ਦੀ ਕਟਾਈ ਕਰਦੇ ਹਨ, ਜਿਸ ਨਾਲ ਪੌਦੇ ਦੀ ਜੜ੍ਹ 'ਤੇ "
+"10-15 ਸੈਂਟੀਮੀਟਰ ਉੱਚੀਆਂ ਸਖ਼ਤ ਡੰਡੀਆਂ ਰਹਿ ਜਾਂਦੀਆਂ ਹਨ। ਇਸ ਤੋਂ ਬਾਅਦ, ਕਿਸਾਨ ਰੀਪਰ ਨਾਲ ਖੇਤ ਨੂੰ ਜੋਤਦੇ "
+"ਹਨ ਤਾਂ ਜੋ ਇਹ ਡੰਡੀਆਂ ਕੱਟੀਆਂ ਜਾ ਸਕਣ ਅਤੇ ਪਰਾਲੀ ਪਿੱਛੇ ਰਹਿ ਜਾਂਦੀ ਹੈ। ਇਹ ਪਰਾਲੀ ਹਟਾਉਣੀ ਲਾਜ਼ਮੀ ਹੈ "
+"ਤਾਂ ਜੋ ਅਗਲੀ ਫਸਲ ਦੀ ਬਿਜਾਈ ਲਈ ਖੇਤ ਤਿਆਰ ਹੋ ਸਕੇ। ਆਮ ਤੌਰ 'ਤੇ, ਇਸਨੂੰ ਸਾੜ ਕੇ ਹਟਾਇਆ ਜਾਂਦਾ ਹੈ। "
+"ਪਰ, ਇਸ ਦੇ ਨੁਕਸਾਨਦਾਇਕ ਪ੍ਰਭਾਵਾਂ ਕਰਕੇ ਸਰਕਾਰ 2,500 ਰੁਪਏ ਪ੍ਰਤੀ ਏਕੜ ਜੁਰਮਾਨਾ ਲਗਾ ਰਹੀ ਹੈ, ਜਿਸ "
+"ਕਾਰਨ ਕਿਸਾਨ ਸਾੜਨ ਤੋਂ ਬਚਣ ਦੇ ਤਰੀਕੇ ਲੱਭ ਰਹੇ ਹਨ ਅਤੇ ਸਾੜਨ ਦੀ ਗਲ ਕਰਨ ਤੋਂ ਵੀ ਕਤਰਾਉਂਦੇ ਹਨ।"
+
+#: .\templates\crop_residue.html:487
+msgid "Pre-Rabi Crop Preparation"
+msgstr "ਰਬੀ ਤੋਂ ਪਹਿਲਾਂ ਫਸਲ ਦੀ ਤਿਆਰੀ"
+
+#: .\templates\crop_residue.html:491 .\templates\crop_residue.html:493
+#: .\templates\crop_residue.html:515
+msgid "Combine Harvesting"
+msgstr "ਕੰਬਾਈਨ ਨਾਲ ਕਟਾਈ"
+
+#: .\templates\crop_residue.html:497 .\templates\crop_residue.html:499
+#: .\templates\crop_residue.html:561
+msgid "Sowing"
+msgstr "ਬਿਜਾਈ"
+
+#: .\templates\crop_residue.html:503 .\templates\crop_residue.html:505
+#: .\templates\crop_residue.html:537
+msgid "Straw Management"
+msgstr "ਪਰਾਲੀ ਪ੍ਰਬੰਧਨ"
+
+#: .\templates\crop_residue.html:511
+msgid "Detailed Process Overview"
+msgstr "ਤਫਸੀਲ ਨਾਲ ਪ੍ਰਕਿਰਿਆ ਦਾ ਵੇਰਵਾ"
+
+#: .\templates\crop_residue.html:517
+msgid "A combine harvester simultaneously cuts, threshes, and cleans paddy..."
+msgstr "ਕੰਬਾਈਨ ਹਾਰਵੇਸਟਰ ਇਕੋ ਵਾਰੀ ਚੌਲ ਦੀ ਕਟਾਈ, ਥ੍ਰੈਸ਼ਿੰਗ ਅਤੇ ਸਫਾਈ ਕਰਦਾ ਹੈ..."
+
+#: .\templates\crop_residue.html:520
+msgid ""
+"\n"
+"                During combine harvesting, the machine cuts, threshes, and "
+"cleans the rice in a single pass.\n"
+"                There are two modes of operation:\n"
+"\n"
+"                1. Without a chopper: This leaves behind tall stubbles (10–"
+"15 cm) and large amounts of straw spread across the field. These stubbles "
+"remain firmly rooted and cannot be left unmanaged.\n"
+"\n"
+"                2. With a chopper attachment: The stubbles are chopped down "
+"further, reducing their height to 0–5 cm. While this helps partially manage "
+"the residue, a significant layer of straw still remains on the surface.\n"
+"\n"
+"                In both cases, the field is left with a mixture of straw and "
+"standing stubble. If a chopper isn’t used, a follow-up pass with a reaper or "
+"cutter attachment is required to clear the land effectively before sowing "
+"the next crop.\n"
+"                "
+msgstr ""
+"\n"
+"ਕੰਬਾਈਨ ਨਾਲ ਕਟਾਈ ਦੌਰਾਨ, ਮਸ਼ੀਨ ਇਕੋ ਵਾਰੀ ਚੌਲ ਦੀ ਕਟਾਈ, ਥ੍ਰੈਸ਼ਿੰਗ ਅਤੇ ਸਫਾਈ ਕਰਦੀ ਹੈ।\n"
+"ਇਸਦੀ ਦੋ ਤਰੀਕੇ ਹਨ:\n"
+"\n"
+"1. ਚੌਪਰ ਤੋਂ ਬਿਨਾਂ: ਇਸ ਨਾਲ ਖੇਤ ਵਿੱਚ 10–15 ਸੈਂਟੀਮੀਟਰ ਉੱਚੀਆਂ ਡੰਡੀਆਂ ਅਤੇ ਵੱਡੀ ਮਾਤਰਾ ਵਿੱਚ ਪਰਾਲੀ "
+"ਰਹਿ ਜਾਂਦੀ ਹੈ। ਇਹ ਡੰਡੀਆਂ ਜਮੀਨ ਵਿੱਚ ਫੜੀ ਰਹਿੰਦੀਆਂ ਹਨ ਅਤੇ ਇਨ੍ਹਾਂ ਨੂੰ ਛੱਡਿਆ ਨਹੀਂ ਜਾ ਸਕਦਾ।\n"
+"\n"
+"2. ਚੌਪਰ ਨਾਲ: ਡੰਡੀਆਂ ਹੋਰ ਛੋਟੀ (0–5 ਸੈਂਟੀਮੀਟਰ) ਕਰ ਦਿੱਤੀਆਂ ਜਾਂਦੀਆਂ ਹਨ। ਹਾਲਾਂਕਿ ਇਹ ਰੈਜ਼ੀਡੂ ਨੂੰ ਕੁਝ "
+"ਹੱਦ ਤੱਕ ਸੰਭਾਲਦਾ ਹੈ, ਪਰ ਖੇਤ ਵਿੱਚ ਪਰਾਲੀ ਦੀ ਪਰਤ ਫਿਰ ਵੀ ਰਹਿ ਜਾਂਦੀ ਹੈ।\n"
+"\n"
+"ਦੋਵੇਂ ਹਾਲਤਾਂ ਵਿੱਚ, ਖੇਤ ਵਿੱਚ ਪਰਾਲੀ ਅਤੇ ਖੜ੍ਹੀਆਂ ਡੰਡੀਆਂ ਮਿਲੀਆਂ ਰਹਿ ਜਾਂਦੀਆਂ ਹਨ। ਜੇ ਚੌਪਰ ਨਹੀਂ ਵਰਤਿਆ "
+"ਜਾਂਦਾ, ਤਾਂ ਅਗਲੀ ਫ਼ਸਲ ਦੀ ਬਿਜਾਈ ਤੋਂ ਪਹਿਲਾਂ ਰੀਪਰ ਜਾਂ ਕਟਰ ਨਾਲ ਖੇਤ ਦੀ ਸਫਾਈ ਲਾਜ਼ਮੀ ਹੈ।"
+
+#: .\templates\crop_residue.html:533 .\templates\crop_residue.html:557
+#: .\templates\crop_residue.html:576
+msgid "Show more"
+msgstr "ਹੋਰ ਵੇਖੋ"
+
+#: .\templates\crop_residue.html:538
+msgid ""
+"Traditionally burned, straw is now managed through better alternatives..."
+msgstr "ਪਾਰੰਪਰਿਕ ਤੌਰ 'ਤੇ ਸਾੜੀ ਜਾਂਦੀ ਪਰਾਲੀ ਹੁਣ ਵਧੀਆ ਵਿਕਲਪਾਂ ਰਾਹੀਂ ਸੰਭਾਲੀ ਜਾਂਦੀ ਹੈ..."
+
+#: .\templates\crop_residue.html:541
+msgid ""
+"\n"
+"            There are multiple ways to manage parali after harvesting:\n"
+"\n"
+"            1. Burning: Still common, farmers may burn the entire field, "
+"partially burn (leaving stubble), or burn straw only and manually remove "
+"remaining stubble.\n"
+"\n"
+"            2. Baling: Implements collect straw into bales for sale or "
+"disposal. This requires transport and often incurs rental costs (₹500/acre), "
+"making it less viable for many farmers.\n"
+"\n"
+"            3. Plowing Methods:\n"
+"            "
+msgstr ""
+"\n"
+"            ਕਟਾਈ ਤੋਂ ਬਾਅਦ ਪਰਾਲੀ ਸੰਭਾਲਣ ਦੇ ਕਈ ਤਰੀਕੇ ਹਨ:\n"
+"\n"
+"            1. ਸਾੜਨਾ: ਅਜੇ ਵੀ ਆਮ ਹੈ, ਕਿਸਾਨ ਪੂਰਾ ਖੇਤ ਸਾੜ ਸਕਦੇ ਹਨ, ਹਿੱਸਾ-ਵਾਰ ਸਾੜਦੇ ਹਨ "
+"(ਡੰਡੀਆਂ ਛੱਡ ਕੇ), ਜਾਂ ਸਿਰਫ਼ ਪਰਾਲੀ ਸਾੜ ਕੇ ਬਾਕੀ ਡੰਡੀਆਂ ਹੱਥੋਂ ਹਟਾਉਂਦੇ ਹਨ।\n"
+"\n"
+"            2. ਗੱਠ ਬਣਾਉਣਾ: ਮਸ਼ੀਨਾਂ ਪਰਾਲੀ ਨੂੰ ਗੱਠਾਂ ਵਿੱਚ ਇਕੱਠਾ ਕਰਦੀਆਂ ਹਨ, ਜੋ ਵੇਚਣ ਜਾਂ ਨਸ਼ਟ "
+"ਕਰਨ ਲਈ ਵਰਤੀਆਂ ਜਾਂਦੀਆਂ ਹਨ। ਇਸ ਲਈ ਆਵਾਜਾਈ ਦੀ ਲੋੜ ਹੁੰਦੀ ਹੈ ਅਤੇ ਅਕਸਰ ਕਿਰਾਏ ਦੀ ਲਾਗਤ (₹500/"
+"ਏਕੜ) ਆਉਂਦੀ ਹੈ, ਜਿਸ ਕਰਕੇ ਬਹੁਤ ਸਾਰੇ ਕਿਸਾਨਾਂ ਲਈ ਇਹ ਘੱਟ ਲਾਭਕਾਰੀ ਹੈ।\n"
+"\n"
+"            3. ਜੋਤਣ ਦੇ ਤਰੀਕੇ:\n"
+"            "
+
+#: .\templates\crop_residue.html:551
+msgid "Mulcher + MB Plough:"
+msgstr "ਮਲਚਰ + ਐਮਬੀ ਪਲਾਊ:"
+
+#: .\templates\crop_residue.html:551
+msgid "Cuts straw, then buries it by flipping soil on top."
+msgstr "ਪਰਾਲੀ ਕੱਟ ਕੇ ਮਿੱਟੀ ਹੇਠਾਂ ਦਬਾਉਂਦੇ ਹਨ।"
+
+#: .\templates\crop_residue.html:552
+msgid "Rotavator:"
+msgstr "ਰੋਟਾਵੇਟਰ:"
+
+#: .\templates\crop_residue.html:552
+msgid "Mixes straw into the soil; often used with Super Seeder."
+msgstr "ਪਰਾਲੀ ਨੂੰ ਮਿੱਟੀ ਵਿੱਚ ਮਿਲਾਉਂਦਾ ਹੈ; ਅਕਸਰ ਸੁਪਰ ਸੀਡਰ ਨਾਲ ਵਰਤਿਆ ਜਾਂਦਾ ਹੈ।"
+
+#: .\templates\crop_residue.html:553
+msgid "Super Seeder:"
+msgstr "ਸੁਪਰ ਸੀਡਰ:"
+
+#: .\templates\crop_residue.html:553
+msgid ""
+"Simultaneously ploughs and sows wheat. Effective for hard soils but requires "
+"a high-HP tractor."
+msgstr ""
+"ਇਕੋ ਸਮੇਂ ਜੋਤ ਅਤੇ ਗੰਢਮ ਦੀ ਬਿਜਾਈ। ਸਖ਼ਤ ਮਿੱਟੀ ਲਈ ਵਧੀਆ, ਪਰ ਵੱਧ ਐਚਪੀ ਵਾਲਾ ਟਰੈਕਟਰ ਚਾਹੀਦਾ ਹੈ।"
+
+#: .\templates\crop_residue.html:562
+msgid ""
+"Once the land is cleared of straw, sowing begins using different methods..."
+msgstr "ਜਦੋਂ ਪਰਾਲੀ ਹਟਾ ਦਿੱਤੀ ਜਾਂਦੀ ਹੈ, ਤਾਂ ਖੇਤ ਵਿੱਚ ਵੱਖ-ਵੱਖ ਤਰੀਕਿਆਂ ਨਾਲ ਬਿਜਾਈ ਸ਼ੁਰੂ ਹੁੰਦੀ ਹੈ..."
+
+#: .\templates\crop_residue.html:565
+msgid ""
+"\n"
+"            After the field is cleared of straw and stubble, the next step "
+"is sowing wheat:\n"
+"\n"
+"            1. Super Seeder / Happy Seeder: These combine residue management "
+"and sowing in a single operation. They place seeds directly into the soil "
+"through the straw, saving time and labor.\n"
+"\n"
+"            2. Seed Drill (Most common): Traditional method used after "
+"clearing the field. It creates rows, ensures consistent seed depth, and "
+"improves germination.\n"
+"\n"
+"            In high-residue fields, using a seed drill along with earlier "
+"ploughing (rotavator or mulcher) ensures better seed-to-soil contact and "
+"uniform crop growth.\n"
+"            "
+msgstr ""
+"\n"
+"            ਜਦੋਂ ਖੇਤ ਤੋਂ ਪਰਾਲੀ ਅਤੇ ਡੰਡੀਆਂ ਹਟਾ ਦਿੱਤੀਆਂ ਜਾਂਦੀਆਂ ਹਨ, ਤਾਂ ਅਗਲਾ ਕਦਮ ਗੰਢਮ ਦੀ "
+"ਬਿਜਾਈ ਹੈ:\n"
+"\n"
+"            1. ਸੁਪਰ ਸੀਡਰ / ਹੈਪੀ ਸੀਡਰ: ਇਹ ਮਸ਼ੀਨਾਂ ਇਕੋ ਸਮੇਂ ਪਰਾਲੀ ਪ੍ਰਬੰਧਨ ਅਤੇ ਬਿਜਾਈ "
+"ਕਰਦੀਆਂ ਹਨ। ਇਹ ਬੀਜਾਂ ਨੂੰ ਪਰਾਲੀ ਰਾਹੀਂ ਸਿੱਧਾ ਮਿੱਟੀ ਵਿੱਚ ਪਾ ਦਿੰਦੀਆਂ ਹਨ, ਜਿਸ ਨਾਲ ਸਮਾਂ ਅਤੇ "
+"ਮਜ਼ਦੂਰੀ ਬਚਦੀ ਹੈ।\n"
+"\n"
+"            2. ਸੀਡ ਡ੍ਰਿਲ (ਸਭ ਤੋਂ ਆਮ): ਇਹ ਰਵਾਇਤੀ ਤਰੀਕਾ ਹੈ ਜੋ ਖੇਤ ਸਾਫ਼ ਕਰਨ ਤੋਂ ਬਾਅਦ "
+"ਵਰਤਿਆ ਜਾਂਦਾ ਹੈ। ਇਹ ਕਤਾਰਾਂ ਬਣਾਉਂਦੀ ਹੈ, ਬੀਜ ਦੀ ਗਹਿਰਾਈ ਇੱਕੋ ਜਿਹੀ ਰੱਖਦੀ ਹੈ ਅਤੇ ਅੰਕੁਰਣ ਵਿੱਚ "
+"ਸੁਧਾਰ ਕਰਦੀ ਹੈ।\n"
+"\n"
+"            ਜਿੱਥੇ ਖੇਤ ਵਿੱਚ ਵੱਧ ਪਰਾਲੀ ਰਹਿ ਜਾਂਦੀ ਹੈ, ਉੱਥੇ ਪਹਿਲਾਂ ਰੋਟਾਵੇਟਰ ਜਾਂ ਮਲਚਰ ਨਾਲ ਜੋਤਣ "
+"ਤੋਂ ਬਾਅਦ ਸੀਡ ਡ੍ਰਿਲ ਵਰਤਣ ਨਾਲ ਬੀਜ ਅਤੇ ਮਿੱਟੀ ਦਾ ਸੰਪਰਕ ਵਧੀਆ ਹੁੰਦਾ ਹੈ ਅਤੇ ਫਸਲ ਇੱਕੋ ਜਿਹੀ ਉਗਦੀ "
+"ਹੈ।\n"
+"            "
+
+#: .\templates\dsr.html:427
+msgid "🌱 Direct Seeded Rice (DSR)"
+msgstr "🌱 ਡਾਇਰੈਕਟ ਸੀਡਿਡ ਚੌਲ (DSR)"
+
+#: .\templates\dsr.html:432
+msgid ""
+"Direct Seeded Rice (DSR) is an emerging and efficient alternative to the "
+"traditional rice transplanting method.\n"
+"        Unlike conventional practices that involve raising seedlings in a "
+"nursery followed by manual transplantation,\n"
+"        DSR allows farmers to sow rice seeds directly into the field using a "
+"tractor-mounted seeder. This eliminates\n"
+"        the need for puddling and reduces dependency on labor and water."
+msgstr ""
+"ਡਾਇਰੈਕਟ ਸੀਡਿਡ ਚੌਲ (DSR) ਰਵਾਇਤੀ ਚੌਲ ਟ੍ਰਾਂਸਪਲੈਂਟਿੰਗ ਤਰੀਕੇ ਦਾ ਇੱਕ ਨਵਾਂ ਅਤੇ ਪ੍ਰਭਾਵਸ਼ਾਲੀ ਵਿਕਲਪ "
+"ਹੈ।\n"
+"ਪਾਰੰਪਰਿਕ ਤਰੀਕਿਆਂ ਵਿੱਚ ਨਰਸਰੀ ਵਿੱਚ ਪੁੱਗੀਆਂ ਉਗਾਈਆਂ ਜਾਂਦੀਆਂ ਹਨ ਅਤੇ ਫਿਰ ਹੱਥ ਨਾਲ ਟ੍ਰਾਂਸਪਲੈਂਟ ਕੀਤਾ "
+"ਜਾਂਦਾ ਹੈ,\n"
+"DSR ਵਿੱਚ ਕਿਸਾਨ ਟ੍ਰੈਕਟਰ-ਮਾਊਂਟਿਡ ਸੀਡਰ ਦੀ ਵਰਤੋਂ ਕਰਕੇ ਬੀਜਾਂ ਨੂੰ ਸਿੱਧਾ ਖੇਤ ਵਿੱਚ ਬੀਜ ਸਕਦੇ ਹਨ। ਇਸ "
+"ਨਾਲ ਪਡਲਿੰਗ ਦੀ ਲੋੜ ਨਹੀਂ ਰਹਿੰਦੀ ਅਤੇ ਮਜ਼ਦੂਰੀ ਅਤੇ ਪਾਣੀ ਦੀ ਲੋੜ ਘੱਟ ਹੁੰਦੀ ਹੈ।"
+
+#: .\templates\dsr.html:439
+msgid "Key Advantages:"
+msgstr " ਮੁੱਖ ਫਾਇਦੇ:"
+
+#: .\templates\dsr.html:440
+msgid "Significant water savings."
+msgstr "ਪਾਣੀ ਦੀ ਮਹੱਤਵਪੂਰਨ ਬਚਤ।"
+
+#: .\templates\dsr.html:441
+msgid "Reduced labor requirements during peak agricultural seasons."
+msgstr "ਖੇਤੀ ਦੇ ਚਰਮ ਸਮੇਂ ਮਜ਼ਦੂਰੀ ਦੀ ਘੱਟ ਲੋੜ।"
+
+#: .\templates\dsr.html:442
+msgid "Faster crop maturity and harvesting cycle."
+msgstr "ਫਸਲ ਦੀ ਜਲਦੀ ਪੱਕਣ ਅਤੇ ਕਟਾਈ ਦਾ ਚੱਕਰ।"
+
+#: .\templates\dsr.html:446
+msgid "Notable Challenges:"
+msgstr "ਮੁੱਖ ਚੁਣੌਤੀਆਂ:"
+
+#: .\templates\dsr.html:447
+msgid "Requires effective weed management strategies."
+msgstr "ਵਧੀਆ ਘਾਸ-ਨਿਯੰਤਰਣ ਨੀਤੀਆਂ ਦੀ ਲੋੜ।"
+
+#: .\templates\dsr.html:448
+msgid "Less suitable for sandy or porous soils due to moisture loss."
+msgstr "ਰੇਤਲੀ ਜਾਂ ਛਿੱਟੀ ਮਿੱਟੀ ਲਈ ਘੱਟ ਉਚਿਤ, ਨਮੀ ਖੋਹ ਕਾਰਨ।"
+
+#: .\templates\dsr.html:449
+msgid "May lead to uneven seed germination if not managed carefully."
+msgstr "ਧਿਆਨ ਨਾ ਦੇਣ ਤੇ ਬੀਜਾਂ ਦੀ ਅਸਮਾਨ ਉਗਾਉ ਹੋ ਸਕਦੀ ਹੈ।"
+
+#: .\templates\dsr.html:453
+msgid ""
+"In response to Punjab's escalating groundwater crisis, DSR is being actively "
+"promoted as a sustainable solution\n"
+"        to rice cultivation. Since 2022, the state government has provided "
+"an incentive of ₹1,500 per acre to farmers\n"
+"        adopting the DSR method. Verification is carried out through two "
+"field inspections during the crop’s germination stage.\n"
+"        With increasing adoption, DSR is gradually becoming a standardized "
+"and systematic approach to rice farming in the region."
+msgstr ""
+"ਪੰਜਾਬ ਵਿੱਚ ਵਧ ਰਹੀ ਭੂਜਲ ਸੰਕਟ ਦੇ ਜਵਾਬ ਵਿੱਚ, DSR ਨੂੰ ਚੌਲ ਦੀ ਖੇਤੀ ਲਈ ਇੱਕ ਟਿਕਾਊ ਹੱਲ ਵਜੋਂ "
+"ਪ੍ਰਚਾਰਿਤ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ। 2022 ਤੋਂ, ਸੂਬਾ ਸਰਕਾਰ ਨੇ DSR ਤਰੀਕੇ ਨੂੰ ਅਪਣਾਉਣ ਵਾਲੇ ਕਿਸਾਨਾਂ ਨੂੰ "
+"ਪ੍ਰਤੀ ਏਕੜ ₹1,500 ਦਾ ਪ੍ਰੋਤਸਾਹਨ ਦਿੱਤਾ ਹੈ। ਫਸਲ ਦੇ ਅੰਕੁਰਣ ਦੌਰਾਨ ਦੋ ਖੇਤੀ-ਜਾਂਚਾਂ ਰਾਹੀਂ ਪੁਸ਼ਟੀ ਕੀਤੀ "
+"ਜਾਂਦੀ ਹੈ। ਵਧ ਰਹੀ ਅਪਣਾਈ ਨਾਲ, DSR ਖੇਤਰ ਵਿੱਚ ਚੌਲ ਖੇਤੀ ਲਈ ਇੱਕ ਮਿਆਰੀ ਅਤੇ ਪ੍ਰਣਾਲੀਬੱਧ ਤਰੀਕਾ "
+"ਬਣ ਰਿਹਾ ਹੈ।"
+
+#: .\templates\dsr.html:463
+msgid "Direct Seeded Rice (DSR) Establishment Steps"
+msgstr "ਡਾਇਰੈਕਟ ਸੀਡਿਡ ਚੌਲ (DSR) ਦੀ ਸਥਾਪਨਾ ਦੇ ਕਦਮ"
+
+#: .\templates\dsr.html:471
+msgid "Wet DSR"
+msgstr "ਗਿੱਲਾ DSR"
+
+#: .\templates\dsr.html:473
+msgid "Field is flooded in advance, seeds are sown after water recedes."
+msgstr "ਖੇਤ ਪਹਿਲਾਂ ਭਰਿਆ ਜਾਂਦਾ ਹੈ, ਬੀਜ ਪਾਣੀ ਘਟਣ ਤੋਂ ਬਾਅਦ ਬਿਜੇ ਜਾਂਦੇ ਹਨ।"
+
+#: .\templates\dsr.html:484
+msgid "Dry DSR"
+msgstr "ਸੁੱਕਾ DSR"
+
+#: .\templates\dsr.html:486
+msgid "Seeds sown on dry soil, then irrigated for germination."
+msgstr "ਬੀਜ ਸੁੱਕੀ ਮਿੱਟੀ 'ਤੇ ਬਿਜੇ ਜਾਂਦੇ ਹਨ, ਫਿਰ ਅੰਕੁਰਣ ਲਈ ਸਿੰਚਾਈ ਕੀਤੀ ਜਾਂਦੀ ਹੈ।"
+
+#: .\templates\dsr.html:497
+msgid "DSR Seeder"
+msgstr "DSR ਸੀਡਰ"
+
+#: .\templates\dsr.html:499
+msgid "Tractor-mounted seeder for direct sowing."
+msgstr "ਟ੍ਰੈਕਟਰ-ਮਾਊਂਟਿਡ ਸੀਡਰ ਜੋ ਸਿੱਧਾ ਬੀਜਾਈ ਲਈ ਵਰਤਿਆ ਜਾਂਦਾ ਹੈ।"
+
+#: .\templates\dsr.html:510 .\templates\tpr.html:393
+msgid "Germination"
+msgstr "ਅੰਕੁਰਣ"
+
+#: .\templates\dsr.html:512
+msgid "Seedlings emerge, 2–4 irrigations as needed."
+msgstr "ਪੁੱਗੀਆਂ ਉਗਦੀਆਂ ਹਨ, ਲੋੜ ਅਨੁਸਾਰ 2–4 ਵਾਰੀ ਸਿੰਚਾਈ।"
+
+#: .\templates\dsr.html:519
+msgid "Watch: DSR Explained"
+msgstr "ਦੇਖੋ: DSR ਦੀ ਵਿਆਖਿਆ"
+
+#: .\templates\dsr.html:531
+msgid "A short explanation of Direct Seeded Rice (DSR) by Mr. Dan Etgar."
+msgstr "ਮਿਸਟਰ ਡੈਨ ਐਟਗਾਰ ਵੱਲੋਂ ਡਾਇਰੈਕਟ ਸੀਡਿਡ ਚੌਲ (DSR) ਦੀ ਛੋਟੀ ਵਿਆਖਿਆ।"
+
+#: .\templates\evapotranspiration.html:540 .\templates\farmer_survey.html:633
+#: .\templates\index.html:7 .\templates\index.html:645
+msgid "DIGI-VI"
+msgstr "ਡਿਜੀ–ਵੀ"
+
+#: .\templates\evapotranspiration.html:541
+#: .\templates\evapotranspiration.html:576
+msgid "Evapotranspiration Analysis"
+msgstr "ਵਿਅਪੋਟ੍ਰਾਂਸਪਿਰੇਸ਼ਨ ਵਿਸ਼ਲੇਸ਼ਣ"
+
+#: .\templates\evapotranspiration.html:545 .\templates\farmer_survey.html:638
+#: .\templates\mapping.html:614 .\templates\meter_reading.html:1075
+msgid "Back to Templates"
+msgstr "ਟੈਂਪਲੇਟ ਤੇ ਵਾਪਸ"
+
+#: .\templates\evapotranspiration.html:578
+msgid ""
+"Advanced crop water requirement calculations using ET models, weather data, "
+"and soil moisture analytics for precision irrigation planning."
+msgstr ""
+"ਉੱਨਤ ET ਮਾਡਲ, ਮੌਸਮੀ ਡੇਟਾ ਅਤੇ ਮਿੱਟੀ ਦੀ ਨਮੀ ਵਿਸ਼ਲੇਸ਼ਣ ਰਾਹੀਂ ਖੇਤੀ ਲਈ ਪਾਣੀ ਦੀ ਲੋੜ ਦੀ ਗਣਨਾ "
+"ਅਤੇ ਸੁਚੱਜੀ ਸਿੰਚਾਈ ਯੋਜਨਾ।"
+
+#: .\templates\evapotranspiration.html:586 .\templates\farmer_survey.html:680
+#: .\templates\index.html:733 .\templates\index.html:748
+#: .\templates\index.html:763 .\templates\mapping.html:656
+msgid "Under Development"
+msgstr "ਵਿਕਾਸ ਹੇਠ"
+
+#: .\templates\evapotranspiration.html:588
+msgid "Coming Soon: Advanced ET Analytics"
+msgstr "ਜਲਦੀ ਆ ਰਿਹਾ: ਉੱਨਤ ET ਵਿਸ਼ਲੇਸ਼ਣ"
+
+#: .\templates\evapotranspiration.html:594
+msgid "Weather Memory Challenge"
+msgstr "ਮੌਸਮ ਯਾਦ ਚੁਣੌਤੀ"
+
+#: .\templates\evapotranspiration.html:596
+msgid "Match the weather icons while we develop the ET analysis tool!"
+msgstr "ET ਵਿਸ਼ਲੇਸ਼ਣ ਸੰਦ ਬਣਾਉਂਦੇ ਹੋਏ ਮੌਸਮ ਦੇ ਆਇਕਨ ਮਿਲਾਓ!"
+
+#: .\templates\evapotranspiration.html:603 .\templates\mapping.html:677
+msgid "Moves"
+msgstr "ਚਾਲਾਂ"
+
+#: .\templates\evapotranspiration.html:607
+msgid "Matches"
+msgstr "ਮਿਲਾਓ"
+
+#: .\templates\evapotranspiration.html:611 .\templates\mapping.html:681
+#: .\templates\mapping.html:712
+msgid "Time"
+msgstr "ਸਮਾਂ"
+
+#: .\templates\evapotranspiration.html:621
+msgid "New Game"
+msgstr "ਨਵਾਂ ਖੇਡ"
+
+#: .\templates\evapotranspiration.html:624 .\templates\farmer_survey.html:720
+#: .\templates\mapping.html:700
+msgid "Reset"
+msgstr "ਰੀਸੈਟ"
+
+#: .\templates\evapotranspiration.html:633
+msgid "DIGI-VI Evapotranspiration Analysis • Development Preview"
+msgstr "ਡਿਜੀ-ਵੀ ਵਿਅਪੋਟ੍ਰਾਂਸਪਿਰੇਸ਼ਨ ਵਿਸ਼ਲੇਸ਼ਣ • ਵਿਕਾਸ ਝਲਕ"
+
+#: .\templates\farmer-engagement.html:7
+#, fuzzy
+#| msgid "🌾 Agricultural Significance"
+msgid "Agricultural Training Gallery"
+msgstr "ਖੇਤੀਬਾੜੀ ਟ੍ਰੇਨਿੰਗ ਗੈਲਰੀ"
+
+#: .\templates\farmer-engagement.html:674
+msgid "Switch to Punjabi"
+msgstr "ਪੰਜਾਬੀ ਵਿੱਚ ਬਦਲੋ"
+
+#: .\templates\farmer-engagement.html:676
+msgid "Switch to English"
+msgstr "ਅੰਗਰੇਜ਼ੀ ਵਿੱਚ ਬਦਲੋ"
+
+#: .\templates\farmer-engagement.html:679 .\templates\landing.html:1884
+#: .\templates\landing.html:1921
+msgid "Home"
+msgstr "ਮੁੱਖ ਸਫ਼ਾ"
+
+#: .\templates\farmer-engagement.html:690
+msgid "Transforming Agriculture Through Innovation"
+msgstr "ਨਵੀਨਤਾ ਰਾਹੀਂ ਖੇਤੀਬਾੜੀ ਵਿੱਚ ਬਦਲਾਅ"
+
+#: .\templates\farmer-engagement.html:691
+msgid ""
+"Empowering Punjab's farmers with cutting-edge water-smart training programs "
+"and sustainable farming techniques"
+msgstr "ਪੰਜਾਬ ਦੇ ਕਿਸਾਨਾਂ ਨੂੰ ਪਾਣੀ-ਸਮਝਦਾਰ ਟ੍ਰੇਨਿੰਗ ਅਤੇ ਟਿਕਾਊ ਖੇਤੀ ਤਕਨੀਕਾਂ ਨਾਲ ਸਸ਼ਕਤ ਕਰਨਾ"
+
+#: .\templates\farmer-engagement.html:692
+msgid ""
+"Where traditional wisdom meets modern technology to create a sustainable "
+"future"
+msgstr "ਜਿੱਥੇ ਰਵਾਇਤੀ ਗਿਆਨ ਆਧੁਨਿਕ ਤਕਨੀਕ ਨਾਲ ਮਿਲਦਾ ਹੈ, ਟਿਕਾਊ ਭਵਿੱਖ ਬਣਾਉਣ ਲਈ"
+
+#: .\templates\farmer-engagement.html:703
+msgid "Alternate Wetting & Drying (AWD)"
+msgstr "ਬਦਲਵੇਂ ਢੰਗ ਨਾਲ ਗਿੱਲਾ ਕਰਨਾ ਅਤੇ ਸੁਕਾਉਣਾ (AWD)"
+
+#: .\templates\farmer-engagement.html:704
+#, python-format
+msgid ""
+"Revolutionary water management technique that reduces water usage by up to "
+"30%% while maintaining rice yields through strategic field drying cycles"
+msgstr ""
+"ਇਹ ਪਾਣੀ ਪ੍ਰਬੰਧਨ ਦੀ ਇਨਕਲਾਬੀ ਤਕਨੀਕ ਹੈ ਜੋ ਖੇਤ ਨੂੰ ਰਣਨੀਤਿਕ ਢੰਗ ਨਾਲ ਸੁਕਾ ਕੇ ਪਾਣੀ ਦੀ ਵਰਤੋਂ "
+"30%% ਤੱਕ ਘਟਾਉਂਦੀ ਹੈ, ਅਤੇ ਚੌਲ ਦੀ ਪੈਦਾਵਾਰ ਬਣਾਈ ਰੱਖਦੀ ਹੈ।"
+
+#: .\templates\farmer-engagement.html:750
+msgid "Revolutionizing Water Management"
+msgstr "ਪਾਣੀ ਪ੍ਰਬੰਧਨ ਵਿੱਚ ਇਨਕਲਾਬ"
+
+#: .\templates\farmer-engagement.html:751
+msgid ""
+"To further promote water-saving practices in rice cultivation, we conducted "
+"a training session on Alternate Wetting and Drying (AWD), in collaboration "
+"with the International Rice Research Institute (IRRI). AWD is a proven "
+"technique that reduces water use by encouraging farmers to intermittently "
+"dry their fields rather than keeping them continuously flooded. The training "
+"focused on helping farmers understand how to manage water levels effectively—"
+"limiting the height of flooding and allowing the soil to partially dry "
+"before the next irrigation."
+msgstr ""
+"ਚੌਲ ਦੀ ਖੇਤੀ ਵਿੱਚ ਪਾਣੀ-ਬਚਤ ਤਰੀਕਿਆਂ ਨੂੰ ਹੋਰ ਉਤਸ਼ਾਹਿਤ ਕਰਨ ਲਈ ਅਸੀਂ ਇੰਟਰਨੈਸ਼ਨਲ ਰਾਈਸ ਰਿਸਰਚ "
+"ਇੰਸਟੀਚਿਊਟ (IRRI) ਨਾਲ ਮਿਲ ਕੇ AWD (ਬਦਲਵੇਂ ਢੰਗ ਨਾਲ ਗਿੱਲਾ ਕਰਨਾ ਅਤੇ ਸੁਕਾਉਣਾ) 'ਤੇ ਟ੍ਰੇਨਿੰਗ ਸੈਸ਼ਨ "
+"ਕਰਵਾਇਆ। AWD ਇੱਕ ਸਾਬਤ ਤਕਨੀਕ ਹੈ ਜੋ ਕਿਸਾਨਾਂ ਨੂੰ ਲਗਾਤਾਰ ਪਾਣੀ ਭਰਨ ਦੀ ਬਜਾਏ ਖੇਤ ਨੂੰ ਕੁਝ ਸਮੇਂ ਲਈ "
+"ਸੁਕਾ ਕੇ ਪਾਣੀ ਦੀ ਵਰਤੋਂ ਘਟਾਉਣ ਲਈ ਉਤਸ਼ਾਹਿਤ ਕਰਦੀ ਹੈ। ਟ੍ਰੇਨਿੰਗ ਵਿੱਚ ਕਿਸਾਨਾਂ ਨੂੰ ਪਾਣੀ ਦੀ ਸਤਰ ਨੂੰ "
+"ਪ੍ਰਭਾਵਸ਼ਾਲੀ ਢੰਗ ਨਾਲ ਪ੍ਰਬੰਧਨ ਕਰਨ, ਪਾਣੀ ਦੀ ਉਚਾਈ ਸੀਮਤ ਕਰਨ ਅਤੇ ਅਗਲੀ ਸਿੰਚਾਈ ਤੋਂ ਪਹਿਲਾਂ ਮਿੱਟੀ "
+"ਨੂੰ ਕੁਝ ਹੱਦ ਤੱਕ ਸੁਕਣ ਦੇਣ ਬਾਰੇ ਜਾਣਕਾਰੀ ਦਿੱਤੀ।"
+
+#: .\templates\farmer-engagement.html:752
+msgid ""
+"This method marks a critical shift toward more sustainable rice farming. By "
+"reducing the frequency and intensity of irrigation, AWD helps lower "
+"groundwater extraction, which is urgently needed in Punjab, where overuse of "
+"groundwater poses a serious threat to long-term agricultural viability. "
+"Through our partnership with IRRI, we aim to build farmer capacity and "
+"awareness, equipping them with tools and knowledge to adapt to more water-"
+"efficient and climate-resilient farming systems."
+msgstr ""
+"ਇਹ ਤਰੀਕਾ ਚੌਲ ਦੀ ਖੇਤੀ ਨੂੰ ਹੋਰ ਟਿਕਾਊ ਬਣਾਉਣ ਵੱਲ ਇੱਕ ਮਹੱਤਵਪੂਰਨ ਬਦਲਾਅ ਹੈ। ਸਿੰਚਾਈ ਦੀ ਵਾਰ-"
+"ਵਾਰਤਾ ਅਤੇ ਤੀਬਰਤਾ ਘਟਾ ਕੇ, AWD ਭੂਜਲ ਦੀ ਖਪਤ ਘਟਾਉਣ ਵਿੱਚ ਮਦਦ ਕਰਦੀ ਹੈ, ਜੋ ਕਿ ਪੰਜਾਬ ਵਿੱਚ ਲੰਬੇ "
+"ਸਮੇਂ ਲਈ ਖੇਤੀ ਦੀ ਟਿਕਾਊਤਾ ਲਈ ਬਹੁਤ ਜ਼ਰੂਰੀ ਹੈ। IRRI ਨਾਲ ਸਾਂਝਦਾਰੀ ਰਾਹੀਂ ਅਸੀਂ ਕਿਸਾਨਾਂ ਦੀ "
+"ਸਮਰੱਥਾ ਅਤੇ ਜਾਗਰੂਕਤਾ ਵਧਾਉਣ, ਉਨ੍ਹਾਂ ਨੂੰ ਪਾਣੀ-ਸਮਝਦਾਰ ਅਤੇ ਮੌਸਮ-ਸਹਿਣਸ਼ੀਲ ਖੇਤੀ ਪ੍ਰਣਾਲੀਆਂ ਲਈ ਸੰਦ "
+"ਅਤੇ ਗਿਆਨ ਦੇਣ ਦਾ ਲਕੜ ਰੱਖਦੇ ਹਾਂ।"
+
+#: .\templates\farmer-engagement.html:761
+msgid "Direct Seeded Rice (DSR) Workshop"
+msgstr "ਡਾਇਰੈਕਟ ਸੀਡਿਡ ਚੌਲ (DSR) ਵਰਕਸ਼ਾਪ"
+
+#: .\templates\farmer-engagement.html:762
+#, python-format
+msgid ""
+"Modern seeding technique that eliminates transplanting, reduces labor costs "
+"by 40%%, and promotes sustainable farming through efficient resource "
+"utilization"
+msgstr ""
+"ਇਹ ਆਧੁਨਿਕ ਬਿਜਾਈ ਤਕਨੀਕ ਹੈ ਜੋ ਟ੍ਰਾਂਸਪਲਾਂਟਿੰਗ ਦੀ ਲੋੜ ਖਤਮ ਕਰਦੀ ਹੈ, ਮਜ਼ਦੂਰੀ ਦੀ ਲਾਗਤ 40%% ਤੱਕ "
+"ਘਟਾਉਂਦੀ ਹੈ ਅਤੇ ਸਰੋਤਾਂ ਦੀ ਪ੍ਰਭਾਵਸ਼ਾਲੀ ਵਰਤੋਂ ਰਾਹੀਂ ਟਿਕਾਊ ਖੇਤੀ ਨੂੰ ਉਤਸ਼ਾਹਿਤ ਕਰਦੀ ਹੈ।"
+
+#: .\templates\farmer-engagement.html:814
+msgid "Pioneering Sustainable Rice Cultivation"
+msgstr "ਟਿਕਾਊ ਚੌਲ ਖੇਤੀ ਵਿੱਚ ਅਗਵਾਈ"
+
+#: .\templates\farmer-engagement.html:815
+msgid ""
+"\n"
+"                    <p>As part of our ongoing efforts to promote sustainable "
+"rice cultivation, we organized a Direct Seeded Rice (DSR) workshop for "
+"farmers in Punjab. The workshop introduced farmers to the DSR methodology, "
+"including key techniques and best practices for successful implementation. "
+"DSR offers a significant advantage over traditional transplanting methods by "
+"requiring less water and labor—two critical resources in Punjab’s "
+"agricultural landscape.</p>\n"
+"                    <p>However, the success of DSR depends on proper "
+"execution. One of the main challenges with DSR is the potential for "
+"increased weed pressure if not managed carefully. To address this, our "
+"training sessions emphasized weed management strategies and timely agronomic "
+"practices that ensure the method's effectiveness and long-term benefits.</"
+"p>\n"
+"                    <p>The workshop was conducted in collaboration with "
+"Punjab Agricultural University (PAU), our core partner in this project. As "
+"the leading rice research institution in the region, PAU brought critical "
+"technical expertise and practical guidance to the training, reinforcing our "
+"shared goal of advancing water-efficient and resilient farming practices in "
+"Punjab.</p>\n"
+"                    "
+msgstr ""
+"\n"
+"                    <p>ਟਿਕਾਊ ਚੌਲ ਖੇਤੀ ਨੂੰ ਉਤਸ਼ਾਹਿਤ ਕਰਨ ਦੇ ਸਾਡੇ ਲਗਾਤਾਰ ਯਤਨਾਂ ਦੇ ਹਿੱਸੇ "
+"ਵਜੋਂ, ਅਸੀਂ ਪੰਜਾਬ ਵਿੱਚ ਕਿਸਾਨਾਂ ਲਈ ਡਾਇਰੈਕਟ ਸੀਡਿਡ ਚੌਲ (DSR) ਵਰਕਸ਼ਾਪ ਆਯੋਜਿਤ ਕੀਤੀ। ਵਰਕਸ਼ਾਪ "
+"ਵਿੱਚ ਕਿਸਾਨਾਂ ਨੂੰ DSR ਤਰੀਕੇ, ਮੁੱਖ ਤਕਨੀਕਾਂ ਅਤੇ ਸਫਲ ਲਾਗੂ ਕਰਨ ਲਈ ਵਧੀਆ ਤਰੀਕਿਆਂ ਬਾਰੇ ਜਾਣੂ "
+"ਕਰਵਾਇਆ ਗਿਆ। DSR ਰਵਾਇਤੀ ਟ੍ਰਾਂਸਪਲਾਂਟਿੰਗ ਤਰੀਕਿਆਂ ਨਾਲੋਂ ਵੱਡਾ ਫਾਇਦਾ ਦਿੰਦਾ ਹੈ, ਕਿਉਂਕਿ ਇਹ ਪਾਣੀ "
+"ਅਤੇ ਮਜ਼ਦੂਰੀ—ਪੰਜਾਬ ਦੀ ਖੇਤੀਬਾੜੀ ਵਿੱਚ ਦੋ ਮਹੱਤਵਪੂਰਨ ਸਰੋਤ—ਘੱਟ ਲੋੜਦੇ ਹਨ।</p>\n"
+"                    <p>ਹਾਲਾਂਕਿ, DSR ਦੀ ਸਫਲਤਾ ਠੀਕ ਤਰੀਕੇ ਨਾਲ ਲਾਗੂ ਕਰਨ 'ਤੇ ਨਿਰਭਰ "
+"ਕਰਦੀ ਹੈ। DSR ਨਾਲ ਜੁੜੀ ਮੁੱਖ ਚੁਣੌਤੀ ਘਾਹ-ਨਿਯੰਤਰਣ ਦੀ ਹੈ, ਜੇਕਰ ਧਿਆਨ ਨਾ ਦਿੱਤਾ ਜਾਵੇ ਤਾਂ ਘਾਹ ਵਧ "
+"ਸਕਦੇ ਹਨ। ਇਸ ਸਮੱਸਿਆ ਨੂੰ ਹੱਲ ਕਰਨ ਲਈ, ਸਾਡੀਆਂ ਟ੍ਰੇਨਿੰਗ ਸੈਸ਼ਨਾਂ ਵਿੱਚ ਘਾਹ-ਨਿਯੰਤਰਣ ਦੀਆਂ ਰਣਨੀਤੀਆਂ ਅਤੇ "
+"ਸਮੇਂ-ਸਿਰ ਖੇਤੀਬਾੜੀ ਤਰੀਕਿਆਂ 'ਤੇ ਜ਼ੋਰ ਦਿੱਤਾ ਗਿਆ, ਤਾਂ ਜੋ DSR ਦੀ ਪ੍ਰਭਾਵਸ਼ੀਲਤਾ ਅਤੇ ਲੰਬੇ ਸਮੇਂ ਦੇ ਫਾਇਦੇ "
+"ਯਕੀਨੀ ਬਣ ਸਕਣ।</p>\n"
+"                    <p>ਇਹ ਵਰਕਸ਼ਾਪ ਪੰਜਾਬ ਖੇਤੀਬਾੜੀ ਯੂਨੀਵਰਸਿਟੀ (PAU) ਨਾਲ ਸਾਂਝੇ ਤੌਰ 'ਤੇ "
+"ਕਰਵਾਈ ਗਈ, ਜੋ ਕਿ ਇਸ ਪ੍ਰੋਜੈਕਟ ਵਿੱਚ ਸਾਡਾ ਮੁੱਖ ਭਾਗੀਦਾਰ ਹੈ। ਖੇਤਰ ਦੀ ਮੁੱਖ ਚੌਲ ਖੋਜ ਸੰਸਥਾ ਹੋਣ ਦੇ "
+"ਨਾਤੇ, PAU ਨੇ ਟ੍ਰੇਨਿੰਗ ਲਈ ਮਹੱਤਵਪੂਰਨ ਤਕਨੀਕੀ ਗਿਆਨ ਅਤੇ ਵਿਹਾਰਕ ਮਾਰਗਦਰਸ਼ਨ ਦਿੱਤਾ, ਜਿਸ ਨਾਲ "
+"ਪੰਜਾਬ ਵਿੱਚ ਪਾਣੀ-ਸਮਝਦਾਰ ਅਤੇ ਮੌਸਮ-ਸਹਿਣਸ਼ੀਲ ਖੇਤੀ ਤਰੀਕਿਆਂ ਨੂੰ ਉਤਸ਼ਾਹਿਤ ਕਰਨ ਦੇ ਸਾਡੇ ਸਾਂਝੇ ਲਕੜ ਨੂੰ "
+"ਮਜ਼ਬੂਤੀ ਮਿਲੀ।</p>\n"
+"                    "
+
+#: .\templates\farmer-engagement.html:827
+msgid "Comprehensive Farmer Training"
+msgstr "ਵਿਸਤ੍ਰਿਤ ਕਿਸਾਨ ਟ੍ਰੇਨਿੰਗ"
+
+#: .\templates\farmer-engagement.html:828
+msgid ""
+"Holistic agricultural education program combining traditional farming wisdom "
+"with cutting-edge technology and sustainable practices for 500+ farmers "
+"across Patiala District"
+msgstr ""
+"ਪਟਿਆਲਾ ਜ਼ਿਲ੍ਹੇ ਦੇ 500+ ਕਿਸਾਨਾਂ ਲਈ ਰਵਾਇਤੀ ਖੇਤੀ ਗਿਆਨ, ਆਧੁਨਿਕ ਤਕਨੀਕ ਅਤੇ ਟਿਕਾਊ ਤਰੀਕਿਆਂ ਨੂੰ "
+"ਮਿਲਾ ਕੇ ਪੂਰਨ ਖੇਤੀਬਾੜੀ ਸਿੱਖਿਆ ਪ੍ਰੋਗਰਾਮ"
+
+#: .\templates\farmer-engagement.html:872
+msgid "Empowering Agricultural Communities"
+msgstr "ਖੇਤੀਬਾੜੀ ਭਾਈਚਾਰੇ ਨੂੰ ਸਸ਼ਕਤ ਕਰਨਾ"
+
+#: .\templates\farmer-engagement.html:873
+msgid ""
+"Our comprehensive farmer training program extends far beyond traditional "
+"agricultural education, creating a transformative learning ecosystem that "
+"bridges the gap between time-tested farming wisdom and modern agricultural "
+"innovation. We work directly with over 500 farmers across Patiala District, "
+"providing personalized support and cutting-edge training."
+msgstr ""
+"ਸਾਡਾ ਵਿਸਤ੍ਰਿਤ ਕਿਸਾਨ ਟ੍ਰੇਨਿੰਗ ਪ੍ਰੋਗਰਾਮ ਰਵਾਇਤੀ ਖੇਤੀ ਸਿੱਖਿਆ ਤੋਂ ਕਾਫੀ ਅੱਗੇ ਹੈ, ਜੋ ਕਿ ਸਮੇਂ-ਪਰਖੇ "
+"ਗਿਆਨ ਅਤੇ ਆਧੁਨਿਕ ਨਵੀਨਤਾ ਵਿਚਕਾਰ ਪੂਲ ਬਣਾਉਂਦਾ ਹੈ। ਅਸੀਂ ਪਟਿਆਲਾ ਜ਼ਿਲ੍ਹੇ ਦੇ 500 ਤੋਂ ਵੱਧ ਕਿਸਾਨਾਂ "
+"ਨਾਲ ਸਿੱਧਾ ਕੰਮ ਕਰਦੇ ਹਾਂ, ਉਨ੍ਹਾਂ ਨੂੰ ਨਿੱਜੀ ਸਹਾਇਤਾ ਅਤੇ ਆਧੁਨਿਕ ਟ੍ਰੇਨਿੰਗ ਦਿੰਦੇ ਹਾਂ।"
+
+#: .\templates\farmer-engagement.html:874
+msgid ""
+"The program encompasses regular farm visits, detailed data collection on "
+"farming practices and irrigation behavior, groundwater monitoring, and "
+"innovative incentive-based programs that promote sustainable water use while "
+"supporting farmers economically. Each participating farm is precisely geo-"
+"mapped, enabling integration with remote sensing technology and hydrological "
+"models."
+msgstr ""
+"ਇਹ ਪ੍ਰੋਗਰਾਮ ਨਿਯਮਤ ਖੇਤ ਦੌਰੇ, ਖੇਤੀ ਤਰੀਕਿਆਂ ਅਤੇ ਸਿੰਚਾਈ ਵਿਹਾਰ ਬਾਰੇ ਵਿਸਥਾਰਕ ਡੇਟਾ ਇਕੱਤਰਤਾ, ਭੂਜਲ "
+"ਨਿਗਰਾਨੀ, ਅਤੇ ਨਵੀਨਤਮ ਪ੍ਰੋਤਸਾਹਨ-ਅਧਾਰਤ ਪ੍ਰੋਗਰਾਮਾਂ ਨੂੰ ਸ਼ਾਮਲ ਕਰਦਾ ਹੈ, ਜੋ ਪਾਣੀ ਦੀ ਟਿਕਾਊ ਵਰਤੋਂ "
+"ਨੂੰ ਉਤਸ਼ਾਹਿਤ ਕਰਦੇ ਹਨ ਅਤੇ ਕਿਸਾਨਾਂ ਨੂੰ ਆਰਥਿਕ ਤੌਰ 'ਤੇ ਸਹਿਯੋਗ ਦਿੰਦੇ ਹਨ। ਹਰ ਭਾਗੀਦਾਰ ਖੇਤ ਨੂੰ ਠੀਕ-"
+"ਠੀਕ ਜਿਓ-ਮੈਪ ਕੀਤਾ ਜਾਂਦਾ ਹੈ, ਜਿਸ ਨਾਲ ਰਿਮੋਟ ਸੈਂਸਿੰਗ ਤਕਨੀਕ ਅਤੇ ਹਾਈਡ੍ਰੋਲੋਜੀ ਮਾਡਲਾਂ ਨਾਲ "
+"ਇਕਾਈਕਰਨ ਸੰਭਵ ਹੁੰਦਾ ਹੈ।"
+
+#: .\templates\farmer-engagement.html:875
+msgid ""
+"Through this holistic approach, we combine rigorous scientific measurement "
+"with farmer-centered design, ensuring both robust data collection and "
+"meaningful participation that leads to improved livelihoods, increased "
+"income, and enhanced food security."
+msgstr ""
+"ਇਸ ਪੂਰਨ ਪਹੁੰਚ ਰਾਹੀਂ ਅਸੀਂ ਵਿਗਿਆਨਕ ਮਾਪ ਅਤੇ ਕਿਸਾਨ-ਕੇਂਦਰਤ ਡਿਜ਼ਾਈਨ ਨੂੰ ਮਿਲਾ ਕੇ, ਮਜ਼ਬੂਤ ਡੇਟਾ "
+"ਇਕੱਤਰਤਾ ਅਤੇ ਅਰਥਪੂਰਨ ਭਾਗੀਦਾਰੀ ਯਕੀਨੀ ਬਣਾਉਂਦੇ ਹਾਂ, ਜਿਸ ਨਾਲ ਜੀਵਨ-ਜੀਵਿਕਾ ਸੁਧਾਰ, ਆਮਦਨ ਵਾਧੂ "
+"ਅਤੇ ਖਾਦ ਸੁਰੱਖਿਆ ਵਧਦੀ ਹੈ।"
+
+#: .\templates\farmer_survey.html:634 .\templates\farmer_survey.html:669
+msgid "Farmer Survey Analysis"
+msgstr "ਕਿਸਾਨ ਸਰਵੇਖਣ ਵਿਸ਼ਲੇਸ਼ਣ"
+
+#: .\templates\farmer_survey.html:671
+msgid ""
+"Comprehensive survey analysis tools for gathering and processing farmer "
+"feedback, crop performance, \n"
+"                    and field conditions with advanced statistical modeling."
+msgstr ""
+"ਕਿਸਾਨਾਂ ਦੀ ਪ੍ਰਤਿਕ੍ਰਿਆ, ਫਸਲ ਦੇ ਨਤੀਜੇ ਅਤੇ ਖੇਤ ਦੀ ਹਾਲਤ ਇਕੱਤਰ ਕਰਨ ਅਤੇ ਵਿਸ਼ਲੇਸ਼ਣ ਲਈ ਉੱਨਤ ਅੰਕੜਾ "
+"ਮਾਡਲਿੰਗ ਸਹਿਤ ਵਿਸਤ੍ਰਿਤ ਸਰਵੇਖਣ ਸੰਦ।"
+
+#: .\templates\farmer_survey.html:682
+msgid "Coming Soon: Smart Survey Analytics"
+msgstr "ਜਲਦੀ ਆ ਰਿਹਾ: ਸਮਾਰਟ ਸਰਵੇਖਣ ਵਿਸ਼ਲੇਸ਼ਣ"
+
+#: .\templates\farmer_survey.html:688
+msgid "Agriculture Knowledge Quiz"
+msgstr "ਖੇਤੀ ਗਿਆਨ ਪ੍ਰਸ਼ਨੋਤਰੀ"
+
+#: .\templates\farmer_survey.html:689
+msgid "Test your farming knowledge while we develop the survey tool!"
+msgstr "ਸਰਵੇਖਣ ਸੰਦ ਬਣਾਉਂਦੇ ਹੋਏ ਆਪਣਾ ਖੇਤੀ ਗਿਆਨ ਪਰਖੋ!"
+
+#: .\templates\farmer_survey.html:695
+msgid "Question"
+msgstr "ਸਵਾਲ"
+
+#: .\templates\farmer_survey.html:699
+msgid "Score"
+msgstr "ਅੰਕ"
+
+#: .\templates\farmer_survey.html:703
+msgid "Accuracy"
+msgstr "ਸਹੀਤਾ"
+
+#: .\templates\farmer_survey.html:714
+msgid "Next Question"
+msgstr "ਅਗਲਾ ਸਵਾਲ"
+
+#: .\templates\farmer_survey.html:717
+msgid "New Quiz"
+msgstr "ਨਵੀਂ ਪ੍ਰਸ਼ਨੋਤਰੀ"
+
+#: .\templates\farmer_survey.html:730
+msgid "DIGI-VI Farmer Survey Analysis • Development Preview"
+msgstr "ਡਿਜੀ-ਵੀ ਕਿਸਾਨ ਸਰਵੇਖਣ ਵਿਸ਼ਲੇਸ਼ਣ • ਵਿਕਾਸ ਝਲਕ"
+
+#: .\templates\farmer_survey.html:756
+msgid "What is the primary benefit of crop rotation?"
+msgstr "ਫਸਲ ਚੱਕਰ ਦਾ ਮੁੱਖ ਫਾਇਦਾ ਕੀ ਹੈ?"
+
+#: .\templates\farmer_survey.html:758
+msgid "Increases soil fertility and breaks pest cycles"
+msgstr "ਮਿੱਟੀ ਦੀ ਉਪਜਾਊਤਾ ਵਧਾਉਂਦਾ ਹੈ ਅਤੇ ਕੀੜਿਆਂ ਦੇ ਚੱਕਰ ਨੂੰ ਤੋੜਦਾ ਹੈ"
+
+#: .\templates\farmer_survey.html:759
+msgid "Reduces water consumption"
+msgstr "ਪਾਣੀ ਦੀ ਵਰਤੋਂ ਘਟਾਉਂਦਾ ਹੈ"
+
+#: .\templates\farmer_survey.html:760
+msgid "Increases farm size"
+msgstr "ਖੇਤ ਦਾ ਆਕਾਰ ਵਧਾਉਂਦਾ ਹੈ"
+
+#: .\templates\farmer_survey.html:761
+msgid "Improves weather conditions"
+msgstr "ਮੌਸਮ ਦੀਆਂ ਹਾਲਤਾਂ ਸੁਧਾਰਦਾ ਹੈ"
+
+#: .\templates\farmer_survey.html:767
+msgid "Which nutrient deficiency causes yellowing of leaves (chlorosis)?"
+msgstr "ਕਿਹੜੀ ਪੌਸ਼ਟਿਕ ਘਾਟ ਪੱਤਿਆਂ ਦੇ ਪੀਲੇ ਹੋਣ (ਕਲੋਰੋਸਿਸ) ਦਾ ਕਾਰਨ ਬਣਦੀ ਹੈ?"
+
+#: .\templates\farmer_survey.html:769
+msgid "Phosphorus"
+msgstr "ਫਾਸਫੋਰਸ"
+
+#: .\templates\farmer_survey.html:770
+msgid "Potassium"
+msgstr "ਪੋਟਾਸਿਅਮ"
+
+#: .\templates\farmer_survey.html:771
+msgid "Nitrogen"
+msgstr "ਨਾਈਟ੍ਰੋਜਨ"
+
+#: .\templates\farmer_survey.html:772
+msgid "Calcium"
+msgstr "ਕੈਲਸ਼ੀਅਮ"
+
+#: .\templates\farmer_survey.html:778
+msgid "What does pH measure in soil?"
+msgstr "ਮਿੱਟੀ ਵਿੱਚ pH ਕੀ ਮਾਪਦਾ ਹੈ?"
+
+#: .\templates\farmer_survey.html:780
+msgid "Nutrient content"
+msgstr "ਪੌਸ਼ਟਿਕ ਤੱਤ"
+
+#: .\templates\farmer_survey.html:781
+#, fuzzy
+#| msgid "Water Distribution"
+msgid "Water retention"
+msgstr "ਪਾਣੀ ਰੋਕਣ ਦੀ ਸਮਰੱਥਾ"
+
+#: .\templates\farmer_survey.html:782
+msgid "Acidity or alkalinity"
+msgstr "ਅਮਲਤਾ ਜਾਂ ਖਾਰਾਪਨ"
+
+#: .\templates\farmer_survey.html:783
+msgid "Organic matter"
+msgstr "ਜੈਵਿਕ ਪਦਾਰਥ"
+
+#: .\templates\farmer_survey.html:789
+msgid "Which irrigation method is most water-efficient?"
+msgstr "ਕਿਹੜਾ ਸਿੰਚਾਈ ਤਰੀਕਾ ਸਭ ਤੋਂ ਵੱਧ ਪਾਣੀ-ਬਚਾਉਂਦਾ ਹੈ?"
+
+#: .\templates\farmer_survey.html:791
+#, fuzzy
+#| msgid "Irrigation"
+msgid "Flood irrigation"
+msgstr "ਬਾੜ ਸਿੰਚਾਈ"
+
+#: .\templates\farmer_survey.html:792
+#, fuzzy
+#| msgid "Open air irrigation canal"
+msgid "Sprinkler irrigation"
+msgstr "ਸਪ੍ਰਿੰਕਲਰ ਸਿੰਚਾਈ"
+
+#: .\templates\farmer_survey.html:793
+#, fuzzy
+#| msgid "Irrigation"
+msgid "Drip irrigation"
+msgstr "ਡ੍ਰਿਪ ਸਿੰਚਾਈ"
+
+#: .\templates\farmer_survey.html:794
+#, fuzzy
+#| msgid "Irrigation"
+msgid "Furrow irrigation"
+msgstr "ਫਰੋ ਸਿੰਚਾਈ"
+
+#: .\templates\farmer_survey.html:800
+msgid "What is the ideal soil pH range for most crops?"
+msgstr "ਜ਼ਿਆਦਾਤਰ ਫਸਲਾਂ ਲਈ ਮਿੱਟੀ ਦਾ ਆਦਰਸ਼ pH ਰੇਂਜ ਕੀ ਹੈ?"
+
+#: .\templates\farmer_survey.html:802
+msgid "4.0 - 5.5"
+msgstr "4.0 - 5.5"
+
+#: .\templates\farmer_survey.html:803
+msgid "6.0 - 7.0"
+msgstr "6.0 - 7.0"
+
+#: .\templates\farmer_survey.html:804
+msgid "7.5 - 8.5"
+msgstr "7.5 - 8.5"
+
+#: .\templates\farmer_survey.html:805
+msgid "8.5 - 9.0"
+msgstr "8.5 - 9.0"
+
+#: .\templates\farmer_survey.html:811
+msgid "Which farming practice helps prevent soil erosion?"
+msgstr "ਕਿਹੜਾ ਖੇਤੀ ਤਰੀਕਾ ਮਿੱਟੀ ਦੀ ਕਟਾਈ ਰੋਕਣ ਵਿੱਚ ਮਦਦ ਕਰਦਾ ਹੈ?"
+
+#: .\templates\farmer_survey.html:813
+msgid "Deep tillage"
+msgstr "ਗਹਿਰੀ ਜੋਤਾਈ"
+
+#: .\templates\farmer_survey.html:814
+msgid "Contour farming"
+msgstr "ਕਨਟੂਰ ਖੇਤੀ"
+
+#: .\templates\farmer_survey.html:815
+msgid "Monoculture"
+msgstr "ਇੱਕੋ ਫਸਲ ਖੇਤੀ"
+
+#: .\templates\farmer_survey.html:816
+msgid "Excessive grazing"
+msgstr "ਵੱਧ ਚਰਾਈ"
+
+#: .\templates\farmer_survey.html:822
+msgid "What is the main purpose of adding organic matter to soil?"
+msgstr "ਮਿੱਟੀ ਵਿੱਚ ਜੈਵਿਕ ਪਦਾਰਥ ਪਾਉਣ ਦਾ ਮੁੱਖ ਉਦੇਸ਼ ਕੀ ਹੈ?"
+
+#: .\templates\farmer_survey.html:824
+msgid "Increase soil temperature"
+msgstr "ਮਿੱਟੀ ਦਾ ਤਾਪਮਾਨ ਵਧਾਉਣਾ"
+
+#: .\templates\farmer_survey.html:825
+msgid "Improve soil structure and fertility"
+msgstr "ਮਿੱਟੀ ਦੀ ਬਣਤਰ ਅਤੇ ਉਪਜਾਊਤਾ ਸੁਧਾਰਨਾ"
+
+#: .\templates\farmer_survey.html:826
+msgid "Reduce soil pH"
+msgstr "ਮਿੱਟੀ ਦਾ pH ਘਟਾਉਣਾ"
+
+#: .\templates\farmer_survey.html:827
+msgid "Prevent plant growth"
+msgstr "ਪੌਦਿਆਂ ਦੀ ਵਾਧੂ ਨੂੰ ਰੋਕਣਾ"
+
+#: .\templates\farmer_survey.html:833
+msgid "Which pest management approach is most sustainable?"
+msgstr "ਕਿਹੜਾ ਕੀੜੇ ਪ੍ਰਬੰਧਨ ਤਰੀਕਾ ਸਭ ਤੋਂ ਟਿਕਾਊ ਹੈ?"
+
+#: .\templates\farmer_survey.html:835
+msgid "Heavy pesticide use"
+msgstr "ਵੱਧ ਕੀਟਨਾਸ਼ਕ ਵਰਤਣਾ"
+
+#: .\templates\farmer_survey.html:836
+msgid "Integrated Pest Management (IPM)"
+msgstr "ਇੰਟੀਗ੍ਰੇਟਡ ਪੈਸਟ ਮੈਨੇਜਮੈਂਟ (IPM)"
+
+#: .\templates\farmer_survey.html:837
+msgid "Ignoring pests completely"
+msgstr "ਕੀੜਿਆਂ ਨੂੰ ਪੂਰੀ ਤਰ੍ਹਾਂ ਅਣਡਿੱਠਾ ਕਰਨਾ"
+
+#: .\templates\farmer_survey.html:838
+msgid "Using only chemical controls"
+msgstr "ਸਿਰਫ਼ ਰਸਾਇਣਕ ਤਰੀਕੇ ਵਰਤਣਾ"
+
+#: .\templates\farmers.html:259
+msgid "Farm Story: From Land to Irrigation"
+msgstr "ਖੇਤ ਦੀ ਕਹਾਣੀ: ਜ਼ਮੀਨ ਤੋਂ ਸਿੰਚਾਈ ਤੱਕ"
+
+#: .\templates\farmers.html:263
+msgid "Farm Overview"
+msgstr "ਖੇਤ ਦਾ ਸਰਵੇਖਣ"
+
+#: .\templates\farmers.html:265
+msgid ""
+"\n"
+"      A farm is a piece of land with its own irrigation source, managed by "
+"an owner or leaseholder. Each farm is divided into several adjacent soil "
+"plots (1–2 acres each) separated by small soil barriers. Plot positions are "
+"changed seasonally to adapt to conditions and maximize yields. Different "
+"crops or rice cultivation methods may be used on different plots within the "
+"same farm, but most farms grow only rice during Kharif. Land can be owned, "
+"leased, or a mix, with rare cases of government (Panchayat) leasing via "
+"auction.\n"
+"      "
+msgstr ""
+"\n"
+"      ਖੇਤ ਇੱਕ ਜ਼ਮੀਨ ਦਾ ਟੁਕੜਾ ਹੁੰਦਾ ਹੈ ਜਿਸਦਾ ਆਪਣਾ ਸਿੰਚਾਈ ਸਰੋਤ ਹੁੰਦਾ ਹੈ ਅਤੇ ਇਸਨੂੰ ਮਾਲਕ ਜਾਂ "
+"ਪੱਟੇਦਾਰ ਚਲਾਉਂਦੇ ਹਨ। ਹਰ ਖੇਤ ਨੂੰ ਛੋਟੇ-ਛੋਟੇ ਟੁਕੜਿਆਂ (1–2 ਏਕੜ) ਵਿੱਚ ਵੰਡਿਆ ਜਾਂਦਾ ਹੈ, ਜੋ ਮਿੱਟੀ ਦੀਆਂ "
+"ਛੋਟੀਆਂ ਕੰਧਾਂ ਨਾਲ ਵੱਖਰੇ ਹੁੰਦੇ ਹਨ। ਟੁਕੜਿਆਂ ਦੀ ਸਥਿਤੀ ਹਰੇਕ ਮੌਸਮ ਵਿੱਚ ਬਦਲੀ ਜਾਂਦੀ ਹੈ ਤਾਂ ਜੋ ਹਾਲਾਤਾਂ "
+"ਅਨੁਸਾਰ ਫਸਲ ਵਧੀਆ ਹੋਵੇ। ਵੱਖ-ਵੱਖ ਟੁਕੜਿਆਂ 'ਤੇ ਵੱਖ-ਵੱਖ ਫਸਲਾਂ ਜਾਂ ਚੌਲ ਦੀਆਂ ਤਕਨੀਕਾਂ ਵਰਤੀ ਜਾਂਦੀਆਂ ਹਨ, "
+"ਪਰ ਜ਼ਿਆਦਾਤਰ ਖੇਤਾਂ ਵਿੱਚ ਖਰੀਫ਼ ਦੌਰਾਨ ਸਿਰਫ਼ ਚੌਲ ਹੀ ਉਗਾਇਆ ਜਾਂਦਾ ਹੈ। ਜ਼ਮੀਨ ਮਾਲਕੀ, ਪੱਟੇ ਜਾਂ ਦੋਹਾਂ "
+"ਦਾ ਮਿਲਾਪ ਹੋ ਸਕਦੀ ਹੈ, ਸਰਕਾਰ (ਪੰਚਾਇਤ) ਵੱਲੋਂ ਪੱਟੇ ਤੇ ਦੇਣ ਦੇ ਮਾਮਲੇ ਵੱਡੇ ਹੀ ਘੱਟ ਹਨ।"
+
+#: .\templates\farmers.html:274
+msgid "Farmer"
+msgstr "ਕਿਸਾਨ"
+
+#: .\templates\farmers.html:276
+msgid ""
+"\n"
+"      The main farmer (owner or leaseholder) manages all cultivation "
+"activities, including irrigation, inputs, sowing, and harvest. Most farms "
+"are family-owned, but some larger farms are jointly run, often by brothers. "
+"Farmers may own multiple farms, with land titles typically in their name or "
+"a close relative’s. Only land owners qualify for government subsidies. "
+"Tenant farmers lease land formally or informally; many are also land owners "
+"expanding their operations through additional leased land.\n"
+"      "
+msgstr ""
+"\n"
+"      ਮੁੱਖ ਕਿਸਾਨ (ਮਾਲਕ ਜਾਂ ਪੱਟੇਦਾਰ) ਸਾਰੇ ਖੇਤੀ ਕੰਮਾਂ ਦੀ ਦੇਖਭਾਲ ਕਰਦਾ ਹੈ, ਜਿਸ ਵਿੱਚ ਸਿੰਚਾਈ, "
+"ਖਾਦ, ਬਿਜਾਈ ਅਤੇ ਕਟਾਈ ਸ਼ਾਮਲ ਹਨ। ਜ਼ਿਆਦਾਤਰ ਖੇਤ ਪਰਿਵਾਰਕ ਮਾਲਕੀ ਵਾਲੇ ਹਨ, ਪਰ ਕੁਝ ਵੱਡੇ ਖੇਤ "
+"ਭਰਾਵਾਂ ਵੱਲੋਂ ਮਿਲ ਕੇ ਚਲਾਏ ਜਾਂਦੇ ਹਨ। ਕਿਸਾਨ ਕਈ ਖੇਤਾਂ ਦੇ ਮਾਲਕ ਹੋ ਸਕਦੇ ਹਨ, ਜ਼ਮੀਨ ਆਮ ਤੌਰ 'ਤੇ ਉਨ੍ਹਾਂ "
+"ਜਾਂ ਉਨ੍ਹਾਂ ਦੇ ਨੇੜਲੇ ਰਿਸ਼ਤੇਦਾਰ ਦੇ ਨਾਂ ਹੋਂਦੀ ਹੈ। ਸਿਰਫ਼ ਮਾਲਕਾਂ ਨੂੰ ਹੀ ਸਰਕਾਰੀ ਸਬਸਿਡੀ ਮਿਲਦੀ ਹੈ। "
+"ਪੱਟੇਦਾਰ ਕਿਸਾਨ ਜ਼ਮੀਨ ਨੂੰ ਰਸਮੀ ਜਾਂ ਗੈਰ-ਰਸਮੀ ਤਰੀਕੇ ਨਾਲ ਲੈਂਦੇ ਹਨ; ਬਹੁਤ ਸਾਰੇ ਪੱਟੇਦਾਰ ਆਪਣੇ ਖੇਤ ਵੀ "
+"ਰੱਖਦੇ ਹਨ ਅਤੇ ਵਾਧੂ ਪੱਟੇ ਰਾਹੀਂ ਆਪਣਾ ਕਾਰੋਬਾਰ ਵਧਾਉਂਦੇ ਹਨ।"
+
+#: .\templates\farmers.html:285
+msgid "Irrigation"
+msgstr "ਸਿੰਚਾਈ"
+
+#: .\templates\farmers.html:287
+msgid ""
+"\n"
+"      Most farms have exclusive tube-well excavated and operated within its "
+"land. Some farms share tube-wells with other farmers. But mostly it is "
+"exclusively used by the farm.\n"
+"      Canal - It is used based on its availability, and the government "
+"controls it through upstream valves. Mostly it is applied into the farm "
+"through government-sponsored underground pipelines. Occasionally "
+"opportunistic farmers with plots adjacent to the canal will use diesel-based "
+"portable pumps to irrigate into their land.\n"
+"      "
+msgstr ""
+"\n"
+"      ਜ਼ਿਆਦਾਤਰ ਖੇਤਾਂ ਵਿੱਚ ਆਪਣਾ ਟਿਊਬਵੈਲ ਹੁੰਦਾ ਹੈ ਜੋ ਉਨ੍ਹਾਂ ਦੀ ਜ਼ਮੀਨ ਵਿੱਚ ਹੀ ਖੋਦਿਆ ਜਾਂਦਾ ਹੈ। "
+"ਕੁਝ ਖੇਤ ਟਿਊਬਵੈਲ ਹੋਰ ਕਿਸਾਨਾਂ ਨਾਲ ਸਾਂਝੇ ਕਰਦੇ ਹਨ, ਪਰ ਆਮ ਤੌਰ 'ਤੇ ਇਹ ਖੇਤ ਦੀ ਆਪਣੀ ਵਰਤੋਂ ਲਈ ਹੁੰਦਾ "
+"ਹੈ।\n"
+"      ਨਹਿਰ - ਇਹ ਉਪਲਬਧਤਾ ਅਨੁਸਾਰ ਵਰਤੀ ਜਾਂਦੀ ਹੈ ਅਤੇ ਸਰਕਾਰ ਇਸਨੂੰ ਉਪਰਲੇ ਵੈਲਵਾਂ ਰਾਹੀਂ ਕੰਟਰੋਲ "
+"ਕਰਦੀ ਹੈ। ਆਮ ਤੌਰ 'ਤੇ ਇਹ ਸਰਕਾਰੀ ਸਹਾਇਤਾ ਨਾਲ ਬਣੀਆਂ ਅੰਡਰਗਰਾਊਂਡ ਪਾਈਪਲਾਈਨਾਂ ਰਾਹੀਂ ਖੇਤ ਵਿੱਚ "
+"ਪਹੁੰਚਾਈ ਜਾਂਦੀ ਹੈ। ਕਈ ਵਾਰੀ, ਜਿਨ੍ਹਾਂ ਦੇ ਪਲਾਟ ਨਹਿਰ ਦੇ ਨੇੜੇ ਹੁੰਦੇ ਹਨ, ਉਹ ਡੀਜ਼ਲ ਵਾਲੇ ਪੋਰਟੇਬਲ ਪੰਪ "
+"ਰਾਹੀਂ ਆਪਣੀ ਜ਼ਮੀਨ ਵਿੱਚ ਸਿੰਚਾਈ ਕਰ ਲੈਂਦੇ ਹਨ।"
+
+#: .\templates\farmers.html:297
+msgid "Open-air Canals"
+msgstr "ਖੁੱਲ੍ਹੇ ਨਾਲੇ"
+
+#: .\templates\farmers.html:299
+msgid ""
+"\n"
+"      Irrigation water comes from two main sources: groundwater (via tube-"
+"wells) and canals (mainly through government-installed underground pipes). "
+"Once water reaches the farm, it is usually distributed to plots using small, "
+"open-air soil canals that rely on gravity. Farmers control irrigation by "
+"opening soil barriers to direct water to specific plots. Water loss from "
+"seepage and evaporation is common. Underground piping within farms is rare "
+"and mainly used on large farms; even then, some open-air canal use "
+"continues.\n"
+"      "
+msgstr ""
+"\n"
+"      ਸਿੰਚਾਈ ਲਈ ਪਾਣੀ ਮੁੱਖ ਤੌਰ 'ਤੇ ਦੋ ਸਰੋਤਾਂ ਤੋਂ ਆਉਂਦਾ ਹੈ: ਭੂਜਲ (ਟਿਊਬਵੈਲ ਰਾਹੀਂ) ਅਤੇ ਨਹਿਰਾਂ (ਜੋ "
+"ਆਮ ਤੌਰ 'ਤੇ ਸਰਕਾਰੀ ਅੰਡਰਗਰਾਊਂਡ ਪਾਈਪਾਂ ਰਾਹੀਂ ਆਉਂਦੀਆਂ ਹਨ)। ਜਦੋਂ ਪਾਣੀ ਖੇਤ ਵਿੱਚ ਪਹੁੰਚ ਜਾਂਦਾ ਹੈ, ਤਾਂ "
+"ਇਹ ਛੋਟੇ-ਛੋਟੇ ਖੁੱਲ੍ਹੇ ਮਿੱਟੀ ਦੇ ਨਾਲਿਆਂ ਰਾਹੀਂ ਟੁਕੜਿਆਂ ਵਿੱਚ ਵੰਡਿਆ ਜਾਂਦਾ ਹੈ, ਜੋ ਗੁਰਤਵਾਕਰਸ਼ਣ 'ਤੇ ਨਿਰਭਰ "
+"ਕਰਦੇ ਹਨ। ਕਿਸਾਨ ਮਿੱਟੀ ਦੀਆਂ ਕੰਧਾਂ ਖੋਲ੍ਹ ਕੇ ਪਾਣੀ ਨੂੰ ਚਾਹੀਦੇ ਟੁਕੜੇ ਵੱਲ ਭੇਜਦੇ ਹਨ। ਪਾਣੀ ਦੀ ਰਿਸਾਅ "
+"ਅਤੇ ਵਾਸ਼ਪੀਕਰਨ ਕਾਰਨ ਨੁਕਸਾਨ ਆਮ ਹੈ। ਖੇਤਾਂ ਵਿੱਚ ਅੰਡਰਗਰਾਊਂਡ ਪਾਈਪਿੰਗ ਵੱਡੇ ਖੇਤਾਂ ਵਿੱਚ ਹੀ ਹੁੰਦੀ ਹੈ; ਉੱਥੇ "
+"ਵੀ ਕੁਝ ਹੱਦ ਤੱਕ ਖੁੱਲ੍ਹੇ ਨਾਲਿਆਂ ਦੀ ਵਰਤੋਂ ਜਾਰੀ ਰਹਿੰਦੀ ਹੈ।"
+
+#: .\templates\index.html:7 .\templates\index.html:646
+msgid "Template Selection"
+msgstr "ਟੈਂਪਲੇਟ ਚੁਣੋ"
+
+#: .\templates\index.html:653
+msgid "Back to Home"
+msgstr "ਮੁੱਖ ਸਫ਼ੇ ਤੇ ਵਾਪਸ"
+
+#: .\templates\index.html:656
+msgid "Logout"
+msgstr "ਲੌਗਆਊਟ"
+
+#: .\templates\index.html:684
+msgid "Choose Your Template"
+msgstr "ਆਪਣਾ ਟੈਂਪਲੇਟ ਚੁਣੋ"
+
+#: .\templates\index.html:686
+msgid ""
+"Select from our advanced agricultural analysis tools and start optimizing "
+"your farming operations with data-driven insights"
+msgstr ""
+"ਸਾਡੇ ਉੱਨਤ ਖੇਤੀ-বਿਸ਼ਲੇਸ਼ਣ ਸੰਦਾਂ ਵਿੱਚੋਂ ਚੁਣੋ ਅਤੇ ਡੇਟਾ-ਚਲਿਤ ਜਾਣਕਾਰੀ ਨਾਲ ਆਪਣੇ ਖੇਤੀ ਕਾਰਜਾਂ ਨੂੰ ਬਿਹਤਰ "
+"ਬਣਾਓ"
+
+#: .\templates\index.html:697
+msgid "Meter Reading"
+msgstr "ਮੀਟਰ ਪੜ੍ਹੋ"
+
+#: .\templates\index.html:699
+msgid ""
+"Advanced sensor data analysis for monitoring water consumption and "
+"irrigation efficiency across your agricultural operations."
+msgstr ""
+"ਤੁਹਾਡੇ ਖੇਤੀ ਕਾਰਜਾਂ ਵਿੱਚ ਪਾਣੀ ਦੀ ਵਰਤੋਂ ਅਤੇ ਸਿਫਾਰਤ ਦੀ ਕਾਰਗੁਜ਼ਾਰੀ ਦੀ ਨਿਗਰਾਨੀ ਲਈ ਉੱਚ ਪੱਧਰੀ "
+"ਸੰਵੇਦਕ ਡੇਟਾ ਵਿਸ਼ਲੇਸ਼ਣ।"
+
+#: .\templates\index.html:703 .\templates\index.html:718
+#: .\templates\meter_reading.html:1174
+msgid "Active"
+msgstr "ਕਿਰਿਆਸ਼ੀਲ"
+
+#: .\templates\index.html:712
+msgid "Water Level Dashboard"
+msgstr "ਪਾਣੀ ਦੀ ਸਤਰ ਡੈਸ਼ਬੋਰਡ"
+
+#: .\templates\index.html:714
+msgid ""
+"Real-time water level monitoring and predictive analytics for optimal "
+"irrigation management and water conservation."
+msgstr ""
+"ਵੱਖ-ਵੱਖ ਖੇਤਾਂ ਦੇ ਪਾਣੀ ਦੀ ਸਤਰ ਦੀ ਰੀਅਲ टाइम ਨਿਗਰਾਨੀ ਅਤੇ ਭਵਿੱਖ ਦੀ ਭਵਿੱਖਬਾਣੀ ਨਾਲ "
+"ਪ੍ਰਭਾਵਸ਼ਾਲੀ ਖੇਤੀ-ਸਿੰਚਾਈ ਅਤੇ ਸੰਰੱਖਣ।"
+
+#: .\templates\index.html:727
+msgid "Farmer Survey"
+msgstr "ਕਿਸਾਨ ਸਰਵੇਖਣ"
+
+#: .\templates\index.html:729
+msgid ""
+"Comprehensive survey analysis tools for gathering and processing farmer "
+"feedback, crop performance, and field conditions."
+msgstr ""
+"ਕਿਸਾਨਾਂ ਦੀ ਪ੍ਰਤਿਕ੍ਰਿਆ, ਫਸਲ ਦੇ ਨਤੀਜੇ ਅਤੇ ਖੇਤ ਦੀ ਹਾਲਤ ਇਕੱਤਰ ਕਰਨ ਅਤੇ ਸਫਾਈ ਕਰਨ ਲਈ ਵਿਸਤ੍ਰਿਤ "
+"ਸਰਵੇਖਣ ਵਿਸ਼ਲੇਸ਼ਣ ਸੰਦ।"
+
+#: .\templates\index.html:742
+msgid "Evapotranspiration"
+msgstr "ਵਿਅਪੋਟ੍ਰਾਂਸਪਿਰੇਸ਼ਨ"
+
+#: .\templates\index.html:744
+msgid ""
+"Calculate crop water requirements using advanced ET models, weather data, "
+"and soil moisture analytics for precision irrigation."
+msgstr ""
+"ਖੇਤੀ ਲਈ ਜਰੂਰੀ ਪਾਣੀ ਦੀ ਮਾਤਰਾ ਨਿਰਧਾਰਤ ਕਰਨ ਲਈ ਉੱਨਤ ET ਮਾਡਲ, ਮੌਸਮੀ ਡੇਟਾ ਅਤੇ ਮਿੱਟੀ ਦੀ "
+"ਨਮੀ ਵਿਸ਼ਲੇਸ਼ਣ ਦਾ ਉਪਯੋਗ ਕਰਕੇ ਸੁਨੀਸ਼ਚਿਤ ਖੇਤੀ-ਸਿੰਚਾਈ।"
+
+#: .\templates\index.html:757
+msgid "Field Mapping"
+msgstr "ਖੇਤ ਨਕਸ਼ਾ"
+
+#: .\templates\index.html:759
+msgid ""
+"Advanced GIS tools for field boundary mapping, crop monitoring, and spatial "
+"analysis of agricultural data and satellite imagery."
+msgstr ""
+"ਖੇਤ ਸੀਮਾ ਨਕਸ਼ੇ ਬਣਾਉਣ, ਫਸਲ ਨਿਗਰਾਨੀ ਅਤੇ ਖੇਤੀ ਵਾਲੇ ਡੇਟਾ ਤੇ ਸੈਟੈਲਾਈਟ ਤਸਵੀਰਾਂ ਦੀ ਅਸਥਾਈ "
+"ਵਿਸ਼ਲੇਸ਼ਣ ਲਈ ਅਧੁਨਿਕ GIS ਸੰਦ।"
+
+#: .\templates\index.html:771
+msgid "Need help getting started? Our technical team is here to assist you."
+msgstr "ਸ਼ੁਰੂਆਤ ਵਿੱਚ ਮਦਦ ਚਾਹੀਦੀ ਹੈ? ਸਾਡੀ ਟੈਕਨੀਕੀ ਟੀਮ ਤੁਹਾਡੀ ਮਦਦ ਲਈ ਉਪਲਬਧ ਹੈ।"
+
+#: .\templates\index.html:776
+msgid "Upload correct file formats"
+msgstr "ਸਹੀ ਫਾਇਲ ਫਾਰਮੈਟ ਅਪਲੋਡ ਕਰੋ"
+
+#: .\templates\index.html:780
+msgid "Contact Digi-Village Tech Team"
+msgstr "ਡਿਜੀ-ਵਿਲੇਜ਼ ਟੈਕ ਟੀਮ ਨਾਲ ਸੰਪਰਕ ਕਰੋ"
+
+#: .\templates\index.html:784
+msgid "Technical support available"
+msgstr "ਤਕਨੀਕੀ ਸਹਾਇਤਾ ਉਪਲਬਧ"
+
+#: .\templates\landing.html:7
+msgid "DIGI-VI | Digital Village Intelligence Platform"
+msgstr "ਡਿਜੀ-ਵੀ | ਡਿਜੀਟਲ ਵਿਲੇਜ ਇੰਟੈਲੀਜੈਂਸ ਪਲੇਟਫਾਰਮ"
+
+#: .\templates\landing.html:1885 .\templates\landing.html:1922
+#: .\templates\landing.html:1954
+msgid "Research Studies"
+msgstr "ਖੋਜ ਅਧਿਐਨ"
+
+#: .\templates\landing.html:1886 .\templates\landing.html:2206
+msgid "Knowledge Base"
+msgstr "ਗਿਆਨ ਅਧਾਰ"
+
+#: .\templates\landing.html:1887 .\templates\landing.html:1923
+msgid "Team"
+msgstr "ਟੀਮ"
+
+#: .\templates\landing.html:1892 .\templates\landing.html:2701
+msgid "Member Access"
+msgstr "ਮੈਂਬਰ ਐਕਸੈਸ"
+
+#: .\templates\landing.html:1924
+msgid "Developers"
+msgstr "ਡਿਵੈਲਪਰ"
+
+#: .\templates\landing.html:1931
+msgid "WATER SAVING RESEARCH STUDIES"
+msgstr "ਪਾਣੀ ਬਚਾਉਣ ਵਾਲੇ ਖੋਜ ਅਧਿਐਨ"
+
+#: .\templates\landing.html:1932
+msgid "Digital Village Project"
+msgstr "ਡਿਜੀਟਲ ਵਿਲੇਜ ਪਰੋਜੈਕਟ"
+
+#: .\templates\landing.html:1934
+msgid ""
+"\n"
+"                This is a research study conducted by the Thapar Institute "
+"of Engineering and Technology in Patiala and Tel-Aviv University from "
+"Israel. This study aims to understand the challenges faced by farmers in "
+"Punjab, particularly in the areas of irrigation, crop cultivation, and "
+"livelihoods. The information gathered from the farmers will help us identify "
+"practical solutions to improve farmer incomes and promote water-saving "
+"methods for irrigation.\n"
+"                "
+msgstr ""
+"\n"
+"                ਇਹ ਖੋਜ ਅਧਿਐਨ ਥਾਪਰ ਇੰਸਟੀਚਿਊਟ ਆਫ ਇੰਜੀਨੀਅਰਿੰਗ ਐਂਡ ਟੈਕਨੋਲੋਜੀ, ਪਟਿਆਲਾ ਅਤੇ "
+"ਟੈਲ-ਅਵੀਵ ਯੂਨੀਵਰਸਿਟੀ, ਇਜ਼ਰਾਈਲ ਵੱਲੋਂ ਕੀਤਾ ਗਿਆ ਹੈ। ਇਸ ਅਧਿਐਨ ਦਾ ਉਦੇਸ਼ ਪੰਜਾਬ ਦੇ ਕਿਸਾਨਾਂ ਨੂੰ ਆ "
+"ਰਹੀਆਂ ਮੁਸ਼ਕਲਾਂ ਨੂੰ ਸਮਝਣਾ ਹੈ, ਖਾਸ ਕਰਕੇ ਸਿੰਚਾਈ, ਫਸਲ ਉਗਾਈ ਅਤੇ ਜੀਵਨ-ਜੀਵਿਕਾ ਵਿੱਚ। ਕਿਸਾਨਾਂ ਤੋਂ "
+"ਇਕੱਠੀ ਕੀਤੀ ਜਾਣਕਾਰੀ ਸਾਨੂੰ ਕਿਸਾਨਾਂ ਦੀ ਆਮਦਨ ਵਧਾਉਣ ਅਤੇ ਸਿੰਚਾਈ ਲਈ ਪਾਣੀ-ਬਚਾਉਣ ਵਾਲੇ ਤਰੀਕਿਆਂ "
+"ਨੂੰ ਉਤਸ਼ਾਹਿਤ ਕਰਨ ਲਈ ਵਿਹਾਰਕ ਹੱਲ ਲੱਭਣ ਵਿੱਚ ਮਦਦ ਕਰੇਗੀ।"
+
+#: .\templates\landing.html:1938
+msgid ""
+"These studies are funded by TIET-TAU Center of Excellence for Food Security "
+"(T2CEFS) and Internation Growth Center (IGC) from UK."
+msgstr ""
+"ਇਹ ਅਧਿਐਨ TIET-TAU ਫੂਡ ਸੁਰੱਖਿਆ ਲਈ ਸੈਂਟਰ ਆਫ ਐਕਸੀਲੈਂਸ (T2CEFS) ਅਤੇ ਯੂਕੇ ਦੇ ਇੰਟਰਨੈਸ਼ਨਲ ਗ੍ਰੋਥ ਸੈਂਟਰ "
+"(IGC) ਵੱਲੋਂ ਵਿੱਤੀ ਸਹਾਇਤਾ ਪ੍ਰਾਪਤ ਹਨ।"
+
+#: .\templates\landing.html:1941
+msgid "Explore Platform"
+msgstr "ਪਲੇਟਫਾਰਮ ਵੇਖੋ"
+
+#: .\templates\landing.html:1944
+msgid "Meet the Team"
+msgstr "ਟੀਮ ਨੂੰ ਮਿਲੋ"
+
+#: .\templates\landing.html:1955
+msgid "Explore our latest research and innovations"
+msgstr "ਸਾਡੀ ਨਵੀਨਤਮ ਖੋਜ ਅਤੇ ਨਵੀਨਤਾ ਵੇਖੋ"
+
+#: .\templates\landing.html:1964 .\templates\landing.html:2040
+msgid "Alternate Wetting Drying (AWD)"
+msgstr "ਬਦਲਵੇਂ ਢੰਗ ਨਾਲ ਗਿੱਲਾ ਕਰਨਾ ਅਤੇ ਸੁਕਾਉਣਾ (AWD)"
+
+#: .\templates\landing.html:1965
+msgid "Efficient water-saving irrigation technique for rice cultivation."
+msgstr "ਚੌਲ ਦੀ ਖੇਤੀ ਲਈ ਪ੍ਰਭਾਵਸ਼ਾਲੀ ਪਾਣੀ-ਬਚਾਉਣ ਵਾਲੀ ਸਿੰਚਾਈ ਤਕਨੀਕ।"
+
+#: .\templates\landing.html:1967 .\templates\landing.html:1978
+#: .\templates\landing.html:1989 .\templates\landing.html:2000
+#: .\templates\landing.html:2011 .\templates\landing.html:2022
+msgid "Learn More"
+msgstr "ਹੋਰ ਜਾਣੋ"
+
+#: .\templates\landing.html:1975 .\templates\landing.html:2083
+msgid "Remote Controllers"
+msgstr "ਰਿਮੋਟ ਕੰਟਰੋਲਰ"
+
+#: .\templates\landing.html:1976
+msgid "Remote controllers for irrigation and farm systems."
+msgstr "ਸਿੰਚਾਈ ਅਤੇ ਖੇਤ ਪ੍ਰਣਾਲੀ ਲਈ IoT-ਅਧਾਰਤ ਰਿਮੋਟ ਕੰਟਰੋਲ।"
+
+#: .\templates\landing.html:1986 .\templates\landing.html:2114
+msgid "Direct Seeded Rice (DSR)"
+msgstr "ਡਾਇਰੈਕਟ ਸੀਡਿਡ ਚੌਲ (DSR)"
+
+#: .\templates\landing.html:1987
+msgid "Innovative rice planting method for water saving."
+msgstr "ਪਾਣੀ ਬਚਾਉਣ ਲਈ ਨਵੀਨਤਮ ਚੌਲ ਬੀਜਣ ਤਰੀਕਾ।"
+
+#: .\templates\landing.html:1997 .\templates\landing.html:2138
+msgid "Water Metering"
+msgstr "ਪਾਣੀ ਮਾਪਣਾ"
+
+#: .\templates\landing.html:1998
+msgid "Real-time water usage monitoring and analytics."
+msgstr "ਰੀਅਲ-ਟਾਈਮ ਪਾਣੀ ਵਰਤੋਂ ਦੀ ਨਿਗਰਾਨੀ ਅਤੇ ਵਿਸ਼ਲੇਸ਼ਣ।"
+
+#: .\templates\landing.html:2008 .\templates\landing.html:2161
+msgid "Water Level Monitoring"
+msgstr "ਪਾਣੀ ਦੀ ਸਤਰ ਨਿਗਰਾਨੀ"
+
+#: .\templates\landing.html:2009
+msgid "Continuous monitoring of field water levels."
+msgstr "ਖੇਤ ਵਿੱਚ ਪਾਣੀ ਦੀ ਸਤਰ ਦੀ ਲਗਾਤਾਰ ਨਿਗਰਾਨੀ।"
+
+#: .\templates\landing.html:2019 .\templates\landing.html:2186
+msgid "Remote Sensing"
+msgstr "ਰਿਮੋਟ ਸੈਂਸਿੰਗ"
+
+#: .\templates\landing.html:2020
+msgid "Satellite-based agricultural monitoring."
+msgstr "ਸੈਟੈਲਾਈਟ ਅਤੇ ਡਰੋਨ-ਅਧਾਰਤ ਖੇਤੀ ਨਿਗਰਾਨੀ।"
+
+#: .\templates\landing.html:2037 .\templates\landing.html:2080
+#: .\templates\landing.html:2111 .\templates\landing.html:2135
+#: .\templates\landing.html:2158 .\templates\landing.html:2183
+msgid "Close modal"
+msgstr "ਬੰਦ ਕਰੋ"
+
+#: .\templates\landing.html:2041
+#, python-format
+msgid ""
+"\n"
+"                            Rice is a major crop in Punjab, particularly "
+"during the Kharif season, where traditional transplanting methods (TPR) are "
+"commonly used. These methods require large quantities of water, typically "
+"sourced from groundwater via subsidized electric tubewells, leading to "
+"severe aquifer depletion. The transplanted paddy system demands continuous "
+"field flooding, especially during the early vegetative and flowering stages, "
+"making rice farming highly water-intensive and increasingly unsustainable. "
+"Compounding the issue, traditional rice cultivation is also a major "
+"contributor to methane emissions, accounting for around 12%% of global "
+"methane output.\n"
+"                        "
+msgstr ""
+"\n"
+"                            ਚੌਲ ਪੰਜਾਬ ਦੀ ਮੁੱਖ ਫਸਲ ਹੈ, ਖਾਸ ਕਰਕੇ ਖਰੀਫ਼ ਮੌਸਮ ਵਿੱਚ, ਜਿੱਥੇ "
+"ਰਵਾਇਤੀ ਟ੍ਰਾਂਸਪਲਾਂਟਿੰਗ ਤਰੀਕੇ (TPR) ਆਮ ਹਨ। ਇਹ ਤਰੀਕੇ ਵੱਡੀ ਮਾਤਰਾ ਵਿੱਚ ਪਾਣੀ ਦੀ ਲੋੜ ਕਰਦੇ ਹਨ, "
+"ਜੋ ਆਮ ਤੌਰ 'ਤੇ ਸਬਸਿਡੀ ਵਾਲੇ ਬਿਜਲੀ ਟਿਊਬਵੈਲ ਰਾਹੀਂ ਭੂਜਲ ਤੋਂ ਲਿਆ ਜਾਂਦਾ ਹੈ, ਜਿਸ ਨਾਲ ਭੂਜਲ ਸਰੋਤ "
+"ਘੱਟਦੇ ਹਨ। ਟ੍ਰਾਂਸਪਲਾਂਟਡ ਚੌਲ ਪ੍ਰਣਾਲੀ ਲਗਾਤਾਰ ਖੇਤ ਵਿੱਚ ਪਾਣੀ ਭਰਨ ਦੀ ਮੰਗ ਕਰਦੀ ਹੈ, ਖਾਸ ਕਰਕੇ "
+"ਸ਼ੁਰੂਆਤੀ ਵਾਧੂ ਅਤੇ ਫੁੱਲਣ ਦੇ ਪੜਾਅ ਵਿੱਚ, ਜਿਸ ਨਾਲ ਚੌਲ ਦੀ ਖੇਤੀ ਬਹੁਤ ਪਾਣੀ-ਵਧੀਕ ਅਤੇ ਅਸਥਿਰ ਬਣ "
+"ਜਾਂਦੀ ਹੈ। ਇਸਦੇ ਨਾਲ, ਰਵਾਇਤੀ ਚੌਲ ਖੇਤੀ ਮੀਥੇਨ ਗੈਸ ਦੇ ਨਿਕਾਸ ਵਿੱਚ ਵੀ ਵੱਡਾ ਯੋਗਦਾਨ ਪਾਉਂਦੀ ਹੈ, ਜੋ "
+"ਦੁਨੀਆ ਦੇ ਲਗਭਗ 12%% ਮੀਥੇਨ ਨਿਕਾਸ ਲਈ ਜ਼ਿੰਮੇਵਾਰ ਹੈ।"
+
+#: .\templates\landing.html:2047
+msgid "AWD field technician"
+msgstr "AWD ਖੇਤ ਤਕਨੀਕੀ"
+
+#: .\templates\landing.html:2049
+msgid ""
+"A field technician demonstrating AWD pipes during rice cultivation in Punjab."
+msgstr "ਪੰਜਾਬ ਵਿੱਚ ਚੌਲ ਦੀ ਖੇਤੀ ਦੌਰਾਨ AWD ਪਾਈਪਾਂ ਦਾ ਡੈਮੋ ਦਿੰਦਾ ਖੇਤ ਤਕਨੀਕੀ।"
+
+#: .\templates\landing.html:2053
+msgid "AWD field close-up"
+msgstr "AWD ਖੇਤ ਨਜ਼ਦੀਕੀ"
+
+#: .\templates\landing.html:2055
+msgid "Close-up view of AWD irrigation setup in the field."
+msgstr "ਖੇਤ ਵਿੱਚ AWD ਸਿੰਚਾਈ ਸੈਟਅੱਪ ਦਾ ਨਜ਼ਦੀਕੀ ਦ੍ਰਿਸ਼।"
+
+#: .\templates\landing.html:2060 .\templates\landing.html:2098
+#: .\templates\landing.html:2121 .\templates\landing.html:2144
+#: .\templates\landing.html:2167 .\templates\landing.html:2192
+msgid "Detailed Explanation of the Research"
+msgstr "ਖੋਜ ਦੀ ਵਿਸਥਾਰ ਪੂਰਵਕ ਵਿਆਖਿਆ"
+
+#: .\templates\landing.html:2061
+msgid ""
+"\n"
+"                            In response, the Punjab government has "
+"introduced cash incentives to promote water-saving techniques like Direct "
+"Seeding of Rice (DSR) and micro-irrigation systems such as drip irrigation, "
+"though their adoption remains limited. As a more practical solution, "
+"researchers and institutions like the International Rice Research Institute "
+"(IRRI) advocate for modifying traditional practices through methods like "
+"Alternate Wetting and Drying (AWD).\n"
+"                        "
+msgstr ""
+"\n"
+"                            ਇਸਦੇ ਜਵਾਬ ਵਿੱਚ, ਪੰਜਾਬ ਸਰਕਾਰ ਨੇ ਪਾਣੀ-ਬਚਾਉਣ ਵਾਲੀਆਂ "
+"ਤਕਨੀਕਾਂ ਜਿਵੇਂ ਡਾਇਰੈਕਟ ਸੀਡਿੰਗ ਆਫ ਰਾਈਸ (DSR) ਅਤੇ ਮਾਈਕ੍ਰੋ-ਇਰੀਗੇਸ਼ਨ ਪ੍ਰਣਾਲੀਆਂ (ਜਿਵੇਂ ਡ੍ਰਿਪ "
+"ਸਿੰਚਾਈ) ਨੂੰ ਉਤਸ਼ਾਹਿਤ ਕਰਨ ਲਈ ਨਕਦੀ ਪ੍ਰੋਤਸਾਹਨ ਸ਼ੁਰੂ ਕੀਤੇ ਹਨ, ਹਾਲਾਂਕਿ ਇਹਨਾਂ ਦੀ ਅਪਣਾਈ ਹਾਲੇ ਵੀ "
+"ਘੱਟ ਹੈ। ਹੋਰ ਵਿਹਾਰਕ ਹੱਲ ਵਜੋਂ, ਖੋਜਕਾਰ ਅਤੇ ਸੰਸਥਾਵਾਂ (ਜਿਵੇਂ ਇੰਟਰਨੈਸ਼ਨਲ ਰਾਈਸ ਰਿਸਰਚ ਇੰਸਟੀਚਿਊਟ - "
+"IRRI) ਬਦਲਵੇਂ ਢੰਗ ਨਾਲ ਗਿੱਲਾ ਕਰਨਾ ਅਤੇ ਸੁਕਾਉਣਾ (AWD) ਵਰਗੀਆਂ ਤਕਨੀਕਾਂ ਰਾਹੀਂ ਬਦਲਣ ਦੀ ਸਿਫਾਰਸ਼ "
+"ਕਰਦੇ ਹਨ।"
+
+#: .\templates\landing.html:2064
+msgid ""
+"\n"
+"                            Under AWD, instead of maintaining continuous "
+"flooding, farmers allow water levels to recede up to 5 cm below the soil "
+"before re-flooding to a shallow level, repeating this cycle during critical "
+"growth stages. This approach can significantly reduce water usage without "
+"sacrificing yields. The proposed study aims to evaluate whether payment-for-"
+"ecosystem-services (PES) incentives can effectively promote AWD adoption and "
+"quantify the actual water savings achieved by participating farmers.\n"
+"                        "
+msgstr ""
+"\n"
+"                            AWD ਤਹਿਤ, ਲਗਾਤਾਰ ਪਾਣੀ ਭਰਨ ਦੀ ਬਜਾਏ, ਕਿਸਾਨ ਮਿੱਟੀ ਤੋਂ "
+"5 ਸੈਂਟੀਮੀਟਰ ਹੇਠਾਂ ਪਾਣੀ ਦੀ ਸਤਰ ਆਉਣ ਦਿੰਦੇ ਹਨ, ਫਿਰ ਮੁੜ ਥੋੜ੍ਹਾ ਪਾਣੀ ਭਰਦੇ ਹਨ, ਅਤੇ ਇਹ ਚੱਕਰ "
+"ਮਹੱਤਵਪੂਰਨ ਵਾਧੂ ਪੜਾਅ ਵਿੱਚ ਦੁਹਰਾਇਆ ਜਾਂਦਾ ਹੈ। ਇਹ ਤਰੀਕਾ ਪਾਣੀ ਦੀ ਵਰਤੋਂ ਨੂੰ ਬਿਨਾਂ ਪੈਦਾਵਾਰ ਘਟਾਏ "
+"ਕਾਫੀ ਘਟਾ ਸਕਦਾ ਹੈ। ਇਹ ਅਧਿਐਨ ਵੇਖੇਗਾ ਕਿ PES (payment-for-ecosystem-services) "
+"ਪ੍ਰੋਤਸਾਹਨ AWD ਅਪਣਾਉਣ ਨੂੰ ਕਿੰਨਾ ਪ੍ਰਭਾਵਸ਼ਾਲੀ ਬਣਾਉਂਦੇ ਹਨ ਅਤੇ ਅਸਲ ਪਾਣੀ-ਬਚਤ ਦੀ ਮਾਪ ਕਰੇਗਾ।"
+
+#: .\templates\landing.html:2084
+msgid ""
+"\n"
+"                            In Punjab, rice farming heavily depends on "
+"groundwater accessed via submersible pumps powered by state-subsidized "
+"electricity. However, the unpredictable 8-hour electricity schedule often "
+"forces farmers to keep pumps running continuously, especially during "
+"nighttime or rainy conditions, leading to over-irrigation and excessive "
+"groundwater extraction. Since there's no direct cost associated with water "
+"or electricity, there's little incentive for farmers to limit usage, despite "
+"the long-term threat to water sustainability.\n"
+"                        "
+msgstr ""
+"\n"
+"                            ਪੰਜਾਬ ਵਿੱਚ ਚੌਲ ਦੀ ਖੇਤੀ ਮੁੱਖ ਤੌਰ 'ਤੇ ਭੂਜਲ 'ਤੇ ਨਿਰਭਰ ਕਰਦੀ ਹੈ, "
+"ਜੋ ਕਿ ਸੂਬਾ-ਸਬਸਿਡੀ ਵਾਲੀ ਬਿਜਲੀ ਨਾਲ ਚਲਣ ਵਾਲੇ ਸਬਮਰਸਿਬਲ ਪੰਪਾਂ ਰਾਹੀਂ ਲਿਆ ਜਾਂਦਾ ਹੈ। ਪਰ, "
+"ਅਨੁਮਾਨਿਤ 8-ਘੰਟੇ ਬਿਜਲੀ ਸ਼ੈਡਿਊਲ ਕਰਕੇ ਕਿਸਾਨਾਂ ਨੂੰ ਪੰਪ ਲਗਾਤਾਰ ਚਲਾਉਣੇ ਪੈਂਦੇ ਹਨ, ਖਾਸ ਕਰਕੇ ਰਾਤ ਜਾਂ "
+"ਮੀਂਹ ਦੌਰਾਨ, ਜਿਸ ਨਾਲ ਵੱਧ ਸਿੰਚਾਈ ਅਤੇ ਭੂਜਲ ਦੀ ਵੱਧ ਖਪਤ ਹੁੰਦੀ ਹੈ। ਕਿਉਂਕਿ ਪਾਣੀ ਜਾਂ ਬਿਜਲੀ ਦੀ ਕੋਈ "
+"ਸਿੱਧੀ ਲਾਗਤ ਨਹੀਂ, ਇਸ ਲਈ ਕਿਸਾਨਾਂ ਕੋਲ ਵਰਤੋਂ ਘਟਾਉਣ ਲਈ ਘੱਟ ਪ੍ਰੋਤਸਾਹਨ ਹੁੰਦੇ ਹਨ, ਭਾਵੇਂ ਲੰਬੇ ਸਮੇਂ ਲਈ "
+"ਪਾਣੀ ਦੀ ਟਿਕਾਊਤਾ ਨੂੰ ਖਤਰਾ ਹੋਵੇ।"
+
+#: .\templates\landing.html:2093
+msgid "Remote controller"
+msgstr "ਰਿਮੋਟ ਕੰਟਰੋਲਰ"
+
+#: .\templates\landing.html:2099
+msgid ""
+"\n"
+"                            Remote controllers offer a solution by allowing "
+"farmers to operate pumps remotely, even during odd hours or adverse weather. "
+"These smart systems improve irrigation scheduling, reduce unnecessary power "
+"consumption, and enhance convenience by minimizing the need for manual "
+"visits. Integrating sensors and automation, they can play a critical role in "
+"promoting sustainable water use and boosting farmer satisfaction.\n"
+"                        "
+msgstr ""
+"\n"
+"                            ਰਿਮੋਟ ਕੰਟਰੋਲਰ ਕਿਸਾਨਾਂ ਨੂੰ ਪੰਪ ਦੂਰੋਂ ਚਲਾਉਣ ਦੀ ਸਹੂਲਤ ਦਿੰਦੇ ਹਨ, "
+"ਭਾਵੇਂ ਸਮਾਂ ਅਜੀਬ ਹੋਵੇ ਜਾਂ ਮੌਸਮ ਖਰਾਬ ਹੋਵੇ। ਇਹ ਸਮਾਰਟ ਪ੍ਰਣਾਲੀਆਂ ਸਿੰਚਾਈ ਸ਼ੈਡਿਊਲਿੰਗ ਸੁਧਾਰਦੀਆਂ ਹਨ, "
+"ਬੇਲੋੜੀ ਬਿਜਲੀ ਦੀ ਵਰਤੋਂ ਘਟਾਉਂਦੀਆਂ ਹਨ ਅਤੇ ਹੱਥੋਂ ਕੰਮ ਕਰਨ ਦੀ ਲੋੜ ਘਟਾ ਕੇ ਸਹੂਲਤ ਵਧਾਉਂਦੀਆਂ ਹਨ। ਸੈਂਸਰ "
+"ਅਤੇ ਆਟੋਮੇਸ਼ਨ ਨਾਲ ਮਿਲਾ ਕੇ, ਇਹ ਟਿਕਾਊ ਪਾਣੀ ਵਰਤੋਂ ਅਤੇ ਕਿਸਾਨ ਸੰਤੁਸ਼ਟੀ ਵਧਾਉਣ ਵਿੱਚ ਮਹੱਤਵਪੂਰਨ "
+"ਭੂਮਿਕਾ ਨਿਭਾ ਸਕਦੇ ਹਨ। \n"
+"                "
+
+#: .\templates\landing.html:2115
+msgid ""
+"\n"
+"                            Direct Seeding of Rice (DSR) is an innovative "
+"planting method that eliminates the need for transplanting seedlings, saving "
+"water and labor while maintaining high yields.\n"
+"                        "
+msgstr ""
+"\n"
+"                            ਡਾਇਰੈਕਟ ਸੀਡਿੰਗ ਆਫ ਰਾਈਸ (DSR) ਇੱਕ ਨਵੀਨਤਮ ਬੀਜਣ ਦਾ "
+"ਤਰੀਕਾ ਹੈ ਜੋ ਪੁੱਗੀਆਂ ਟ੍ਰਾਂਸਪਲਾਂਟ ਕਰਨ ਦੀ ਲੋੜ ਖਤਮ ਕਰਦਾ ਹੈ, ਪਾਣੀ ਅਤੇ ਮਜ਼ਦੂਰੀ ਬਚਾਉਂਦਾ ਹੈ ਅਤੇ ਉੱਚ "
+"ਪੈਦਾਵਾਰ ਬਣਾਈ ਰੱਖਦਾ ਹੈ।"
+
+#: .\templates\landing.html:2122
+msgid ""
+"\n"
+"                            DSR reduces water consumption by avoiding "
+"continuous flooding and nursery raising. It shortens the crop cycle and "
+"allows timely sowing of subsequent crops. Challenges include weed management "
+"and the need for precise field leveling.\n"
+"                        "
+msgstr ""
+"\n"
+"                            DSR ਲਗਾਤਾਰ ਪਾਣੀ ਭਰਨ ਅਤੇ ਨਰਸਰੀ ਉਗਾਉਣ ਤੋਂ ਬਚ ਕੇ ਪਾਣੀ "
+"ਦੀ ਵਰਤੋਂ ਘਟਾਉਂਦਾ ਹੈ। ਇਹ ਫਸਲ ਚੱਕਰ ਛੋਟਾ ਕਰਦਾ ਹੈ ਅਤੇ ਅਗਲੀ ਫਸਲ ਦੀ ਸਮੇਂ-ਸਿਰ ਬਿਜਾਈ ਯਕੀਨੀ "
+"ਬਣਾਉਂਦਾ ਹੈ। ਚੁਣੌਤੀਆਂ ਵਿੱਚ ਘਾਹ-ਨਿਯੰਤਰਣ ਅਤੇ ਖੇਤ ਦੀ ਸਹੀ ਲੈਵਲਿੰਗ ਦੀ ਲੋੜ ਸ਼ਾਮਲ ਹੈ।"
+
+#: .\templates\landing.html:2139
+msgid ""
+"\n"
+"                    Water metering provides real-time data on water usage, "
+"enabling farmers to optimize irrigation and conserve water resources "
+"effectively.\n"
+"                "
+msgstr ""
+"\n"
+"                    ਪਾਣੀ ਮਾਪਣ ਨਾਲ ਪਾਣੀ ਦੀ ਵਰਤੋਂ ਬਾਰੇ ਰੀਅਲ-ਟਾਈਮ ਡੇਟਾ ਮਿਲਦਾ ਹੈ, ਜਿਸ "
+"ਨਾਲ ਕਿਸਾਨ ਸਿੰਚਾਈ ਨੂੰ ਸੁਧਾਰ ਸਕਦੇ ਹਨ ਅਤੇ ਪਾਣੀ ਦੇ ਸਰੋਤਾਂ ਦੀ ਸੰਭਾਲ ਕਰ ਸਕਦੇ ਹਨ।"
+
+#: .\templates\landing.html:2145
+msgid ""
+"\n"
+"                    Accurate water metering helps track consumption, detect "
+"leaks, and supports water-saving policies and incentive programs.\n"
+"                "
+msgstr ""
+"\n"
+"                    ਪਾਣੀ ਦੀ ਸਹੀ ਮਾਪ ਨਾਲ ਵਰਤੋਂ ਦੀ ਨਿਗਰਾਨੀ, ਲੀਕ ਦੀ ਪਛਾਣ ਅਤੇ ਪਾਣੀ-"
+"ਬਚਤ ਨੀਤੀਆਂ ਅਤੇ ਪ੍ਰੋਤਸਾਹਨ ਪ੍ਰੋਗਰਾਮਾਂ ਨੂੰ ਸਹਿਯੋਗ ਮਿਲਦਾ ਹੈ।\n"
+"                "
+
+#: .\templates\landing.html:2162
+msgid ""
+"\n"
+"                    Continuous monitoring of water levels in fields ensures "
+"optimal irrigation, preventing waterlogging or drought stress.\n"
+"                "
+msgstr ""
+"\n"
+"                    ਖੇਤਾਂ ਵਿੱਚ ਪਾਣੀ ਦੀ ਸਤਰ ਦੀ ਲਗਾਤਾਰ ਨਿਗਰਾਨੀ ਨਾਲ ਵਧੀਆ ਸਿੰਚਾਈ ਹੁੰਦੀ "
+"ਹੈ ਅਤੇ ਪਾਣੀ ਭਰਾਅ ਜਾਂ ਸੁੱਕੇ ਦਾ ਖਤਰਾ ਘਟਦਾ ਹੈ।"
+
+#: .\templates\landing.html:2168
+msgid ""
+"\n"
+"                    Accurate water level data helps prevent over-irrigation "
+"and supports sustainable groundwater management. Integration with automated "
+"irrigation systems enhances water use efficiency.\n"
+"                "
+msgstr ""
+"\n"
+"                    ਸਹੀ ਪਾਣੀ ਦੀ ਸਤਰ ਡੇਟਾ ਨਾਲ ਵੱਧ ਸਿੰਚਾਈ ਰੋਕੀ ਜਾਂਦੀ ਹੈ ਅਤੇ ਟਿਕਾਊ ਭੂਜਲ "
+"ਪ੍ਰਬੰਧਨ ਨੂੰ ਸਹਿਯੋਗ ਮਿਲਦਾ ਹੈ। ਆਟੋਮੈਟਿਕ ਸਿੰਚਾਈ ਪ੍ਰਣਾਲੀ ਨਾਲ ਮਿਲਾ ਕੇ ਪਾਣੀ ਦੀ ਵਰਤੋਂ ਦੀ "
+"ਕਾਰਗੁਜ਼ਾਰੀ ਵਧਦੀ ਹੈ।"
+
+#: .\templates\landing.html:2187
+msgid ""
+"\n"
+"                    Remote sensing technology uses satellite imagery to "
+"monitor crop health, soil moisture, and agricultural productivity from a "
+"distance.\n"
+"                "
+msgstr ""
+"\n"
+"                    ਰਿਮੋਟ ਸੈਂਸਿੰਗ ਸੈਟੈਲਾਈਟ ਅਤੇ ਡਰੋਨ ਤਸਵੀਰਾਂ ਰਾਹੀਂ ਫਸਲ ਦੀ ਸਿਹਤ, ਮਿੱਟੀ ਦੀ "
+"ਹਾਲਤ ਅਤੇ ਪਾਣੀ ਦੀ ਵਰਤੋਂ ਦੀ ਨਿਗਰਾਨੀ ਕਰਦੀ ਹੈ।"
+
+#: .\templates\landing.html:2193
+msgid ""
+"\n"
+"                    By analyzing spectral data, remote sensing helps in "
+"early detection of crop stress, optimizing fertilizer application, and "
+"improving overall farm management.\n"
+"                "
+msgstr ""
+
+#: .\templates\landing.html:2208
+msgid ""
+"\n"
+"                        Explore our comprehensive collection of insights, "
+"guides, and resources to enhance your understanding\n"
+"                    "
+msgstr ""
+"\n"
+"                    ਆਪਣੀ ਸਮਝ ਵਧਾਉਣ ਲਈ ਸਾਡੀ ਵਿਸਤ੍ਰਿਤ ਜਾਣਕਾਰੀ, ਗਾਈਡਾਂ ਅਤੇ ਸਰੋਤਾਂ ਦੀ "
+"ਸੰਕਲਪਨਾ ਵੇਖੋ\n"
+"                "
+
+#: .\templates\landing.html:2218
+msgid "Agriculture in Punjab"
+msgstr "ਪੰਜਾਬ ਵਿੱਚ ਖੇਤੀਬਾੜੀ"
+
+#: .\templates\landing.html:2219
+msgid ""
+"\n"
+"                            Punjab, often referred to as the \"Granary of "
+"India\", is one of the most agriculturally\n"
+"                            prosperous states in the country. The state's "
+"agricultural success is largely attributed to the\n"
+"                            Green Revolution of the 1960s, which introduced "
+"high-yielding varieties (HYVs),\n"
+"                            mechanization, and chemical fertilizers, "
+"transforming Punjab into a leading food producer.\n"
+"                        "
+msgstr ""
+"\n"
+"                        ਪੰਜਾਬ, ਜਿਸਨੂੰ ਅਕਸਰ \"ਭਾਰਤ ਦਾ ਅੰਨ ਭੰਡਾਰ\" ਕਿਹਾ ਜਾਂਦਾ ਹੈ, ਦੇਸ਼ "
+"ਦੇ ਸਭ ਤੋਂ ਖੇਤੀਬਾੜੀਕ ਪੱਖੋਂ ਤਰੱਕੀਸ਼ੀਲ ਰਾਜਾਂ ਵਿੱਚੋਂ ਇੱਕ ਹੈ। ਪੰਜਾਬ ਦੀ ਖੇਤੀਬਾੜੀ ਦੀ ਸਫਲਤਾ ਮੁੱਖ ਤੌਰ 'ਤੇ "
+"1960 ਦੇ ਦਹਾਕੇ ਦੀ ਹਰੀ ਕ੍ਰਾਂਤੀ ਨੂੰ ਦਿੱਤੀ ਜਾਂਦੀ ਹੈ, ਜਿਸ ਨੇ ਉੱਚ ਉਪਜ ਵਾਲੀਆਂ ਕਿਸਮਾਂ (HYVs), "
+"ਮਕੈਨੀਕਲ ਤਕਨੀਕ ਅਤੇ ਰਸਾਇਣਕ ਖਾਦਾਂ ਲਿਆ ਕੇ ਪੰਜਾਬ ਨੂੰ ਭਾਰਤ ਦਾ ਮੁੱਖ ਅਨਾਜ ਉਤਪਾਦਕ ਰਾਜ ਬਣਾ ਦਿੱਤਾ।"
+
+#: .\templates\landing.html:2226 .\templates\landing.html:2239
+#: .\templates\landing.html:2252 .\templates\landing.html:2264
+#: .\templates\landing.html:2276 .\templates\landing.html:2290
+#: .\templates\landing.html:2304
+msgid "To know more about this topic click here"
+msgstr "ਇਸ ਵਿਸ਼ੇ ਬਾਰੇ ਹੋਰ ਜਾਣਨ ਲਈ ਇੱਥੇ ਕਲਿੱਕ ਕਰੋ"
+
+#: .\templates\landing.html:2232
+msgid "Crop residue management"
+msgstr "ਫਸਲ ਬਚਤ ਪ੍ਰਬੰਧਨ"
+
+#: .\templates\landing.html:2233
+msgid ""
+"\n"
+"                            At the end of the rice season farmers use the "
+"combine to harvest rice, this leaves hard\n"
+"                            stubbles at the root of the plant projecting "
+"10-15 cm above surface level. Thereafter, farmers\n"
+"                            will plough the field with a reaper to cut these "
+"stubbles leaving behind straw.\n"
+"                        "
+msgstr ""
+"\n"
+"                        ਚੌਲ ਦੇ ਮੌਸਮ ਦੇ ਅੰਤ 'ਤੇ ਕਿਸਾਨ ਕਾਂਬਾਈਨ ਨਾਲ ਚੌਲ ਦੀ ਕਟਾਈ ਕਰਦੇ ਹਨ, "
+"ਜਿਸ ਨਾਲ ਪੌਦੇ ਦੀ ਜੜ੍ਹ 'ਤੇ 10-15 ਸੈਂਟੀਮੀਟਰ ਉੱਚੀਆਂ ਸਖ਼ਤ ਡੰਡੀਆਂ ਰਹਿ ਜਾਂਦੀਆਂ ਹਨ। ਇਸ ਤੋਂ ਬਾਅਦ, "
+"ਕਿਸਾਨ ਰੀਪਰ ਨਾਲ ਖੇਤ ਨੂੰ ਜੋਤਦੇ ਹਨ ਤਾਂ ਜੋ ਇਹ ਡੰਡੀਆਂ ਕੱਟੀਆਂ ਜਾ ਸਕਣ ਅਤੇ ਪਰਾਲੀ ਪਿੱਛੇ ਰਹਿ ਜਾਂਦੀ ਹੈ।"
+
+#: .\templates\landing.html:2245
+msgid "Direct Seeded Rice"
+msgstr "ਡਾਇਰੈਕਟ ਸੀਡਿਡ ਚੌਲ"
+
+#: .\templates\landing.html:2246
+msgid ""
+"\n"
+"                            The Direct Seeded Rice (DSR) method is an "
+"emerging alternative to traditional transplanting.\n"
+"                            Unlike the transplanting method, DSR involves "
+"sowing rice seeds with a tractor-seeder directly\n"
+"                            into the field without a separate nursery or "
+"puddling.\n"
+"                        "
+msgstr ""
+"\n"
+"                        ਡਾਇਰੈਕਟ ਸੀਡਿਡ ਚੌਲ (DSR) ਤਰੀਕਾ ਰਵਾਇਤੀ ਟ੍ਰਾਂਸਪਲਾਂਟਿੰਗ ਦਾ ਇੱਕ "
+"ਨਵਾਂ ਵਿਕਲਪ ਹੈ। ਟ੍ਰਾਂਸਪਲਾਂਟਿੰਗ ਤਰੀਕੇ ਤੋਂ ਵੱਖ, DSR ਵਿੱਚ ਟ੍ਰੈਕਟਰ-ਸੀਡਰ ਰਾਹੀਂ ਬੀਜਾਂ ਨੂੰ ਸਿੱਧਾ ਖੇਤ "
+"ਵਿੱਚ ਬਿਜਿਆ ਜਾਂਦਾ ਹੈ, ਨਰਸਰੀ ਜਾਂ ਪਡਲਿੰਗ ਦੀ ਲੋੜ ਨਹੀਂ ਹੁੰਦੀ।"
+
+#: .\templates\landing.html:2258
+msgid "Farm"
+msgstr "ਖੇਤ"
+
+#: .\templates\landing.html:2259
+msgid ""
+"\n"
+"                            A piece of land with a distinct irrigation "
+"source that can be identified. It is cultivated by a main\n"
+"                            operator, that is the owner or leaseholder of "
+"the farm land.\n"
+"                        "
+msgstr ""
+"\n"
+"                        ਇੱਕ ਖੇਤ ਉਹ ਜ਼ਮੀਨ ਦਾ ਟੁਕੜਾ ਹੁੰਦਾ ਹੈ ਜਿਸਦਾ ਆਪਣਾ ਸਿੰਚਾਈ ਸਰੋਤ ਹੁੰਦਾ "
+"ਹੈ। ਇਸਨੂੰ ਮੁੱਖ ਓਪਰੇਟਰ (ਮਾਲਕ ਜਾਂ ਪੱਟੇਦਾਰ) ਵੱਲੋਂ ਖੇਤੀਬਾੜੀ ਲਈ ਵਰਤਿਆ ਜਾਂਦਾ ਹੈ।"
+
+#: .\templates\landing.html:2270
+msgid "Stages of Paddy rice"
+msgstr "ਧਾਨ ਦੇ ਪੜਾਅ"
+
+#: .\templates\landing.html:2271
+msgid ""
+"\n"
+"                            The growth stages of paddy rice (Oryza sativa) "
+"can be broadly divided into four key phases.\n"
+"                            Click below to learn about these phases in "
+"detail.\n"
+"                        "
+msgstr ""
+"\n"
+"                        ਧਾਨ (Oryza sativa) ਦੇ ਵਾਧੂ ਪੜਾਅ ਚਾਰ ਮੁੱਖ ਹਿੱਸਿਆਂ ਵਿੱਚ ਵੰਡੇ ਜਾ "
+"ਸਕਦੇ ਹਨ। ਹਰੇਕ ਪੜਾਅ ਬਾਰੇ ਵਿਸਥਾਰ ਨਾਲ ਜਾਣਨ ਲਈ ਹੇਠਾਂ ਕਲਿੱਕ ਕਰੋ।"
+
+#: .\templates\landing.html:2282
+msgid "Transplanting Rice"
+msgstr "ਚੌਲ ਟ੍ਰਾਂਸਪਲਾਂਟਿੰਗ"
+
+#: .\templates\landing.html:2283
+msgid ""
+"\n"
+"                            The transplanting rice (TPR) method of rice "
+"cultivation has been a traditional and widely\n"
+"                            practiced technique in Punjab, India, where rice "
+"is the major kharif (monsoon) crop. This\n"
+"                            method involves raising seedlings in a separate "
+"nursery and then transplanting them into a\n"
+"                            puddled, waterlogged field.\n"
+"                        "
+msgstr ""
+"\n"
+"                        ਚੌਲ ਟ੍ਰਾਂਸਪਲਾਂਟਿੰਗ (TPR) ਤਰੀਕਾ ਪੰਜਾਬ, ਭਾਰਤ ਵਿੱਚ ਚੌਲ ਦੀ ਖੇਤੀ "
+"ਦਾ ਰਵਾਇਤੀ ਅਤੇ ਵਿਆਪਕ ਤਰੀਕਾ ਹੈ, ਜਿੱਥੇ ਚੌਲ ਮੁੱਖ ਖਰੀਫ਼ (ਮਾਨਸੂਨ) ਫਸਲ ਹੈ। ਇਸ ਤਰੀਕੇ ਵਿੱਚ ਪੁੱਗੀਆਂ "
+"ਨਰਸਰੀ ਵਿੱਚ ਉਗਾਈਆਂ ਜਾਂਦੀਆਂ ਹਨ ਅਤੇ ਫਿਰ ਪਾਣੀ ਨਾਲ ਭਰੇ ਖੇਤ ਵਿੱਚ ਟ੍ਰਾਂਸਪਲਾਂਟ ਕੀਤਾ ਜਾਂਦਾ ਹੈ।"
+
+#: .\templates\landing.html:2296
+msgid "Tube-well"
+msgstr "ਟਿਊਬ-ਵੈਲ"
+
+#: .\templates\landing.html:2297
+msgid ""
+"\n"
+"                            Tube-well is by far the most pervasive source of "
+"irrigation in the area. It is a bore-well dug\n"
+"                            under the surface level the depth of which can "
+"vary between areas but it is 100 to 400ft,\n"
+"                            mostly around 200ft. The tube-well is called "
+"like this as it is a bore in a tube shape. Its\n"
+"                            diameter tends to be small, relative to the "
+"traditional wells. Diameter is usually 3-6\".\n"
+"                        "
+msgstr ""
+"\n"
+"                        ਟਿਊਬ-ਵੈਲ ਇਲਾਕੇ ਵਿੱਚ ਸਭ ਤੋਂ ਆਮ ਸਿੰਚਾਈ ਸਰੋਤ ਹੈ। ਇਹ ਜ਼ਮੀਨ ਹੇਠਾਂ "
+"ਖੋਦੀ ਜਾਂਦੀ ਬੋਰ-ਵੈਲ ਹੁੰਦੀ ਹੈ, ਜਿਸ ਦੀ ਗਹਿਰਾਈ ਖੇਤਰ ਅਨੁਸਾਰ 100 ਤੋਂ 400 ਫੁੱਟ (ਆਮ ਤੌਰ 'ਤੇ 200 ਫੁੱਟ) "
+"ਹੁੰਦੀ ਹੈ। ਟਿਊਬ-ਵੈਲ ਦਾ ਨਾਂ ਇਸ ਲਈ ਪਿਆ ਹੈ ਕਿਉਂਕਿ ਇਹ ਟਿਊਬ ਆਕਾਰ ਦੀ ਬੋਰ ਹੁੰਦੀ ਹੈ। ਇਸ ਦਾ ਵਿਆਸ "
+"ਰਵਾਇਤੀ ਖੂਹਾਂ ਨਾਲੋਂ ਛੋਟਾ ਹੁੰਦਾ ਹੈ, ਆਮ ਤੌਰ 'ਤੇ 3-6 ਇੰਚ।"
+
+#: .\templates\landing.html:2333
+msgid "Empowering Farmers, Sustaining Punjab"
+msgstr "ਕਿਸਾਨਾਂ ਨੂੰ ਸਸ਼ਕਤ ਕਰਨਾ, ਪੰਜਾਬ ਨੂੰ ਟਿਕਾਊ ਬਣਾਉਣਾ"
+
+
+#: .\templates\landing.html:2335
+msgid ""
+"\n"
+"      We are actively engaging with a cohort of 500 farmers across Patiala "
+"District as part of a comprehensive field research initiative aimed at "
+"improving irrigation practices and understanding on-farm water use in the "
+"aim to alleviate farmers' livelihoods and increase their income while "
+"maintaining food security in India. Our team conducts regular visits to each "
+"farm, where we carry out structured surveys to capture detailed information "
+"on farming practices, irrigation behavior, and crop decisions. At the same "
+"time, we are systematically measuring groundwater levels and installing "
+"water meters to monitor actual water use at the plot level. Each farm is geo-"
+"mapped to ensure spatial precision and enable integration with remote "
+"sensing and hydrological models.\n"
+"      "
+msgstr ""
+"\n"
+"      ਅਸੀਂ ਪਟਿਆਲਾ ਜ਼ਿਲ੍ਹੇ ਦੇ 500 ਕਿਸਾਨਾਂ ਦੇ ਸਮੂਹ ਨਾਲ ਸਰਗਰਮ ਸੰਪਰਕ ਕਰ ਰਹੇ ਹਾਂ, ਜੋ ਕਿ ਖੇਤਰੀ "
+"ਖੋਜ ਪहल ਦਾ ਹਿੱਸਾ ਹੈ, ਜਿਸ ਦਾ ਉਦੇਸ਼ ਸਿੰਚਾਈ ਤਰੀਕਿਆਂ ਵਿੱਚ ਸੁਧਾਰ ਅਤੇ ਖੇਤ ਪੱਧਰ 'ਤੇ ਪਾਣੀ ਦੀ ਵਰਤੋਂ "
+"ਦੀ ਸਮਝ ਵਧਾਉਣਾ ਹੈ, ਤਾਂ ਜੋ ਕਿਸਾਨਾਂ ਦੀ ਜੀਵਨ-ਜੀਵਿਕਾ ਸੁਧਾਰੀ ਜਾਵੇ, ਆਮਦਨ ਵਧਾਈ ਜਾਵੇ ਅਤੇ ਭਾਰਤ "
+"ਵਿੱਚ ਖਾਦ ਸੁਰੱਖਿਆ ਬਣਾਈ ਰੱਖੀ ਜਾਵੇ। ਸਾਡੀ ਟੀਮ ਹਰ ਖੇਤ 'ਤੇ ਨਿਯਮਤ ਦੌਰੇ ਕਰਦੀ ਹੈ, ਜਿੱਥੇ ਅਸੀਂ "
+"ਵਿਧੀਬੱਧ ਸਰਵੇਖਣ ਕਰਕੇ ਖੇਤੀ ਤਰੀਕਿਆਂ, ਸਿੰਚਾਈ ਵਿਹਾਰ ਅਤੇ ਫਸਲ ਚੋਣ ਬਾਰੇ ਵਿਸਥਾਰਕ ਜਾਣਕਾਰੀ ਇਕੱਤਰ "
+"ਕਰਦੇ ਹਾਂ। ਇਸਦੇ ਨਾਲ-ਨਾਲ, ਅਸੀਂ ਵਿਗਿਆਨਕ ਢੰਗ ਨਾਲ ਭੂਜਲ ਦੀ ਸਤਰ ਮਾਪ ਰਹੇ ਹਾਂ ਅਤੇ ਪਲਾਟ ਪੱਧਰ 'ਤੇ "
+"ਅਸਲ ਪਾਣੀ ਦੀ ਵਰਤੋਂ ਦੀ ਨਿਗਰਾਨੀ ਲਈ ਪਾਣੀ ਮੀਟਰ ਲਗਾ ਰਹੇ ਹਾਂ। ਹਰ ਖੇਤ ਨੂੰ ਜਿਓ-ਮੈਪ ਕੀਤਾ ਜਾਂਦਾ "
+"ਹੈ, ਤਾਂ ਜੋ ਅਸਥਾਈ ਸਹੀਤਾ ਯਕੀਨੀ ਬਣਾਈ ਜਾਵੇ ਅਤੇ ਰਿਮੋਟ ਸੈਂਸਿੰਗ ਤੇ ਹਾਈਡ੍ਰੋਲੋਜੀ ਮਾਡਲਾਂ ਨਾਲ ਇਕਾਈਕਰਨ "
+"ਹੋ ਸਕੇ।\n"
+"      "
+
+#: .\templates\landing.html:2348
+msgid "Meet Our Team"
+msgstr "ਟੀਮ ਨੂੰ ਮਿਲੋ"
+
+#: .\templates\landing.html:2349
+msgid "The minds behind the innovation"
+msgstr "ਨਵੀਨਤਾ ਦੇ ਪਿੱਛੇ ਦਿਮਾਗ"
+
+#: .\templates\landing.html:2354 .\templates\landing.html:2500
+msgid "Principal Investigators"
+msgstr "ਮੁੱਖ ਖੋਜਕਾਰ"
+
+#: .\templates\landing.html:2357 .\templates\landing.html:2358
+msgid "Prof. Karun Verma"
+msgstr "ਪ੍ਰੋ. ਕਰੁਣ ਵਰਮਾ"
+
+#: .\templates\landing.html:2359 .\templates\landing.html:2505
+#: .\templates\landing.html:2511
+msgid "Associate Professor at Thapar Institute of Engineering & Technology"
+msgstr "ਥਾਪਰ ਇੰਸਟੀਚਿਊਟ ਆਫ ਇੰਜੀਨੀਅਰਿੰਗ ਐਂਡ ਟੈਕਨੋਲੋਜੀ ਵਿੱਚ ਐਸੋਸੀਏਟ ਪ੍ਰੋਫੈਸਰ"
+
+#: .\templates\landing.html:2360 .\templates\landing.html:2366
+#: .\templates\landing.html:2380 .\templates\landing.html:2463
+#: .\templates\landing.html:2474 .\templates\landing.html:2485
+#: .\templates\landing.html:2506 .\templates\landing.html:2512
+#: .\templates\landing.html:2518 .\templates\landing.html:2524
+#: .\templates\landing.html:2530
+msgid "View Profile"
+msgstr "ਪ੍ਰੋਫਾਈਲ ਵੇਖੋ"
+
+#: .\templates\landing.html:2364 .\templates\landing.html:2510
+msgid "Prof. Amit Mishra"
+msgstr "ਪ੍ਰੋ. ਅਮਿਤ ਮਿਸ਼ਰਾ"
+
+#: .\templates\landing.html:2365
+msgid "Associate Professor at Thapar Institute of Engineering and Technology"
+msgstr "ਥਾਪਰ ਇੰਸਟੀਚਿਊਟ ਆਫ ਇੰਜੀਨੀਅਰਿੰਗ ਐਂਡ ਟੈਕਨੋਲੋਜੀ ਵਿੱਚ ਐਸੋਸੀਏਟ ਪ੍ਰੋਫੈਸਰ"
+
+#: .\templates\landing.html:2374
+msgid "Lead Researcher"
+msgstr "ਮੁੱਖ ਖੋਜਕਾਰ"
+
+#: .\templates\landing.html:2378
+msgid "Dan Etgar"
+msgstr "ਡੈਨ ਐਟਗਾਰ"
+
+#: .\templates\landing.html:2379
+msgid "Lead Researcher, PhD Candidate at Tel Aviv University"
+msgstr "ਮੁੱਖ ਖੋਜਕਾਰ, ਟੈਲ-ਅਵੀਵ ਯੂਨੀਵਰਸਿਟੀ ਵਿੱਚ ਪੀਐਚਡੀ ਉਮੀਦਵਾਰ"
+
+#: .\templates\landing.html:2387 .\templates\landing.html:2540
+msgid "Field Researchers"
+msgstr "ਖੇਤ ਖੋਜਕਾਰ"
+
+#: .\templates\landing.html:2391 .\templates\landing.html:2544
+msgid "Liron Dana"
+msgstr "ਲੀਰੋਨ ਡਾਨਾ"
+
+#: .\templates\landing.html:2392 .\templates\landing.html:2397
+#: .\templates\landing.html:2402 .\templates\landing.html:2545
+#: .\templates\landing.html:2550 .\templates\landing.html:2555
+#: .\templates\landing.html:2560 .\templates\landing.html:2565
+#: .\templates\landing.html:2570 .\templates\landing.html:2575
+#: .\templates\landing.html:2580 .\templates\landing.html:2585
+msgid "Field Researcher"
+msgstr "ਖੇਤ ਖੋਜਕਾਰ"
+
+#: .\templates\landing.html:2396 .\templates\landing.html:2549
+msgid "Marcello Liberman"
+msgstr "ਮਾਰਸੈਲੋ ਲੀਬਰਮੈਨ"
+
+#: .\templates\landing.html:2401 .\templates\landing.html:2554
+msgid "Shir Choen"
+msgstr "ਸ਼ਿਰ ਕੋਹਨ"
+
+#: .\templates\landing.html:2409 .\templates\landing.html:2655
+msgid "Research Field Team"
+msgstr "ਖੋਜ ਖੇਤ ਟੀਮ"
+
+#: .\templates\landing.html:2413 .\templates\landing.html:2659
+msgid "Gunteshwar Singh"
+msgstr "ਗੁੰਤੇਸ਼ਵਰ ਸਿੰਘ"
+
+#: .\templates\landing.html:2414 .\templates\landing.html:2660
+msgid "Field Manager"
+msgstr "ਖੇਤ ਮੈਨੇਜਰ"
+
+#: .\templates\landing.html:2418 .\templates\landing.html:2664
+msgid "Satyam Yadav"
+msgstr "ਸਤਿਆਮ ਯਾਦਵ"
+
+#: .\templates\landing.html:2419 .\templates\landing.html:2424
+#: .\templates\landing.html:2665 .\templates\landing.html:2670
+#: .\templates\landing.html:2675
+msgid "Lead Research Assistant"
+msgstr "ਮੁੱਖ ਖੋਜ ਸਹਾਇਕ"
+
+#: .\templates\landing.html:2423 .\templates\landing.html:2669
+msgid "Gaurav Sharma"
+msgstr "ਗੌਰਵ ਸ਼ਰਮਾ"
+
+#: .\templates\landing.html:2431 .\templates\landing.html:2595
+msgid "Student Interns"
+msgstr "ਵਿਦਿਆਰਥੀ ਇੰਟਰਨ"
+
+#: .\templates\landing.html:2435 .\templates\landing.html:2461
+#: .\templates\landing.html:2599
+msgid "Danish Sharma"
+msgstr "ਦਾਨਿਸ਼ ਸ਼ਰਮਾ"
+
+#: .\templates\landing.html:2436 .\templates\landing.html:2441
+#: .\templates\landing.html:2462 .\templates\landing.html:2473
+#: .\templates\landing.html:2600 .\templates\landing.html:2605
+msgid "Final Year B.E. Student at TIET, Senior Data Sci. and SDE intern"
+msgstr "TIET ਵਿੱਚ ਆਖਰੀ ਸਾਲ ਦਾ B.E. ਵਿਦਿਆਰਥੀ, ਸੀਨੀਅਰ ਡਾਟਾ ਵਿਗਿਆਨ ਅਤੇ SDE ਇੰਟਰਨ"
+
+#: .\templates\landing.html:2440 .\templates\landing.html:2472
+#: .\templates\landing.html:2604
+msgid "Samrath Singh Kharbanda"
+msgstr "ਸਮਰਥ ਸਿੰਘ ਖਰਬੰਦਾ"
+
+#: .\templates\landing.html:2445 .\templates\landing.html:2483
+#: .\templates\landing.html:2609
+msgid "Ashmit Cajla"
+msgstr "ਅਸ਼ਮਿਤ ਕਾਜਲਾ"
+
+#: .\templates\landing.html:2446 .\templates\landing.html:2484
+msgid "Pre-Final Year B.E. Student at TIET, Junior Data Sci. and SDE intern"
+msgstr "TIET ਵਿੱਚ ਪ੍ਰੀ-ਫਾਈਨਲ ਸਾਲ ਦਾ B.E. ਵਿਦਿਆਰਥੀ, ਜੂਨੀਅਰ ਡਾਟਾ ਵਿਗਿਆਨ ਅਤੇ SDE ਇੰਟਰਨ"
+
+#: .\templates\landing.html:2455
+msgid "Development Team"
+msgstr "ਡਿਵੈਲਪਮੈਂਟ ਟੀਮ"
+
+#: .\templates\landing.html:2504
+msgid "Prof. Karun"
+msgstr "ਪ੍ਰੋ. ਕਰੁਣ"
+
+#: .\templates\landing.html:2516
+msgid "Prof. Jhilik Bhattacharya"
+msgstr "ਪ੍ਰੋ. ਝਿਲਿਕ ਭਟਾਚਾਰਿਆ"
+
+#: .\templates\landing.html:2517
+msgid ""
+"Associate Professor & Associate Head at Thapar Institute of Engineering & "
+"Technology"
+msgstr "ਥਾਪਰ ਇੰਸਟੀਚਿਊਟ ਆਫ ਇੰਜੀਨੀਅਰਿੰਗ ਐਂਡ ਟੈਕਨੋਲੋਜੀ ਵਿੱਚ ਐਸੋਸੀਏਟ ਪ੍ਰੋਫੈਸਰ ਅਤੇ ਐਸੋਸੀਏਟ ਹੈੱਡ"
+
+#: .\templates\landing.html:2522
+msgid "Prof. Hadas Mamane"
+msgstr "ਪ੍ਰੋ. ਹਾਦਾਸ ਮਾਮਾਨੇ"
+
+#: .\templates\landing.html:2523
+msgid "Professor of Water Technologies at Tel Aviv University"
+msgstr "ਟੈਲ-ਅਵੀਵ ਯੂਨੀਵਰਸਿਟੀ ਵਿੱਚ ਪਾਣੀ ਤਕਨੀਕਾਂ ਦੇ ਪ੍ਰੋਫੈਸਰ"
+
+#: .\templates\landing.html:2528
+msgid "Prof. Ram"
+msgstr "ਪ੍ਰੋ. ਰਾਮ"
+
+#: .\templates\landing.html:2529
+msgid ""
+"Associate Professor of Public Policy, Tel Aviv University, and Director, "
+"Nitsan Lab for Sustainable Development"
+msgstr ""
+"ਟੈਲ-ਅਵੀਵ ਯੂਨੀਵਰਸਿਟੀ ਵਿੱਚ ਪਬਲਿਕ ਪਾਲਿਸੀ ਦੇ ਐਸੋਸੀਏਟ ਪ੍ਰੋਫੈਸਰ ਅਤੇ ਨਿਤਸਨ ਲੈਬ (ਟਿਕਾਊ ਵਿਕਾਸ "
+"ਲਈ) ਦੇ ਡਾਇਰੈਕਟਰ"
+
+#: .\templates\landing.html:2559
+msgid "Rinat Kaplan"
+msgstr "ਰੀਨਾਤ ਕਪਲਾਨ"
+
+#: .\templates\landing.html:2564
+msgid "Yotam golan"
+msgstr "ਯੋਤਾਮ ਗੋਲਾਨ"
+
+#: .\templates\landing.html:2569
+msgid "Briana Wiser"
+msgstr "ਬਰੀਆਨਾ ਵਾਈਜ਼ਰ"
+
+#: .\templates\landing.html:2574
+msgid "Rotem Mayer"
+msgstr "ਰੋਟਮ ਮਾਇਰ"
+
+#: .\templates\landing.html:2579
+msgid "Rotem Hanan"
+msgstr "ਰੋਟਮ ਹਨਾਨ"
+
+#: .\templates\landing.html:2584
+msgid "Ziv Hilel"
+msgstr "ਜ਼ਿਵ ਹਿਲੇਲ"
+
+#: .\templates\landing.html:2610
+msgid "Pre-Final Year B.E. Student at TIET, Senior Data Sci. and SDE intern"
+msgstr ""
+"TIET ਵਿੱਚ ਪ੍ਰੀ-ਫਾਈਨਲ ਸਾਲ ਦਾ B.E. ਵਿਦਿਆਰਥੀ, ਸੀਨੀਅਰ ਡਾਟਾ ਵਿਗਿਆਨ ਅਤੇ SDE ਇੰਟਰਨ"
+
+#: .\templates\landing.html:2614
+msgid "Mehakpreet Kaur"
+msgstr "ਮਹਕਪ੍ਰੀਤ ਕੌਰ"
+
+#: .\templates\landing.html:2615 .\templates\landing.html:2620
+#: .\templates\landing.html:2625
+msgid "Pre-Final Year B.E. Student at TIET and Web Portal Development Intern"
+msgstr "TIET ਵਿੱਚ ਪ੍ਰੀ-ਫਾਈਨਲ ਸਾਲ ਦਾ B.E. ਵਿਦਿਆਰਥੀ ਅਤੇ ਵੈੱਬ ਪੋਰਟਲ ਡਿਵੈਲਪਮੈਂਟ ਇੰਟਰਨ"
+
+#: .\templates\landing.html:2619
+msgid "Alysha Mahajan"
+msgstr "ਅਲੀਸ਼ਾ ਮਹਾਜਨ"
+
+#: .\templates\landing.html:2624
+msgid "Aakash Chandra"
+msgstr "ਆਕਾਸ਼ ਚੰਦਰ"
+
+#: .\templates\landing.html:2629
+msgid "Kismat Gill"
+msgstr "ਕਿਸਮਤ ਗਿੱਲ"
+
+#: .\templates\landing.html:2630
+msgid "Final Year B.E. Student at TIET and Data Science intern"
+msgstr "TIET ਵਿੱਚ ਆਖਰੀ ਸਾਲ ਦਾ B.E. ਵਿਦਿਆਰਥੀ ਅਤੇ ਡਾਟਾ ਵਿਗਿਆਨ ਇੰਟਰਨ"
+
+#: .\templates\landing.html:2634
+msgid "Hardik Garg"
+msgstr "ਹਾਰਦਿਕ ਗਰਗ"
+
+#: .\templates\landing.html:2635 .\templates\landing.html:2645
+msgid "Final Year B.E. Student at TIET and Remote Sensing intern"
+msgstr "TIET ਵਿੱਚ ਆਖਰੀ ਸਾਲ ਦਾ B.E. ਵਿਦਿਆਰਥੀ ਅਤੇ ਰਿਮੋਟ ਸੈਂਸਿੰਗ ਇੰਟਰਨ"
+
+#: .\templates\landing.html:2639
+msgid "Shubham Rajdev"
+msgstr "ਸ਼ੁਭਮ ਰਾਜਦੇਵ"
+
+#: .\templates\landing.html:2640
+msgid "Pre-Final Year B.E. Student at TIET and IoT Systemts Intern"
+msgstr "TIET ਵਿੱਚ ਪ੍ਰੀ-ਫਾਈਨਲ ਸਾਲ ਦਾ B.E. ਵਿਦਿਆਰਥੀ ਅਤੇ IoT ਪ੍ਰਣਾਲੀ ਇੰਟਰਨ"
+
+#: .\templates\landing.html:2644
+msgid "Asmi Gaurav"
+msgstr "ਅਸਮੀ ਗੌਰਵ"
+
+#: .\templates\landing.html:2674
+msgid "Napinder Singh"
+msgstr "ਨਪਿੰਦਰ ਸਿੰਘ"
+
+#: .\templates\landing.html:2679
+msgid "Kanwar Ajay Singh"
+msgstr "ਕਨਵਰ ਅਜੈ ਸਿੰਘ"
+
+#: .\templates\landing.html:2680 .\templates\landing.html:2685
+msgid "Senior Field Assistant"
+msgstr "ਸੀਨੀਅਰ ਖੇਤ ਸਹਾਇਕ"
+
+#: .\templates\landing.html:2684
+msgid "Satnam Singh"
+msgstr "ਸਤਨਾਮ ਸਿੰਘ"
+
+#: .\templates\landing.html:2689
+msgid "Yogesh Sharma"
+msgstr "ਯੋਗੇਸ਼ ਸ਼ਰਮਾ"
+
+#: .\templates\landing.html:2690
+msgid "Skilled Field Assistant"
+msgstr "ਮਾਹਿਰ ਖੇਤ ਸਹਾਇਕ"
+
+#: .\templates\landing.html:2705
+msgid "Username"
+msgstr "ਯੂਜ਼ਰਨਾਮ"
+
+#: .\templates\landing.html:2709
+msgid "Password"
+msgstr "ਪਾਸਵਰਡ"
+
+#: .\templates\landing.html:2712
+msgid "Login"
+msgstr "ਲੌਗਇਨ"
+
+#: .\templates\mapping.html:610 .\templates\mapping.html:646
+#: .\templates\mapping.html:721
+msgid "Field Mapping Analysis"
+msgstr "ਖੇਤ ਨਕਸ਼ਾ ਵਿਸ਼ਲੇਸ਼ਣ"
+
+#: .\templates\mapping.html:648
+msgid ""
+"Advanced GIS tools for field boundary mapping, crop monitoring, and spatial "
+"analysis of agricultural data with satellite imagery integration."
+msgstr ""
+"ਖੇਤ ਸੀਮਾ ਨਕਸ਼ੇ ਬਣਾਉਣ, ਫਸਲ ਨਿਗਰਾਨੀ ਅਤੇ ਖੇਤੀ ਵਾਲੇ ਡੇਟਾ ਤੇ ਸੈਟੈਲਾਈਟ ਤਸਵੀਰਾਂ ਦੀ ਅਸਥਾਈ "
+"ਵਿਸ਼ਲੇਸ਼ਣ ਲਈ ਅਧੁਨਿਕ GIS ਸੰਦ।"
+
+#: .\templates\mapping.html:658
+msgid "Coming Soon: Advanced GIS Platform"
+msgstr "ਜਲਦੀ ਆ ਰਿਹਾ: ਉੱਨਤ GIS ਪਲੇਟਫਾਰਮ"
+
+#: .\templates\mapping.html:665
+msgid "Field Grid Puzzle"
+msgstr "ਖੇਤ ਗਰਿੱਡ ਪਹੇਲੀ"
+
+#: .\templates\mapping.html:666
+msgid "Arrange the field tiles in order while we develop the mapping tool!"
+msgstr "ਜਦੋਂ ਅਸੀਂ ਨਕਸ਼ਾ ਸੰਦ ਤਿਆਰ ਕਰ ਰਹੇ ਹਾਂ, ਖੇਤ ਦੀਆਂ ਟਾਈਲਾਂ ਨੂੰ ਠੀਕ ਕ੍ਰਮ ਵਿੱਚ ਲਾਓ!"
+
+#: .\templates\mapping.html:670
+msgid "3×3 Easy"
+msgstr "3×3 ਆਸਾਨ"
+
+#: .\templates\mapping.html:671
+msgid "4×4 Medium"
+msgstr "4×4 ਦਰਮਿਆਨਾ"
+
+#: .\templates\mapping.html:685
+msgid "Grid Size"
+msgstr "ਗਰਿੱਡ ਆਕਾਰ"
+
+#: .\templates\mapping.html:697
+msgid "Shuffle"
+msgstr "ਸ਼ਫਲ ਕਰੋ"
+
+#: .\templates\mapping.html:703
+msgid "Solve"
+msgstr "ਹੱਲ ਕਰੋ"
+
+#: .\templates\mapping.html:711
+msgid "Field Mapped Successfully!"
+msgstr "ਖੇਤ ਸਫਲਤਾਪੂਰਵਕ ਨਕਸ਼ਾ ਬਣਾਇਆ ਗਿਆ!"
+
+#: .\templates\mapping.html:713
+msgid "Great job organizing the field grid!"
+msgstr "ਖੇਤ ਗਰਿੱਡ ਨੂੰ ਵਧੀਆ ਢੰਗ ਨਾਲ ਲਗਾਇਆ!"
+
+#: .\templates\mapping.html:721
+msgid "Development Preview"
+msgstr "ਵਿਕਾਸ ਝਲਕ"
+
+#: .\templates\meter_reading.html:1053
+msgid "Processing Legacy Data"
+msgstr "ਪੁਰਾਣਾ ਡੇਟਾ ਪ੍ਰੋਸੈਸ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ"
+
+#: .\templates\meter_reading.html:1055
+msgid "Processing your 2024 format files..."
+msgstr "ਤੁਹਾਡੀਆਂ 2024 ਫਾਰਮੈਟ ਫਾਈਲਾਂ ਪ੍ਰੋਸੈਸ ਹੋ ਰਹੀਆਂ ਹਨ..."
+
+#: .\templates\meter_reading.html:1061
+msgid "Complete"
+msgstr "ਪੂਰਾ ਹੋਇਆ"
+
+#: .\templates\meter_reading.html:1070
+#, fuzzy
+#| msgid "Back to Meter Analysis"
+msgid "Water Meter Analytics Platform"
+msgstr "ਪਾਣੀ ਮੀਟਰ ਵਿਸ਼ਲੇਸ਼ਣ ਪਲੇਟਫਾਰਮ"
+
+#: .\templates\meter_reading.html:1071
+msgid "Legacy Data Analysis System"
+msgstr "ਪੁਰਾਣਾ ਡੇਟਾ ਵਿਸ਼ਲੇਸ਼ਣ ਪ੍ਰਣਾਲੀ"
+
+#: .\templates\meter_reading.html:1104
+msgid "2024 Format"
+msgstr "2024 ਫਾਰਮੈਟ"
+
+#: .\templates\meter_reading.html:1107
+msgid "2025 Format"
+msgstr "2025 ਫਾਰਮੈਟ"
+
+#: .\templates\meter_reading.html:1116
+msgid "Legacy Data Upload Terminal"
+msgstr "ਪੁਰਾਣਾ ਡੇਟਾ ਅਪਲੋਡ ਟਰਮੀਨਲ"
+
+#: .\templates\meter_reading.html:1118
+msgid "Legacy Format Processing"
+msgstr "ਪੁਰਾਣਾ ਫਾਰਮੈਟ ਪ੍ਰੋਸੈਸ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ"
+
+#: .\templates\meter_reading.html:1126
+msgid "Meter Reading Data File"
+msgstr "ਮੀਟਰ ਪੜ੍ਹਨ ਵਾਲੀ ਡੇਟਾ ਫਾਈਲ"
+
+#: .\templates\meter_reading.html:1130
+msgid "Upload your 2024 format meter reading Excel file"
+msgstr "ਆਪਣੀ 2024 ਫਾਰਮੈਟ ਮੀਟਰ ਪੜ੍ਹਨ ਵਾਲੀ ਐਕਸਲ ਫਾਈਲ ਅਪਲੋਡ ਕਰੋ"
+
+#: .\templates\meter_reading.html:1136
+msgid "Master Database File"
+msgstr "ਮਾਸਟਰ ਡਾਟਾਬੇਸ ਫਾਈਲ"
+
+#: .\templates\meter_reading.html:1140
+msgid "Upload the corresponding master database file"
+msgstr "ਸੰਬੰਧਤ ਮਾਸਟਰ ਡਾਟਾਬੇਸ ਫਾਈਲ ਅਪਲੋਡ ਕਰੋ"
+
+#: .\templates\meter_reading.html:1145
+msgid "Upload & Analyze Data"
+msgstr "ਡੇਟਾ ਅਪਲੋਡ ਕਰੋ ਅਤੇ ਵਿਸ਼ਲੇਸ਼ਣ ਕਰੋ"
+
+#: .\templates\meter_reading.html:1160
+msgid "Legacy Data Successfully Processed"
+msgstr "ਪੁਰਾਣਾ ਡੇਟਾ ਸਫਲਤਾਪੂਰਵਕ ਪ੍ਰੋਸੈਸ ਹੋ ਗਿਆ"
+
+#: .\templates\meter_reading.html:1164
+msgid "Last Upload:"
+msgstr "ਆਖਰੀ ਅਪਲੋਡ:"
+
+#: .\templates\meter_reading.html:1168
+msgid "Format:"
+msgstr "ਫਾਰਮੈਟ:"
+
+#: .\templates\meter_reading.html:1169
+msgid "Kharif 2024 Legacy"
+msgstr "ਖਰੀਫ਼ 2024 ਪੁਰਾਣਾ"
+
+#: .\templates\meter_reading.html:1172
+msgid "Status:"
+msgstr "ਸਥਿਤੀ:"
+
+#: .\templates\meter_reading.html:1187
+msgid "Farm Selection Panel"
+msgstr "ਖੇਤ ਚੋਣ ਪੈਨਲ"
+
+#: .\templates\meter_reading.html:1194
+msgid "Farm Identifier"
+msgstr "ਖੇਤ ਪਛਾਣਕਰਤਾ"
+
+#: .\templates\meter_reading.html:1197
+msgid "-- Select farm unit --"
+msgstr "-- ਖੇਤ ਯੂਨਿਟ ਚੁਣੋ --"
+
+#: .\templates\meter_reading.html:1204
+msgid "Analyze Farm"
+msgstr "ਖੇਤ ਵਿਸ਼ਲੇਸ਼ਣ ਕਰੋ"
+
+#: .\templates\meter_reading.html:1215
+msgid "Data Visualization Matrix"
+msgstr "ਡੇਟਾ ਵਿਜ਼ੂਅਲਾਈਜ਼ੇਸ਼ਨ ਮੈਟ੍ਰਿਕਸ"
+
+#: .\templates\meter_reading.html:1227
+#, python-format
+msgid "Meter Unit <span class=\"code\">%(result.meter)s</span>"
+msgstr "ਮੀਟਰ ਯੂਨਿਟ <span class=\"code\">%(result.meter)s</span>"
+
+#: .\templates\meter_reading.html:1230
+#, fuzzy
+#| msgid "Deep tillage"
+msgid "Village:"
+msgstr "ਪਿੰਡ:"
+
+#: .\templates\meter_reading.html:1231
+msgid "Size:"
+msgstr "ਆਕਾਰ:"
+
+#: .\templates\meter_reading.html:1231
+msgid "Acres"
+msgstr "ਏਕੜ"
+
+#: .\templates\meter_reading.html:1232
+msgid "Type:"
+msgstr "ਕਿਸਮ:"
+
+#: .\templates\meter_reading.html:1244
+#, python-format
+msgid "Analysis Plot %(forloop.counter)s"
+msgstr "ਵਿਸ਼ਲੇਸ਼ਣ ਪਲਾਟ %(forloop.counter)s"
+
+#: .\templates\meter_reading.html:1246
+msgid "Toggle visibility"
+msgstr "ਦਿੱਖ ਬਦਲੋ"
+
+#: .\templates\meter_reading.html:1251
+#, python-format
+msgid "Data visualization for %(result.meter)s"
+msgstr "%(result.meter)s ਲਈ ਡੇਟਾ ਵਿਜ਼ੂਅਲਾਈਜ਼ੇਸ਼ਨ"
+
+#: .\templates\meter_reading.html:1254
+msgid "Visualization Hidden"
+msgstr "ਵਿਜ਼ੂਅਲਾਈਜ਼ੇਸ਼ਨ ਲੁਕਾਇਆ ਗਿਆ"
+
+#: .\templates\meter_reading.html:1267
+msgid "Digi-Village Water Meter Analysis Platform"
+msgstr "ਡਿਜੀ-ਵਿਲੇਜ ਪਾਣੀ ਮੀਟਰ ਵਿਸ਼ਲੇਸ਼ਣ ਪਲੇਟਫਾਰਮ"
+
+#: .\templates\meter_reading.html:1267
+msgid "Version 1.0 (Legacy)"
+msgstr "ਵਰਜਨ 1.0 (ਪੁਰਾਣਾ)"
+
+#: .\templates\stages.html:7 .\templates\stages.html:475
+msgid "3D Interactive Rice Plant Growth Stages"
+msgstr "3D ਇੰਟਰਐਕਟਿਵ ਚੌਲ ਪੌਦੇ ਦੇ ਵਾਧੂ ਪੜਾਅ"
+
+#: .\templates\stages.html:479 .\templates\tpr.html:402
+msgid "Transplanting"
+msgstr "ਟ੍ਰਾਂਸਪਲਾਂਟਿੰਗ"
+
+#: .\templates\stages.html:480
+msgid "Vegetative"
+msgstr "ਵੈਜੀਟੇਟਿਵ"
+
+#: .\templates\stages.html:481
+msgid "Reproductive"
+msgstr "ਰੀਪ੍ਰੋਡਕਟਿਵ"
+
+#: .\templates\stages.html:482
+msgid "Maturity"
+msgstr "ਪੱਕਣ"
+
+#: .\templates\stages.html:489
+msgid "Click to learn about the Transplanting stage"
+msgstr "ਟ੍ਰਾਂਸਪਲਾਂਟਿੰਗ ਪੜਾਅ ਬਾਰੇ ਜਾਣਨ ਲਈ ਕਲਿੱਕ ਕਰੋ"
+
+#: .\templates\stages.html:493
+msgid "Click to learn about the Vegetative stage"
+msgstr "ਵੈਜੀਟੇਟਿਵ ਪੜਾਅ ਬਾਰੇ ਜਾਣਨ ਲਈ ਕਲਿੱਕ ਕਰੋ"
+
+#: .\templates\stages.html:497
+msgid "Click to learn about the Reproductive stage"
+msgstr "ਰੀਪ੍ਰੋਡਕਟਿਵ ਪੜਾਅ ਬਾਰੇ ਜਾਣਨ ਲਈ ਕਲਿੱਕ ਕਰੋ"
+
+#: .\templates\stages.html:501
+msgid "Click to learn about the Maturity stage"
+msgstr "ਪੱਕਣ ਪੜਾਅ ਬਾਰੇ ਜਾਣਨ ਲਈ ਕਲਿੱਕ ਕਰੋ"
+
+#: .\templates\stages.html:589
+msgid "Transplanting (Establishment)"
+msgstr "ਚੌਲ ਟ੍ਰਾਂਸਪਲਾਂਟਿੰਗ"
+
+#: .\templates\stages.html:590
+msgid ""
+"After seedlings are grown in a nursery for 25–35 days, they are either "
+"transplanted into the main field using the Transplanted Rice (TPR) method or "
+"sown directly through Direct Seeded Rice (DSR). During this stage, root "
+"establishment begins as the seedlings adapt to the new field environment. "
+"The plants experience stress due to uprooting in the TPR method and the "
+"adjustment to different environmental conditions. Adequate irrigation is "
+"crucial at this point to support survival and proper establishment. This "
+"stage typically lasts for about 10–15 days post-transplanting. Critical "
+"factors influencing success include good puddling and leveling of the field, "
+"along with proper spacing and depth during transplanting."
+msgstr ""
+"ਨਰਸਰੀ ਵਿੱਚ ਪੁੱਗੀਆਂ 25–35 ਦਿਨ ਉਗਣ ਤੋਂ ਬਾਅਦ, ਉਨ੍ਹਾਂ ਨੂੰ ਜਾਂ ਤਾਂ ਮੁੱਖ ਖੇਤ ਵਿੱਚ ਟ੍ਰਾਂਸਪਲਾਂਟਡ ਚੌਲ "
+"(TPR) ਤਰੀਕੇ ਨਾਲ ਲਾਇਆ ਜਾਂਦਾ ਹੈ ਜਾਂ ਡਾਇਰੈਕਟ ਸੀਡਿਡ ਚੌਲ (DSR) ਰਾਹੀਂ ਸਿੱਧਾ ਬੀਜਿਆ ਜਾਂਦਾ ਹੈ। "
+"ਇਸ ਪੜਾਅ ਦੌਰਾਨ, ਪੁੱਗੀਆਂ ਨਵੇਂ ਖੇਤ ਦੇ ਵਾਤਾਵਰਣ ਨਾਲ ਅਨੁਕੂਲ ਹੋਦੀਆਂ ਹਨ ਅਤੇ ਜੜਾਂ ਦੀ ਸਥਾਪਨਾ ਸ਼ੁਰੂ ਹੁੰਦੀ "
+"ਹੈ। TPR ਤਰੀਕੇ ਵਿੱਚ ਪੁੱਗੀਆਂ ਨੂੰ ਉਖਾੜਨ ਅਤੇ ਵੱਖਰੇ ਵਾਤਾਵਰਣ ਨਾਲ ਅਨੁਕੂਲਤਾ ਕਾਰਨ ਪੌਦਿਆਂ ਨੂੰ ਤਣਾਅ ਹੁੰਦਾ "
+"ਹੈ। ਇਸ ਸਮੇਂ ਉਚਿਤ ਸਿੰਚਾਈ ਬਹੁਤ ਜ਼ਰੂਰੀ ਹੈ ਤਾਂ ਜੋ ਪੁੱਗੀਆਂ ਦੀ ਬਚਤ ਅਤੇ ਠੀਕ ਸਥਾਪਨਾ ਹੋ ਸਕੇ। ਇਹ ਪੜਾਅ "
+"ਆਮ ਤੌਰ 'ਤੇ ਟ੍ਰਾਂਸਪਲਾਂਟਿੰਗ ਤੋਂ ਬਾਅਦ 10–15 ਦਿਨ ਤੱਕ ਚਲਦਾ ਹੈ। ਸਫਲਤਾ ਲਈ ਮਹੱਤਵਪੂਰਨ ਗੱਲਾਂ ਵਿੱਚ ਖੇਤ "
+"ਦੀ ਵਧੀਆ ਪਡਲਿੰਗ ਅਤੇ ਲੈਵਲਿੰਗ, ਟ੍ਰਾਂਸਪਲਾਂਟਿੰਗ ਸਮੇਂ ਠੀਕ ਦੂਰੀ ਅਤੇ ਗਹਿਰਾਈ ਸ਼ਾਮਲ ਹਨ।"
+
+#: .\templates\stages.html:593
+msgid "Vegetative Stage"
+msgstr "ਵੈਜੀਟੇਟਿਵ ਪੜਾਅ"
+
+#: .\templates\stages.html:594
+msgid ""
+"This is the period of active growth when the rice plant develops leaves, "
+"stems, and tillers (side shoots). During this stage, tillers form, which are "
+"crucial as they directly determine the number of panicles—the grain-bearing "
+"structures. Nutrient uptake, especially nitrogen, increases significantly, "
+"making it important to ensure proper fertilization. Effective weed control "
+"is essential to minimize competition for resources, and consistent water "
+"management is vital to support optimal growth. This stage typically lasts "
+"for about 30 to 40 days, depending on the rice variety. Key factors for "
+"success include adequate irrigation, timely application of nitrogen-rich "
+"fertilizers, and control of pests like stem borers as well as diseases such "
+"as bacterial blight."
+msgstr ""
+"ਇਹ ਚੌਲ ਪੌਦੇ ਦੇ ਸਰਗਰਮ ਵਾਧੂ ਦਾ ਪੜਾਅ ਹੈ, ਜਿਸ ਦੌਰਾਨ ਪੱਤੇ, ਤਣੇ ਅਤੇ ਟਿਲਰ (ਸਾਈਡ ਸ਼ੂਟ) ਬਣਦੇ ਹਨ। ਇਸ "
+"ਪੜਾਅ ਵਿੱਚ ਟਿਲਰ ਬਣਦੇ ਹਨ, ਜੋ ਕਿ ਬਹੁਤ ਮਹੱਤਵਪੂਰਨ ਹਨ ਕਿਉਂਕਿ ਇਹ ਸਿੱਧਾ ਪੈਨਿਕਲ (ਅਨਾਜ ਵਾਲੀ "
+"ਬਣਤਰ) ਦੀ ਗਿਣਤੀ ਨਿਰਧਾਰਤ ਕਰਦੇ ਹਨ। ਪੌਸ਼ਟਿਕ ਤੱਤਾਂ, ਖਾਸ ਕਰਕੇ ਨਾਈਟ੍ਰੋਜਨ, ਦੀ ਲੈਣ-ਦੇਣ ਕਾਫੀ ਵਧ "
+"ਜਾਂਦੀ ਹੈ, ਇਸ ਲਈ ਠੀਕ ਖਾਦ ਪਾਉਣਾ ਜ਼ਰੂਰੀ ਹੈ। ਘਾਹ-ਨਿਯੰਤਰਣ ਵੀ ਲਾਜ਼ਮੀ ਹੈ ਤਾਂ ਜੋ ਸਰੋਤਾਂ ਲਈ "
+"ਮੁਕਾਬਲਾ ਘੱਟ ਹੋਵੇ, ਅਤੇ ਲਗਾਤਾਰ ਪਾਣੀ ਪ੍ਰਬੰਧਨ ਵਧੀਆ ਵਾਧੂ ਲਈ ਜ਼ਰੂਰੀ ਹੈ। ਇਹ ਪੜਾਅ ਆਮ ਤੌਰ 'ਤੇ 30 ਤੋਂ "
+"40 ਦਿਨ ਚਲਦਾ ਹੈ, ਜੋ ਚੌਲ ਦੀ ਕਿਸਮ 'ਤੇ ਨਿਰਭਰ ਕਰਦਾ ਹੈ। ਸਫਲਤਾ ਲਈ ਉਚਿਤ ਸਿੰਚਾਈ, ਸਮੇਂ-ਸਿਰ "
+"ਨਾਈਟ੍ਰੋਜਨ-ਅਮੀਰ ਖਾਦ ਪਾਉਣਾ, ਅਤੇ ਤਣੇ ਦੇ ਕੀੜੇ ਜਾਂ ਬੈਕਟੀਰੀਅਲ ਬਲਾਈਟ ਵਰਗੀਆਂ ਬਿਮਾਰੀਆਂ ਦਾ ਕੰਟਰੋਲ "
+"ਕਰਨਾ ਮਹੱਤਵਪੂਰਨ ਹੈ।"
+
+#: .\templates\stages.html:597
+msgid "Reproductive Stage"
+msgstr "ਰੀਪ੍ਰੋਡਕਟਿਵ ਪੜਾਅ"
+
+#: .\templates\stages.html:598
+msgid ""
+"This is the most sensitive phase in the rice plant's lifecycle, during which "
+"the plant forms panicles, flowers, and undergoes pollination and "
+"fertilization. Panicle initiation marks the start of this stage, where tiny "
+"spikelets—future grains—begin to develop. Flowering typically starts at the "
+"top of the panicle and progresses downward. The success of pollination and "
+"fertilization during this time directly affects grain formation and overall "
+"yield. This stage usually lasts around 25 to 30 days, depending on the rice "
+"variety. Ensuring a consistent water supply is crucial, as even brief "
+"periods of drought can significantly impact yield. Additionally, protecting "
+"the crop from pests such as panicle mites and diseases like blast or sheath "
+"blight is vital for maintaining grain quality and productivity."
+msgstr ""
+"ਇਹ ਚੌਲ ਪੌਦੇ ਦੇ ਜੀਵਨ ਚੱਕਰ ਦਾ ਸਭ ਤੋਂ ਸੰਵੇਦਨਸ਼ੀਲ ਪੜਾਅ ਹੈ, ਜਿਸ ਦੌਰਾਨ ਪੈਨਿਕਲ, ਫੁੱਲ ਬਣਦੇ ਹਨ ਅਤੇ "
+"ਪਰਾਗਣ ਤੇ ਫਰਟੀਲਾਈਜ਼ੇਸ਼ਨ ਹੁੰਦੀ ਹੈ। ਪੈਨਿਕਲ ਦੀ ਸ਼ੁਰੂਆਤ ਇਸ ਪੜਾਅ ਦੀ ਸ਼ੁਰੂਆਤ ਦਰਸਾਉਂਦੀ ਹੈ, ਜਿੱਥੇ ਛੋਟੇ-ਛੋਟੇ "
+"ਸਪਾਈਕਲੈਟ (ਭਵਿੱਖ ਦੇ ਅਨਾਜ) ਬਣਣ ਲੱਗ ਪੈਂਦੇ ਹਨ। ਫੁੱਲ ਆਮ ਤੌਰ 'ਤੇ ਪੈਨਿਕਲ ਦੇ ਉੱਪਰਲੇ ਹਿੱਸੇ ਤੋਂ ਸ਼ੁਰੂ ਹੁੰਦੇ ਹਨ "
+"ਅਤੇ ਹੇਠਾਂ ਵਧਦੇ ਹਨ। ਇਸ ਸਮੇਂ ਪਰਾਗਣ ਅਤੇ ਫਰਟੀਲਾਈਜ਼ੇਸ਼ਨ ਦੀ ਸਫਲਤਾ ਅਨਾਜ ਬਣਨ ਅਤੇ ਕੁੱਲ ਪੈਦਾਵਾਰ 'ਤੇ "
+"ਸਿੱਧਾ ਅਸਰ ਪਾਉਂਦੀ ਹੈ। ਇਹ ਪੜਾਅ ਆਮ ਤੌਰ 'ਤੇ 25 ਤੋਂ 30 ਦਿਨ ਚਲਦਾ ਹੈ, ਜੋ ਚੌਲ ਦੀ ਕਿਸਮ 'ਤੇ ਨਿਰਭਰ "
+"ਕਰਦਾ ਹੈ। ਲਗਾਤਾਰ ਪਾਣੀ ਦੀ ਸਪਲਾਈ ਯਕੀਨੀ ਬਣਾਉਣਾ ਬਹੁਤ ਜ਼ਰੂਰੀ ਹੈ, ਕਿਉਂਕਿ ਥੋੜ੍ਹੀ ਵੀ ਸੁੱਕੀ ਪੈਣ "
+"ਨਾਲ ਪੈਦਾਵਾਰ 'ਤੇ ਵੱਡਾ ਅਸਰ ਪੈ ਸਕਦਾ ਹੈ। ਇਸਦੇ ਨਾਲ, ਪੈਨਿਕਲ ਮਾਈਟ ਜਾਂ ਬਲਾਸਟ, ਸ਼ੀਥ ਬਲਾਈਟ "
+"ਵਰਗੀਆਂ ਬਿਮਾਰੀਆਂ ਤੋਂ ਫਸਲ ਦੀ ਰੱਖਿਆ ਕਰਨੀ ਵੀ ਅਨਾਜ ਦੀ ਗੁਣਵੱਤਾ ਅਤੇ ਉਤਪਾਦਕਤਾ ਲਈ ਲਾਜ਼ਮੀ ਹੈ।"
+
+#: .\templates\stages.html:601
+msgid "Maturity (Ripening)"
+msgstr "ਪੱਕਣ (ਰਾਈਪਨਿੰਗ)"
+
+#: .\templates\stages.html:602
+#, python-format
+msgid ""
+"During the grain maturation stage, rice grains transition from a milky "
+"consistency to a doughy state and eventually harden into fully mature "
+"grains. This stage is marked by the transfer of photosynthates from the "
+"plant's leaves and stems into the developing grains, supporting their growth "
+"and filling. As maturation progresses, the grain color shifts from green to "
+"a golden yellow, indicating readiness for harvest. Water supply is gradually "
+"reduced during this phase to aid in the drying and hardening of the grains. "
+"The duration of this stage is typically around 25 to 30 days. Timely "
+"harvesting is essential to prevent grain shattering and minimize losses. "
+"Ideally, the grain moisture content at harvest should be between 20–25%%. "
+"Additionally, protection from pests such as rice bugs and birds is important "
+"to maintain grain quality and prevent damage."
+msgstr ""
+"ਅਨਾਜ ਪੱਕਣ ਦੇ ਪੜਾਅ ਦੌਰਾਨ, ਚੌਲ ਦੇ ਦਾਣੇ ਦੁੱਧੀ ਹਾਲਤ ਤੋਂ ਗੁੰਦੇ ਵਰਗੇ ਹੋ ਜਾਂਦੇ ਹਨ ਅਤੇ ਆਖ਼ਰਕਾਰ ਪੂਰੀ ਤਰ੍ਹਾਂ "
+"ਪੱਕ ਜਾਂਦੇ ਹਨ। ਇਸ ਪੜਾਅ ਵਿੱਚ ਪੌਦੇ ਦੇ ਪੱਤਿਆਂ ਅਤੇ ਤਣਿਆਂ ਤੋਂ ਬਣੇ ਫੋਟੋਸਿੰਥੇਟ ਅਨਾਜ ਵਿੱਚ ਚਲੇ ਜਾਂਦੇ ਹਨ, ਜਿਸ "
+"ਨਾਲ ਉਹ ਭਰਦੇ ਅਤੇ ਵਧਦੇ ਹਨ। ਜਿਵੇਂ-ਜਿਵੇਂ ਪੱਕਣ ਵਧਦੀ ਹੈ, ਅਨਾਜ ਦਾ ਰੰਗ ਹਰਾ ਤੋਂ ਸੁਨਹਿਰੀ ਪੀਲਾ ਹੋ "
+"ਜਾਂਦਾ ਹੈ, ਜੋ ਕਿ ਕਟਾਈ ਲਈ ਤਿਆਰੀ ਦਰਸਾਉਂਦਾ ਹੈ। ਇਸ ਪੜਾਅ ਦੌਰਾਨ ਪਾਣੀ ਦੀ ਸਪਲਾਈ ਹੌਲੀ-ਹੌਲੀ "
+"ਘਟਾਈ ਜਾਂਦੀ ਹੈ ਤਾਂ ਜੋ ਅਨਾਜ ਸੁੱਕਣ ਅਤੇ ਪੱਕਣ ਵਿੱਚ ਆਸਾਨੀ ਹੋਵੇ। ਇਹ ਪੜਾਅ ਆਮ ਤੌਰ 'ਤੇ 25 ਤੋਂ 30 ਦਿਨ "
+"ਚਲਦਾ ਹੈ। ਸਮੇਂ-ਸਿਰ ਕਟਾਈ ਕਰਨਾ ਅਨਾਜ ਦੇ ਟੁੱਟਣ ਅਤੇ ਨੁਕਸਾਨ ਤੋਂ ਬਚਾਉਣ ਲਈ ਜ਼ਰੂਰੀ ਹੈ। ਆਦਰਸ਼ ਤੌਰ 'ਤੇ, "
+"ਕਟਾਈ ਸਮੇਂ ਅਨਾਜ ਵਿੱਚ ਨਮੀ 20–25%% ਹੋਣੀ ਚਾਹੀਦੀ ਹੈ। ਇਸਦੇ ਨਾਲ, ਚੌਲ ਦੇ ਕੀੜਿਆਂ ਅਤੇ ਪੰਛੀਆਂ ਤੋਂ "
+"ਰੱਖਿਆ ਕਰਨੀ ਵੀ ਅਨਾਜ ਦੀ ਗੁਣਵੱਤਾ ਬਣਾਈ ਰੱਖਣ ਅਤੇ ਨੁਕਸਾਨ ਤੋਂ ਬਚਣ ਲਈ ਮਹੱਤਵਪੂਰਨ ਹੈ।"
+
+#: .\templates\tpr.html:7
+msgid "Transplanting Rice (TPR) Timeline – Punjab Agriculture"
+msgstr "ਚੌਲ ਟ੍ਰਾਂਸਪਲਾਂਟਿੰਗ (TPR) ਟਾਈਮਲਾਈਨ – ਪੰਜਾਬ ਖੇਤੀਬਾੜੀ"
+
+#: .\templates\tpr.html:369
+msgid "Transplanting Rice (TPR) Timeline"
+msgstr "ਚੌਲ ਟ੍ਰਾਂਸਪਲਾਂਟਿੰਗ (TPR) ਟਾਈਮਲਾਈਨ"
+
+#: .\templates\tpr.html:371
+msgid ""
+"Step-by-step process of the traditional Transplanting Rice method, widely "
+"practiced in Punjab for high-yield rice cultivation."
+msgstr ""
+"ਚੌਲ ਦੀ ਉੱਚ ਪੈਦਾਵਾਰ ਲਈ ਪੰਜਾਬ ਵਿੱਚ ਵਿਆਪਕ ਵਰਤੇ ਜਾਂਦੇ ਰਵਾਇਤੀ ਟ੍ਰਾਂਸਪਲਾਂਟਿੰਗ ਤਰੀਕੇ ਦੀ ਕਦਮ-ਦਰ-"
+"ਕਦਮ ਪ੍ਰਕਿਰਿਆ।"
+
+#: .\templates\tpr.html:376
+msgid "Transplanting Rice (TPR) Method – Step-by-Step Timeline"
+msgstr "ਚੌਲ ਟ੍ਰਾਂਸਪਲਾਂਟਿੰਗ (TPR) ਤਰੀਕਾ – ਕਦਮ-ਦਰ-ਕਦਮ ਟਾਈਮਲਾਈਨ"
+
+#: .\templates\tpr.html:384
+msgid "Nursery Preparation"
+msgstr "ਨਰਸਰੀ ਤਿਆਰੀ"
+
+#: .\templates\tpr.html:385
+msgid ""
+"Rice seeds are densely sown in a separate nursery bed and grown for 25–35 "
+"days. Manual sowing ensures a small nursery can serve a larger field."
+msgstr ""
+"ਚੌਲ ਦੇ ਬੀਜ ਵੱਖਰੀ ਨਰਸਰੀ ਵਿੱਚ ਘਣੇ ਬੀਜੇ ਜਾਂਦੇ ਹਨ ਅਤੇ 25–35 ਦਿਨ ਲਈ ਉਗਾਏ ਜਾਂਦੇ ਹਨ। ਹੱਥੋਂ ਬਿਜਾਈ "
+"ਨਾਲ ਛੋਟੀ ਨਰਸਰੀ ਵੱਡੇ ਖੇਤ ਲਈ ਕਾਫੀ ਹੁੰਦੀ ਹੈ।"
+
+#: .\templates\tpr.html:394
+msgid ""
+"Seedlings develop in the nursery for about 4 weeks, reaching optimal age and "
+"height for transplanting."
+msgstr ""
+"ਪੁੱਗੀਆਂ ਲਗਭਗ 4 ਹਫ਼ਤੇ ਨਰਸਰੀ ਵਿੱਚ ਉਗਦੀਆਂ ਹਨ, ਟ੍ਰਾਂਸਪਲਾਂਟਿੰਗ ਲਈ ਉਚਿਤ ਉਮਰ ਅਤੇ ਉਚਾਈ 'ਤੇ ਪਹੁੰਚਦੀਆਂ "
+"ਹਨ।"
+
+#: .\templates\tpr.html:403
+msgid ""
+"Seedlings are manually uprooted and transplanted into puddled fields in "
+"rows, requiring significant labor for optimal spacing."
+msgstr ""
+"ਪੁੱਗੀਆਂ ਹੱਥੋਂ ਉਖਾੜ ਕੇ ਪਾਣੀ ਵਾਲੇ ਖੇਤ ਵਿੱਚ ਕਤਾਰਾਂ ਵਿੱਚ ਲਾਈਆਂ ਜਾਂਦੀਆਂ ਹਨ, ਜਿਸ ਲਈ ਵਧੇਰੇ ਮਜ਼ਦੂਰੀ ਦੀ "
+"ਲੋੜ ਹੁੰਦੀ ਹੈ।"
+
+#: .\templates\tpr.html:411
+msgid "Water Management"
+msgstr "ਪਾਣੀ ਪ੍ਰਬੰਧਨ"
+
+#: .\templates\tpr.html:412
+msgid ""
+"After transplanting, fields are kept flooded with a few centimeters of water "
+"to suppress weeds and provide ideal conditions for rice growth."
+msgstr ""
+"ਟ੍ਰਾਂਸਪਲਾਂਟਿੰਗ ਤੋਂ ਬਾਅਦ, ਖੇਤ ਵਿੱਚ ਕੁਝ ਸੈਂਟੀਮੀਟਰ ਪਾਣੀ ਰੱਖਿਆ ਜਾਂਦਾ ਹੈ ਤਾਂ ਜੋ ਘਾਹ ਦਬੇ ਰਹਿਣ ਅਤੇ ਚੌਲ "
+"ਦੀ ਵਾਧੂ ਲਈ ਵਧੀਆ ਹਾਲਾਤ ਬਣ ਸਕਣ।"
+
+#: .\templates\tubewell.html:365
+msgid "Tube-well System: Key Components"
+msgstr "ਟਿਊਬ-ਵੈਲ ਪ੍ਰਣਾਲੀ: ਮੁੱਖ ਭਾਗ"
+
+#: .\templates\tubewell.html:367
+msgid ""
+"Explore the main parts of a tube-well irrigation system in Punjab. Scroll "
+"horizontally or use the navigation buttons to learn about each component, "
+"view images and watch videos of real installations."
+msgstr ""
+"ਪੰਜਾਬ ਵਿੱਚ ਟਿਊਬ-ਵੈਲ ਸਿੰਚਾਈ ਪ੍ਰਣਾਲੀ ਦੇ ਮੁੱਖ ਭਾਗਾਂ ਨੂੰ ਵੇਖੋ। ਹਰ ਹਿੱਸੇ ਬਾਰੇ ਜਾਣਨ ਲਈ ਹੋਰਿਜ਼ਾਂਟਲ "
+"ਸਕ੍ਰੋਲ ਕਰੋ ਜਾਂ ਨੇਵੀਗੇਸ਼ਨ ਬਟਨ ਵਰਤੋ, ਤਸਵੀਰਾਂ ਵੇਖੋ ਅਤੇ ਅਸਲ ਇੰਸਟਾਲੇਸ਼ਨਾਂ ਦੇ ਵੀਡੀਓ ਵੀ ਦੇਖੋ।"
+
+#: .\templates\tubewell.html:372
+msgid "Previous"
+msgstr "ਪਿਛਲਾ"
+
+#: .\templates\tubewell.html:377
+msgid "Bore-well drilling"
+msgstr "ਬੋਰ-ਵੈਲ ਖੋਦਣਾ"
+
+#: .\templates\tubewell.html:378
+msgid "Bore-well (Tube-well)"
+msgstr "ਬੋਰ-ਵੈਲ (ਟਿਊਬ-ਵੈਲ)"
+
+#: .\templates\tubewell.html:380
+msgid ""
+"A deep, narrow tube-shaped bore (3–6\" diameter) drilled 100–400 ft below "
+"ground, typically around 200 ft. It accesses the underground aquifer for "
+"irrigation."
+msgstr ""
+"ਇਹ ਇਕ 3–6 ਇੰਚ ਵਿਆਸ ਵਾਲੀ ਗਹਿਰੀ ਅਤੇ ਸੱਥੀ ਟਿਊਬ ਆਕਾਰ ਦੀ ਬੋਰ ਹੁੰਦੀ ਹੈ ਜੋ ਧਰਤੀ ਤੋਂ 100–400 "
+"ਫੁੱਟ ਹੇਠਾਂ ਤੱਕ ਖੋਦੀ ਜਾਂਦੀ ਹੈ (ਸਧਾਰਨ ਤੌਰ 'ਤੇ 200 ਫੁੱਟ)। ਇਹ ਸਿੰਚਾਈ ਲਈ ਭੂਜਲ ਸਰੋਤ ਤੱਕ ਪਹੁੰਚ ਦਿੰਦੀ ਹੈ।"
+
+#: .\templates\tubewell.html:383
+msgid ""
+"Typical cost: ₹3–6 lakhs<br>\n"
+"              Depth: 100–400 ft"
+msgstr ""
+"ਆਮ ਲਾਗਤ: ₹3–6 ਲੱਖ<br>\n"
+"              ਗਹਿਰਾਈ: 100–400 ਫੁੱਟ"
+
+#: .\templates\tubewell.html:389
+msgid "Drivery iron pipe"
+msgstr "ਡ੍ਰਾਈਵਰੀ ਆਇਰਨ ਪਾਈਪ"
+
+#: .\templates\tubewell.html:390
+msgid "Drivery Iron Pipe"
+msgstr "ਡ੍ਰਾਈਵਰੀ ਆਇਰਨ ਪਾਈਪ"
+
+#: .\templates\tubewell.html:392
+msgid ""
+"An iron pipe inserted into the bore, reaching the water level. The pump is "
+"attached to this pipe, placed 20 ft below the water level to avoid sand "
+"intake."
+msgstr ""
+"ਇਹ ਆਇਰਨ ਦੀ ਪਾਈਪ ਹੁੰਦੀ ਹੈ ਜੋ ਬੋਰ ਵਿੱਚ ਪਾਣੀ ਦੀ ਸਤਰ ਤੱਕ ਪਹੁੰਚਦੀ ਹੈ। ਪੰਪ ਇਸ ਪਾਈਪ ਨਾਲ ਜੁੜਿਆ "
+"ਹੋਇਆ ਹੁੰਦਾ ਹੈ ਅਤੇ ਪਾਣੀ ਦੀ ਸਤਰ ਤੋਂ 20 ਫੁੱਟ ਹੇਠਾਂ ਲਗਾਇਆ ਜਾਂਦਾ ਹੈ ਤਾਂ ਜੋ ਰੇਤ ਅੰਦਰ ਨਾ ਆਵੇ।"
+
+#: .\templates\tubewell.html:395
+msgid ""
+"Diameter: 3–6\"<br>\n"
+"              Placement: 20 ft below water"
+msgstr ""
+"ਵਿਆਸ: 3–6 ਇੰਚ<br>\n"
+"              ਸਥਾਪਨਾ: ਪਾਣੀ ਤੋਂ 20 ਫੁੱਟ ਹੇਠਾਂ"
+
+#: .\templates\tubewell.html:401 .\templates\tubewell.html:402
+msgid "Motor Pump"
+msgstr "ਮੋਟਰ ਪੰਪ"
+
+#: .\templates\tubewell.html:404
+msgid ""
+"A powerful electric pump (12.5–25 hp) extracts water from the aquifer. The "
+"pump and pipe are lowered as the water table drops."
+msgstr ""
+"ਇਹ ਇੱਕ ਤਾਕਤਵਰ ਬਿਜਲੀ ਵਾਲਾ ਪੰਪ ਹੁੰਦਾ ਹੈ (12.5–25 ਐਚਪੀ) ਜੋ ਭੂਜਲ ਸਰੋਤ ਤੋਂ ਪਾਣੀ ਚੁੱਕਦਾ ਹੈ। ਜਿਵੇਂ-"
+"ਜਿਵੇਂ ਪਾਣੀ ਦੀ ਸਤਰ ਘਟਦੀ ਹੈ, ਪੰਪ ਅਤੇ ਪਾਈਪ ਨੂੰ ਹੇਠਾਂ ਕਰਨਾ ਪੈਂਦਾ ਹੈ।"
+
+#: .\templates\tubewell.html:407
+msgid ""
+"Power: 12.5–25 hp<br>\n"
+"              Adjustment cost: ₹5,000–10,000"
+msgstr ""
+"ਤਾਕਤ: 12.5–25 ਐਚਪੀ<br>\n"
+"              ਠੀਕ ਕਰਨ ਦੀ ਲਾਗਤ: ₹5,000–10,000"
+
+#: .\templates\tubewell.html:413
+msgid "Delivery pipe and pool"
+msgstr "ਡਿਲਿਵਰੀ ਪਾਈਪ ਅਤੇ ਟੈਂਕ"
+
+#: .\templates\tubewell.html:414
+msgid "Delivery Pipe & Pool"
+msgstr "ਡਿਲਿਵਰੀ ਪਾਈਪ ਅਤੇ ਟੈਂਕ"
+
+#: .\templates\tubewell.html:416
+msgid ""
+"Water is brought to the surface via a 3–4\" curved delivery pipe, leading to "
+"a small cemented pool (usually 2x2 m) that funnels water for distribution."
+msgstr ""
+"ਇਹ 3–4 ਇੰਚ ਚੌੜੀ ਮੋੜੀ ਹੋਈ ਡਿਲਿਵਰੀ ਪਾਈਪ ਰਾਹੀਂ ਪਾਣੀ ਨੂੰ ਜ਼ਮੀਨ ਉੱਤੇ ਲਿਆਉਂਦਾ ਹੈ ਜੋ ਕਿ ਇੱਕ ਛੋਟੇ "
+"ਸੀਮੈਂਟ ਦੇ ਟੈਂਕ (ਸਧਾਰਨ ਤੌਰ 'ਤੇ 2x2 ਮੀਟਰ) ਵਿੱਚ ਜਾਂਦਾ ਹੈ, ਜਿੱਥੋਂ ਪਾਣੀ ਵੰਡਿਆ ਜਾਂਦਾ ਹੈ।"
+
+#: .\templates\tubewell.html:419
+msgid ""
+"Pipe diameter: 3–4\"<br>\n"
+"              Pool size: up to 2x2 m"
+msgstr ""
+"ਪਾਈਪ ਚੌੜਾਈ: 3–4 ਇੰਚ<br>\n"
+"              ਟੈਂਕ ਦਾ ਆਕਾਰ: ਲਗਭਗ 2x2 ਮੀਟਰ"
+
+#: .\templates\tubewell.html:425
+msgid "Open air irrigation canal"
+msgstr "ਖੁੱਲ੍ਹਾ ਸਿੰਚਾਈ ਨਾਲਾ"
+
+#: .\templates\tubewell.html:426
+msgid "Water Distribution"
+msgstr "ਪਾਣੀ ਵੰਡ ਪ੍ਰਣਾਲੀ"
+
+#: .\templates\tubewell.html:428
+msgid ""
+"Water is distributed from the pool to fields, mostly via open-air canals "
+"and, in some farms, underground piping."
+msgstr ""
+"ਟੈਂਕ ਤੋਂ ਪਾਣੀ ਖੇਤਾਂ ਤੱਕ ਖੁੱਲ੍ਹੇ ਨਾਲਿਆਂ ਰਾਹੀਂ ਵੰਡਿਆ ਜਾਂਦਾ ਹੈ, ਤੇ ਕੁਝ ਫਾਰਮਾਂ ਵਿੱਚ ਅੰਡਰਗਰਾਊਂਡ ਪਾਈਪਿੰਗ "
+"ਵੀ ਵਰਤੀ ਜਾਂਦੀ ਹੈ।"
+
+#: .\templates\tubewell.html:431
+msgid ""
+"Main method: Open-air canals<br>\n"
+"              Alternative: Underground pipes"
+msgstr ""
+"ਮੁੱਖ ਤਰੀਕਾ: ਖੁੱਲ੍ਹੇ ਨਾਲੇ<br>\n"
+"              ਵਿਕਲਪ: ਅੰਡਰਗਰਾਊਂਡ ਪਾਈਪਾਂ"
+
+#: .\templates\tubewell.html:437
+msgid "Next"
+msgstr "ਅੱਗੇ"
+
+#~ msgid "Detailed Data"
+#~ msgstr "ਤਫਸੀਲ ਡੇਟਾ"
+
+#~ msgid "Summary Row"
+#~ msgstr "ਖੇਤ ਸੰਖੇਪ"
+
+#, fuzzy
+#~| msgid "Daily Average per Acre"
+#~ msgid "Daily Averages"
+#~ msgstr "ਰੋਜ਼ਾਨਾ ਔਸਤ "
+
+#, fuzzy
+#~ msgid "Complete Merged Dataset"
+#~ msgstr "ਪੂਰਾ ਮਿਲਿਆ ਹੋਇਆ ਡੇਟਾ"
+
+#~ msgid "Raw Kharif Data"
+#~ msgstr "ਕੱਚਾ ਖਰੀਫ਼ ਡੇਟਾ"
+
+#~ msgid "Village Summary"
+#~ msgstr "ਪਿੰਡ ਸੰਖੇਪ"
+
+#~ msgid "Farm Summary"
+#~ msgstr "ਖੇਤ ਸੰਖੇਪ"
+
+#~ msgid "Remote Controller Summary"
+#~ msgstr "ਰਿਮੋਟ ਕੰਟਰੋਲਰ ਸੰਖੇਪ"
+
+#~ msgid "AWD Study Summary"
+#~ msgstr "AWD ਅਧਿਐਨ ਸੰਖੇਪ"
+
+#~ msgid "DSR vs TPR Summary"
+#~ msgstr "DSR ਵਿਰੁੱਧ TPR ਸੰਖੇਪ"
+
+#~ msgid "Remote Controllers Treatment"
+#~ msgstr "ਰਿਮੋਟ ਕੰਟਰੋਲਰ ਇਲਾਜ"
+
+#~ msgid "Remote Controllers Control"
+#~ msgstr "ਰਿਮੋਟ ਕੰਟਰੋਲਰ ਕੰਟਰੋਲ"
+
+#~ msgid "AWD Group A Treatment"
+#~ msgstr "AWD ਗਰੁੱਪ A ਇਲਾਜ"
+
+#~ msgid "AWD Group B Training"
+#~ msgstr "AWD ਗਰੁੱਪ B ਟ੍ਰੇਨਿੰਗ"
+
+#~ msgid "AWD Group C Control"
+#~ msgstr "AWD ਗਰੁੱਪ C ਕੰਟਰੋਲ"
+
+#~ msgid "DSR Farms"
+#~ msgstr "DSR ਖੇਤ"
+
+#~ msgid "TPR Farms"
+#~ msgstr "TPR ਖੇਤ"
+
+#~ msgid "Group Analysis Dashboard"
+#~ msgstr "ਗਰੁੱਪ ਵਿਸ਼ਲੇਸ਼ਣ ਡੈਸ਼ਬੋਰਡ"
+
+#~ msgid "Comparative Study Analysis"
+#~ msgstr "ਤੁਲਨਾਤਮਕ ਅਧਿਐਨ ਵਿਸ਼ਲੇਸ਼ਣ"
+
+#~ msgid "Back to Meter Analysis"
+#~ msgstr "ਮੀਟਰ ਵਿਸ਼ਲੇਸ਼ਣ ਤੇ ਵਾਪਸ"
+
+#~ msgid "Study Group Configuration"
+#~ msgstr "ਅਧਿਐਨ ਗਰੁੱਪ ਸੰਰਚਨਾ"
+
+#~ msgid "Select Study Type"
+#~ msgstr "ਅਧਿਐਨ ਕਿਸਮ ਚੁਣੋ"
+
+#~ msgid "AWD Study"
+#~ msgstr "AWD ਅਧਿਐਨ"
+
+#~ msgid "TPR/DSR"
+#~ msgstr "TPR/DSR"
+
+#~ msgid "Remote Controller Groups"
+#~ msgstr "ਰਿਮੋਟ ਕੰਟਰੋਲਰ ਗਰੁੱਪ"
+
+#~ msgid ""
+#~ "Select groups to compare treatment (with remote controllers) vs control "
+#~ "groups, and compliance levels."
+#~ msgstr ""
+#~ "ਇਲਾਜ (ਰਿਮੋਟ ਕੰਟਰੋਲਰ ਨਾਲ) ਅਤੇ ਕੰਟਰੋਲ ਗਰੁੱਪਾਂ ਦੀ ਤੁਲਨਾ ਅਤੇ ਪਾਲਣਾ ਪੱਧਰ ਵੇਖਣ ਲਈ ਗਰੁੱਪ ਚੁਣੋ।"
+
+#~ msgid "Alternate Wetting & Drying Groups"
+#~ msgstr "ਵਿਕਲਪਕ ਭਿੱਜਾਈ ਅਤੇ ਸੁੱਕਾਈ ਗਰੁੱਪ"
+
+#~ msgid ""
+#~ "Compare AWD treatment groups with control groups across different "
+#~ "compliance levels."
+#~ msgstr "AWD ਇਲਾਜ ਗਰੁੱਪਾਂ ਦੀ ਕੰਟਰੋਲ ਗਰੁੱਪਾਂ ਨਾਲ ਵੱਖ-ਵੱਖ ਪਾਲਣਾ ਪੱਧਰਾਂ ਤੇ ਤੁਲਨਾ ਕਰੋ।"
+
+#~ msgid "Rice Cultivation Methods"
+#~ msgstr "ਚੌਲ ਦੀ ਖੇਤੀ ਤਰੀਕੇ"
+
+#~ msgid ""
+#~ "Compare traditional Transplanted Rice (TPR) with Direct Seeded Rice (DSR) "
+#~ "methods."
+#~ msgstr ""
+#~ "ਰਵਾਇਤੀ ਟ੍ਰਾਂਸਪਲਾਂਟਡ ਚੌਲ (TPR) ਅਤੇ ਡਾਇਰੈਕਟ ਸੀਡਿਡ ਚੌਲ (DSR) ਤਰੀਕਿਆਂ ਦੀ ਤੁਲਨਾ ਕਰੋ।"
+
+#~ msgid "TPR - Transplanted Rice"
+#~ msgstr "TPR - ਟ੍ਰਾਂਸਪਲਾਂਟਡ ਚੌਲ"
+
+#~ msgid "DSR - Direct Seeded Rice"
+#~ msgstr "DSR - ਡਾਇਰੈਕਟ ਸੀਡਿਡ ਚੌਲ"
+
+#~ msgid "Generate Analysis"
+#~ msgstr "ਵਿਸ਼ਲੇਸ਼ਣ ਬਣਾਓ"
+
+#~ msgid "Comparative Analysis Results"
+#~ msgstr "ਤੁਲਨਾਤਮਕ ਵਿਸ਼ਲੇਸ਼ਣ ਨਤੀਜੇ"
+
+#~ msgid "Study Type"
+#~ msgstr "ਅਧਿਐਨ ਕਿਸਮ"
+
+#~ msgid "Selected Groups"
+#~ msgstr "ਚੁਣੇ ਗਰੁੱਪ"
+
+#~ msgid "Group Analysis Graph"
+#~ msgstr "ਗਰੁੱਪ ਵਿਸ਼ਲੇਸ਼ਣ ਗ੍ਰਾਫ਼"
+
+#~ msgid "Export Analysis Report"
+#~ msgstr "ਵਿਸ਼ਲੇਸ਼ਣ ਰਿਪੋਰਟ ਐਕਸਪੋਰਟ ਕਰੋ"
+
+#~ msgid ""
+#~ "Download a detailed Word document with the comparative analysis results"
+#~ msgstr "ਤੁਲਨਾਤਮਕ ਵਿਸ਼ਲੇਸ਼ਣ ਨਤੀਜਿਆਂ ਵਾਲੀ ਵਿਸਥਾਰਕ Word ਡੌਕੂਮੈਂਟ ਡਾਊਨਲੋਡ ਕਰੋ"
+
+#~ msgid "Download Word Report (.docx)"
+#~ msgstr "Word ਰਿਪੋਰਟ (.docx) ਡਾਊਨਲੋਡ ਕਰੋ"
+
+#~ msgid "Project"
+#~ msgstr "ਪਰੋਜੈਕਟ"
+
+#~ msgid "Drone crop monitoring"
+#~ msgstr "ਡਰੋਨ ਫਸਲ ਨਿਗਰਾਨੀ"
+
+#, fuzzy
+#~| msgid "Drone-based remote sensing for crop health assessment."
+#~ msgid "Satellite-based remote sensing for crop health assessment."
+#~ msgstr "ਫਸਲ ਦੀ ਸਿਹਤ ਅੰਕਲਣ ਲਈ ਡਰੋਨ-ਅਧਾਰਤ ਰਿਮੋਟ ਸੈਂਸਿੰਗ।"
+
+#~ msgid ""
+#~ "\n"
+#~ "                    This technology helps identify water-stressed areas, "
+#~ "optimize irrigation schedules, and detect anomalies such as pest "
+#~ "infestations or nutrient deficiencies, supporting precision agriculture "
+#~ "and large-scale water management.\n"
+#~ "                "
+#~ msgstr ""
+#~ "\n"
+#~ "                    ਇਹ ਤਕਨੀਕ ਪਾਣੀ ਦੀ ਘਾਟ ਵਾਲੇ ਖੇਤਰ ਪਛਾਣਣ, ਸਿੰਚਾਈ ਸ਼ੈਡਿਊਲ ਸੁਧਾਰਣ "
+#~ "ਅਤੇ ਕੀੜੇ ਜਾਂ ਪੌਸ਼ਟਿਕ ਘਾਟ ਵਰਗੀਆਂ ਸਮੱਸਿਆਵਾਂ ਪਛਾਣਣ ਵਿੱਚ ਮਦਦ ਕਰਦੀ ਹੈ, ਜਿਸ ਨਾਲ ਸੁਚੱਜੀ ਖੇਤੀ "
+#~ "ਅਤੇ ਵੱਡੇ ਪੱਧਰ ਤੇ ਪਾਣੀ ਪ੍ਰਬੰਧਨ ਹੋ ਸਕਦਾ ਹੈ।"
+
+#~ msgid "Leadership & Research Team"
+#~ msgstr "ਲੀਡਰਸ਼ਿਪ ਅਤੇ ਖੋਜ ਟੀਮ"
+
+#~ msgid "Pioneering Innovation in Agricultural Technology"
+#~ msgstr "ਖੇਤੀ ਤਕਨੀਕ ਵਿੱਚ ਅਗਵਾਈ ਨਵੀਨਤਾ"
+
+#~ msgid "Associate Professor & Associate Head at TIET"
+#~ msgstr "TIET ਵਿੱਚ ਐਸੋਸੀਏਟ ਪ੍ਰੋਫੈਸਰ ਅਤੇ ਐਸੋਸੀਏਟ ਹੈੱਡ"
+
+#~ msgid "Associate Professor"
+#~ msgstr "ਐਸੋਸੀਏਟ ਪ੍ਰੋਫੈਸਰ"
+
+#~ msgid ""
+#~ "The dedicated team driving field operations and research insights on the "
+#~ "ground."
+#~ msgstr "ਖੇਤਰੀ ਕੰਮਕਾਜ ਅਤੇ ਖੋਜ ਵਿਚ ਅਗਵਾਈ ਕਰਨ ਵਾਲੀ ਸਮਰਪਿਤ ਟੀਮ।"
+
+#~ msgid "Ajay Kanwar"
+#~ msgstr "ਅਜੈ ਕਨਵਰ"
+
+#~ msgid "Research Project Manager at Nitsan Lab @ TAU"
+#~ msgstr "ਨਿਤਸਨ ਲੈਬ (ਟੈਲ-ਅਵੀਵ ਯੂਨੀਵਰਸਿਟੀ) ਵਿੱਚ ਖੋਜ ਪ੍ਰੋਜੈਕਟ ਮੈਨੇਜਰ"
+
+#, fuzzy
+#~| msgid "Pioneering Innovation in Agricultural Technology"
+#~ msgid "Building the Future of Agricultural Technology"
+#~ msgstr "ਖੇਤੀ ਤਕਨੀਕ ਦਾ ਭਵਿੱਖ ਬਣਾਉਣਾ"
+
+#~ msgid "Connect"
+#~ msgstr "ਜੁੜੋ"
+
+#~ msgid "Samrath Singh"
+#~ msgstr "ਸਮਰਥ ਸਿੰਘ"
+
+#~ msgid "Secure Login"
+#~ msgstr "ਸੁਰੱਖਿਅਤ ਲੌਗਇਨ"
+
+#~ msgid "Invalid credentials. Please try again."
+#~ msgstr "ਗਲਤ ਜਾਣਕਾਰੀ। ਕਿਰਪਾ ਕਰਕੇ ਮੁੜ ਕੋਸ਼ਿਸ਼ ਕਰੋ।"
+
+#~ msgid ""
+#~ "©️ 2025 DIGI-VI | Digital Village Intelligence Platform. All rights "
+#~ "reserved."
+#~ msgstr "©️ 2025 ਡਿਜੀ-ਵੀ | ਡਿਜੀਟਲ ਵਿਲੇਜ ਇੰਟੈਲੀਜੈਂਸ ਪਲੇਟਫਾਰਮ। ਸਭ ਹੱਕ ਰਾਖਵੇਂ ਹਨ।"
+
+#~ msgid "Processing Data"
+#~ msgstr "ਡੇਟਾ ਪ੍ਰੋਸੈਸ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ"
+
+#~ msgid "Uploading and syncing your data from Google Sheets..."
+#~ msgstr "ਤੁਹਾਡਾ ਡੇਟਾ Google Sheets ਤੋਂ ਅਪਲੋਡ ਅਤੇ ਸਿੰਕ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ..."
+
+#, fuzzy
+#~| msgid "Real-time water usage monitoring and analytics."
+#~ msgid "Real-time Irrigation Analytics"
+#~ msgstr "ਰੀਅਲ-ਟਾਈਮ ਸਿੰਚਾਈ ਵਿਸ਼ਲੇਸ਼ਣ"
+
+#~ msgid "Data Upload Terminal"
+#~ msgstr "ਡੇਟਾ ਅਪਲੋਡ ਟਰਮੀਨਲ"
+
+#~ msgid "Google Sheets Auto-Sync Enabled"
+#~ msgstr "Google Sheets ਆਟੋ-ਸਿੰਕ ਚਾਲੂ ਹੈ"
+
+#~ msgid "Raw Meter Data Stream"
+#~ msgstr "ਕੱਚਾ ਮੀਟਰ ਡੇਟਾ ਸਟਰੀਮ"
+
+#~ msgid ""
+#~ "Master database will auto-sync from Google Sheets when raw data is "
+#~ "uploaded"
+#~ msgstr "ਕੱਚਾ ਡੇਟਾ ਅਪਲੋਡ ਹੋਣ 'ਤੇ ਮਾਸਟਰ ਡਾਟਾਬੇਸ Google Sheets ਤੋਂ ਆਟੋ-ਸਿੰਕ ਹੋ ਜਾਵੇਗਾ"
+
+#~ msgid "Use Manual Master File Upload (Fallback)"
+#~ msgstr "ਮੈਨੂਅਲ ਮਾਸਟਰ ਫਾਈਲ ਅਪਲੋਡ ਵਰਤੋ (Fallback)"
+
+#~ msgid "Master Database File (Optional Override)"
+#~ msgstr "ਮਾਸਟਰ ਡਾਟਾਬੇਸ ਫਾਈਲ (ਚੋਣਵਾਂ Override)"
+
+#~ msgid "Only use this if Google Sheets sync fails"
+#~ msgstr "ਇਹ ਸਿਰਫ਼ ਉਦੋਂ ਵਰਤੋ ਜਦੋਂ Google Sheets ਸਿੰਕ ਫੇਲ੍ਹ ਹੋ ਜਾਵੇ"
+
+#~ msgid "Process Data & Sync Master"
+#~ msgstr "ਡੇਟਾ ਪ੍ਰੋਸੈਸ ਕਰੋ ਅਤੇ ਮਾਸਟਰ ਸਿੰਕ ਕਰੋ"
+
+#~ msgid "Data Successfully Synced"
+#~ msgstr "ਡੇਟਾ ਸਫਲਤਾਪੂਰਵਕ ਸਿੰਕ ਹੋ ਗਿਆ"
+
+#~ msgid "Last Sync:"
+#~ msgstr "ਆਖਰੀ ਸਿੰਕ:"
+
+#~ msgid "Source:"
+#~ msgstr "ਸਰੋਤ:"
+
+#~ msgid "Google Sheets + Raw Data Upload"
+#~ msgstr "Google Sheets + ਕੱਚਾ ਡੇਟਾ ਅਪਲੋਡ"
+
+#~ msgid "Last File:"
+#~ msgstr "ਆਖਰੀ ਫਾਈਲ:"
+
+#~ msgid "Advanced Date Range Filter"
+#~ msgstr "ਉੱਨਤ ਮਿਤੀ ਸੀਮਾ ਫਿਲਟਰ"
+
+#~ msgid "Enable Date Range Filter"
+#~ msgstr "ਮਿਤੀ ਸੀਮਾ ਫਿਲਟਰ ਚਾਲੂ ਕਰੋ"
+
+#~ msgid "Available data range:"
+#~ msgstr "ਉਪਲਬਧ ਡੇਟਾ ਸੀਮਾ:"
+
+#~ msgid "to"
+#~ msgstr "ਤੱਕ"
+
+#, fuzzy
+#~| msgid "Active"
+#~ msgid "Active filter:"
+#~ msgstr "ਚਾਲੂ ਫਿਲਟਰ:"
+
+#~ msgid "Start Date"
+#~ msgstr "ਸ਼ੁਰੂ ਮਿਤੀ"
+
+#~ msgid "End Date"
+#~ msgstr "ਅੰਤ ਮਿਤੀ"
+
+#~ msgid "Apply Filter"
+#~ msgstr "ਫਿਲਟਰ ਲਗਾਓ"
+
+#~ msgid "Clear Filter"
+#~ msgstr "ਫਿਲਟਰ ਸਾਫ਼ ਕਰੋ"
+
+#~ msgid "Last 7 Days"
+#~ msgstr "ਆਖਰੀ 7 ਦਿਨ"
+
+#~ msgid "Last 30 Days"
+#~ msgstr "ਆਖਰੀ 30 ਦਿਨ"
+
+#, fuzzy
+#~| msgid "Group Analysis Graph"
+#~ msgid "Group Analysis Control Panel"
+#~ msgstr "ਗਰੁੱਪ ਵਿਸ਼ਲੇਸ਼ਣ ਕੰਟਰੋਲ ਪੈਨਲ"
+
+#, fuzzy
+#~| msgid "Group Analysis Graph"
+#~ msgid "Group Analysis Graph generation"
+#~ msgstr "ਗਰੁੱਪ ਵਿਸ਼ਲੇਸ਼ਣ ਗ੍ਰਾਫ਼ ਬਣਾਉਣਾ"
+
+#~ msgid "Export Avg Data table"
+#~ msgstr "ਔਸਤ ਡੇਟਾ ਟੇਬਲ ਐਕਸਪੋਰਟ ਕਰੋ"
+
+#~ msgid "Export Delta Data table"
+#~ msgstr "ਡੈਲਟਾ ਡੇਟਾ ਟੇਬਲ ਐਕਸਪੋਰਟ ਕਰੋ"
+
+#~ msgid "Village Filter"
+#~ msgstr "ਪਿੰਡ ਫਿਲਟਰ"
+
+#~ msgid "Village Name"
+#~ msgstr "ਪਿੰਡ ਦਾ ਨਾਂ"
+
+#~ msgid "Select village name"
+#~ msgstr "ਪਿੰਡ ਦਾ ਨਾਂ ਚੁਣੋ"
+
+#~ msgid "Scan Village Meters"
+#~ msgstr "ਪਿੰਡ ਮੀਟਰ ਸਕੈਨ ਕਰੋ"
+
+#~ msgid "Unit Farm Filter"
+#~ msgstr "ਯੂਨਿਟ ਖੇਤ ਫਿਲਟਰ"
+
+#~ msgid "Select farm unit"
+#~ msgstr "ਖੇਤ ਯੂਨਿਟ ਚੁਣੋ"
+
+#, fuzzy
+#~| msgid "Generate Analysis"
+#~ msgid "Generate Analytics"
+#~ msgstr "ਵਿਸ਼ਲੇਸ਼ਣ ਬਣਾਓ"
+
+#~ msgid "Location:"
+#~ msgstr "ਟਿਕਾਣਾ:"
+
+#~ msgid "Combined Analysis <span class=\"code\">%(meter)s</span>"
+#~ msgstr "ਸੰਯੁਕਤ ਵਿਸ਼ਲੇਸ਼ਣ <span class=\"code\">%(meter)s</span>"
+
+#, fuzzy
+#~| msgid "Combine Harvesting"
+#~ msgid "Meter Unit <span class=\"code\">%(meter)s</span>"
+#~ msgstr "ਮੀਟਰ ਯੂਨਿਟ <span class=\"code\">%(meter)s</span>"
+
+#, fuzzy
+#~| msgid "Farm"
+#~ msgid "Farm:"
+#~ msgstr "ਖੇਤ:"
+
+#~ msgid "Combined Daily Average per Acre"
+#~ msgstr "ਸੰਯੁਕਤ ਰੋਜ਼ਾਨਾ ਔਸਤ ਪ੍ਰਤੀ ਏਕੜ"
+
+#~ msgid "Daily Average per Acre"
+#~ msgstr "ਰੋਜ਼ਾਨਾ ਔਸਤ ਪ੍ਰਤੀ ਏਕੜ"
+
+#~ msgid "Combined 7-Day Moving Average"
+#~ msgstr "ਸੰਯੁਕਤ 7-ਦਿਨ ਚਲਦੀ ਔਸਤ"
+
+#~ msgid "7-Day Moving Average"
+#~ msgstr "7-ਦਿਨ ਚਲਦੀ ਔਸਤ"
+
+#, fuzzy
+#~| msgid "Combine Harvesting"
+#~ msgid "Combined Actual Readings"
+#~ msgstr "ਸੰਯੁਕਤ ਅਸਲ ਪੜ੍ਹਾਈਆਂ"
+
+#, fuzzy
+#~| msgid "Meter Reading"
+#~ msgid "Actual Readings"
+#~ msgstr "ਅਸਲ ਪੜ੍ਹਾਈਆਂ"
+
+#~ msgid "Combined Normalized Per Acre"
+#~ msgstr "ਸੰਯੁਕਤ ਨਾਰਮਲਾਈਜ਼ਡ ਪ੍ਰਤੀ ਏਕੜ"
+
+#~ msgid "Normalized Per Acre"
+#~ msgstr "ਨਾਰਮਲਾਈਜ਼ਡ ਪ੍ਰਤੀ ਏਕੜ"
+
+#~ msgid "Data visualization"
+#~ msgstr "ਡੇਟਾ ਵਿਜ਼ੂਅਲਾਈਜ਼ੇਸ਼ਨ"
+
+#, fuzzy
+#~| msgid ""
+#~| "Download a detailed Word document with the comparative analysis results"
+#~ msgid ""
+#~ "Download a comprehensive Word document containing all graphs and analysis "
+#~ "details"
+#~ msgstr "ਸਾਰੇ ਗ੍ਰਾਫ਼ ਅਤੇ ਵਿਸ਼ਲੇਸ਼ਣ ਵੇਰਵਿਆਂ ਵਾਲੀ ਵਿਸਤ੍ਰਿਤ Word ਡੌਕੂਮੈਂਟ ਡਾਊਨਲੋਡ ਕਰੋ"
+
+#~ msgid "Digi-Village Water meter Analysis Platform"
+#~ msgstr "ਡਿਜੀ-ਵਿਲੇਜ ਪਾਣੀ ਮੀਟਰ ਵਿਸ਼ਲੇਸ਼ਣ ਪਲੇਟਫਾਰਮ"
+
+#~ msgid "Version 2.0"
+#~ msgstr "ਵਰਜਨ 2.0"
+
+#~ msgid "Water Meter Analytics"
+#~ msgstr "ਪਾਣੀ ਮੀਟਰ ਵਿਸ਼ਲੇਸ਼ਣ"
+
+#~ msgid "Water Level Analytics Dashboard"
+#~ msgstr "ਪਾਣੀ ਦੀ ਸਤਰ ਵਿਸ਼ਲੇਸ਼ਣ ਡੈਸ਼ਬੋਰਡ"
+
+#~ msgid "ENHANCED_2025"
+#~ msgstr "ENHANCED_2025"
+
+#~ msgid "Agricultural Data Intelligence Platform"
+#~ msgstr "ਖੇਤੀਬਾੜੀ ਡੇਟਾ ਇੰਟੈਲੀਜੈਂਸ ਪਲੇਟਫਾਰਮ"
+
+#~ msgid "🌾 Enhanced Agricultural Data Analysis Dashboard"
+#~ msgstr "🌾 ਵਧੀਆ ਖੇਤੀਬਾੜੀ ਡੇਟਾ ਵਿਸ਼ਲੇਸ਼ਣ ਡੈਸ਼ਬੋਰਡ"
+
+#~ msgid ""
+#~ "Comprehensive analysis with advanced filtering, comparisons, and enhanced "
+#~ "downloads"
+#~ msgstr "ਉੱਨਤ ਫਿਲਟਰਿੰਗ, ਤੁਲਨਾ ਅਤੇ ਵਧੀਆ ਡਾਊਨਲੋਡਾਂ ਨਾਲ ਵਿਸਤ੍ਰਿਤ ਵਿਸ਼ਲੇਸ਼ਣ"
+
+#~ msgid "Analyze 2024 Data"
+#~ msgstr "2024 ਡੇਟਾ ਵਿਸ਼ਲੇਸ਼ਣ ਕਰੋ"
+
+#~ msgid "File Upload Terminal"
+#~ msgstr "ਫਾਈਲ ਅਪਲੋਡ ਟਰਮੀਨਲ"
+
+#~ msgid "Kharif Excel File"
+#~ msgstr "ਖਰੀਫ਼ ਐਕਸਲ ਫਾਈਲ"
+
+#~ msgid "Water Level Excel File"
+#~ msgstr "ਪਾਣੀ ਦੀ ਸਤਰ ਐਕਸਲ ਫਾਈਲ"
+
+#~ msgid "Upload & Analyze"
+#~ msgstr "ਅਪਲੋਡ ਕਰੋ ਅਤੇ ਵਿਸ਼ਲੇਸ਼ਣ ਕਰੋ"
+
+#~ msgid "Data Overview"
+#~ msgstr "ਡੇਟਾ ਸਰਵੇਖਣ"
+
+#~ msgid "Total Records"
+#~ msgstr "ਕੁੱਲ ਰਿਕਾਰਡ"
+
+#~ msgid "Unique Farms"
+#~ msgstr "ਵੱਖਰੇ ਖੇਤ"
+
+#~ msgid "Villages"
+#~ msgstr "ਪਿੰਡ"
+
+#~ msgid "Date Range"
+#~ msgstr "ਮਿਤੀ ਸੀਮਾ"
+
+#~ msgid "Avg Water Level"
+#~ msgstr "ਔਸਤ ਪਾਣੀ ਦੀ ਸਤਰ"
+
+#~ msgid "Individual Farm Analysis"
+#~ msgstr "ਇਕਲ ਖੇਤ ਵਿਸ਼ਲੇਸ਼ਣ"
+
+#~ msgid "Comparative Analysis"
+#~ msgstr "ਤੁਲਨਾਤਮਕ ਵਿਸ਼ਲੇਸ਼ਣ"
+
+#~ msgid "Data Downloads"
+#~ msgstr "ਡੇਟਾ ਡਾਊਨਲੋਡ"
+
+#~ msgid "Farm-Level Analysis"
+#~ msgstr "ਖੇਤ ਪੱਧਰੀ ਵਿਸ਼ਲੇਸ਼ਣ"
+
+#~ msgid "Select a Farm"
+#~ msgstr "ਇੱਕ ਖੇਤ ਚੁਣੋ"
+
+#~ msgid "Daily Water Levels per Pipe + Farm Average"
+#~ msgstr "ਹਰ ਪਾਈਪ ਦੀ ਰੋਜ਼ਾਨਾ ਪਾਣੀ ਦੀ ਸਤਰ + ਖੇਤ ਦੀ ਔਸਤ"
+
+#~ msgid "Weekly Water Levels per Pipe + Farm Average"
+#~ msgstr "ਹਰ ਪਾਈਪ ਦੀ ਹਫ਼ਤਾਵਾਰੀ ਪਾਣੀ ਦੀ ਸਤਰ + ਖੇਤ ਦੀ ਔਸਤ"
+
+#~ msgid "Water Level Data (All Pipes)"
+#~ msgstr "ਪਾਣੀ ਦੀ ਸਤਰ ਡੇਟਾ (ਸਾਰੇ ਪਾਈਪ)"
+
+#~ msgid "Average"
+#~ msgstr "ਔਸਤ"
+
+#~ msgid "Std Dev"
+#~ msgstr "ਸਟੈਂਡਰਡ ਡਿਵੀਏਸ਼ਨ"
+
+#~ msgid "Min"
+#~ msgstr "ਘੱਟੋ-ਘੱਟ"
+
+#~ msgid "Max"
+#~ msgstr "ਵੱਧ ਤੋਂ ਵੱਧ"
+
+#~ msgid "Download Data for Selected Farm"
+#~ msgstr "ਚੁਣੇ ਖੇਤ ਲਈ ਡੇਟਾ ਡਾਊਨਲੋਡ ਕਰੋ"
+
+#~ msgid "Farm Summary Statistics"
+#~ msgstr "ਖੇਤ ਸੰਖੇਪ ਅੰਕੜੇ"
+
+#~ msgid "Average Water Level"
+#~ msgstr "ਔਸਤ ਪਾਣੀ ਦੀ ਸਤਰ"
+
+#~ msgid "Standard Deviation"
+#~ msgstr "ਸਟੈਂਡਰਡ ਡਿਵੀਏਸ਼ਨ"
+
+#~ msgid "Minimum Level"
+#~ msgstr "ਘੱਟੋ-ਘੱਟ ਸਤਰ"
+
+#~ msgid "Maximum Level"
+#~ msgstr "ਵੱਧ ਤੋਂ ਵੱਧ ਸਤਰ"
+
+#~ msgid "Choose Analysis Section"
+#~ msgstr "ਵਿਸ਼ਲੇਸ਼ਣ ਭਾਗ ਚੁਣੋ"
+
+#~ msgid "Village Comparison"
+#~ msgstr "ਪਿੰਡ ਤੁਲਨਾ"
+
+#~ msgid "AWD Study Groups"
+#~ msgstr "AWD ਅਧਿਐਨ ਗਰੁੱਪ"
+
+#~ msgid "DSR vs TPR"
+#~ msgstr "DSR ਵਿਰੁੱਧ TPR"
+
+#~ msgid "Compliance Summary"
+#~ msgstr "ਪਾਲਣਾ ਸੰਖੇਪ"
+
+#~ msgid "Custom Group Summary"
+#~ msgstr "ਕਸਟਮ ਗਰੁੱਪ ਸੰਖੇਪ"
+
+#~ msgid "Download Analysis (CSV)"
+#~ msgstr "ਵਿਸ਼ਲੇਸ਼ਣ ਡਾਊਨਲੋਡ ਕਰੋ (CSV)"
+
+#~ msgid "Overall Compliance"
+#~ msgstr "ਕੁੱਲ ਪਾਲਣਾ"
+
+#~ msgid ""
+#~ "No custom groups created yet. Use the form below to create custom groups."
+#~ msgstr "ਹਾਲੇ ਕੋਈ ਕਸਟਮ ਗਰੁੱਪ ਨਹੀਂ ਬਣਾਏ। ਹੇਠਾਂ ਦਿੱਤੇ ਫਾਰਮ ਨਾਲ ਕਸਟਮ ਗਰੁੱਪ ਬਣਾਓ।"
+
+#~ msgid "Create Custom Groups"
+#~ msgstr "ਕਸਟਮ ਗਰੁੱਪ ਬਣਾਓ"
+
+#~ msgid "How many groups?"
+#~ msgstr "ਕਿੰਨੇ ਗਰੁੱਪ?"
+
+#~ msgid "Group Name:"
+#~ msgstr "ਗਰੁੱਪ ਨਾਂ:"
+
+#~ msgid "Enter group name"
+#~ msgstr "ਗਰੁੱਪ ਨਾਂ ਦਿਓ"
+
+#~ msgid "Group Type:"
+#~ msgstr "ਗਰੁੱਪ ਕਿਸਮ:"
+
+#~ msgid "Farms & Villages (Mixed)"
+#~ msgstr "ਖੇਤ ਅਤੇ ਪਿੰਡ (ਮਿਲੇ-ਝੁਲੇ)"
+
+#~ msgid "Farms Only"
+#~ msgstr "ਸਿਰਫ਼ ਖੇਤ"
+
+#~ msgid "Villages Only"
+#~ msgstr "ਸਿਰਫ਼ ਪਿੰਡ"
+
+#~ msgid "Select Farms for Group 1:"
+#~ msgstr "ਗਰੁੱਪ 1 ਲਈ ਖੇਤ ਚੁਣੋ:"
+
+#~ msgid "Select Villages for Group 1:"
+#~ msgstr "ਗਰੁੱਪ 1 ਲਈ ਪਿੰਡ ਚੁਣੋ:"
+
+#~ msgid "Save Group(s)"
+#~ msgstr "ਗਰੁੱਪ ਸੰਭਾਲੋ"
+
+#~ msgid "Existing Custom Groups:"
+#~ msgstr "ਮੌਜੂਦਾ ਕਸਟਮ ਗਰੁੱਪ:"
+
+#~ msgid "Delete"
+#~ msgstr "ਹਟਾਓ"
+
+#~ msgid "Complete Dataset"
+#~ msgstr "ਪੂਰਾ ਡੇਟਾ ਸੈੱਟ"
+
+#~ msgid "Study Group Data"
+#~ msgstr "ਅਧਿਐਨ ਗਰੁੱਪ ਡੇਟਾ"
+
+#~ msgid "Analysis Reports"
+#~ msgstr "ਵਿਸ਼ਲੇਸ਼ਣ ਰਿਪੋਰਟਾਂ"
+
+#~ msgid "Complete Data Package"
+#~ msgstr "ਪੂਰਾ ਡੇਟਾ ਪੈਕੇਜ"
+
+#~ msgid "Download ZIP"
+#~ msgstr "ZIP ਡਾਊਨਲੋਡ ਕਰੋ"
+
+#~ msgid "Required Files"
+#~ msgstr "ਲੋੜੀਂਦੀਆਂ ਫਾਈਲਾਂ"
+
+#~ msgid "1. Kharif 25 Excel File:"
+#~ msgstr "1. ਖਰੀਫ਼ 25 ਐਕਸਲ ਫਾਈਲ:"
+
+#~ msgid "Unique farm identifier"
+#~ msgstr "ਵੱਖਰਾ ਖੇਤ ਪਛਾਣਕਰਤਾ"
+
+#~ msgid "Village name"
+#~ msgstr "ਪਿੰਡ ਦਾ ਨਾਂ"
+
+#~ msgid "Transplanting date"
+#~ msgstr "ਟ੍ਰਾਂਸਪਲਾਂਟਿੰਗ ਮਿਤੀ"
+
+#~ msgid "Study group columns (Remote Controllers, AWD, TPR, DSR)"
+#~ msgstr "ਅਧਿਐਨ ਗਰੁੱਪ ਕਾਲਮ (ਰਿਮੋਟ ਕੰਟਰੋਲਰ, AWD, TPR, DSR)"
+
+#~ msgid "PVC Pipe codes (1-5)"
+#~ msgstr "PVC ਪਾਈਪ ਕੋਡ (1-5)"
+
+#~ msgid "Compliance indicators (Y/N)"
+#~ msgstr "ਪਾਲਣਾ ਸੰਕੇਤਕ (Y/N)"
+
+#~ msgid "2. Water Level Measurement Excel File:"
+#~ msgstr "2. ਪਾਣੀ ਦੀ ਸਤਰ ਮਾਪਣ ਐਕਸਲ ਫਾਈਲ:"
+
+#~ msgid "Measurement date"
+#~ msgstr "ਮਾਪਣ ਮਿਤੀ"
+
+#~ msgid "Farm identifier (must match Kharif file)"
+#~ msgstr "ਖੇਤ ਪਛਾਣਕਰਤਾ (ਖਰੀਫ਼ ਫਾਈਲ ਨਾਲ ਮਿਲਣਾ ਚਾਹੀਦਾ)"
+
+#~ msgid "Pipe identifier"
+#~ msgstr "ਪਾਈਪ ਪਛਾਣਕਰਤਾ"
+
+#~ msgid "Water level reading"
+#~ msgstr "ਪਾਣੀ ਦੀ ਸਤਰ ਪੜ੍ਹਾਈ"
+
+#~ msgid "Enhanced Features"
+#~ msgstr "ਵਧੀਆ ਵਿਸ਼ੇਸ਼ਤਾਵਾਂ"
+
+#~ msgid "Advanced Filters:"
+#~ msgstr "ਉੱਨਤ ਫਿਲਟਰ:"
+
+#~ msgid "Date range selection with validation"
+#~ msgstr "ਮਿਤੀ ਸੀਮਾ ਚੋਣ ਅਤੇ ਜਾਂਚ"
+
+#~ msgid "Village-specific filtering with typo handling"
+#~ msgstr "ਪਿੰਡ-ਖਾਸ ਫਿਲਟਰਿੰਗ (ਗਲਤੀਆਂ ਸੰਭਾਲਣ ਸਮੇਤ)"
+
+#~ msgid "Study group filtering (RC, AWD, TPR, DSR)"
+#~ msgstr "ਅਧਿਐਨ ਗਰੁੱਪ ਫਿਲਟਰ (RC, AWD, TPR, DSR)"
+
+#~ msgid "Compliance status filtering"
+#~ msgstr "ਪਾਲਣਾ ਸਥਿਤੀ ਫਿਲਟਰ"
+
+#~ msgid "Data quality filters (minimum readings, outlier removal)"
+#~ msgstr "ਡੇਟਾ ਗੁਣਵੱਤਾ ਫਿਲਟਰ (ਘੱਟੋ-ਘੱਟ ਪੜ੍ਹਾਈ, ਆਉਟਲਾਇਰ ਹਟਾਉ)"
+
+#~ msgid "Complete Analysis:"
+#~ msgstr "ਪੂਰਾ ਵਿਸ਼ਲੇਸ਼ਣ:"
+
+#~ msgid "Graph 1:"
+#~ msgstr "ਗ੍ਰਾਫ਼ 1:"
+
+#~ msgid "Daily water levels per pipe + farm average (markers only)"
+#~ msgstr "ਹਰ ਪਾਈਪ ਦੀ ਰੋਜ਼ਾਨਾ ਪਾਣੀ ਦੀ ਸਤਰ + ਖੇਤ ਔਸਤ (ਕੇਵਲ ਮਾਰਕਰ)"
+
+#~ msgid "Graph 2:"
+#~ msgstr "ਗ੍ਰਾਫ਼ 2:"
+
+#~ msgid "Weekly water level trends (markers + farm average line)"
+#~ msgstr "ਹਫ਼ਤਾਵਾਰੀ ਪਾਣੀ ਦੀ ਸਤਰ ਰੁਝਾਨ (ਮਾਰਕਰ + ਖੇਤ ਔਸਤ ਲਾਈਨ)"
+
+#~ msgid "Table 3:"
+#~ msgstr "ਟੇਬਲ 3:"
+
+#~ msgid "Water level data with Days from TPR as Column A"
+#~ msgstr "TPR ਤੋਂ ਦਿਨਾਂ ਨਾਲ ਪਾਣੀ ਦੀ ਸਤਰ ਡੇਟਾ (ਕਾਲਮ A)"
+
+#~ msgid "Comparative Charts:"
+#~ msgstr "ਤੁਲਨਾਤਮਕ ਚਾਰਟ:"
+
+#~ msgid "All required study group comparisons"
+#~ msgstr "ਸਾਰੇ ਲੋੜੀਂਦੇ ਅਧਿਐਨ ਗਰੁੱਪ ਤੁਲਨਾ"
+
+#~ msgid "Study Group Comparisons:"
+#~ msgstr "ਅਧਿਐਨ ਗਰੁੱਪ ਤੁਲਨਾ:"
+
+#~ msgid "Remote Controllers: Treatment vs Control (complied groups)"
+#~ msgstr "ਰਿਮੋਟ ਕੰਟਰੋਲਰ: ਇਲਾਜ ਵਿਰੁੱਧ ਕੰਟਰੋਲ (ਪਾਲਣਾ ਗਰੁੱਪ)"
+
+#~ msgid "AWD Study: Groups A, B, C (complied and non-complied)"
+#~ msgstr "AWD ਅਧਿਐਨ: ਗਰੁੱਪ A, B, C (ਪਾਲਣਾ ਅਤੇ ਨਾ-ਪਾਲਣਾ)"
+
+#~ msgid "DSR vs TPR group comparisons"
+#~ msgstr "DSR ਵਿਰੁੱਧ TPR ਗਰੁੱਪ ਤੁਲਨਾ"
+
+#~ msgid "Village-level aggregations"
+#~ msgstr "ਪਿੰਡ ਪੱਧਰੀ ਜੋੜ"
+
+#~ msgid "Enhanced Downloads:"
+#~ msgstr "ਵਧੀਆ ਡਾਊਨਲੋਡ:"
+
+#~ msgid "Individual farm reports (detailed + summary)"
+#~ msgstr "ਇਕਲ ਖੇਤ ਰਿਪੋਰਟਾਂ (ਵਿਸਥਾਰਕ + ਸੰਖੇਪ)"
+
+#~ msgid "Study group datasets (separate CSV files)"
+#~ msgstr "ਅਧਿਐਨ ਗਰੁੱਪ ਡੇਟਾ ਸੈੱਟ (ਵੱਖ-ਵੱਖ CSV ਫਾਈਲਾਂ)"
+
+#~ msgid "Village and farm summary reports"
+#~ msgstr "ਪਿੰਡ ਅਤੇ ਖੇਤ ਸੰਖੇਪ ਰਿਪੋਰਟਾਂ"
+
+#~ msgid "Complete data packages (ZIP format)"
+#~ msgstr "ਪੂਰੇ ਡੇਟਾ ਪੈਕੇਜ (ZIP ਫਾਰਮੈਟ)"
+
+#~ msgid "Data Quality Features:"
+#~ msgstr "ਡੇਟਾ ਗੁਣਵੱਤਾ ਵਿਸ਼ੇਸ਼ਤਾਵਾਂ:"
+
+#~ msgid "Fuzzy matching for village names (handles typos)"
+#~ msgstr "ਪਿੰਡ ਨਾਂ ਲਈ ਫਜ਼ੀ ਮੈਚਿੰਗ (ਗਲਤੀਆਂ ਸੰਭਾਲੇ)"
+
+#~ msgid "Case insensitive comparisons"
+#~ msgstr "ਅੱਖਰ-ਅਣਡਿੱਠੀ ਤੁਲਨਾ"
+
+#~ msgid "Data normalization and cleaning"
+#~ msgstr "ਡੇਟਾ ਨਾਰਮਲਾਈਜ਼ੇਸ਼ਨ ਅਤੇ ਸਾਫ਼-ਸਫਾਈ"
+
+#~ msgid "Outlier detection and removal"
+#~ msgstr "ਆਉਟਲਾਇਰ ਪਛਾਣ ਅਤੇ ਹਟਾਉ"
+
+#~ msgid "Missing data handling"
+#~ msgstr "ਗੁੰਮ ਡੇਟਾ ਸੰਭਾਲ"
+
+#~ msgid "Advanced Visualizations:"
+#~ msgstr "ਉੱਨਤ ਵਿਜ਼ੂਅਲਾਈਜ਼ੇਸ਼ਨ:"
+
+#~ msgid "Interactive charts with hover information"
+#~ msgstr "ਹੋਵਰ ਜਾਣਕਾਰੀ ਵਾਲੇ ਇੰਟਰਐਕਟਿਵ ਚਾਰਟ"
+
+#~ msgid "Color-coded study groups"
+#~ msgstr "ਰੰਗ-ਕੋਡਿਡ ਅਧਿਐਨ ਗਰੁੱਪ"
+
+#~ msgid "Responsive design for all screen sizes"
+#~ msgstr "ਸਭ ਸਕਰੀਨ ਆਕਾਰ ਲਈ ਰਿਸਪਾਂਸਿਵ ਡਿਜ਼ਾਈਨ"
+
+#~ msgid "Export-ready chart formats"
+#~ msgstr "ਐਕਸਪੋਰਟ-ਤਿਆਰ ਚਾਰਟ ਫਾਰਮੈਟ"
+
+#~ msgid "AWD10"
+#~ msgstr "AWD10"
+
+#~ msgid "DSR irrigation - germination"
+#~ msgstr "DSR ਸਿੰਚਾਈ - ਅੰਕੁਰਣ"
+
+#~ msgid "Water meter installed on a tubewell for monitoring usage."
+#~ msgstr "ਵਰਤੋਂ ਦੀ ਨਿਗਰਾਨੀ ਲਈ ਟਿਊਬਵੈਲ 'ਤੇ ਲਗਾਇਆ ਪਾਣੀ ਮੀਟਰ।"
+
+#~ msgid "Flow meter"
+#~ msgstr "ਫਲੋ ਮੀਟਰ"
+
+#~ msgid "Digital flow meter for precise water measurement."
+#~ msgstr "ਪਾਣੀ ਦੀ ਸਹੀ ਮਾਪ ਲਈ ਡਿਜੀਟਲ ਫਲੋ ਮੀਟਰ।"
+
+#~ msgid "Water Metering Video"
+#~ msgstr "ਪਾਣੀ ਮਾਪਣ ਵੀਡੀਓ"
+
+#~ msgid "Water Meter Demo"
+#~ msgstr "ਪਾਣੀ ਮੀਟਰ ਡੈਮੋ"
+
+#~ msgid "Water level sensor installed in a paddy field."
+#~ msgstr "ਧਾਨ ਦੇ ਖੇਤ ਵਿੱਚ ਲਗਾਇਆ ਪਾਣੀ ਦੀ ਸਤਰ ਸੈਂਸਰ।"
+
+#~ msgid "Field water gauge"
+#~ msgstr "ਖੇਤ ਪਾਣੀ ਗੇਜ"
+
+#~ msgid "Field gauge for monitoring irrigation water depth."
+#~ msgstr "ਸਿੰਚਾਈ ਪਾਣੀ ਦੀ ਗਹਿਰਾਈ ਨਾਪਣ ਲਈ ਖੇਤ ਗੇਜ।"
+
+#~ msgid "Water Level Monitoring Video"
+#~ msgstr "ਪਾਣੀ ਦੀ ਸਤਰ ਨਿਗਰਾਨੀ ਵੀਡੀਓ"
+
+#~ msgid "Water Level Meter Demo"
+#~ msgstr "ਪਾਣੀ ਦੀ ਸਤਰ ਮੀਟਰ ਡੈਮੋ"
+
+#~ msgid "Satellite imagery used for agricultural monitoring."
+#~ msgstr "ਖੇਤੀ ਨਿਗਰਾਨੀ ਲਈ ਵਰਤੀ ਸੈਟੈਲਾਈਟ ਤਸਵੀਰ।"
+
+#~ msgid "Remote Sensing Video"
+#~ msgstr "ਰਿਮੋਟ ਸੈਂਸਿੰਗ ਵੀਡੀਓ"
+
+#~ msgid "Remote Sensing Demo"
+#~ msgstr "ਰਿਮੋਟ ਸੈਂਸਿੰਗ ਡੈਮੋ"

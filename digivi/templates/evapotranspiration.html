@@ -1,0 +1,835 @@
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIGI-VI | Evapotranspiration Analysis</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+:root {
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 🌱 Light Theme – Green & White */
+:root[data-theme="light"] {
+    --bg-primary: #f8fff5; /* very light greenish white */
+    --bg-secondary: #ffffff;
+    --bg-tertiary: #e6f4ea; /* light green */
+    
+    --text-primary: #0c4f2a;
+    --text-secondary: #2e7d46;
+    --text-tertiary: #4caf50;
+
+    --border-color: #cde9d7;
+
+    --accent-primary: #0c4f2a;  /* deep green */
+    --accent-secondary: #349a62; /* lighter green */
+    --accent-tertiary: #6fcf97;
+    --accent-success: #3cb371;
+    --accent-warning: #f59e0b;
+    --accent-danger: #ef4444;
+
+    --gradient-primary: linear-gradient(135deg, #0c4f2a 0%, #349a62 100%);
+    --gradient-secondary: linear-gradient(135deg, #349a62 0%, #6fcf97 100%);
+    --gradient-accent: linear-gradient(135deg, #0c4f2a 0%, #6fcf97 100%);
+    --gradient-hero: linear-gradient(135deg, #e6f4ea 0%, #cde9d7 100%);
+
+    --shadow-sm: 0 1px 3px rgba(12, 79, 42, 0.1);
+    --shadow-md: 0 4px 6px rgba(12, 79, 42, 0.1);
+    --shadow-lg: 0 10px 15px rgba(12, 79, 42, 0.15);
+    --shadow-glow: 0 0 20px rgba(52, 154, 98, 0.2);
+
+    --glass-bg: rgba(255, 255, 255, 0.7);
+    --glass-border: rgba(52, 154, 98, 0.2);
+}
+
+/* 🌿 Dark Theme – Green & Black */
+:root[data-theme="dark"] {
+    --bg-primary: #0a0a0a;
+    --bg-secondary: #0f0f0f;
+    --bg-tertiary: #1a1a1a;
+
+    --text-primary: #d9f7e5;
+    --text-secondary: white;
+    --text-tertiary: #6fcf97;
+
+    --border-color: #1f1f1f;
+
+    --accent-primary: #349a62;
+    --accent-secondary: #6fcf97;
+    --accent-tertiary: #3cb371;
+    --accent-success: #34d399;
+    --accent-warning: #fbbf24;
+    --accent-danger: #f87171;
+
+    --gradient-primary: linear-gradient(135deg, #0c4f2a 0%, #349a62 100%);
+    --gradient-secondary: linear-gradient(135deg, #1f7a47 0%, #6fcf97 100%);
+    --gradient-accent: linear-gradient(135deg, #349a62 0%, #3cb371 100%);
+    --gradient-hero: linear-gradient(135deg, #1a1a1a 0%, Black 100%);
+
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.4);
+    --shadow-glow: 0 0 30px rgba(52, 154, 98, 0.3);
+
+    --glass-bg: rgba(20, 40, 30, 0.6);
+    --glass-border: rgba(255, 255, 255, 0.05);
+}
+
+
+        body {
+            font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            font-size: 16px;
+            transition: var(--transition);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 0;
+            opacity: 0.03;
+            pointer-events: none;
+        }
+
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 20% 80%, var(--accent-primary) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, var(--accent-secondary) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 40%, var(--accent-tertiary) 0%, transparent 50%);
+            animation: rotate 30s linear infinite;
+        }
+
+        @keyframes rotate {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Navigation */
+        .nav-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            z-index: 1000;
+            transition: var(--transition);
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .nav-brand {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 1px;
+        }
+
+        .nav-subtitle {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 50px;
+            padding: 4px;
+            cursor: pointer;
+            width: 72px;
+            height: 36px;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--accent-primary);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .theme-toggle-slider {
+            position: absolute;
+            width: 28px;
+            height: 28px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            top: 3px;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+            box-shadow: var(--shadow-md);
+        }
+
+        :root[data-theme="light"] .theme-toggle-slider {
+            left: 3px;
+        }
+
+        :root[data-theme="dark"] .theme-toggle-slider {
+            left: 39px;
+        }
+
+        /* Back Button */
+        .btn-back {
+            background: var(--glass-bg);
+            color: var(--accent-primary);
+            border: 2px solid var(--accent-primary);
+            backdrop-filter: blur(10px);
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-back:hover {
+            background: var(--accent-primary);
+            color: white;
+            border-color: var(--accent-primary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Main Container */
+        .main-container {
+            min-height: 100vh;
+            padding: 120px 2rem 80px;
+            position: relative;
+            z-index: 2;
+            background: var(--gradient-hero);
+        }
+
+        .content-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            text-align: center;
+            margin-bottom: 4rem;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-icon {
+            font-size: 4rem;
+            background: var(--gradient-accent);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+            animation: float 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes float {
+            from { transform: translateY(0px); }
+            to { transform: translateY(-10px); }
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 800;
+            background: var(--gradient-accent);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            line-height: 1.7;
+        }
+
+        /* Development Status */
+        .dev-status {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 3rem 2rem;
+            margin-bottom: 3rem;
+            text-align: center;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+        }
+
+        .dev-status:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg), var(--shadow-glow);
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--gradient-secondary);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        .dev-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .dev-description {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            line-height: 1.7;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Game Section */
+        .game-section {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 2rem;
+        }
+
+        .game-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .game-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .game-subtitle {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* Weather Memory Game */
+        .memory-game {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .memory-card {
+            aspect-ratio: 1;
+            background: var(--bg-tertiary);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: var(--transition);
+            user-select: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .memory-card:hover {
+            border-color: var(--accent-primary);
+            box-shadow: var(--shadow-md);
+        }
+
+        .memory-card.flipped {
+            background: var(--gradient-primary);
+            color: white;
+            border-color: var(--accent-primary);
+            transform: rotateY(180deg);
+        }
+
+        .memory-card.matched {
+            background: var(--accent-success);
+            border-color: var(--accent-success);
+            color: white;
+            animation: matched 0.6s ease;
+        }
+
+        @keyframes matched {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .card-back {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--gradient-secondary);
+            color: white;
+            font-size: 1.5rem;
+            opacity: 1;
+            transition: opacity 0.3s;
+        }
+
+        .memory-card.flipped .card-back {
+            opacity: 0;
+        }
+
+        .game-stats {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .game-controls {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .btn-game {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            margin: 0 0.5rem;
+        }
+
+        .btn-game:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 2rem 0;
+            color: var(--text-tertiary);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-content {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem 2rem;
+                height: auto;
+            }
+
+            .main-container {
+                padding: 140px 1rem 60px;
+            }
+
+            .memory-game {
+                grid-template-columns: repeat(3, 1fr);
+                max-width: 300px;
+            }
+
+            .game-stats {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Effects -->
+    <div class="bg-animation"></div>
+
+    <!-- Navigation -->
+    <nav class="nav-header">
+        <div class="nav-content">
+            <div class="nav-left">
+                <div class="nav-brand">{% trans "DIGI-VI" %}</div>
+                <div class="nav-subtitle">{% trans "Evapotranspiration Analysis" %}</div>
+            </div>
+            <div class="nav-right">
+                <a href="../index/" class="btn-back">
+                    <i class="fas fa-arrow-left"></i> {% trans "Back to Templates" %}
+                </a>
+                <form action="{% url 'set_language' %}" method="post" style="display:inline; margin-right: 10px;" >
+                    {% csrf_token %}
+                    <input name="next" type="hidden" value="{{ request.path }}">
+                    <input type="hidden" name="language" value="{% if LANGUAGE_CODE == 'en' %}pa{% else %}en{% endif %}">
+                    <button type="submit" class="btn-back">
+                        {% if LANGUAGE_CODE == 'en' %}
+                            Switch to Punjabi
+                        {% else %}
+                            Switch to English
+                        {% endif %}
+                    </button>
+                </form>
+                <button class="theme-toggle" onclick="toggleTheme()" title="{% trans "Toggle theme" %}">
+                    <div class="theme-toggle-slider">
+                        <i class="fas fa-sun" id="theme-icon"></i>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-container">
+        <div class="content-wrapper">
+            <!-- Hero Section -->
+            <div class="hero-section">
+                <div class="hero-icon">
+                    <i class="fas fa-cloud-sun"></i>
+                </div>
+                <h1 class="hero-title">{% trans "Evapotranspiration Analysis" %}</h1>
+                <p class="hero-subtitle">
+                    {% blocktrans %}Advanced crop water requirement calculations using ET models, weather data, and soil moisture analytics for precision irrigation planning.{% endblocktrans %}
+                </p>
+            </div>
+
+            <!-- Development Status -->
+            <div class="dev-status">
+                <div class="status-badge">
+                    <i class="fas fa-tools"></i>
+                    {% trans "Under Development" %}
+                </div>
+                <h2 class="dev-title">{% trans "Coming Soon: Advanced ET Analytics" %}</h2>
+            </div>
+
+            <!-- Mini Game -->
+            <div class="game-section">
+                <div class="game-header">
+                    <h3 class="game-title">{% trans "Weather Memory Challenge" %}</h3>
+                    <p class="game-subtitle">
+                        {% blocktrans %}Match the weather icons while we develop the ET analysis tool!{% endblocktrans %}
+                    </p>
+                </div>
+
+                <div class="game-stats">
+                    <div class="stat-item">
+                        <div class="stat-value" id="moves">0</div>
+                        <div class="stat-label">{% trans "Moves" %}</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="matches">0</div>
+                        <div class="stat-label">{% trans "Matches" %}</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="timer">00:00</div>
+                        <div class="stat-label">{% trans "Time" %}</div>
+                    </div>
+                </div>
+
+                <div class="memory-game" id="memoryGame">
+                    <!-- Cards will be generated by JavaScript -->
+                </div>
+
+                <div class="game-controls">
+                    <button class="btn-game" onclick="startNewGame()">
+                        <i class="fas fa-redo"></i> {% trans "New Game" %}
+                    </button>
+                    <button class="btn-game" onclick="resetGame()">
+                        <i class="fas fa-refresh"></i> {% trans "Reset" %}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2025 {% trans "DIGI-VI Evapotranspiration Analysis • Development Preview" %}</p>
+    </footer>
+
+    <script>
+        // Theme Management
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            updateThemeIcon(savedTheme);
+        }
+
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+        }
+
+        function updateThemeIcon(theme) {
+            const icon = document.getElementById('theme-icon');
+            icon.className = theme === 'light' ? 'fas fa-sun' : 'fas fa-moon';
+        }
+
+        // Weather Memory Game
+        const weatherIcons = [
+            'fas fa-sun', 'fas fa-cloud', 'fas fa-cloud-rain', 'fas fa-bolt',
+            'fas fa-snowflake', 'fas fa-wind', 'fas fa-temperature-high', 'fas fa-eye'
+        ];
+
+        let gameState = {
+            cards: [],
+            flippedCards: [],
+            matches: 0,
+            moves: 0,
+            startTime: null,
+            timer: null,
+            gameActive: false
+        };
+
+        function createCard(icon, index) {
+            return {
+                id: index,
+                icon: icon,
+                isFlipped: false,
+                isMatched: false
+            };
+        }
+
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        function initializeGame() {
+            // Create pairs of cards
+            const cardPairs = [];
+            weatherIcons.forEach((icon, index) => {
+                cardPairs.push(createCard(icon, index * 2));
+                cardPairs.push(createCard(icon, index * 2 + 1));
+            });
+
+            gameState.cards = shuffleArray(cardPairs);
+            gameState.flippedCards = [];
+            gameState.matches = 0;
+            gameState.moves = 0;
+            gameState.startTime = null;
+            gameState.gameActive = true;
+
+            renderGame();
+            updateStats();
+        }
+
+        function renderGame() {
+            const gameContainer = document.getElementById('memoryGame');
+            gameContainer.innerHTML = '';
+
+            gameState.cards.forEach((card, index) => {
+                const cardElement = document.createElement('div');
+                cardElement.className = 'memory-card';
+                cardElement.dataset.index = index;
+                
+                if (card.isMatched) {
+                    cardElement.classList.add('matched');
+                } else if (card.isFlipped) {
+                    cardElement.classList.add('flipped');
+                }
+
+                cardElement.innerHTML = `
+                    <div class="card-back">?</div>
+                    <i class="${card.icon}"></i>
+                `;
+
+                cardElement.addEventListener('click', () => handleCardClick(index));
+                gameContainer.appendChild(cardElement);
+            });
+        }
+
+        function handleCardClick(index) {
+            if (!gameState.gameActive) return;
+            
+            const card = gameState.cards[index];
+            if (card.isFlipped || card.isMatched || gameState.flippedCards.length >= 2) return;
+
+            if (!gameState.startTime) {
+                gameState.startTime = Date.now();
+                startTimer();
+            }
+
+            card.isFlipped = true;
+            gameState.flippedCards.push(index);
+
+            renderGame();
+
+            if (gameState.flippedCards.length === 2) {
+                gameState.moves++;
+                updateStats();
+                checkForMatch();
+            }
+        }
+
+        function checkForMatch() {
+            setTimeout(() => {
+                const [firstIndex, secondIndex] = gameState.flippedCards;
+                const firstCard = gameState.cards[firstIndex];
+                const secondCard = gameState.cards[secondIndex];
+
+                if (firstCard.icon === secondCard.icon) {
+                    firstCard.isMatched = true;
+                    secondCard.isMatched = true;
+                    gameState.matches++;
+                    
+                    if (gameState.matches === weatherIcons.length) {
+                        gameWon();
+                    }
+                } else {
+                    firstCard.isFlipped = false;
+                    secondCard.isFlipped = false;
+                }
+
+                gameState.flippedCards = [];
+                renderGame();
+                updateStats();
+            }, 1000);
+        }
+
+        function updateStats() {
+            document.getElementById('moves').textContent = gameState.moves;
+            document.getElementById('matches').textContent = gameState.matches;
+        }
+
+        function startTimer() {
+            gameState.timer = setInterval(() => {
+                const elapsed = Date.now() - gameState.startTime;
+                const minutes = Math.floor(elapsed / 60000);
+                const seconds = Math.floor((elapsed % 60000) / 1000);
+                document.getElementById('timer').textContent = 
+                    `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        function gameWon() {
+            gameState.gameActive = false;
+            clearInterval(gameState.timer);
+            setTimeout(() => {
+                alert('🎉 Congratulations! You matched all weather patterns!');
+            }, 500);
+        }
+
+        function startNewGame() {
+            clearInterval(gameState.timer);
+            document.getElementById('timer').textContent = '00:00';
+            initializeGame();
+        }
+
+        function resetGame() {
+            clearInterval(gameState.timer);
+            document.getElementById('timer').textContent = '00:00';
+            gameState.moves = 0;
+            gameState.matches = 0;
+            gameState.startTime = null;
+            gameState.flippedCards = [];
+            gameState.cards.forEach(card => {
+                card.isFlipped = false;
+                card.isMatched = false;
+            });
+            renderGame();
+            updateStats();
+        }
+
+        // Initialize
+        window.addEventListener('load', () => {
+            initTheme();
+            initializeGame();
+        });
+    </script>
+</body>
+</html>

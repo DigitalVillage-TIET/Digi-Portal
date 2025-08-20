@@ -1,0 +1,486 @@
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tube-well Information Carousel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+  :root[data-theme="dark"] {
+  /* Greens */
+  --primary: #349a62;
+  --accent: #6fcf97;
+
+  /* Dark theme backgrounds and text */
+  --bg-dark: #0a0a0a;
+  --text-dark: #d9f7e5;
+  --card-bg: #18181c;
+  --nav-bg: #23232a;
+  --bg-toggle: #18181c;
+  --bg-toggle-hover: #23232a;
+  --bg-tertiary: #23232a;
+  --border-color: #349a62;
+  --accent-primary: #6fcf97;
+  --shadow-toggle: 0 2px 8px rgba(52,154,98,0.18);
+  --shadow-glow: 0 0 10px #6fcf97;
+  --shadow-md: 0 2px 6px rgba(52,154,98,0.13);
+  --gradient-primary: linear-gradient(135deg, #349a62 60%, #6fcf97 100%);
+  --toggle-slider-bg: #349a62;
+  --toggle-slider-color: #fff;
+  --transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+
+/* LIGHT THEME OVERRIDES */
+:root[data-theme="light"] {
+  --primary: #236943;
+  --accent: #4ecb8f;
+
+  --bg-dark: #fff;
+  --text-dark: #1a3d2b;
+  --card-bg: #eafaf2;
+  --nav-bg: #e3fcec;
+  --bg-toggle: #e5f5ea;
+  --bg-toggle-hover: #c2e6cd;
+  --bg-tertiary: #e3fcec;
+  --border-color: #4ecb8f;
+  --accent-primary: #236943;
+  --shadow-toggle: 0 2px 12px rgba(35, 105, 67, 0.12);
+  --shadow-glow: 0 0 10px #4ecb8f;
+  --shadow-md: 0 2px 8px rgba(35,105,67,0.10);
+  --gradient-primary: linear-gradient(135deg, #4ecb8f 60%, #b7eacb 100%);
+  --toggle-slider-bg: linear-gradient(135deg, #4ecb8f 60%, #b7eacb 100%);
+  --toggle-slider-color: #236943;
+}
+
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: var(--bg-dark);
+  color: var(--text-dark);
+  min-height: 100vh;
+}
+
+/* THEME TOGGLE */
+.theme-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    background: var(--bg-toggle);
+    border: 2px solid var(--border-color);
+    border-radius: 50px;
+    width: 60px;
+    height: 32px;
+    cursor: pointer;
+    padding: 0 4px;
+    transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
+    position: relative;
+    box-shadow: var(--shadow-toggle);
+    outline: none;
+}
+
+.theme-toggle:hover {
+    border-color: var(--accent);
+    background: var(--bg-toggle-hover);
+    box-shadow: var(--shadow-glow);
+}
+
+.theme-toggle-slider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    background: var(--toggle-slider-bg);
+    border-radius: 50%;
+    color: var(--toggle-slider-color);
+    font-size: 16px;
+    box-shadow: var(--shadow-md);
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    transition: left 0.3s cubic-bezier(0.4,0,0.2,1), background 0.3s, color 0.3s;
+}
+
+:root[data-theme="light"] .theme-toggle-slider {
+  left: 34px;
+  background: var(--toggle-slider-bg);
+  color: var(--toggle-slider-color);
+}
+:root[data-theme="dark"] .theme-toggle-slider {
+  left: 4px;
+  background: var(--toggle-slider-bg);
+  color: var(--toggle-slider-color);
+}
+.theme-toggle-slider i {
+  pointer-events: none;
+}
+
+header {
+  text-align: center;
+  padding: 48px 20px 24px;
+}
+header h1 {
+  font-size: 2.2rem;
+  color: var(--accent);
+  background: linear-gradient(to right, var(--primary), var(--accent), #3cb371, var(--primary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 12px;
+}
+header p {
+  max-width: 700px;
+  margin: 0 auto;
+  color: var(--text-dark);
+  font-size: 1.08rem;
+}
+.carousel-outer {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 0 60px 0;
+}
+.carousel-container {
+  overflow: hidden;
+  width: 100%;
+}
+.carousel-track {
+  display: flex;
+  gap: 32px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 16px;
+  padding-left: 20px;
+  padding-right: 20px;
+  scroll-behavior: smooth;
+}
+.carousel-card {
+  flex: 0 0 340px;
+  background: var(--card-bg);
+  border-radius: 22px;
+  box-shadow: 0 6px 24px rgba(52,154,98,0.13);
+  color: #fff;
+  scroll-snap-align: start;
+  padding: 26px 22px 20px 22px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-height: 480px;
+  max-width: 340px;
+  position: relative;
+  transition: transform 0.2s;
+}
+:root[data-theme="light"] .carousel-card {
+  color: var(--text-dark);
+  box-shadow: 0 6px 24px rgba(35,105,67,0.10);
+}
+.carousel-card:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 12px 32px rgba(52,154,98,0.18);
+}
+:root[data-theme="light"] .carousel-card:hover {
+  box-shadow: 0 12px 32px rgba(35,105,67,0.13);
+}
+.carousel-card h3 {
+  color: var(--accent);
+  font-size: 1.25rem;
+  margin-bottom: 10px;
+  margin-top: 0;
+}
+.carousel-card p {
+  font-size: 1rem;
+  margin-bottom: 16px;
+  color: inherit;
+}
+.carousel-card img,
+.carousel-card video {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 14px;
+  margin-bottom: 14px;
+  background: var(--nav-bg);
+  box-shadow: 0 2px 8px rgba(52,154,98,0.13);
+}
+.carousel-card .specs {
+  font-size: 0.95rem;
+  color: #b0eac7;
+  margin-top: auto;
+  margin-bottom: 0;
+}
+:root[data-theme="light"] .carousel-card .specs {
+  color: var(--primary);
+}
+/* Navigation Buttons - OUTSIDE the carousel */
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  background: var(--nav-bg);
+  color: var(--accent);
+  border: none;
+  border-radius: 50%;
+  width: 54px;
+  height: 54px;
+  font-size: 2rem;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(52,154,98,0.13);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, color 0.2s, transform 0.2s;
+  outline: none;
+}
+.carousel-btn:hover, .carousel-btn:focus {
+  background: var(--primary);
+  color: #fff;
+  transform: scale(1.08) translateY(-50%);
+}
+.carousel-btn.prev {
+  left: -30px;
+}
+.carousel-btn.next {
+  right: -30px;
+}
+/* Hide buttons on small screens or adjust position */
+@media (max-width: 900px) {
+  .carousel-card {
+    flex: 0 0 80vw;
+    max-width: 80vw;
+    min-height: 400px;
+  }
+  .carousel-btn {
+    width: 44px;
+    height: 44px;
+    font-size: 1.5rem;
+  }
+  .carousel-btn.prev { left: -12px; }
+  .carousel-btn.next { right: -12px; }
+}
+@media (max-width: 600px) {
+  header h1 { font-size: 1.35rem; }
+  .carousel-card { padding: 16px 8px 16px 8px; }
+  .carousel-card img, .carousel-card video { height: 120px; }
+  .carousel-btn {
+    top: unset;
+    bottom: -40px;
+    left: 50%;
+    transform: translateX(-120%) scale(1);
+    right: unset;
+  }
+  .carousel-btn.next {
+    left: 50%;
+    transform: translateX(20%) scale(1);
+  }
+}
+/* Scrollbar Styling */
+.carousel-track::-webkit-scrollbar {
+  height: 12px;
+}
+.carousel-track::-webkit-scrollbar-thumb {
+  background: var(--nav-bg);
+  border-radius: 8px;
+}
+.carousel-track::-webkit-scrollbar-track {
+  background: transparent;
+}
+.language-button-container {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.language-form {
+    margin: 0;
+}
+
+.language-button {
+    background: transparent;
+    color: var(--accent);
+    border: 2px solid var(--primary);
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.language-button:hover {
+    background-color: var(--primary);
+    color: #fff;
+}
+
+.home-btn {
+    text-decoration: none;
+    background: transparent;
+    color: var(--accent);
+    border: 2px solid var(--primary);
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.home-btn:hover {
+    background-color: var(--primary);
+    color: #fff;
+}
+
+
+</style>
+</head>
+<body>
+  <header>
+<div class="language-button-container">
+    <form method="post" action="{% url 'set_language' %}">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ request.path }}">
+        <input type="hidden" name="language" value="{% if LANGUAGE_CODE == 'en' %}pa{% else %}en{% endif %}">
+        <button type="submit" class="language-button">
+            {% if LANGUAGE_CODE == 'en' %}
+                Switch to Punjabi
+            {% else %}
+                Switch to English
+            {% endif %}
+        </button>
+        <a href="{% url 'landing_protected' %}" class="home-btn">Home</a>
+                   
+    </form>
+    <button class="theme-toggle" onclick="toggleTheme()" title="{% trans 'Toggle theme' %}">
+      <div class="theme-toggle-slider">
+          <i class="fas fa-sun" id="theme-icon"></i>
+      </div>
+  </button>
+</div>
+
+
+    <h1>{% trans "Tube-well System: Key Components" %}</h1>
+    <p>
+      {% blocktrans %}Explore the main parts of a tube-well irrigation system in Punjab. Scroll horizontally or use the navigation buttons to learn about each component, view images and watch videos of real installations.{% endblocktrans %}
+    </p>
+  </header>
+  <main>
+    <div class="carousel-outer">
+      <button class="carousel-btn prev" id="carouselPrev" aria-label="{% trans 'Previous' %}">&#8592;</button>
+      <div class="carousel-container">
+        <div class="carousel-track" id="carouselTrack">
+          <!-- Card 1: Bore-well -->
+          <div class="carousel-card">
+            <img src="https://i.ibb.co/mC76xjgk/Screenshot-2025-07-08-at-12-03-45-AM.png" alt="{% trans 'Bore-well drilling' %}">
+            <h3>{% trans "Bore-well (Tube-well)" %}</h3>
+            <p>
+              {% blocktrans %}A deep, narrow tube-shaped bore (3–6" diameter) drilled 100–400 ft below ground, typically around 200 ft. It accesses the underground aquifer for irrigation.{% endblocktrans %}
+            </p>
+            <div class="specs">
+              {% blocktrans %}Typical cost: ₹3–6 lakhs<br>
+              Depth: 100–400 ft{% endblocktrans %}
+            </div>
+          </div>
+          <!-- Card 2: Drivery Pipe -->
+          <div class="carousel-card">
+            <img src="https://i.ibb.co/whyh4kLh/Screenshot-2025-07-08-at-12-16-17-AM.png" alt="{% trans 'Drivery iron pipe' %}">
+            <h3>{% trans "Drivery Iron Pipe" %}</h3>
+            <p>
+              {% blocktrans %}An iron pipe inserted into the bore, reaching the water level. The pump is attached to this pipe, placed 20 ft below the water level to avoid sand intake.{% endblocktrans %}
+            </p>
+            <div class="specs">
+              {% blocktrans %}Diameter: 3–6"<br>
+              Placement: 20 ft below water{% endblocktrans %}
+            </div>
+          </div>
+          <!-- Card 3: Motor Pump -->
+          <div class="carousel-card">
+            <img src="https://i.ibb.co/23r6qxSK/Screenshot-2025-07-08-at-12-18-41-AM.png" alt="{% trans 'Motor Pump' %}">
+            <h3>{% trans "Motor Pump" %}</h3>
+            <p>
+              {% blocktrans %}A powerful electric pump (12.5–25 hp) extracts water from the aquifer. The pump and pipe are lowered as the water table drops.{% endblocktrans %}
+            </p>
+            <div class="specs">
+              {% blocktrans %}Power: 12.5–25 hp<br>
+              Adjustment cost: ₹5,000–10,000{% endblocktrans %}
+            </div>
+          </div>
+          <!-- Card 4: Delivery Pipe & Pool -->
+          <div class="carousel-card">
+            <img src="https://i.ibb.co/XfpL9cb9/Screenshot-2025-07-08-at-10-03-13-AM.png" alt="{% trans 'Delivery pipe and pool' %}">
+            <h3>{% trans "Delivery Pipe & Pool" %}</h3>
+            <p>
+              {% blocktrans %}Water is brought to the surface via a 3–4" curved delivery pipe, leading to a small cemented pool (usually 2x2 m) that funnels water for distribution.{% endblocktrans %}
+            </p>
+            <div class="specs">
+              {% blocktrans %}Pipe diameter: 3–4"<br>
+              Pool size: up to 2x2 m{% endblocktrans %}
+            </div>
+          </div>
+          <!-- Card 5: Water Distribution -->
+          <div class="carousel-card">
+            <img src="https://i.ibb.co/twrvfrBM/Screenshot-2025-07-08-at-10-07-25-AM.png" alt="{% trans 'Open air irrigation canal' %}">
+            <h3>{% trans "Water Distribution" %}</h3>
+            <p>
+              {% blocktrans %}Water is distributed from the pool to fields, mostly via open-air canals and, in some farms, underground piping.{% endblocktrans %}
+            </p>
+            <div class="specs">
+              {% blocktrans %}Main method: Open-air canals<br>
+              Alternative: Underground pipes{% endblocktrans %}
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="carousel-btn next" id="carouselNext" aria-label="{% trans 'Next' %}">&#8594;</button>
+    </div>
+  </main>
+  <script>
+    // Basic JS for navigation buttons
+    const track = document.getElementById('carouselTrack');
+    const prevBtn = document.getElementById('carouselPrev');
+    const nextBtn = document.getElementById('carouselNext');
+    function getCardWidth() {
+      const card = track.querySelector('.carousel-card');
+      const style = window.getComputedStyle(card);
+      const width = card.offsetWidth;
+      // 32px gap as in CSS
+      return width + 32;
+    }
+    prevBtn.addEventListener('click', () => {
+      track.scrollBy({ left: -getCardWidth(), behavior: 'smooth' });
+    });
+    nextBtn.addEventListener('click', () => {
+      track.scrollBy({ left: getCardWidth(), behavior: 'smooth' });
+    });
+
+    function setInitialTheme() {
+    // Get theme from localStorage, or default to 'dark'
+    const savedTheme = localStorage.getItem('theme');
+    const theme = savedTheme ? savedTheme : 'dark';
+    document.documentElement.setAttribute('data-theme', theme);
+    updateThemeIcon(theme);
+}
+
+function toggleTheme() {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    updateThemeIcon(newTheme);
+}
+
+function updateThemeIcon(theme) {
+    const icon = document.getElementById('theme-icon');
+    if (icon) {
+        icon.className = theme === 'light' ? 'fas fa-sun' : 'fas fa-moon';
+    }
+}
+
+// Call this on page load
+setInitialTheme();
+  </script>
+</body>
+</html>

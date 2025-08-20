@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Group Analysis - Kharif 2025</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Light Theme */
+    :root[data-theme="light"] {
+      --bg-primary: #f8fafc;
+      --bg-secondary: #ffffff;
+      --bg-tertiary: #f1f5f9;
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-tertiary: #64748b;
+      --border-color: #e2e8f0;
+      --border-hover: #cbd5e1;
+      
+      --accent-primary: #3b82f6;
+      --accent-secondary: #8b5cf6;
+      --accent-tertiary: #06b6d4;
+      --accent-success: #10b981;
+      --accent-warning: #f59e0b;
+      --accent-danger: #ef4444;
+      
+      --gradient-primary: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+      --gradient-secondary: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+      --gradient-accent: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+      
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      --shadow-glow: 0 0 20px rgba(59, 130, 246, 0.15);
+      
+      --glass-bg: rgba(255, 255, 255, 0.7);
+      --glass-border: rgba(255, 255, 255, 0.2);
+      --code-bg: #f3f4f6;
+    }
+
+    /* Dark Theme */
+    :root[data-theme="dark"] {
+      --bg-primary: #0a0a0a;
+      --bg-secondary: #111111;
+      --bg-tertiary: #1a1a1a;
+      --text-primary: #f1f5f9;
+      --text-secondary: #cbd5e1;
+      --text-tertiary: #94a3b8;
+      --border-color: #27272a;
+      --border-hover: #3f3f46;
+      
+      --accent-primary: #60a5fa;
+      --accent-secondary: #a78bfa;
+      --accent-tertiary: #22d3ee;
+      --accent-success: #34d399;
+      --accent-warning: #fbbf24;
+      --accent-danger: #f87171;
+      
+      --gradient-primary: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+      --gradient-secondary: linear-gradient(135deg, #22d3ee 0%, #60a5fa 100%);
+      --gradient-accent: linear-gradient(135deg, #a78bfa 0%, #f472b6 100%);
+      
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+      --shadow-glow: 0 0 30px rgba(96, 165, 250, 0.3);
+      
+      --glass-bg: rgba(30, 30, 30, 0.6);
+      --glass-border: rgba(255, 255, 255, 0.1);
+      --code-bg: #1e1e1e;
+    }
+
+    body {
+      font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      font-size: 15px;
+      transition: var(--transition);
+      position: relative;
+      min-height: 100vh;
+    }
+
+    /* Background Pattern */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: 
+        radial-gradient(circle at 20% 80%, var(--accent-primary) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, var(--accent-secondary) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, var(--accent-tertiary) 0%, transparent 50%);
+      opacity: 0.05;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Header */
+    .header {
+      background: var(--bg-secondary);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: var(--shadow-md);
+    }
+
+    .header-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 1.5rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header-left h1 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.025em;
+      margin-bottom: 0.25rem;
+    }
+
+    .header-left p {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      font-weight: 400;
+    }
+
+    /* Navigation */
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .back-btn {
+      padding: 0.75rem 1.5rem;
+      background: var(--bg-tertiary);
+      color: var(--text-primary);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .back-btn:hover {
+      background: var(--accent-primary);
+      color: white;
+      border-color: var(--accent-primary);
+      transform: translateY(-2px);
+    }
+
+    /* Theme Toggle */
+    .theme-toggle {
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-color);
+      border-radius: 50px;
+      padding: 4px;
+      cursor: pointer;
+      width: 72px;
+      height: 36px;
+      position: relative;
+      transition: var(--transition);
+    }
+
+    .theme-toggle:hover {
+      border-color: var(--accent-primary);
+      box-shadow: var(--shadow-glow);
+    }
+
+    .theme-toggle-slider {
+      position: absolute;
+      width: 28px;
+      height: 28px;
+      background: var(--gradient-primary);
+      border-radius: 50%;
+      top: 3px;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 14px;
+      box-shadow: var(--shadow-md);
+    }
+
+    :root[data-theme="light"] .theme-toggle-slider {
+      left: 3px;
+    }
+
+    :root[data-theme="dark"] .theme-toggle-slider {
+      left: 39px;
+    }
+
+    /* Container */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Glass Card */
+    .glass-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 2rem;
+      transition: var(--transition);
+      box-shadow: var(--shadow-md);
+    }
+
+    .glass-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--accent-primary);
+    }
+
+    .card-header {
+      padding: 1.5rem 2rem;
+      background: var(--gradient-primary);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+      animation: pulse 4s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 0.5; }
+      50% { transform: scale(1.1); opacity: 0.8; }
+    }
+
+    .card-header h2 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: white;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .card-header .icon {
+      font-size: 1.125rem;
+      opacity: 0.9;
+    }
+
+    .card-body {
+      padding: 2rem;
+      background: var(--bg-secondary);
+    }
+
+    /* Group Selection Container */
+    .group-selection {
+      background: var(--bg-tertiary);
+      border-radius: 12px;
+      padding: 1.5rem;
+      border: 1px solid var(--border-color);
+      margin-bottom: 2rem;
+    }
+
+    .group-selection h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--accent-primary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* Search Box */
+    .search-box {
+      position: relative;
+      margin-bottom: 1.5rem;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 0.875rem 1rem 0.875rem 2.5rem;
+      border: 2px solid var(--border-color);
+      border-radius: 10px;
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      font-size: 0.95rem;
+      transition: var(--transition);
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: var(--accent-primary);
+      box-shadow: var(--shadow-glow);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 0.875rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-tertiary);
+      font-size: 1rem;
+    }
+
+    /* Group Options Grid */
+    .group-options {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 0.75rem;
+      max-height: 400px;
+      overflow-y: auto;
+      padding-right: 0.5rem;
+    }
+
+    .group-options::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .group-options::-webkit-scrollbar-track {
+      background: var(--bg-tertiary);
+      border-radius: 3px;
+    }
+
+    .group-options::-webkit-scrollbar-thumb {
+      background: var(--accent-primary);
+      border-radius: 3px;
+    }
+
+    .group-option {
+      position: relative;
+    }
+
+    .group-option input[type="checkbox"] {
+      position: absolute;
+      opacity: 0;
+    }
+
+    .group-label {
+      display: flex;
+      align-items: center;
+      padding: 0.875rem 1rem;
+      background: var(--bg-secondary);
+      border: 2px solid var(--border-color);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: var(--transition);
+      user-select: none;
+      font-weight: 500;
+    }
+
+    .group-label::before {
+      content: '';
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--border-color);
+      border-radius: 6px;
+      margin-right: 0.75rem;
+      transition: var(--transition);
+      flex-shrink: 0;
+    }
+
+    .group-option input[type="checkbox"]:checked + .group-label {
+      background: var(--bg-tertiary);
+      border-color: var(--accent-primary);
+      box-shadow: var(--shadow-glow);
+    }
+
+    .group-option input[type="checkbox"]:checked + .group-label::before {
+      background: var(--gradient-primary);
+      border-color: transparent;
+      content: '✓';
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 12px;
+    }
+
+    .group-label:hover {
+      border-color: var(--accent-primary);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    /* Study Type Badges */
+    .study-badge {
+      display: inline-block;
+      padding: 0.25rem 0.5rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      border-radius: 6px;
+      margin-left: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.025em;
+    }
+
+    .study-badge.remote {
+      background: var(--accent-primary);
+      color: white;
+    }
+
+    .study-badge.awd {
+      background: var(--accent-tertiary);
+      color: white;
+    }
+
+    .study-badge.tpr-dsr {
+      background: var(--accent-success);
+      color: white;
+    }
+
+    .study-badge.whole {
+      background: var(--accent-warning);
+      color: white;
+    }
+
+    /* Selected Groups Display */
+    .selected-groups {
+      margin-top: 1.5rem;
+      padding: 1rem;
+      background: var(--bg-secondary);
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+    }
+
+    .selected-groups h4 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      color: var(--text-primary);
+    }
+
+    .selected-items {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .selected-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 0.75rem;
+      background: var(--gradient-primary);
+      color: white;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+
+    .selected-item .remove-btn {
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      color: white;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 12px;
+      transition: var(--transition);
+    }
+
+    .selected-item .remove-btn:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    .no-selection {
+      color: var(--text-tertiary);
+      font-style: italic;
+      font-size: 0.9rem;
+    }
+
+    /* Button */
+    .btn {
+      padding: 0.875rem 1.75rem;
+      border: none;
+      border-radius: 10px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.95rem;
+      text-decoration: none;
+      position: relative;
+      overflow: hidden;
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+
+    .btn:hover::before {
+      width: 300px;
+      height: 300px;
+    }
+
+    .btn-primary {
+      background: var(--gradient-primary);
+      color: white;
+      box-shadow: var(--shadow-md);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg), var(--shadow-glow);
+    }
+
+    .btn-primary:disabled {
+      background: var(--bg-tertiary);
+      color: var(--text-tertiary);
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .btn-block {
+      width: 100%;
+      justify-content: center;
+    }
+
+    /* Action Buttons */
+    .action-buttons {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .btn-secondary {
+      background: var(--bg-tertiary);
+      color: var(--text-primary);
+      border: 1px solid var(--border-color);
+    }
+
+    .btn-secondary:hover {
+      background: var(--accent-secondary);
+      color: white;
+      border-color: var(--accent-secondary);
+    }
+
+    /* Info Box */
+    .info-box {
+      background: var(--bg-tertiary);
+      border-left: 4px solid var(--accent-primary);
+      padding: 1rem 1.5rem;
+      margin-bottom: 1.5rem;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .info-box p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      margin: 0;
+    }
+
+    /* Results Section */
+    .results-section {
+      margin-top: 2rem;
+    }
+
+    .graph-container {
+      background: var(--bg-secondary);
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border-color);
+    }
+
+    .graph-container img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+
+    /* Tech Grid Background */
+    .tech-grid {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: 
+        linear-gradient(rgba(96, 165, 250, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(96, 165, 250, 0.03) 1px, transparent 1px);
+      background-size: 50px 50px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .header-content {
+        flex-direction: column;
+        gap: 1rem;
+      }
+      
+      .container {
+        padding: 1rem;
+      }
+
+      .group-options {
+        grid-template-columns: 1fr;
+      }
+
+      .action-buttons {
+        flex-direction: column;
+      }
+    }
+
+    /* Loading */
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 1s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="tech-grid"></div>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-content">
+      <div class="header-left">
+        <h1>Group Analysis Dashboard</h1>
+        <p><span style="font-family: 'JetBrains Mono', monospace; color: var(--accent-primary);">KHARIF_2025</span> • Universal Comparative Analysis</p>
+      </div>
+      <div class="nav-actions">
+        <a href="{% url 'meter_reading_25' %}" class="back-btn">
+          <i class="fas fa-arrow-left"></i> Back to Meter Analysis
+        </a>
+        <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
+          <div class="theme-toggle-slider">
+            <i class="fas fa-sun" id="theme-icon"></i>
+          </div>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <!-- Configuration Card -->
+    <div class="glass-card">
+      <div class="card-header">
+        <h2><i class="fas fa-cogs icon"></i> Universal Group Selection</h2>
+      </div>
+      <div class="card-body">
+        <div class="info-box">
+          <p><strong>New Flexible Approach:</strong> Select any combination of groups from all studies for comparison. You can mix and match across studies, compare treatment vs control, or analyze compliance patterns - all in one analysis!</p>
+        </div>
+
+        <form method="post" id="groupForm">
+          {% csrf_token %}
+          <div class="group-selection">
+            <h3><i class="fas fa-layer-group"></i> Select Groups for Comparison</h3>
+            
+            <!-- Search Box -->
+            <div class="search-box">
+              <i class="fas fa-search search-icon"></i>
+              <input type="text" class="search-input" placeholder="Search groups (e.g., 'Remote Group A', 'AWD', 'Whole')" id="groupSearch">
+            </div>
+
+            <!-- Group Options -->
+            <div class="group-options" id="groupOptions">
+              <!-- Remote Controller Groups -->
+              <div class="group-option">
+                <input type="checkbox" id="remote-a-complied" name="group_category" value="Remote Group-A Complied">
+                <label for="remote-a-complied" class="group-label">
+                  Remote Group-A Complied <span class="study-badge remote">Remote</span>
+                </label>
+              </div>
+              
+              <div class="group-option">
+                <input type="checkbox" id="remote-a-non" name="group_category" value="Remote Group-A Non-Complied">
+                <label for="remote-a-non" class="group-label">
+                  Remote Group-A Non-Complied <span class="study-badge remote">Remote</span>
+                </label>
+              </div>
+
+              <div class="group-option">
+                <input type="checkbox" id="remote-a-whole" name="group_category" value="Remote Group-A Whole">
+                <label for="remote-a-whole" class="group-label">
+                  Remote Group-A Whole <span class="study-badge whole">Whole</span>
+                </label>
+              </div>
+
+              <div class="group-option">
+                <input type="checkbox" id="remote-b-complied" name="group_category" value="Remote Group-B Complied">
+                <label for="remote-b-complied" class="group-label">
+                  Remote Group-B Complied <span class="study-badge remote">Remote</span>
+                </label>
+              </div>
+
+              <div class="group-option">
+                <input type="checkbox" id="remote-b-non" name="group_category" value="Remote Group-B Non-Complied">
+                <label for="remote-b-non" class="group-label">
+                  Remote Group-B Non-Complied <span class="study-badge remote">Remote</span>
+                </label>
+              </div>
+
+              <div class="group-option">
+                <input type="checkbox" id="remote-b-whole" name="group_category" value="Remote Group-B Whole">
+                <label for="remote-b-whole" class="group-label">
+                  Remote Group-B Whole <span class="study-badge whole">Whole</span>
+                </label>
+              </div>
+
+              <!-- AWD Groups -->
+              <div class="group-option">
+                <input type="checkbox" id="awd-a-complied" name="group_category" value="AWD Group-A Complied">
+                <label for="awd-a-complied" class="group-label">
+                  AWD Group-A Complied <span class="study-badge awd">AWD</span>
+                </label>
+              </div>
+
+              <div class="group-option">
+                <input type="checkbox" id="awd-a-non" name="group_category" value="AWD Group-A Non-Complied">
+                <label for="awd-a-non" class="group-label">
+                  AWD Group-A Non-Complied <span class="study-badge awd">AWD</span>
+                </label>
+              </div>
+
+              <div class="group-option">
+                <input type="checkbox" id="awd-a-whole" name="group_category" value="AWD Group-A Whole">
+                <label for="awd-a-whole" class="group-label">
+                  AWD Group-A Whole <span class="study-badge whole">Whole</span>
+                </label>
+              </div>
+
+              <div class="group-option">
+                <input type="checkbox" id="awd-b-complied" name="group_category" value="AWD Group-B Complied">
+                <label for="awd-b-complied" class="group-label">
+                  AWD Group-B Complied <span class="study-badge awd">AWD</span>
+                </label>
+              </div>
+
+              <div class="group-option">
+                <input type="checkbox" id="awd-b-non" name="group_category" value="AWD Group-B Non-Complied">
+                <label for="awd-b-non" class="group-label">
+                  AWD Group-B Non-Complied <span class="study-badge awd">AWD</span>
+                </label>
+              </div>
+
+              <div class="group-option">
+                <input type="checkbox" id="awd-b-whole" name="group_category" value="AWD Group-B Whole">
+                <label for="awd-b-whole" class="group-label">
+                  AWD Group-B Whole <span class="study-badge whole">Whole</span>
+                </label>
+              </div>
+
+              <div class="group-option">
+                <input type="checkbox" id="awd-c-complied" name="group_category" value="AWD Group-C Complied">
+                <label for="awd-c-complied" class="group-label">
+                  AWD Group-C Complied <span class="study-badge awd">AWD</span>
+                </label>
+              </div>
+
+              <div class="group-option">
+                <input type="checkbox" id="awd-c-non" name="group_category" value="AWD Group-C Non-Complied">
+                <label for="awd-c-non" class="group-label">
+                  AWD Group-C Non-Complied <span class="study-badge awd">AWD</span>
+                </label>
+              </div>
+
+              <div class="group-option">
+                <input type="checkbox" id="awd-c-whole" name="group_category" value="AWD Group-C Whole">
+                <label for="awd-c-whole" class="group-label">
+                  AWD Group-C Whole <span class="study-badge whole">Whole</span>
+                </label>
+              </div>
+
+              <!-- TPR/DSR Groups -->
+              <div class="group-option">
+                <input type="checkbox" id="tpr" name="group_category" value="TPR">
+                <label for="tpr" class="group-label">
+                  TPR - Transplanted Rice <span class="study-badge tpr-dsr">TPR</span>
+                </label>
+              </div>
+
+              <div class="group-option">
+                <input type="checkbox" id="dsr" name="group_category" value="DSR">
+                <label for="dsr" class="group-label">
+                  DSR - Direct Seeded Rice <span class="study-badge tpr-dsr">DSR</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Selected Groups Display -->
+            <div class="selected-groups">
+              <h4><i class="fas fa-check-circle"></i> Selected Groups (<span id="selectedCount">0</span>)</h4>
+              <div class="selected-items" id="selectedItems">
+                <div class="no-selection">No groups selected yet. Choose groups from above to compare.</div>
+              </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+              <button type="button" class="btn btn-secondary" onclick="clearAllSelections()">
+                <i class="fas fa-trash"></i> Clear All
+              </button>
+              <button type="submit" name="proceed_group" class="btn btn-primary btn-block" id="analyzeBtn" disabled>
+                <i class="fas fa-chart-line"></i> Generate Analysis
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Results Section (if output exists) -->
+    {% if output %}
+  <div class="results-section">
+    <div class="glass-card">
+      <div class="card-header">
+        <h2><i class="fas fa-chart-area icon"></i> Comparative Analysis Results</h2>
+      </div>
+      <div class="card-body">
+        <div class="info-box">
+          <p><strong>Study Type:</strong> {{ group_type }} | 
+          <strong>Selected Groups:</strong> {{ selected_groups|join:", " }}</p>
+        </div>
+        <div class="graph-container">
+          {{ group_plot|safe }}
+          {{ group_plot3|safe }}
+          {{ group_plot2|safe }}
+          {{ group_plot4|safe }}
+          {{ group_plot5|safe }}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+{% if groupwise_plots %}
+  <div class="results-section">
+    <div class="glass-card">
+      <div class="card-header">
+        <h2><i class="fas fa-chart-area icon"></i> Delta vs Days from TPR – Per Group</h2>
+      </div>
+      <div class="card-body">
+        {% for group_name, plot_html in groupwise_plots %}
+          <div class="group-plot-section" style="margin-bottom: 2.5rem;">
+            <h3 style="margin-bottom: 1rem;">{{ group_name }}</h3>
+            {{ plot_html|safe }}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+
+      <!-- Download Report -->
+      <div class="glass-card">
+        <div class="card-header">
+          <h2><i class="fas fa-file-word icon"></i> Export Analysis Report</h2>
+        </div>
+        <div class="card-body">
+          <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
+            Download a comprehensive Word document with the comparative analysis results
+          </p>
+          <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="download_group_report" value="true">
+            <button type="submit" class="btn btn-primary btn-block">
+              <i class="fas fa-download"></i> Download Word Report (.docx)
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Theme Management
+    function initTheme() {
+      const savedTheme = localStorage.getItem('theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      updateThemeIcon(savedTheme);
+    }
+
+    function toggleTheme() {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+      
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      updateThemeIcon(newTheme);
+    }
+
+    function updateThemeIcon(theme) {
+      const icon = document.getElementById('theme-icon');
+      icon.className = theme === 'light' ? 'fas fa-sun' : 'fas fa-moon';
+    }
+
+    // Group Selection Management
+    let selectedGroups = [];
+
+    function updateSelectedDisplay() {
+      const selectedItems = document.getElementById('selectedItems');
+      const selectedCount = document.getElementById('selectedCount');
+      const analyzeBtn = document.getElementById('analyzeBtn');
+      
+      selectedCount.textContent = selectedGroups.length;
+      
+      if (selectedGroups.length === 0) {
+        selectedItems.innerHTML = '<div class="no-selection">No groups selected yet. Choose groups from above to compare.</div>';
+        analyzeBtn.disabled = true;
+      } else {
+        selectedItems.innerHTML = '';
+        selectedGroups.forEach(group => {
+          const item = document.createElement('div');
+          item.className = 'selected-item';
+          item.innerHTML = `
+            ${group}
+            <button type="button" class="remove-btn" onclick="removeSelection('${group}')">
+              <i class="fas fa-times"></i>
+            </button>
+          `;
+          selectedItems.appendChild(item);
+        });
+        analyzeBtn.disabled = false;
+      }
+    }
+
+    function removeSelection(groupValue) {
+      selectedGroups = selectedGroups.filter(group => group !== groupValue);
+      document.querySelector(`input[value="${groupValue}"]`).checked = false;
+      updateSelectedDisplay();
+    }
+
+    function clearAllSelections() {
+      selectedGroups = [];
+      document.querySelectorAll('input[name="group_category"]').forEach(checkbox => {
+        checkbox.checked = false;
+      });
+      updateSelectedDisplay();
+    }
+
+    // Search Functionality
+    function setupSearch() {
+      const searchInput = document.getElementById('groupSearch');
+      const groupOptions = document.querySelectorAll('.group-option');
+      
+      searchInput.addEventListener('input', function() {
+        const searchTerm = this.value.toLowerCase();
+        
+        groupOptions.forEach(option => {
+          const label = option.querySelector('.group-label').textContent.toLowerCase();
+          if (label.includes(searchTerm)) {
+            option.style.display = 'block';
+          } else {
+            option.style.display = 'none';
+          }
+        });
+      });
+    }
+
+    // Checkbox Event Listeners
+    function setupCheckboxListeners() {
+      document.querySelectorAll('input[name="group_category"]').forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+          if (this.checked) {
+            if (!selectedGroups.includes(this.value)) {
+              selectedGroups.push(this.value);
+            }
+          } else {
+            selectedGroups = selectedGroups.filter(group => group !== this.value);
+          }
+          updateSelectedDisplay();
+        });
+      });
+    }
+
+    // Form Validation
+    function setupFormValidation() {
+      document.getElementById('groupForm').addEventListener('submit', function(e) {
+        if (selectedGroups.length === 0) {
+          e.preventDefault();
+          alert('Please select at least one group to analyze.');
+          return;
+        }
+        
+        if (selectedGroups.length > 10) {
+          e.preventDefault();
+          alert('Please select no more than 10 groups for optimal analysis performance.');
+          return;
+        }
+      });
+    }
+
+    // Initialize everything
+    document.addEventListener('DOMContentLoaded', function() {
+      initTheme();
+      setupSearch();
+      setupCheckboxListeners();
+      setupFormValidation();
+      updateSelectedDisplay();
+    });
+  </script>
+</body>
+</html>
